@@ -110,7 +110,7 @@ class Importador {
 void main() {
     List<Donante> donantes;
     Importador importador = new Importador();
-    importador.importarCsv("donantes_import_20000_UTF8_BOM.csv");
+    importador.importarCsv("Servicio-importacion-de-donantes/donantes_import_20000_UTF8_BOM.csv");
 //    System.out.println("La cantidad de donantes es: " + importador.getDonantesExistentes().size() +
 //            " Y el ultimo es con el numero: " + importador.getDonantesExistentes().getLast().getTelefono());
 }
