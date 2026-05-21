@@ -2,72 +2,207 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Optional;
+
 //public enum TipoPersona{
 //    HUMANA, JURIDICA;
 //}
 //public enum TipoDoc{
 //    DNI, CUIT;
 //}
- class Donante{
-     private String tipoPersona;
-     private String tipoDoc;
-     private String documento;
-     private String nombre;
-     private String email;
-     private String telefono;
 
-     public Donante(String tipoP, String tipoD, String doc, String nom, String em, String tel) {
-         tipoPersona = tipoP;
-         tipoDoc = tipoD;
-         documento = doc;
-         nombre = nom;
-         email = em;
-         telefono = tel;
-     }
+public enum TipoEmpresa{
+    SA, SSR;
+}
 
-     public String getTipoPersona() {
-         return tipoPersona;
-     }
+class Contacto{
+    String correo;
 
-     public void setTipoPersona(String tipoPersona) {
-         this.tipoPersona = tipoPersona;
-     }
+    public String getCorreo() {
+        return correo;
+    }
 
-     public String getTipoDoc() {
-         return tipoDoc;
-     }
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
 
-     public void setTipoDoc(String tipoDoc) {
-         this.tipoDoc = tipoDoc;
-     }
+    public int getNumeroContacto() {
+        return numeroContacto;
+    }
 
-     public String getNombre() {
-         return nombre;
-     }
+    public void setNumeroContacto(int numeroContacto) {
+        this.numeroContacto = numeroContacto;
+    }
 
-     public void setNombre(String nombre) {
-         this.nombre = nombre;
-     }
+    int numeroContacto;
+}
 
-     public String getEmail() {
-         return email;
-     }
+class PersonaHumana extends Donante{
+    String apellido;
+    int edad;
+    String genero;
 
-     public void setEmail(String email) {
-         this.email = email;
-     }
+    public String getApellido() {
+        return apellido;
+    }
 
-     public String getTelefono() {
-         return telefono;
-     }
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
 
-     public void setTelefono(String telefono) {
-         this.telefono = telefono;
-     }
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public List<Contacto> getContactos() {
+        return contactos;
+    }
+
+    public void setContactos(List<Contacto> contactos) {
+        this.contactos = contactos;
+    }
+
+    String direccion;
+    List<Contacto> contactos;
+    public PersonaHumana(String tipoP, String tipoD, String doc, String nom, String em, String tel) {
+        super(tipoP, tipoD, doc, nom, em, tel);
+    }
+}
+class PersonaJuridica extends Donante{
+    TipoEmpresa tipoEmpresa;
+    String rubro;
+
+    public TipoEmpresa getTipoEmpresa() {
+        return tipoEmpresa;
+    }
+
+    public void setTipoEmpresa(TipoEmpresa tipoEmpresa) {
+        this.tipoEmpresa = tipoEmpresa;
+    }
+
+    public String getRubro() {
+        return rubro;
+    }
+
+    public void setRubro(String rubro) {
+        this.rubro = rubro;
+    }
+
+    public List<Contacto> getContactos() {
+        return contactos;
+    }
+
+    public void setContactos(List<Contacto> contactos) {
+        this.contactos = contactos;
+    }
+
+    public List<PersonaHumana> getRepresentantes() {
+        return representantes;
+    }
+
+    public void setRepresentantes(List<PersonaHumana> representantes) {
+        this.representantes = representantes;
+    }
+
+    List<Contacto> contactos;
+    List<PersonaHumana> representantes;
+    public PersonaJuridica(String tipoP, String tipoD, String doc, String nom, String em, String tel) {
+        super(tipoP, tipoD, doc, nom, em, tel);
+    }
+
+}
+
+class Donante{
+    private String tipoPersona;
+    private String tipoDoc;
+    private String documento;
+    private String nombre;
+    private String email;
+    private String telefono;
+
+    public Donante(String tipoP, String tipoD, String doc, String nom, String em, String tel) {
+        tipoPersona = tipoP;
+        tipoDoc = tipoD;
+        documento = doc;
+        nombre = nom;
+        email = em;
+        telefono = tel;
+    }
+
+    public String getTipoPersona() {
+        return tipoPersona;
+    }
+
+    public void setTipoPersona(String tipoPersona) {
+        this.tipoPersona = tipoPersona;
+    }
+
+    public String getTipoDoc() {
+        return tipoDoc;
+    }
+
+    public void setTipoDoc(String tipoDoc) {
+        this.tipoDoc = tipoDoc;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 
 }
 
 class Importador {
+    private static Importador instancia = null;
+
+    private Importador(){}
+
+    public static Importador GetInstance(){
+        if(instancia == null)
+            instancia = new Importador();
+        return instancia;
+    }
 
     private final List<Donante> donantesExistentes = new ArrayList<>();
     //El final hace que no se pueda asignar otra referencia a la lista
@@ -100,17 +235,24 @@ class Importador {
     public List<Donante> getDonantesExistentes() {
         return donantesExistentes;
     }
-    public Donante setearDonante(String[] fila){
-        return new Donante(fila[0],fila[1],fila[2],fila[3],fila[4], fila[5]);
 
+
+    public Donante setearDonante(String[] fila) {
+        if (fila[0].equalsIgnoreCase("HUMANA")) {
+            return new PersonaHumana(fila[0], fila[1], fila[2], fila[3], fila[4], fila[5]);
+        } else {
+            return new PersonaJuridica(fila[0], fila[1], fila[2], fila[3], fila[4], fila[5]);
+        }
     }
 
 }
 
-void main() {
-    List<Donante> donantes;
-    Importador importador = new Importador();
-    importador.importarCsv("Servicio-importacion-de-donantes/donantes_import_20000_UTF8_BOM.csv");
-//    System.out.println("La cantidad de donantes es: " + importador.getDonantesExistentes().size() +
-//            " Y el ultimo es con el numero: " + importador.getDonantesExistentes().getLast().getTelefono());
+public class Main {
+    public static void main(String[] args) {
+        List<Donante> donantes;
+        Importador importador = new Importador();
+        importador.importarCsv("Servicio-importacion-de-donantes/donantes_import_20000_UTF8_BOM.csv");
+        System.out.println("La cantidad de donantes es: " + importador.getDonantesExistentes().size() +
+                " Y el ultimo es con el numero: " + importador.getDonantesExistentes().getLast().getTelefono());
+    }
 }
