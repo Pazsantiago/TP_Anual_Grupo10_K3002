@@ -78,8 +78,16 @@ class PersonaHumana extends Donante{
         this.direccion = direccion;
     }
 
+    public List<Contacto> getContactos() {
+        return contactos;
+    }
+
+    public void setContactos(List<Contacto> contactos) {
+        this.contactos = contactos;
+    }
 
     String direccion;
+    List<Contacto> contactos;
     public PersonaHumana(String tipoD, String doc, String nom, String em, String tel) {
         super(tipoD, doc, nom, em, tel);
     }
@@ -104,7 +112,13 @@ class PersonaJuridica extends Donante{
         this.rubro = rubro;
     }
 
+    public List<Contacto> getContactos() {
+        return contactos;
+    }
 
+    public void setContactos(List<Contacto> contactos) {
+        this.contactos = contactos;
+    }
 
     public List<PersonaHumana> getRepresentantes() {
         return representantes;
@@ -114,7 +128,7 @@ class PersonaJuridica extends Donante{
         this.representantes = representantes;
     }
 
-
+    List<Contacto> contactos;
     List<PersonaHumana> representantes;
     public PersonaJuridica(String tipoD, String doc, String nom, String em, String tel) {
         super(tipoD, doc, nom, em, tel);
@@ -135,24 +149,23 @@ class Donante{
 
     private String documento;
     private String nombre;
-    private String email;
+
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
+
+    private String correoElectronico;
     private String telefono;
-
-    public List<Contacto> getContactos() {
-        return contactos;
-    }
-
-    public void setContactos(List<Contacto> contactos) {
-        this.contactos = contactos;
-    }
-
-    private List<Contacto> contactos;
 
     public Donante(String tipoD, String doc, String nom, String em, String tel) {
         tipoDoc = tipoD;
         documento = doc;
         nombre = nom;
-        email = em;
+        correoElectronico = em;
         telefono = tel;
     }
 
@@ -173,13 +186,6 @@ class Donante{
         this.nombre = nombre;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getTelefono() {
         return telefono;
@@ -221,7 +227,7 @@ class Importador {
     }
 
     public void controlarDonanteEnLista(String[] fila) {
-        Optional<Donante> donanteExistente = donantesExistentes.stream().filter(donante -> donante.getEmail().equals(fila[4])).findFirst();
+        Optional<Donante> donanteExistente = donantesExistentes.stream().filter(donante -> donante.getCorreoElectronico().equals(fila[4])).findFirst();
         if (donanteExistente.isPresent()) {
             int i = donantesExistentes.indexOf(donanteExistente.get());
             donantesExistentes.set(i, setearDonante(fila));
