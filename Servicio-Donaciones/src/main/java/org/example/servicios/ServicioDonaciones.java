@@ -3,7 +3,6 @@ package ar.edu.utn.donatrack.servicios;
 import ar.edu.utn.donatrack.dominio.bien.Bien;
 import ar.edu.utn.donatrack.dominio.bien.BienPerecedero;
 import ar.edu.utn.donatrack.dominio.donacion.Donacion;
-import ar.edu.utn.donatrack.dominio.donacion.DonacionSegmentada;
 import ar.edu.utn.donatrack.dominio.donacion.EstadoDonacion;
 import ar.edu.utn.donatrack.dominio.donador.Donador;
 import ar.edu.utn.donatrack.dominio.entidad.EntidadBeneficiaria;

@@ -3,12 +3,9 @@ package ar.edu.utn.donatrack;
 import ar.edu.utn.donatrack.dominio.bien.Bien;
 import ar.edu.utn.donatrack.dominio.bien.BienPerecedero;
 import ar.edu.utn.donatrack.dominio.bien.Estado;
-import ar.edu.utn.donatrack.dominio.categoria.CategoriaFactory;
 import ar.edu.utn.donatrack.dominio.categoria.Subcategoria;
-import ar.edu.utn.donatrack.dominio.categoria.SubcategoriaGenerica;
 import ar.edu.utn.donatrack.dominio.donacion.Donacion;
 import ar.edu.utn.donatrack.dominio.donacion.EstadoDonacion;
-import ar.edu.utn.donatrack.dominio.donador.MedioContacto;
 import ar.edu.utn.donatrack.dominio.donador.PersonaHumana;
 import ar.edu.utn.donatrack.dominio.donador.PersonaJuridica;
 import ar.edu.utn.donatrack.dominio.donador.TipoEmpresa;
@@ -106,7 +103,7 @@ class ServicioDonacionesTest {
     void donacionPerecederosDiferenteFechaVencimiento() {
         // Planta industrial de pastas: 100 paquetes de fideos + 50 tetra-packs de tomate
         var empresa = new PersonaJuridica("Pastas del Sur S.A.", TipoEmpresa.EMPRESA, "Alimentaria",
-                new MedioContacto(MedioContacto.Tipo.CORREO_ELECTRONICO, "pastas@mail.com"));
+                new ar.edu.utn.donatrack.dominio.donador.MedioContacto(ar.edu.utn.donatrack.dominio.donador.MedioContacto.Tipo.CORREO_ELECTRONICO, "pastas@mail.com"));
         servicio.registrarDonador(empresa);
 
         var fideos = new BienPerecedero("Fideos tipo spaghetti", subFideos,

@@ -1,6 +1,6 @@
-package ar.edu.utn.donatrack.dominio.bien;
+package org.example.dominio.bien;
 
-import ar.edu.utn.donatrack.dominio.categoria.Subcategoria;
+import org.example.dominio.categoria.*;
 
 import java.net.URL;
 

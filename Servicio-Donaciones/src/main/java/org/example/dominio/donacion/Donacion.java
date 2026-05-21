@@ -1,6 +1,7 @@
-package ar.edu.utn.donatrack.dominio.donacion;
+package org.example.dominio.donacion;
 
-import ar.edu.utn.donatrack.dominio.donador.Donador;
+import org.example.dominio.donador.D;
+import org.example.dominio.bien.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Donacion {
     private final String idAdministrador;
     private final String descripcion;
     private final LocalDateTime fechaRegistro;
-    private final List<DonacionSegmentada> donacionesSegmentadas;
+    private final List<Bien> bienes;
 
     public Donacion(Donador donador, String idAdministrador, String descripcion) {
         if (donador == null)
@@ -36,10 +37,6 @@ public class Donacion {
         this.donacionesSegmentadas = new ArrayList<>();
     }
 
-    /** Llamado por el ServicioDonaciones al segmentar la carga. */
-    public void agregarDonacionSegmentada(DonacionSegmentada ds) {
-        this.donacionesSegmentadas.add(ds);
-    }
 
     public String getId() { return id; }
     public Donador getDonador() { return donador; }

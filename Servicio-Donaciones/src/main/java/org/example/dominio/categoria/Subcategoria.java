@@ -1,11 +1,11 @@
-package ar.edu.utn.donatrack.dominio.categoria;
+package org.example.dominio.categoria;
 
 /**
  * La Subcategoria es la unidad mínima de asignación dentro del sistema.
  * Permite identificar con precisión qué bien se necesita o se dona.
  * Ej: dentro de "Alimentos" → fideos secos, arroz, legumbres secas.
  */
-public abstract class Subcategoria {
+public class Subcategoria {
 
     private final String nombre;
     private final int cantidadMinima;

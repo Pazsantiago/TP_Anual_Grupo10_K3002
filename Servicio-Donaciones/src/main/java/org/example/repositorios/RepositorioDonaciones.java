@@ -1,7 +1,6 @@
 package ar.edu.utn.donatrack.repositorios;
 
 import ar.edu.utn.donatrack.dominio.donacion.Donacion;
-import ar.edu.utn.donatrack.dominio.donacion.DonacionSegmentada;
 import ar.edu.utn.donatrack.dominio.donacion.EstadoDonacion;
 
 import java.util.*;
