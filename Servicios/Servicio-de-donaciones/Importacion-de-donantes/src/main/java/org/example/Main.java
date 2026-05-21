@@ -78,18 +78,10 @@ class PersonaHumana extends Donante{
         this.direccion = direccion;
     }
 
-    public List<Contacto> getContactos() {
-        return contactos;
-    }
-
-    public void setContactos(List<Contacto> contactos) {
-        this.contactos = contactos;
-    }
 
     String direccion;
-    List<Contacto> contactos;
-    public PersonaHumana(String tipoP, String tipoD, String doc, String nom, String em, String tel) {
-        super(tipoP, tipoD, doc, nom, em, tel);
+    public PersonaHumana(String tipoD, String doc, String nom, String em, String tel) {
+        super(tipoD, doc, nom, em, tel);
     }
 }
 class PersonaJuridica extends Donante{
@@ -112,13 +104,7 @@ class PersonaJuridica extends Donante{
         this.rubro = rubro;
     }
 
-    public List<Contacto> getContactos() {
-        return contactos;
-    }
 
-    public void setContactos(List<Contacto> contactos) {
-        this.contactos = contactos;
-    }
 
     public List<PersonaHumana> getRepresentantes() {
         return representantes;
@@ -128,24 +114,41 @@ class PersonaJuridica extends Donante{
         this.representantes = representantes;
     }
 
-    List<Contacto> contactos;
+
     List<PersonaHumana> representantes;
-    public PersonaJuridica(String tipoP, String tipoD, String doc, String nom, String em, String tel) {
-        super(tipoP, tipoD, doc, nom, em, tel);
+    public PersonaJuridica(String tipoD, String doc, String nom, String em, String tel) {
+        super(tipoD, doc, nom, em, tel);
     }
 
 }
 
 class Donante{
-    private String tipoPersona;
     private String tipoDoc;
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
     private String documento;
     private String nombre;
     private String email;
     private String telefono;
 
-    public Donante(String tipoP, String tipoD, String doc, String nom, String em, String tel) {
-        tipoPersona = tipoP;
+    public List<Contacto> getContactos() {
+        return contactos;
+    }
+
+    public void setContactos(List<Contacto> contactos) {
+        this.contactos = contactos;
+    }
+
+    private List<Contacto> contactos;
+
+    public Donante(String tipoD, String doc, String nom, String em, String tel) {
         tipoDoc = tipoD;
         documento = doc;
         nombre = nom;
@@ -153,13 +156,6 @@ class Donante{
         telefono = tel;
     }
 
-    public String getTipoPersona() {
-        return tipoPersona;
-    }
-
-    public void setTipoPersona(String tipoPersona) {
-        this.tipoPersona = tipoPersona;
-    }
 
     public String getTipoDoc() {
         return tipoDoc;
@@ -241,9 +237,9 @@ class Importador {
 
     public Donante setearDonante(String[] fila) {
         if (fila[0].equalsIgnoreCase("HUMANA")) {
-            return new PersonaHumana(fila[0], fila[1], fila[2], fila[3], fila[4], fila[5]);
+            return new PersonaHumana(fila[1], fila[2], fila[3], fila[4], fila[5]);
         } else {
-            return new PersonaJuridica(fila[0], fila[1], fila[2], fila[3], fila[4], fila[5]);
+            return new PersonaJuridica(fila[1], fila[2], fila[3], fila[4], fila[5]);
         }
     }
 
@@ -253,7 +249,7 @@ public class Main {
     public static void main(String[] args) {
         List<Donante> donantes;
         Importador importador = Importador.GetInstance();
-        importador.importarCsv("donantes_import_20000_UTF8_BOM.csv");
+        importador.importarCsv("Servicios/Servicio-de-donaciones/Importacion-de-donantes/donantes_import_20000_UTF8_BOM.csv");
         System.out.println("La cantidad de donantes es: " + importador.getDonantesExistentes().size() +
                 " Y el ultimo es con el numero: " + importador.getDonantesExistentes().getLast().getTelefono());
     }
