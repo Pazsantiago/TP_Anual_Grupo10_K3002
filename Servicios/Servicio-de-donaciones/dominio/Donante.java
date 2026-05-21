@@ -1,10 +1,10 @@
-package ar.edu.utn.donatrack.dominio.donador;
+package ar.edu.utn.donatrack.dominio.donante;
 
 import ar.edu.utn.donatrack.dominio.donacion.Donacion;
 
 import java.util.List;
 
-public interface Donador {
+public interface Donante {
 
     String getCorreoElectronico();
 
