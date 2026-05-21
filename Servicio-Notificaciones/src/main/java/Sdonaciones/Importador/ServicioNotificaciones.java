@@ -1,4 +1,4 @@
-package ar.edu.utn.donatrack.notificaciones.servicios;
+package Sdonaciones.servicios;
 
 /**
  * Primera iteración del Servicio de Notificaciones.

@@ -1,4 +1,4 @@
-package ar.edu.utn.donatrack.dominio.donador;
+package Sdonaciones.dominio.donador;
 
 public enum TipoEmpresa {
     GUBERNAMENTAL,

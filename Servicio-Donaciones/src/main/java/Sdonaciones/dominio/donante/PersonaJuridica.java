@@ -1,4 +1,4 @@
-package ar.edu.utn.donatrack.dominio.donador;
+package Sdonaciones.dominio.donador;
 
 import ar.edu.utn.donatrack.dominio.donacion.Donacion;
 import ar.edu.utn.donatrack.excepciones.ContactoObligatorioException;

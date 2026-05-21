@@ -1,4 +1,4 @@
-package org.example.dominio.donador;
+package Sdonaciones.dominio.donador;
 
 public abstract class Donante{
     private String tipoDoc;

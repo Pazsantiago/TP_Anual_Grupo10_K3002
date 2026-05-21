@@ -1,4 +1,5 @@
-package ar.edu.utn.donatrack.servicios;
+/*
+package Sdonaciones.servicios;
 
 import ar.edu.utn.donatrack.dominio.bien.Bien;
 import ar.edu.utn.donatrack.dominio.bien.BienPerecedero;
@@ -17,6 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * Servicio principal de donaciones.
  * Responsabilidades:
@@ -24,7 +26,8 @@ import java.util.Map;
  *  - Registrar donaciones y segmentarlas automáticamente por subcategoría
  *  - Gestionar entidades beneficiarias y sus necesidades
  *  - Actualizar estados de donaciones (vencimiento, etc.)
- */
+ *//*
+
 public class ServicioDonaciones {
 
     private final RepositorioDonadores repositorioDonadores;
@@ -61,7 +64,8 @@ public class ServicioDonaciones {
 
     // ─── Registro de Donaciones ──────────────────────────────────────────────
 
-    /**
+    */
+/**
      * Registra una donación completa y la segmenta automáticamente por subcategoría.
      *
      * La segmentación agrupa los bienes por subcategoría, generando una
@@ -74,7 +78,8 @@ public class ServicioDonaciones {
      * @param descripcion    descripción general de la donación
      * @param bienes         lista de bienes entregados
      * @return la Donacion registrada con sus segmentos
-     */
+     *//*
+
     public Donacion registrarDonacion(Donador donador, String idAdministrador,
                                       String descripcion, List<Bien> bienes) {
         if (bienes == null || bienes.isEmpty())
@@ -91,10 +96,12 @@ public class ServicioDonaciones {
         return donacion;
     }
 
-    /**
+    */
+/**
      * Segmenta la lista de bienes en DonacionesSegmentadas agrupadas por subcategoría.
      * Para perecederos con distinta fecha de vencimiento se generan entradas separadas.
-     */
+     *//*
+
     private List<DonacionSegmentada> segmentar(List<Bien> bienes) {
         // Clave: nombre de subcategoría + fecha de vencimiento (si aplica)
         Map<String, DonacionSegmentada> segmentos = new LinkedHashMap<>();
@@ -122,10 +129,12 @@ public class ServicioDonaciones {
 
     // ─── Gestión de estados ──────────────────────────────────────────────────
 
-    /**
+    */
+/**
      * Marca como vencidas todas las donaciones segmentadas con bienes perecederos vencidos.
      * En producción esto se invocaría desde un scheduler periódico.
-     */
+     *//*
+
     public void actualizarVencimientos() {
         repositorioDonaciones.listarSegmentadasPorEstado(EstadoDonacion.PENDIENTE_ASIGNACION)
                 .forEach(ds -> {
@@ -153,3 +162,4 @@ public class ServicioDonaciones {
         entidad.registrarNecesidad(necesidad);
     }
 }
+*/

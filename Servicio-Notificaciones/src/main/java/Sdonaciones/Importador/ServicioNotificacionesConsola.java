@@ -1,4 +1,4 @@
-package ar.edu.utn.donatrack.notificaciones.servicios;
+package Sdonaciones.servicios;
 
 import ar.edu.utn.donatrack.notificaciones.dominio.Notificacion;
 
