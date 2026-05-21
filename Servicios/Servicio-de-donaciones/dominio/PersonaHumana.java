@@ -1,4 +1,4 @@
-package ar.edu.utn.donatrack.dominio.donador;
+package ar.edu.utn.donatrack.dominio.donante;
 
 import ar.edu.utn.donatrack.dominio.donacion.Donacion;
 import ar.edu.utn.donatrack.excepciones.ContactoObligatorioException;
@@ -6,7 +6,7 @@ import ar.edu.utn.donatrack.excepciones.ContactoObligatorioException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonaHumana implements Donador {
+public class PersonaHumana implements Donante {
 
     private String nombre;
     private String apellido;
