@@ -13,7 +13,7 @@ public interface Donante {
     MedioContacto getContactoPredeterminado();
 
     /**
-     * Registra una nueva donación asociada a este donador.
+     * Registra una nueva donación asociada a este donante.
      * La lógica de segmentación ocurre en el ServicioDonaciones.
      */
     void agregarDonacion(Donacion donacion);
