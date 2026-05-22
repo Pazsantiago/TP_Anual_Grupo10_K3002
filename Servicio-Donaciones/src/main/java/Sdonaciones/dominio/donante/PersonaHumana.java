@@ -1,12 +1,12 @@
-package Sdonaciones.dominio.donador;
-
-import org.example.excepciones.ContactoObligatorioException;
+package Sdonaciones.dominio.donante;
 
 import java.util.List;
-public class PersonaHumana extends Donador{
-    String apellido;
-    int edad;
-    String genero;
+public class PersonaHumana extends Donante{
+    private String apellido;
+    private int edad;
+    private String genero;
+    private String direccion;
+
 
     public String getApellido() {
         return apellido;
@@ -40,16 +40,7 @@ public class PersonaHumana extends Donador{
         this.direccion = direccion;
     }
 
-    public List<Contacto> getContactos() {
-        return contactos;
-    }
 
-    public void setContactos(List<Contacto> contactos) {
-        this.contactos = contactos;
-    }
-
-    String direccion;
-    List<Contacto> contactos;
     public PersonaHumana(String tipoD, String doc, String nom, String em, String tel) {
         super(tipoD, doc, nom, em, tel);
     }

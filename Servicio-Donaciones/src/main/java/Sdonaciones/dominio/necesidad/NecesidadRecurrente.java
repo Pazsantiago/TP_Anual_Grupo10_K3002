@@ -1,54 +1,80 @@
-package ar.edu.utn.donatrack.dominio.necesidad;
+package Sdonaciones.dominio.necesidad;
 
-import ar.edu.utn.donatrack.dominio.categoria.Subcategoria;
+import Sdonaciones.dominio.categoria.Subcategoria;
 
-import java.time.YearMonth;
+import java.time.LocalDate;
 
-/**
- * Necesidad recurrente: consumo habitual de la organización en un período.
- * Se satisface dentro del período (semanal, mensual) con la cantidad objetivo.
- * Ejemplo: comedor necesita 100 paquetes de fideos por semana.
- */
 public class NecesidadRecurrente extends Necesidad {
-
-    public enum Periodo { SEMANAL, QUINCENAL, MENSUAL }
-
-    private final Periodo periodo;
-    private YearMonth periodoActual;
+    private Periodo periodo;
+    private LocalDate fechaInicioPeriodo;
     private int cantidadRecibidaEnPeriodo;
 
-    public NecesidadRecurrente(Subcategoria subcategoria, String descripcion,
-                               int cantidadObjetivo, Periodo periodo) {
-        super(subcategoria, descripcion, cantidadObjetivo);
-        if (periodo == null)
-            throw new IllegalArgumentException("El período es obligatorio para necesidades recurrentes.");
-        this.periodo = periodo;
-        this.periodoActual = YearMonth.now();
-        this.cantidadRecibidaEnPeriodo = 0;
-    }
+    public NecesidadRecurrente(
+            String descripcion,
+            Subcategoria subcategoria,
+            int cantidadObjetivo,
+            Periodo periodo,
+            LocalDate fechaInicioPeriodo
+    ) {
+        super(descripcion, subcategoria, cantidadObjetivo);
 
-    /** Reinicia el contador si cambió el período. */
-    public void actualizarPeriodo() {
-        YearMonth ahora = YearMonth.now();
-        if (!ahora.equals(periodoActual)) {
-            periodoActual = ahora;
-            cantidadRecibidaEnPeriodo = 0;
-        }
+        this.periodo = periodo;
+        this.fechaInicioPeriodo = fechaInicioPeriodo;
+        this.cantidadRecibidaEnPeriodo = 0;
     }
 
     @Override
     public void recibirBienes(int cantidad) {
-        actualizarPeriodo();
-        super.recibirBienes(cantidad);
+
+        // si el período ya venció, reinicia el conteo
+        if (!periodoVigente()) {
+            reiniciarPeriodo();
+        }
+
         this.cantidadRecibidaEnPeriodo += cantidad;
+
+        // mantiene también el acumulado general
+        super.recibirBienes(cantidad);
+    }
+
+    public boolean periodoVigente() {
+
+        LocalDate finPeriodo =
+                fechaInicioPeriodo.plusDays(periodo.getValue());
+
+        return !LocalDate.now().isAfter(finPeriodo);
+    }
+
+    private void reiniciarPeriodo() {
+
+        this.cantidadRecibidaEnPeriodo = 0;
+        this.fechaInicioPeriodo =
+                this.fechaInicioPeriodo.plusDays(periodo.getValue());
     }
 
     @Override
     public boolean estaSatisfecha() {
-        actualizarPeriodo();
-        return cantidadRecibidaEnPeriodo >= getCantidadObjetivo();
+
+        return periodoVigente()
+                && cantidadRecibidaEnPeriodo >= getCantidadObjetivo();
     }
 
-    public Periodo getPeriodo() { return periodo; }
-    public int getCantidadRecibidaEnPeriodo() { return cantidadRecibidaEnPeriodo; }
+    public Periodo getPeriodo() {return periodo;}
+    public void setPeriodo(Periodo periodo) {this.periodo = periodo;}
+
+    public LocalDate getFechaInicioPeriodo() {
+        return fechaInicioPeriodo;
+    }
+
+    public void setFechaInicioPeriodo(LocalDate fechaInicioPeriodo) {
+        this.fechaInicioPeriodo = fechaInicioPeriodo;
+    }
+
+    public int getCantidadRecibidaEnPeriodo() {
+        return cantidadRecibidaEnPeriodo;
+    }
+
+    public void setCantidadRecibidaEnPeriodo(int cantidadRecibidaEnPeriodo) {
+        this.cantidadRecibidaEnPeriodo = cantidadRecibidaEnPeriodo;
+    }
 }

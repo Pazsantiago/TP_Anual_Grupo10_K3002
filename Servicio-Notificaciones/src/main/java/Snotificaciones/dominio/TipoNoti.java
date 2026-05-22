@@ -1,4 +1,4 @@
-package Sdonaciones.dominio;
+package Snotificaciones.dominio;
 
 public enum TipoNoti {
     BIENVENIDA,

@@ -1,4 +1,4 @@
-package org.example.dominio.categoria;
+package Sdonaciones.dominio.categoria;
 
 import java.util.*;
 

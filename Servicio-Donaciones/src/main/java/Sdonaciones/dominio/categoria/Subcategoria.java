@@ -1,4 +1,4 @@
-package org.example.dominio.categoria;
+package Sdonaciones.dominio.categoria;
 
 /**
  * La Subcategoria es la unidad mínima de asignación dentro del sistema.

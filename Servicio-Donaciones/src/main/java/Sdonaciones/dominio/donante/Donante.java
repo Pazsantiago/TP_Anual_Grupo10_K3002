@@ -1,4 +1,6 @@
-package Sdonaciones.dominio.donador;
+package Sdonaciones.dominio.donante;
+
+import java.util.List;
 
 public abstract class Donante{
     private String tipoDoc;
@@ -6,6 +8,8 @@ public abstract class Donante{
     private String nombre;
     private String correoElectronico;
     private String telefono;
+    private List<MedioContacto> contactos;
+
 
 
     public Donante(String tipoDoc, String documento, String nombre, String correoElectronico, String telefono) {
@@ -54,5 +58,13 @@ public abstract class Donante{
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public List<MedioContacto> getContactos() {
+        return contactos;
+    }
+
+    public void setContactos(List<MedioContacto> contactos) {
+        this.contactos = contactos;
     }
 }

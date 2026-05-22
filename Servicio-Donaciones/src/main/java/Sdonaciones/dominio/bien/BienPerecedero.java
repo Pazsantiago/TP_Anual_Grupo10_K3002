@@ -1,6 +1,6 @@
-package ar.edu.utn.donatrack.dominio.bien;
+package Sdonaciones.dominio.bien;
 
-import ar.edu.utn.donatrack.dominio.categoria.Subcategoria;
+import Sdonaciones.dominio.categoria.Subcategoria;
 
 import java.net.URL;
 import java.time.LocalDate;

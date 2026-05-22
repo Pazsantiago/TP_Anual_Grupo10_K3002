@@ -1,31 +1,33 @@
-package ar.edu.utn.donatrack.repositorios;
+package Sdonaciones.repositorios;
 
-import ar.edu.utn.donatrack.dominio.donador.Donador;
+import Sdonaciones.dominio.donante.Donante;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class RepositorioDonadores  {
 
-    private final Map<String, Donador> donadores = new ConcurrentHashMap<>();
+    private final List<Donante> donadores = new ArrayList<>();
 
 
-    public void guardar(Donador donador) {
-        donadores.put(donador.getCorreoElectronico().toLowerCase(), donador);
+    public void guardar(Donante donante) {
+        if (existePorCorreo(donante.getCorreoElectronico())) {
+            throw new IllegalStateException(
+                    "Ya existe un donador con el correo: " + donante.getCorreoElectronico());
+        }
+        donadores.add(donante);
     }
 
 
-    public Optional<Donador> buscarPorCorreo(String correo) {
-        return Optional.ofNullable(donadores.get(correo.toLowerCase()));
+    public Optional<Donante> buscarPorCorreo(String correo) {
+        return donadores.stream().filter(d -> Objects.equals(d.getCorreoElectronico(), correo)).findFirst();
     }
 
 
-    public List<Donador> listarTodos() {
-        return List.copyOf(donadores.values());
+    public List<Donante> getDonadores() {
+        return donadores;
     }
 
-
-    public boolean existePorCorreo(String correo) {
-        return donadores.containsKey(correo.toLowerCase());
+    public boolean existePorCorreo(String correoElectronico) {
+        return donadores.stream().anyMatch(donante -> Objects.equals(donante.getCorreoElectronico(), correoElectronico));
     }
 }

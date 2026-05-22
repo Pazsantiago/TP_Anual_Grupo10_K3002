@@ -1,34 +1,22 @@
-package ar.edu.utn.donatrack.repositorios;
+package Sdonaciones.repositorios;
 
-import ar.edu.utn.donatrack.dominio.donacion.Donacion;
-import ar.edu.utn.donatrack.dominio.donacion.EstadoDonacion;
+import Sdonaciones.dominio.donacion.Donacion;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class RepositorioDonaciones {
 
-    private final Map<String, Donacion> donaciones = new ConcurrentHashMap<>();
-
+    private final  List<Donacion>  donaciones = new ArrayList<>();
 
     public void guardar(Donacion donacion) {
-        donaciones.put(donacion.getId(), donacion);
+        donaciones.add(donacion);
     }
 
-
-    public Optional<Donacion> buscarPorId(String id) {
-        return Optional.ofNullable(donaciones.get(id));
+    public Optional<Donacion> buscarPorId(int id) {
+        return donaciones.stream().filter(donacion -> donacion.getId()==id).findFirst();
     }
 
-
-    public List<DonacionSegmentada> listarSegmentadasPorEstado(EstadoDonacion estado) {
-        return donaciones.values().stream()
-                .flatMap(d -> d.getDonacionesSegmentadas().stream())
-                .filter(ds -> ds.getEstado() == estado)
-                .toList();
-    }
-
-    public List<Donacion> listarTodas() {
-        return List.copyOf(donaciones.values());
+    public List<Donacion> getDonaciones() {
+        return donaciones;
     }
 }

@@ -1,4 +1,4 @@
-package Sdonaciones.Notificacion;
+package Snotificaciones.Notificacion;
 
 /**
  * Primera iteración del Servicio de Notificaciones.

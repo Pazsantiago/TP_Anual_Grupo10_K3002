@@ -1,23 +1,21 @@
-package ar.edu.utn.donatrack.dominio.necesidad;
+package Sdonaciones.dominio.necesidad;
 
-import ar.edu.utn.donatrack.dominio.categoria.Subcategoria;
+import Sdonaciones.dominio.categoria.Subcategoria;
 
-/**
- * Necesidad extraordinaria: situación excepcional (inundación, incendio, mudanza).
- * Se satisface cuando la cantidad recibida >= cantidad objetivo.
- * Admite satisfacción parcial: múltiples donaciones pueden cubrir la necesidad.
- * Ejemplo: escuela rural necesita 30 sillas tras una inundación.
- */
+
 public class NecesidadExtraordinaria extends Necesidad {
 
-    public NecesidadExtraordinaria(Subcategoria subcategoria,
-                                   String descripcion,
-                                   int cantidadObjetivo) {
-        super(subcategoria, descripcion, cantidadObjetivo);
+    public NecesidadExtraordinaria(
+            String descripcion,
+            Subcategoria subcategoria,
+            int cantidadObjetivo
+    ) {
+        super(descripcion, subcategoria, cantidadObjetivo);
     }
 
     @Override
     public boolean estaSatisfecha() {
+
         return getCantidadRecibida() >= getCantidadObjetivo();
     }
 }

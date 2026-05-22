@@ -1,17 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>org.example</groupId>
+    <!--  FIX 1: heredar del POM raiz para tener acceso a dependencyManagement  -->
+    <parent>
+        <groupId>Sdonaciones</groupId>
+        <artifactId>TP_Anual_Grupo10_K3002</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <artifactId>Servicio-Donaciones</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <properties>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-    
+    <dependencies>
+        <!--  FIX 2: declarar Servicio-Notificaciones como dependencia  -->
+        <dependency>
+            <groupId>Snotificaciones</groupId>
+            <artifactId>Servicio-Notificaciones</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--  opencsv: la version viene del dependencyManagement del padre  -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

@@ -1,4 +1,4 @@
-package ar.edu.utn.donatrack.dominio.bien;
+package Sdonaciones.dominio.bien;
 
 public enum Estado {
     NUEVO,

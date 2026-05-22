@@ -1,4 +1,4 @@
-package Sdonaciones.dominio.donador;
+package Sdonaciones.dominio.donante;
 
 public enum TipoEmpresa {
     GUBERNAMENTAL,

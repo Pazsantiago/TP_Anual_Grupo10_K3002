@@ -1,6 +1,6 @@
-package org.example.dominio.bien;
+package Sdonaciones.dominio.bien;
 
-import org.example.dominio.categoria.*;
+import Sdonaciones.dominio.categoria.*;
 
 import java.net.URL;
 
@@ -13,8 +13,8 @@ public class Bien {
 
     private final String descripcion;
     private final Subcategoria subcategoria;
-    private final URL foto;           // opcional
-    private final Estado estado;      // aplica para mobiliario, vestimenta, etc.
+    private final URL foto;
+    private final Estado estado;
     private final int cantidad;
 
     public Bien(String descripcion, Subcategoria subcategoria,
@@ -47,4 +47,8 @@ public class Bien {
     public URL getFoto() { return foto; }
     public Estado getEstado() { return estado; }
     public int getCantidad() { return cantidad; }
+    @Override
+    public String toString(){
+        return subcategoria.getNombre() + " x "+cantidad+ subcategoria.getUnidad();
+    }
 }

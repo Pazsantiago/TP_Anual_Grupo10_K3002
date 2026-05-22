@@ -1,4 +1,4 @@
-package Sdonaciones.dominio;
+package Snotificaciones.dominio;
 
 import java.time.LocalDateTime;
 
@@ -28,6 +28,6 @@ public class Notificacion {
 
     @Override
     public String toString() {
-        return "[" + tipo + "] → " + destinatario + " | " + asunto;
+        return "[" + tipo + "] → " + destinatario + " | " + asunto + "\n"+cuerpo;
     }
 }

@@ -1,6 +1,6 @@
-package Sdonaciones.Notificacion;
+package Snotificaciones.Notificacion;
 
-import Sdonaciones.dominio.*;
+import Snotificaciones.dominio.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,4 +53,5 @@ public class ServicioNotificacionesConsola implements ServicioNotificaciones {
     public List<Notificacion> getHistorial() {
         return List.copyOf(historial);
     }
+
 }
