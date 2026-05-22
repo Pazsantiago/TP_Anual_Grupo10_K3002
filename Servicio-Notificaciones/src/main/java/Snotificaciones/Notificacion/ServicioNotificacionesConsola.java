@@ -1,6 +1,6 @@
-package Sdonaciones.Importador;
+package Sdonaciones.Notificacion;
 
-import ar.edu.utn.donatrack.notificaciones.dominio.Notificacion;
+import Sdonaciones.dominio.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class ServicioNotificacionesConsola implements ServicioNotificaciones {
         enviar(new Notificacion(correo,
             "¡Bienvenido/a a DonaTrack!",
             "Hola " + nombre + ", tu cuenta fue creada exitosamente.",
-            Notificacion.Tipo.BIENVENIDA));
+            TipoNoti.BIENVENIDA));
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ServicioNotificacionesConsola implements ServicioNotificaciones {
         enviar(new Notificacion(correo,
             "Tus credenciales de acceso a DonaTrack",
             "Tu cuenta fue migrada. Accedé con tu correo: " + correo,
-            Notificacion.Tipo.CREDENCIALES_ACCESO));
+                TipoNoti.CREDENCIALES_ACCESO));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ServicioNotificacionesConsola implements ServicioNotificaciones {
         enviar(new Notificacion(correo,
             "Tu donación fue asignada",
             "Tu donación de '" + subcategoria + "' fue asignada a una entidad beneficiaria.",
-            Notificacion.Tipo.DONACION_ASIGNADA));
+                TipoNoti.DONACION_ASIGNADA));
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ServicioNotificacionesConsola implements ServicioNotificaciones {
         enviar(new Notificacion(correo,
             "Tu donación fue entregada",
             "La donación de '" + subcategoria + "' llegó a destino. ¡Gracias por tu aporte!",
-            Notificacion.Tipo.DONACION_ENTREGADA));
+                TipoNoti.DONACION_ENTREGADA));
     }
 
     private void enviar(Notificacion n) {

@@ -1,4 +1,4 @@
-package Sdonaciones.Importador;
+package Sdonaciones.Notificacion;
 
 /**
  * Primera iteración del Servicio de Notificaciones.
