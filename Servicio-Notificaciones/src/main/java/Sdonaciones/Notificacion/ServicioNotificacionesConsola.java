@@ -1,4 +1,4 @@
-package Sdonaciones.servicios;
+package Sdonaciones.Importador;
 
 import ar.edu.utn.donatrack.notificaciones.dominio.Notificacion;
 
