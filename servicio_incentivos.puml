@@ -1,0 +1,174 @@
+@startuml ServicioIncentivos
+
+title Servicio de Incentivos - DonaTrack (Entrega 2)
+
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor White
+    BorderColor #333333
+    ArrowColor #333333
+    HeaderBackgroundColor #5B6ABF
+    HeaderFontColor White
+    CardFontSize 30
+}
+skinparam package {
+    BackgroundColor #F0F2FF
+    BorderColor #5B6ABF
+}
+skinparam package<<IA>> {
+    BackgroundColor #1a5c00
+    BorderColor #5B6ABF
+}
+
+    class ProgresoMision {
+        - mision: Mision
+        - progresoActual: double
+        - fechaInicio: LocalDate
+        - fechaCompletado: LocalDate
+        - completada: boolean
+        + actualizar(delta: double): void
+        + reiniciar(): void
+        + marcarCompletada(): void
+    }
+
+    abstract Class CategoriaDonante {
+        -SiGuIeNteCaTeGoRiA
+        -Misiones:List[misiones]
+    }
+    class COLABORADOR{
+        -Final listaMisiones:List[]
+    }
+    class SOSTENEDOR{
+        -Final listaMisiones:List[]
+    }
+    class TRANSFORMADOR{
+        -Final listaMisiones:List[]
+    }
+    CategoriaDonante <|-- COLABORADOR
+    CategoriaDonante <|-- TRANSFORMADOR
+    CategoriaDonante <|-- SOSTENEDOR
+package "Misiones" {
+
+    abstract class Mision {
+        - id: Long
+        - nombre: String
+        - descripcion: String
+        - categoria: CategoriaDonante
+        - orden: int
+        - insignia: Insignia
+        - ganadores: List<PerfileDonantes>
+        + estaCompletada(progreso: ProgresoMision): boolean
+        + calcularProgreso(eventos: List<EventoDonacion>): double
+        + getObjetivo(): String
+    }
+
+    class MisionRacha {
+        - mesesConsecutivosRequeridos: int
+        + estaCompletada(progreso: ProgresoMision): boolean
+        + calcularProgreso(eventos: List<EventoDonacion>): double
+        ' Pierde progreso si pasa un mes sin donaciones
+    }
+
+    class MisionCompletitud {
+        - categoriasDistintasRequeridas: int
+        + estaCompletada(progreso: ProgresoMision): boolean
+        + calcularProgreso(eventos: List<EventoDonacion>): double
+    }
+
+    class MisionHabilDonador {
+        - cantidadBienesRequerida: int
+        + estaCompletada(progreso: ProgresoMision): boolean
+        + calcularProgreso(eventos: List<EventoDonacion>): double
+    }
+
+    class MisionDonacionesExitosas {
+        - donacionesExitosasRequeridas: int
+        + estaCompletada(progreso: ProgresoMision): boolean
+        + calcularProgreso(eventos: List<EventoDonacion>): double
+    }
+
+    class Insignia {
+        - id: Long
+        - nombre: String
+        - descripcion: String
+        - imagenUrl: String
+        - esVisible: boolean
+        + toggleVisibilidad(): void
+    }
+}
+
+' ─────────────────────────────────────────
+' PACKAGE: Analítica
+' ─────────────────────────────────────────
+enum TipoCategoria{
+    COLABORADOR
+    SOSTENEDOR
+    TRANSFORMADOR
+}
+PerfilDonante->TipoCategoria
+class PerfilDonante {
+        - donanteId: Long
+        - categoria: CategoriaDonante
+        - misionActual: ProgresoMision
+        - insignias: List<Insignia>
+        - historialMisiones: List<ProgresoMision>
+        + totalDonacionesHistoricas(): int
+        + totalOrganizacionesAyudadas(): int
+        + getCategoria(): CategoriaDonante
+        + getMisionActual(): Mision
+        + getPorcentajeProgreso(): double
+        + subirCategoria(): void
+    }
+package "Servicio Incentivos "{
+
+    class ServicioIncentivos {
+        + procesarNuevaDonacion(evento: EventoDonacion): void
+        + procesarDonacionEntregada(evento: EventoDonacion): void
+        + getMisionActual(donanteId: Long): ProgresoMision
+        + getInsignias(donanteId: Long): List<Insignia>
+        + generearRankings()
+    }
+}
+class Ranking{
+    -posicionesHistoricas:List[int]
+}
+' ─────────────────────────────────────────
+' PACKAGE: Repositorios Incentivos
+' ─────────────────────────────────────────
+package "Repositorios" {
+    interface RepoPerfilDonante {
+        + buscarPorCategoria(cat: CategoriaDonante): List<PerfilDonante>
+        + buscarPorId(id: Long): PerfilDonante
+        + listarTodas(): List<PerfilDonante>
+    }
+}
+
+' ─────────────────────────────────────────
+' RELACIONES
+' ─────────────────────────────────────────
+
+MisionRacha           --|> Mision
+MisionCompletitud     --|> Mision
+MisionHabilDonador    --|> Mision
+MisionDonacionesExitosas --|> Mision
+
+Mision "1" --> "1" Insignia
+PerfilDonante "1" --> "1" CategoriaDonante
+
+PerfilDonante "1" *-- "0..*" ProgresoMision
+PerfilDonante "1" *-- "0..*" Insignia
+PerfilDonante "1" --> "0..1" Mision : misionActual
+
+ProgresoMision  --> "1" Mision
+
+Ranking "1" *-- "1..*" PerfilDonante
+ServicioIncentivos..>RepoPerfilDonante
+ServicioIncentivos..>CategoriaDonante
+
+
+
+Donante  ..> PerfilDonante
+RepoPerfilDonante  ..> PerfilDonante
+
+@enduml

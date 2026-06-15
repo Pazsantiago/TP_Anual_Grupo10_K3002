@@ -1,0 +1,344 @@
+@startuml ServicioDonaciones
+
+title Servicio de Donaciones - DonaTrack (Entrega 2)
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor White
+    BorderColor #333333
+    ArrowColor #333333
+    HeaderBackgroundColor #D9534F
+    HeaderFontColor White
+}
+skinparam package {
+    BackgroundColor #FFF5F5
+    BorderColor #e43b36
+}
+
+' ─────────────────────────────────────────
+' PACKAGE: Personas Donantes
+' ─────────────────────────────────────────
+class SubcategoriaFactory{
+    ...
+    } 
+SubcategoriaFactory --> Subcategoria
+package "Personas Donantes" {
+    class Importador{}
+    abstract class Perfil{}
+    abstract class Donante {
+        - id: Long
+        - mediosDeContacto: List<MedioContacto>
+        - medioContactoPredeterminado: MedioContacto
+        + agregarMedioContacto(medio: MedioContacto): void
+        + getMedioContactoPredeterminado(): MedioContacto
+    }
+
+    class PersonaHumana {
+        - nombre: String
+        - apellido: String
+        - edad: int
+        - nroDocumento: String
+        - tipoDocumento: TipoDocumento
+        - genero: Genero
+        - direccion: Direccion
+    }
+
+    class PersonaJuridica {
+        - razonSocial: String
+        - tipo: TipoPersonaJuridica
+        - rubro: String
+        - representantes: List<PersonaRepresentante>
+        + agregarRepresentante(rep: PersonaRepresentante): void
+    }
+
+    class PersonaRepresentante {
+        - nombre: String
+        - apellido: String
+        - nroDocumento: String
+        - tipoDocumento: TipoDocumento
+    }
+
+    class MedioContacto {
+        - tipo: TipoMedioContacto
+        - valor: String
+    }
+
+    class Direccion {
+        - calle: String
+        - numero: String
+        - ciudad: String
+        - provincia: String
+        - codigoPostal: String
+    }
+
+    enum TipoDocumento {
+        DNI
+        CUIT
+        PASAPORTE
+    }
+
+    enum Genero {
+        MASCULINO
+        FEMENINO
+        NO_BINARIO
+        PREFIERO_NO_DECIR
+    }
+
+    enum TipoPersonaJuridica {
+        GUBERNAMENTAL
+        ONG
+        EMPRESA
+        INSTITUCION
+    }
+
+    enum TipoMedioContacto {
+        EMAIL
+        TELEFONO
+        WHATSAPP
+    }
+}
+
+' ─────────────────────────────────────────
+' PACKAGE: Donaciones
+' ─────────────────────────────────────────
+package "Donaciones" {
+
+    class Donacion {
+        - id: Long
+        - descripcionGeneral: String
+        - fechaRegistro: LocalDate
+        - estadoActual: EstadoDonacion
+        - historialEstados: List<CambioEstado>
+        + registrar(): void
+        + asignarEntidad(entidad: EntidadBeneficiaria): void
+        + cambiarEstado(nuevoEstado: EstadoDonacion, justificacion: String): void
+        + getEstadoActual(): EstadoDonacion
+        + getBienes(): List<Bien>
+    }
+    class DonacionSegmentada {
+       bien
+    }
+    enum CambioEstado {
+        - estado: EstadoDonacion
+        - fechaHora: LocalDateTime
+        - informacion/justificacion: String
+        - responsable: String
+    }
+
+    class Bien {
+        - id: Long
+        - descripcion: String
+        - foto: String
+        - cantidad: double
+        - unidad: UnidadMedida
+        - subcategoria: Subcategoria
+    }
+
+    class BienConEstado {
+        - esNuevo: boolean
+    }
+
+    class BienPerecible {
+        - fechaVencimiento: LocalDate
+    }
+
+    class Categoria {
+        - id: Long
+        - nombre: String
+        - requiereEstado: boolean
+        - subcategorias: List<Subcategoria>
+        + agregarSubcategoria(sub: Subcategoria): void
+    }
+
+    class Subcategoria {
+        - id: Long
+        - nombre: String
+        - esPerecible: boolean
+    }
+
+    enum EstadoDonacion {
+        EN_DEPOSITO
+        ASIGNACION_REALIZADA
+        LISTA_PARA_ENTREGAR
+        EN_TRASLADO
+        ENTREGADA
+        ENTREGA_FALLIDA
+        VENCIDA
+    }
+
+    enum UnidadMedida {
+        KILOGRAMOS
+        UNIDADES
+        LITROS
+        CAJAS
+    }
+}
+
+' ─────────────────────────────────────────
+' PACKAGE: Entidades Beneficiarias
+' ─────────────────────────────────────────
+    CambioEstado <-- DonacionSegmentada
+    Bien <-- DonacionSegmentada
+    DonacionSegmentada <-- Donacion
+    DonacionSegmentada <-- donacionRegistrada
+class donacionRegistrada{
+        donacion
+        necesidadResuelta
+        fechaHora
+    }
+package "Entidades Beneficiarias" {
+    
+    class EntidadBeneficiaria {
+        - id: Long
+        - razonSocial: String
+        - direccion: Direccion
+        - telefono: String
+        - emailsRepresentantes: List<String>
+        - necesidades: List<Necesidad>
+        + registrarNecesidad(necesidad: Necesidad): void
+        + getNecesidadesPendientes(): List<Necesidad>
+    }
+
+    abstract class Necesidad {
+        - id: Long
+        - descripcion: String
+        - subcategoria: Subcategoria
+        - estaActiva: boolean
+        + estaSatisfecha(): boolean
+        + recibirDonacion(cantidad: double): void
+        - unidad: UnidadMedida
+    }
+
+    class NecesidadExtraordinaria {
+        - cantidadRequerida: double
+        - cantidadRecibida: double
+        + estaSatisfecha(): boolean
+        + recibirDonacion(cantidad: double): void
+    }
+
+    class NecesidadRecurrente {
+        - cantidadObjetivoPorPeriodo: double
+        - unidad: UnidadMedida
+        + estaSatisfecha(): boolean
+        + recibirDonacion(cantidad: double): void
+        + reiniciarPeriodo(): void
+    }
+    class Periodo{
+        - periodoDias: int
+        - inicioperiodo: LocalDate
+    }
+        
+}
+
+' ─────────────────────────────────────────
+' PACKAGE: Asignación
+' ─────────────────────────────────────────
+package "Asignación" {
+
+    interface AlgoritmoAsignacion {
+        + rankear(donacion: Donacion, entidades: List<EntidadBeneficiaria>): List<donacionRegistrada>
+    }
+
+    class AlgoritmoCompatibilidadSemantica {
+        + rankear(donacion: Donacion, entidades: List<EntidadBeneficiaria>): List<donacionRegistrada>
+    }
+
+    class AlgoritmoPrioridadSubAtendidos {
+        - trimestres: int
+        + rankear(donacion: Donacion, entidades: List<EntidadBeneficiaria>): List<donacionRegistrada>
+    }
+
+    class Ranking {
+        - entidad: EntidadBeneficiaria
+        - puntaje: double
+        - posicion: int
+    }
+
+    class ServicioAsignacion {
+        - algoritmos: List<AlgoritmoAsignacion>
+        + mostrarInformacion(donacion: Donacion): List<Ranking>
+    }
+}
+
+' ─────────────────────────────────────────
+' PACKAGE: Repositorios
+' ─────────────────────────────────────────
+package "Repositorios" {
+
+    interface RepoDonantes {
+        + guardar(donante: Donante): void
+        + buscarPorId(id: Long): Donante
+        + buscarPorEmail(email: String): Donante
+        + listarTodos(): List<Donante>
+        + actualizar(donante: Donante): void
+        + eliminar(id: Long): void
+    }
+
+    interface RepoDonaciones {
+        + guardar(donacion: Donacion): void
+        + buscarPorId(id: Long): Donacion
+        + buscarPorEstado(estado: EstadoDonacion): List<Donacion>
+        + buscarPorDonante(donanteId: Long): List<Donacion>
+        + listarTodas(): List<Donacion>
+        + actualizar(donacion: Donacion): void
+    }
+
+    interface RepoEntidades {
+        + guardar(entidad: EntidadBeneficiaria): void
+        + buscarPorId(id: Long): EntidadBeneficiaria
+        + listarTodas(): List<EntidadBeneficiaria>
+        + actualizar(entidad: EntidadBeneficiaria): void
+        + eliminar(id: Long): void
+    }
+}
+
+' ─────────────────────────────────────────
+' RELACIONES
+' ─────────────────────────────────────────
+
+PersonaHumana  --|>  Donante
+Perfil <--  Donante
+PersonaJuridica --|> Donante
+
+Donante "1" *-- "1..*" MedioContacto
+PersonaHumana  "1" *-- "1"    Direccion
+PersonaJuridica "1" *-- "1..*" PersonaRepresentante
+
+Importador-->Donante
+'Donacion "1" *-- "1..*" Bien
+''Donacion "1" *-- "1..*" CambioEstado
+Donacion  --> "1" Donante         : donante
+Donacion  --> "0..1" EntidadBeneficiaria : asignadaA
+
+' Donacion  <-- donacionRegistrada : asignadaA
+Necesidad  <-- donacionRegistrada
+
+enum Estado {
+    NUEVO
+    USADO
+}
+EstadoDonacion --> CambioEstado
+BienConEstado --|> Bien
+BienConEstado --> Estado
+BienPerecible  --|> Bien
+
+Bien  --> "1" Subcategoria
+Categoria "1" *-- "1..*" Subcategoria
+
+EntidadBeneficiaria "1" *-- "0..*" Necesidad
+NecesidadExtraordinaria --|> Necesidad
+NecesidadRecurrente     --|> Necesidad
+NecesidadRecurrente     --> Periodo
+Necesidad "many" --> "1" Subcategoria
+
+AlgoritmoCompatibilidadSemantica  ..|> AlgoritmoAsignacion
+AlgoritmoPrioridadSubAtendidos    ..|> AlgoritmoAsignacion
+ServicioAsignacion "1" *-- "1..*" AlgoritmoAsignacion
+ServicioAsignacion ..> Repositorios
+'donacionRegistrada --> EntidadBeneficiaria
+
+RepoDonantes  ..>  Donante
+RepoDonaciones ..> Donacion
+RepoEntidades  ..> EntidadBeneficiaria
+
+@enduml

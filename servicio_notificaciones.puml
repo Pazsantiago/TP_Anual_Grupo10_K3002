@@ -1,0 +1,101 @@
+@startuml ServicioNotificaciones
+
+title Servicio de Notificaciones - DonaTrack (Entrega 2)
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor White
+    BorderColor #333333
+    ArrowColor #333333
+    HeaderBackgroundColor #2E8B57
+    HeaderFontColor White
+}
+skinparam package {
+    BackgroundColor #F0FFF4
+    BorderColor #2E8B57
+}
+skinparam package<<IA EXTRA>> {
+    BackgroundColor LightYellow
+    BorderColor Orange
+    BorderThickness 2
+}
+package Notificacion{
+    class SolicitudNotificacion {
+        - id: Long
+        - destinatarioId: Long
+        - mensaje: String
+        - medio: MedioNotificacion
+        - estado: EstadoNotificacion
+        - fechaSolicitud: LocalDateTime
+        - fechaEnvio: LocalDateTime
+        + marcarEnviada(): void
+        + marcarFallida(motivo: String): void
+    }
+
+    enum MedioNotificacion {
+        EMAIL
+        SMS
+        WHATSAPP
+    }
+
+    enum EstadoNotificacion {
+        PENDIENTE
+        ENVIADA
+        FALLIDA
+    }
+}
+package Notificadores{
+ interface Notificador {
+        + enviar(solicitud: SolicitudNotificacion): boolean
+        + getMedioSoportado(): MedioNotificacion
+    }
+
+    class NotificadorEmail {
+        + enviar(solicitud: SolicitudNotificacion): boolean
+        + getMedioSoportado(): MedioNotificacion
+        ' Simula llamada a servicio externo (SMTP/SendGrid)
+    }
+
+    class NotificadorSMS {
+        + enviar(solicitud: SolicitudNotificacion): boolean
+        + getMedioSoportado(): MedioNotificacion
+        ' Simula llamada a servicio externo (Twilio)
+    }
+
+    class NotificadorWhatsApp {
+        + enviar(solicitud: SolicitudNotificacion): boolean
+        + getMedioSoportado(): MedioNotificacion
+        ' Simula llamada a servicio externo (WhatsApp API)
+    }
+    }
+class ServicioNotificaciones {
+        - notificadores: Map<MedioNotificacion, Notificador>
+        + enviarNotificacion(solicitud: SolicitudNotificacion): void
+        + procesarEvento(evento: EventoNotificable): void
+        - resolverMedioPreferido(destinatarioId: Long): MedioNotificacion
+    }
+    
+package "Repositorio" {
+
+    interface RepoNotificaciones {
+        + guardar(solicitud: SolicitudNotificacion): void
+        + buscarPorDestinatario(id: Long): List<SolicitudNotificacion>
+        + buscarPendientes(): List<SolicitudNotificacion>
+        + actualizar(solicitud: SolicitudNotificacion): void
+    }
+}
+
+' ─────────────────────────────────────────
+' RELACIONES
+' ─────────────────────────────────────────
+
+NotificadorEmail    ..|> Notificador
+NotificadorSMS      ..|> Notificador
+NotificadorWhatsApp ..|> Notificador
+
+ServicioNotificaciones "1" *-- "1..*" Notificador
+ServicioNotificaciones ..> SolicitudNotificacion
+
+RepoNotificaciones ..> SolicitudNotificacion
+
+@enduml
