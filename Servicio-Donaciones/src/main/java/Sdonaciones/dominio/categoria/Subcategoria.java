@@ -26,6 +26,7 @@ public class Subcategoria {
         this.cantidadMinima = cantidadMinima;
         this.unidad = unidad;
         this.categoria = categoria;
+        categoria.addSubcategoria(this);
     }
 
     public String getNombre() { return nombre; }

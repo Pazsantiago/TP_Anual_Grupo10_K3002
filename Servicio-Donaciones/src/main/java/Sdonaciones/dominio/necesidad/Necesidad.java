@@ -2,12 +2,17 @@ package Sdonaciones.dominio.necesidad;
 
 import Sdonaciones.dominio.categoria.Subcategoria;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 public abstract class Necesidad {
 
     private String descripcion;
     private Subcategoria subcategoria;
     private int cantidadObjetivo;
     private int cantidadRecibida;
+
+    public abstract LocalDate getSatisfechaEn();
 
     public Necesidad(
             String descripcion,

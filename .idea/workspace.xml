@@ -5,12 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="823a78cc-7332-4fd2-b0bf-4b0daf1cee6b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/IAlgoritmoAsignacion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/categoria/TipoCategoria.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donacion/CambioEstado.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donacion/DonacionSegmentada.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donacion/EstadoDonacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/ServicioAsignacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/ServicioAsignacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/AlgoritmoCompatibilidadSemantica.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/AlgoritmoCompatibilidadSemantica.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/AlgoritmoPrioridadSubAtendidos.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/AlgoritmoPrioridadSubAtendidos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/IAlgoritmoAsignacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/IAlgoritmoAsignacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/categoria/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/categoria/Categoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/categoria/Subcategoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/categoria/Subcategoria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/entidad/EntidadBeneficiaria.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/entidad/EntidadBeneficiaria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/necesidad/Necesidad.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/necesidad/Necesidad.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+        <option value="Enum" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -23,24 +44,26 @@
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="3FEUy153BqBHTutvjCiwq3J2ptJ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "gonzalo__rama",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;gonzalo__rama&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="823a78cc-7332-4fd2-b0bf-4b0daf1cee6b" name="Changes" comment="" />

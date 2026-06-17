@@ -12,6 +12,13 @@ public class EntidadBeneficiaria {
     private String direccion;
     private List<Necesidad> necesidades;
 
+    public List<Necesidad> getNecesidadesHistoricas() {
+        return necesidadesHistoricas;
+    }
+
+    private List<Necesidad> necesidadesHistoricas;
+
+
     public EntidadBeneficiaria(
             String razonSocial,
             String telefono,
@@ -24,6 +31,7 @@ public class EntidadBeneficiaria {
         this.direccion = direccion;
 
         this.necesidades = new ArrayList<>();
+        this.necesidadesHistoricas = new ArrayList<>();
     }
 
     public void agregarNecesidad(Necesidad necesidad) { necesidades.add(necesidad); }

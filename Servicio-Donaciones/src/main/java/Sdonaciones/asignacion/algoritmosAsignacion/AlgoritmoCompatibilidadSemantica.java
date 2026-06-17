@@ -1,4 +1,16 @@
 package Sdonaciones.asignacion.algoritmosAsignacion;
 
-public class AlgoritmoCompatibilidadSemantica {
+import Sdonaciones.dominio.donacion.DonacionSegmentada;
+import Sdonaciones.dominio.entidad.EntidadBeneficiaria;
+
+import java.util.List;
+
+public class AlgoritmoCompatibilidadSemantica implements IAlgoritmoAsignacion{
+    @Override
+    public List<Ranking> rankEntidad(List<EntidadBeneficiaria> entidades, DonacionSegmentada donacion) {
+        List<EntidadBeneficiaria> entidadesRankeadas = entidades.stream().filter(e->e.getNecesidades().stream().map(n->n.getSubcategoria().getCategoria()).anyMatch(c-> c==donacion.getSubcategoria().getCategoria())).limit(10).toList() ;
+        List<Ranking> rankings = entidadesRankeadas.stream().map(e-> new Ranking(e,entidadesRankeadas.indexOf(e))).toList();
+        return rankings;
+    }
+
 }
