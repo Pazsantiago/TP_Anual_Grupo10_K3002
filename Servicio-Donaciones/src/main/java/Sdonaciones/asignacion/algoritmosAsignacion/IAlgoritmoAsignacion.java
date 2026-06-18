@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Collections;
 
 public interface IAlgoritmoAsignacion{
-    public List<Ranking> rankEntidad(List<EntidadBeneficiaria> entidades, DonacionSegmentada donacion);
+    public List<Ranking_Entidad_Beneficiaria> rankEntidad(List<EntidadBeneficiaria> entidades, DonacionSegmentada donacion);
 }

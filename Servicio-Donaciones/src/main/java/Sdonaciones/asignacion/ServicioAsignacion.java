@@ -1,7 +1,7 @@
 package Sdonaciones.asignacion;
 
 import Sdonaciones.asignacion.algoritmosAsignacion.IAlgoritmoAsignacion;
-import Sdonaciones.asignacion.algoritmosAsignacion.Ranking;
+import Sdonaciones.asignacion.algoritmosAsignacion.Ranking_Entidad_Beneficiaria;
 import Sdonaciones.dominio.donacion.DonacionSegmentada;
 import Sdonaciones.dominio.entidad.EntidadBeneficiaria;
 import Sdonaciones.repositorios.RepositorioEntidades;
@@ -20,17 +20,17 @@ public class ServicioAsignacion {
         this.repositorioEntidades = repo;
     }
 
-    public List<Ranking> mostrarInformacion(DonacionSegmentada donacion) {
+    public List<Ranking_Entidad_Beneficiaria> mostrarInformacion(DonacionSegmentada donacion) {
         List<EntidadBeneficiaria> entidades = repositorioEntidades.getEntidadBeneficiarias();
 
-        List<List<Ranking>> resultadosPorAlgoritmo = algoritmos.stream()
+        List<List<Ranking_Entidad_Beneficiaria>> resultadosPorAlgoritmo = algoritmos.stream()
                 .map(algoritmo -> algoritmo.rankEntidad(entidades,donacion))
                 .toList();
 
         Set<EntidadBeneficiaria> interseccion = null;
-        for (List<Ranking> resultado : resultadosPorAlgoritmo) {
+        for (List<Ranking_Entidad_Beneficiaria> resultado : resultadosPorAlgoritmo) {
             Set<EntidadBeneficiaria> entidadesDeEsteAlgoritmo = resultado.stream()
-                    .map(Ranking::getEntidad)
+                    .map(Ranking_Entidad_Beneficiaria::getEntidad)
                     .collect(Collectors.toSet());
 
             if (interseccion == null) {
@@ -41,12 +41,12 @@ public class ServicioAsignacion {
         }
 
         Set<EntidadBeneficiaria> finalInterseccion = interseccion;
-        List<Ranking> coincidencias = resultadosPorAlgoritmo.stream()
+        List<Ranking_Entidad_Beneficiaria> coincidencias = resultadosPorAlgoritmo.stream()
                 .flatMap(List::stream)
                 .filter(r -> finalInterseccion.contains(r.getEntidad()))
                 .toList();
 
-        List<Ranking> resultadoFinal = !coincidencias.isEmpty()
+        List<Ranking_Entidad_Beneficiaria> resultadoFinal = !coincidencias.isEmpty()
                 ? coincidencias
                 : resultadosPorAlgoritmo.stream().flatMap(List::stream).toList();
 
