@@ -1,15 +1,15 @@
 
-import Sdonaciones.Importador.Importador;
-import Sdonaciones.dominio.bien.Bien;
-import Sdonaciones.dominio.bien.BienPerecedero;
-import Sdonaciones.dominio.categoria.Subcategoria;
-import Sdonaciones.dominio.categoria.SubcategoriaFactory;
-import Sdonaciones.dominio.donacion.Donacion;
-import Sdonaciones.dominio.donante.Donante;
-import Sdonaciones.dominio.donante.PersonaHumana;
-import Sdonaciones.dominio.entidad.EntidadBeneficiaria;
-import Sdonaciones.repositorios.*;
-import Snotificaciones.Notificacion.*;
+import Servicio_donaciones.Importador.Importador;
+import Servicio_donaciones.dominio.bien.Bien;
+import Servicio_donaciones.dominio.bien.BienPerecedero;
+import Servicio_donaciones.dominio.categoria.Subcategoria;
+import Servicio_donaciones.dominio.categoria.SubcategoriaFactory;
+import Servicio_donaciones.dominio.donacion.Donacion;
+import Servicio_donaciones.dominio.donante.Donante;
+import Servicio_donaciones.dominio.donante.PersonaHumana;
+import Servicio_donaciones.dominio.entidad.EntidadBeneficiaria;
+import Servicio_donaciones.repositorios.*;
+import Servicio_notificaciones.Notificacion.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
