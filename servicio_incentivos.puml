@@ -16,11 +16,7 @@ skinparam package {
     BackgroundColor #F0F2FF
     BorderColor #5B6ABF
 }
-skinparam package<<IA>> {
-    BackgroundColor #1a5c00
-    BorderColor #5B6ABF
-}
-
+package "Perfil"{
     class ProgresoMision {
         - mision: Mision
         - progresoActual: double
@@ -32,82 +28,12 @@ skinparam package<<IA>> {
         + marcarCompletada(): void
     }
 
-    abstract Class CategoriaDonante {
-        -SiGuIeNteCaTeGoRiA
-        -Misiones:List[misiones]
+    class CategoriaDonante {
+        -nombre:String
+        -siguienteCategoria:Categoria
+        -misiones:List[misiones]
     }
-    class COLABORADOR{
-        -Final listaMisiones:List[]
-    }
-    class SOSTENEDOR{
-        -Final listaMisiones:List[]
-    }
-    class TRANSFORMADOR{
-        -Final listaMisiones:List[]
-    }
-    CategoriaDonante <|-- COLABORADOR
-    CategoriaDonante <|-- TRANSFORMADOR
-    CategoriaDonante <|-- SOSTENEDOR
-package "Misiones" {
-
-    abstract class Mision {
-        - id: Long
-        - nombre: String
-        - descripcion: String
-        - categoria: CategoriaDonante
-        - orden: int
-        - insignia: Insignia
-        - ganadores: List<PerfileDonantes>
-        + estaCompletada(progreso: ProgresoMision): boolean
-        + calcularProgreso(eventos: List<EventoDonacion>): double
-        + getObjetivo(): String
-    }
-
-    class MisionRacha {
-        - mesesConsecutivosRequeridos: int
-        + estaCompletada(progreso: ProgresoMision): boolean
-        + calcularProgreso(eventos: List<EventoDonacion>): double
-        ' Pierde progreso si pasa un mes sin donaciones
-    }
-
-    class MisionCompletitud {
-        - categoriasDistintasRequeridas: int
-        + estaCompletada(progreso: ProgresoMision): boolean
-        + calcularProgreso(eventos: List<EventoDonacion>): double
-    }
-
-    class MisionHabilDonador {
-        - cantidadBienesRequerida: int
-        + estaCompletada(progreso: ProgresoMision): boolean
-        + calcularProgreso(eventos: List<EventoDonacion>): double
-    }
-
-    class MisionDonacionesExitosas {
-        - donacionesExitosasRequeridas: int
-        + estaCompletada(progreso: ProgresoMision): boolean
-        + calcularProgreso(eventos: List<EventoDonacion>): double
-    }
-
-    class Insignia {
-        - id: Long
-        - nombre: String
-        - descripcion: String
-        - imagenUrl: String
-        - esVisible: boolean
-        + toggleVisibilidad(): void
-    }
-}
-
-' ─────────────────────────────────────────
-' PACKAGE: Analítica
-' ─────────────────────────────────────────
-enum TipoCategoria{
-    COLABORADOR
-    SOSTENEDOR
-    TRANSFORMADOR
-}
-PerfilDonante->TipoCategoria
-class PerfilDonante {
+    class PerfilDonante {
         - donanteId: Long
         - categoria: CategoriaDonante
         - misionActual: ProgresoMision
@@ -120,22 +46,71 @@ class PerfilDonante {
         + getPorcentajeProgreso(): double
         + subirCategoria(): void
     }
+    class RankingPerfil{
+        -posicionesHistoricas:List[int]
+        +getter/setter()
+    }
+}
+package "Misiones" {
+
+    abstract class Mision {
+        - id: Long
+        - nombre: String
+        - descripcion: String
+        - categoria: CategoriaDonante
+        - orden: int
+        - insignia: Insignia
+        - ganadores: List<PerfileDonantes>
+        + estaCompletada(progreso: ProgresoMision): boolean
+        + calcularProgreso(): double
+        + getObjetivo(): String
+    }
+
+    class MisionRacha {
+        - mesesConsecutivosRequeridos: int
+        + estaCompletada(progreso: ProgresoMision): boolean
+        + calcularProgreso(): double
+    }
+
+    class MisionCompletitud {
+        - categoriasDistintasRequeridas: int
+        + estaCompletada(progreso: ProgresoMision): boolean
+        + calcularProgreso(): double
+    }
+
+    class MisionHabilDonador {
+        - cantidadBienesRequerida: int
+        + estaCompletada(progreso: ProgresoMision): boolean
+        + calcularProgreso(): double
+    }
+
+    class MisionDonacionesExitosas {
+        - donacionesExitosasRequeridas: int
+        + estaCompletada(progreso: ProgresoMision): boolean
+        + calcularProgreso(): double
+    }
+
+    class Insignia {
+        - id: Long
+        - nombre: String
+        - descripcion: String
+        - imagenUrl: String
+        - esVisible: boolean
+        + toggleVisibilidad(): void
+    }
+}
+
 package "Servicio Incentivos "{
 
     class ServicioIncentivos {
-        + procesarNuevaDonacion(evento: EventoDonacion): void
-        + procesarDonacionEntregada(evento: EventoDonacion): void
+        + procesarNuevaDonacion(idDonante): void
+        + procesarDonacionEntregada(idDonante): void
         + getMisionActual(donanteId: Long): ProgresoMision
         + getInsignias(donanteId: Long): List<Insignia>
         + generearRankings()
     }
 }
-class Ranking{
-    -posicionesHistoricas:List[int]
-}
-' ─────────────────────────────────────────
-' PACKAGE: Repositorios Incentivos
-' ─────────────────────────────────────────
+
 package "Repositorios" {
     interface RepoPerfilDonante {
         + buscarPorCategoria(cat: CategoriaDonante): List<PerfilDonante>
@@ -144,31 +119,26 @@ package "Repositorios" {
     }
 }
 
-' ─────────────────────────────────────────
-' RELACIONES
-' ─────────────────────────────────────────
+CategoriaDonante --> "*" Mision
 
 MisionRacha           --|> Mision
 MisionCompletitud     --|> Mision
 MisionHabilDonador    --|> Mision
 MisionDonacionesExitosas --|> Mision
 
-Mision "1" --> "1" Insignia
-PerfilDonante "1" --> "1" CategoriaDonante
+Mision -->  Insignia
+PerfilDonante -->  CategoriaDonante
 
-PerfilDonante "1" *-- "0..*" ProgresoMision
-PerfilDonante "1" *-- "0..*" Insignia
-PerfilDonante "1" --> "0..1" Mision : misionActual
+PerfilDonante --> "*" ProgresoMision
+PerfilDonante --> "*"  Insignia
 
-ProgresoMision  --> "1" Mision
+ProgresoMision  -->  Mision
 
-Ranking "1" *-- "1..*" PerfilDonante
-ServicioIncentivos..>RepoPerfilDonante
-ServicioIncentivos..>CategoriaDonante
+RankingPerfil  <--  PerfilDonante
+ServicioIncentivos-->RepoPerfilDonante
 
 
 
-Donante  ..> PerfilDonante
-RepoPerfilDonante  ..> PerfilDonante
+RepoPerfilDonante  --> PerfilDonante
 
 @enduml
