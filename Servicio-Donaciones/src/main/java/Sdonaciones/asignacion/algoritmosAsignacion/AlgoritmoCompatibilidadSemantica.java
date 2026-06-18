@@ -7,9 +7,9 @@ import java.util.List;
 
 public class AlgoritmoCompatibilidadSemantica implements IAlgoritmoAsignacion{
     @Override
-    public List<Ranking> rankEntidad(List<EntidadBeneficiaria> entidades, DonacionSegmentada donacion) {
+    public List<Ranking_Entidad_Beneficiaria> rankEntidad(List<EntidadBeneficiaria> entidades, DonacionSegmentada donacion) {
         List<EntidadBeneficiaria> entidadesRankeadas = entidades.stream().filter(e->e.getNecesidades().stream().map(n->n.getSubcategoria().getCategoria()).anyMatch(c-> c==donacion.getSubcategoria().getCategoria())).limit(10).toList() ;
-        List<Ranking> rankings = entidadesRankeadas.stream().map(e-> new Ranking(e,entidadesRankeadas.indexOf(e))).toList();
+        List<Ranking_Entidad_Beneficiaria> rankings = entidadesRankeadas.stream().map(e-> new Ranking_Entidad_Beneficiaria(e,entidadesRankeadas.indexOf(e))).toList();
         return rankings;
     }
 

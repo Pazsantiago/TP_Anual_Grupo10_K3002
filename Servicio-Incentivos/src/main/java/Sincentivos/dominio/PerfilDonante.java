@@ -10,6 +10,7 @@ public class PerfilDonante {
     private Mision misionActual;
     private List<Insignia> insignias;
     private List<ProgresoMision> historialMisiones;
+    private RankingPerfil rankingHistoricos;
 
 
     public CategoriaDonante getCategoria() {

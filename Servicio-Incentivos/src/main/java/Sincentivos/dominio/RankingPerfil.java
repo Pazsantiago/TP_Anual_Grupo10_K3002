@@ -2,7 +2,7 @@ package Sincentivos.dominio;
 
 import java.util.List;
 
-public class Ranking {
+public class RankingPerfiles {
     public List<Int> getPosicionesHistoricas() {
         return posicionesHistoricas;
     }
