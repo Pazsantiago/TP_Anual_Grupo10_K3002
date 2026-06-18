@@ -5,19 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="823a78cc-7332-4fd2-b0bf-4b0daf1cee6b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/categoria/TipoCategoria.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donacion/CambioEstado.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donacion/DonacionSegmentada.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donacion/EstadoDonacion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Servicio-Incentivos/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/ServicioAsignacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/ServicioAsignacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/AlgoritmoCompatibilidadSemantica.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/AlgoritmoCompatibilidadSemantica.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/AlgoritmoPrioridadSubAtendidos.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/AlgoritmoPrioridadSubAtendidos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/IAlgoritmoAsignacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/asignacion/algoritmosAsignacion/IAlgoritmoAsignacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/categoria/Categoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/categoria/Categoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/categoria/Subcategoria.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/categoria/Subcategoria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/entidad/EntidadBeneficiaria.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/entidad/EntidadBeneficiaria.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/necesidad/Necesidad.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/necesidad/Necesidad.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,12 +20,13 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="INCOMING_COMMITS_CHECK_STRATEGY" value="FETCH" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="umls" />
@@ -53,17 +46,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;gonzalo__rama&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "gonzalo__rama",
+    "git.auto.fetch.suggestion.counter": "1",
+    "kotlin-language-version-configured": "true",
+    "onboarding.tips.debug.path": "C:/Users/elian/IdeaProjects/TP_Anual_Grupo10_K3002-gonzalo_rama/Servicio-Incentivos/src/main/java/Sdonaciones/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.editor"
   }
-}</component>
+}]]></component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="823a78cc-7332-4fd2-b0bf-4b0daf1cee6b" name="Changes" comment="" />

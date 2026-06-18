@@ -9,6 +9,7 @@
     <modules>
         <module>Servicio-Donaciones</module>
         <module>Servicio-Notificaciones</module>
+        <module>Servicio-Incentivos</module>
     </modules>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
