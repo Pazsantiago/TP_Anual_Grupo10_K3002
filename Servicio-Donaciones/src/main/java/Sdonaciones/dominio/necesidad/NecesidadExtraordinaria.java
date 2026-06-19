@@ -1,4 +1,4 @@
-package Sdonaciones.dominio.necesidad;
+package Sdonaciones.dominio.CNecesidadExtraordinaria;
 
 import Sdonaciones.dominio.categoria.Subcategoria;
 
