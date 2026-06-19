@@ -1,0 +1,224 @@
+{
+  "name": "Ranking",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "months",
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "87bd4829-eec7-4e0c-91c3-e93e99e1b2d3",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/users",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d686c894-7d26-4e62-a47c-f02c03048e9d",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "const usuarios = $input.all().map(i => i.json);\n\n// Simulamos montos aleatorios de donación para cada usuario\nconst ranking = usuarios.map(u => ({\n  userId: u.id,\n  nombre: u.name,\n  email: u.email,\n  total: Math.floor(Math.random() * 10000)\n}));\n\n// Ordenamos de mayor a menor\nranking.sort((a, b) => b.total - a.total);\n\n// Tomamos top 3\nconst top3 = ranking.slice(0, 3).map((u, idx) => ({\n  ...u,\n  rank: idx + 1\n}));\n\nreturn top3.map(u => ({ json: u }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "76803884-aede-4717-b88c-1028f960c9ef",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1rFwJ__IlrOInjk89tqP-f085c6-JXHALGplNQy5nXP8",
+          "mode": "list",
+          "cachedResultName": "Donantes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rFwJ__IlrOInjk89tqP-f085c6-JXHALGplNQy5nXP8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rFwJ__IlrOInjk89tqP-f085c6-JXHALGplNQy5nXP8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ranking": "={{ $json.rank }}",
+            "Nombre ": "={{ $json.nombre }}",
+            "Email": "={{ $json.email }}",
+            "Total": "={{ $json.total }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ranking",
+              "displayName": "Ranking",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nombre ",
+              "displayName": "Nombre ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total",
+              "displayName": "Total",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        624,
+        0
+      ],
+      "id": "2c4b6c52-7914-4575-98e7-9f113edc43ff",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "8dCZMVDx9Ha6Dgfm",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.telegram.org/bot8824817244:AAGzwilw4Ff_iYSxpcuu5LMVu7c0LxudkWs/sendMessage",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "7349572800"
+            },
+            {
+              "name": "text",
+              "value": "=🏆 Top donantes del mes: 1° {{ $json.nombre }} - ${{ $json.total }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        832,
+        0
+      ],
+      "id": "865f1f72-739d-438f-a0c9-a33d75d79fa1",
+      "name": "HTTP Request1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "e796dfd4-4283-4102-81ac-7e47ae92e9a4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "af0f1bee3d4200307e0c8d982ede686d7ca7d759c1d00e70df3f910948175125"
+  },
+  "nodeGroups": [],
+  "id": "8oS8i1MT4lSn0kgg",
+  "tags": []
+}
