@@ -54,6 +54,8 @@ public class PerfilDonante {
 
 
     }
-
+    public ProgresoMision getProgreso(){
+        return historialMisiones.getLast();
+        }
     public long getID() {return donanteID;}
 }

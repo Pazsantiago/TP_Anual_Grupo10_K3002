@@ -1,5 +1,8 @@
 package Servicio_incentivos.dominio.Misiones;
 import Servicio_incentivos.dominio.CategoriasDonante.CategoriaDonante;
+import Servicio_incentivos.dominio.DonacionImportada;
+
+import java.util.List;
 
 public abstract class Mision {
    private long ID;
@@ -9,8 +12,8 @@ public abstract class Mision {
    private int orden;
    private Insignia Insignia;
 
-     public boolean estaCompletada (ProgresoMision progreso){ return progreso.getCompletada();  }
-     public abstract double calcularProgreso (); //placeholder
+    // public boolean estaCompletada (ProgresoMision progreso){ return progreso.getCompletada();  } // VER
+     public abstract double calcularProgreso (List<DonacionImportada> historialProgreso);
      public String getObjetivo (){return descripcion;}
 
     public Insignia getInsignia() { return this.Insignia;}
