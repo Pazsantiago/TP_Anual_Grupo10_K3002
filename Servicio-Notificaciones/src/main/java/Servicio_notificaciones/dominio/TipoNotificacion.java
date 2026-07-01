@@ -1,6 +1,6 @@
 package Servicio_notificaciones.dominio;
 
-public enum TipoNoti {
+public enum TipoNotificacion {
     BIENVENIDA,
     CREDENCIALES_ACCESO,
     DONACION_ASIGNADA,

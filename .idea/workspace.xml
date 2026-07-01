@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="823a78cc-7332-4fd2-b0bf-4b0daf1cee6b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Servicio-Incentivos/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/Notificacion/ServicioNotificacionesConsola.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/Notificacion/ServicioNotificacionesConsola.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/dominio/Notificacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/dominio/Notificacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/dominio/TipoNoti.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/dominio/TipoNotificacion.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +22,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -53,9 +56,10 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "gonzalo__rama",
+    "git-widget-placeholder": "santiR__rama",
     "git.auto.fetch.suggestion.counter": "1",
     "kotlin-language-version-configured": "true",
+    "node.js.selected.package.tslint": "(autodetect)",
     "onboarding.tips.debug.path": "C:/Users/elian/IdeaProjects/TP_Anual_Grupo10_K3002-gonzalo_rama/Servicio-Incentivos/src/main/java/Sdonaciones/Main.java",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",

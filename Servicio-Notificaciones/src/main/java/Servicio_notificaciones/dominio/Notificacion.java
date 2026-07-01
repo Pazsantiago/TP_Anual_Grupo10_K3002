@@ -1,33 +1,74 @@
 package Servicio_notificaciones.dominio;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Notificacion {
 
+    private UUID id;
+    private Destinatario destinatario;
+    private MedioNotificacion medioNotificacion;
+    private String asunto;
+    private String cuerpo;
+    private TipoNotificacion tipoNotificacion;
+    private LocalDateTime fechaEnvio;
+    private EstadoNotificacion estadoNotificacion;
+    private LocalDateTime fechaCreacion;
+    //private String eventoOrigen;
+    // private String referenciaId;
+    private String error;
 
 
-    private final String destinatario;   // correo o teléfono según canal
-    private final String asunto;
-    private final String cuerpo;
-    private final TipoNoti tipo;
-    private final LocalDateTime fechaEnvio;
-
-    public Notificacion(String destinatario, String asunto, String cuerpo, TipoNoti tipo) {
+    public Notificacion(Destinatario destinatario, MedioNotificacion medioNotificacion, String asunto,
+                        String cuerpo) {
         this.destinatario = destinatario;
+        this.medioNotificacion = medioNotificacion;
         this.asunto = asunto;
         this.cuerpo = cuerpo;
-        this.tipo = tipo;
+
+    }
+
+    public Destinatario getDestinatario() { return destinatario; }
+    public String getAsunto() { return asunto; }
+    public String getCuerpo() { return cuerpo; }
+    public TipoNotificacion getTipo() { return tipoNotificacion; }
+    public LocalDateTime getFechaEnvio() { return fechaEnvio; }
+
+    public MedioNotificacion getMedioNotificacion() {
+        return medioNotificacion;
+    }
+
+    public EstadoNotificacion getEstadoNotificacion() {
+        return estadoNotificacion;
+    }
+
+    public TipoNotificacion getTipoNotificacion() {
+        return tipoNotificacion;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void marcarCompletada(){
+        this.estadoNotificacion = EstadoNotificacion.ENVIADA;
         this.fechaEnvio = LocalDateTime.now();
     }
 
-    public String getDestinatario() { return destinatario; }
-    public String getAsunto() { return asunto; }
-    public String getCuerpo() { return cuerpo; }
-    public TipoNoti getTipo() { return tipo; }
-    public LocalDateTime getFechaEnvio() { return fechaEnvio; }
+    public void marcarFallida(String error){
+        this.estadoNotificacion = EstadoNotificacion.FALLIDA;
+        this.error = error;
+    }
+
+    //getters y setters
 
     @Override
     public String toString() {
-        return "[" + tipo + "] → " + destinatario + " | " + asunto + "\n"+cuerpo;
+        return "[" + tipoNotificacion + "] → " + destinatario.getNombre() + " | " + asunto + "\n"+cuerpo;
     }
+
 }

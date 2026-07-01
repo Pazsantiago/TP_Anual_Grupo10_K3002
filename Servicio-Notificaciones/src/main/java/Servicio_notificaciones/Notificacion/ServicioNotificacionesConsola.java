@@ -18,7 +18,7 @@ public class ServicioNotificacionesConsola implements ServicioNotificaciones {
         enviar(new Notificacion(correo,
             "¡Bienvenido/a a DonaTrack!",
             "Hola " + nombre + ", tu cuenta fue creada exitosamente.",
-            TipoNoti.BIENVENIDA));
+            TipoNotificacion.BIENVENIDA));
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ServicioNotificacionesConsola implements ServicioNotificaciones {
         enviar(new Notificacion(correo,
             "Tus credenciales de acceso a DonaTrack",
             "Tu cuenta fue migrada. Accedé con tu correo: " + correo,
-                TipoNoti.CREDENCIALES_ACCESO));
+                TipoNotificacion.CREDENCIALES_ACCESO));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ServicioNotificacionesConsola implements ServicioNotificaciones {
         enviar(new Notificacion(correo,
             "Tu donación fue asignada",
             "Tu donación de '" + subcategoria + "' fue asignada a una entidad beneficiaria.",
-                TipoNoti.DONACION_ASIGNADA));
+                TipoNotificacion.DONACION_ASIGNADA));
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ServicioNotificacionesConsola implements ServicioNotificaciones {
         enviar(new Notificacion(correo,
             "Tu donación fue entregada",
             "La donación de '" + subcategoria + "' llegó a destino. ¡Gracias por tu aporte!",
-                TipoNoti.DONACION_ENTREGADA));
+                TipoNotificacion.DONACION_ENTREGADA));
     }
 
     private void enviar(Notificacion n) {
