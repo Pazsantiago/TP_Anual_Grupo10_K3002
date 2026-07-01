@@ -5,16 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="823a78cc-7332-4fd2-b0bf-4b0daf1cee6b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/DonaTrack.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/cDonaciones/CPersonaHumana.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/cDonaciones/CPersonaJuridica.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/cDonaciones/cBeneficiaria.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/cDonaciones/cDonacion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/cDonaciones/cNecesidadExtraordinaria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/necesidad/NecesidadExtraordinaria.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/necesidad/NecesidadExtraordinaria.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/Importador/Importador.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/Importador/Importador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donante/Donante.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donante/Donante.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donante/MedioContacto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donante/MedioContacto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donante/PersonaHumana.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donante/PersonaHumana.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donante/PersonaJuridica.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donante/PersonaJuridica.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donante/TipoEmpresa.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/dominio/donante/TipoPersonaJuridica.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/repositorios/RepositorioDonantes.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Donaciones/src/main/java/Sdonaciones/repositorios/RepositorioDonantes.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +37,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Pazsantiago"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:Pazsantiago/TP_Anual_Grupo10_K3002.git",
+    "accountId": "63205798-1083-415c-9d10-53a313a074be"
+  }
+}]]></component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
@@ -56,7 +67,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "Rama__Lili",
     "kotlin-language-version-configured": "true"
   }

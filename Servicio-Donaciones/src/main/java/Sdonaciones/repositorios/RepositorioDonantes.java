@@ -1,17 +1,18 @@
-package ar.edu.utn.donatrack.repositorios;
+package Sdonaciones.repositorios;
 
-import ar.edu.utn.donatrack.dominio.donante.Donante;
+
+import Sdonaciones.dominio.donante.Donante;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RepositorioDonantes  {
 
-    private final Map<String, Donante> donante = new ConcurrentHashMap<>();
+    private final Map<String, Donante> donantes = new ConcurrentHashMap<>();
 
 
     public void guardar(Donante donante) {
-        donantes.put(donantes.getCorreoElectronico().toLowerCase(), donante);
+        donantes.put(donante.obtenerContactoPredeterminado().getCorreoElectronico().toLowerCase(), donante);
     }
 
 

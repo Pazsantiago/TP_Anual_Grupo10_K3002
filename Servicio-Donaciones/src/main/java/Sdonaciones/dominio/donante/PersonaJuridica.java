@@ -1,19 +1,19 @@
 package Sdonaciones.dominio.donante;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PersonaJuridica extends Donante {
-    TipoEmpresa tipoEmpresa;
+public class PersonaJuridica extends TipoPersona {
+    private String razonSocial;
+    private TipoPersonaJuridica tipo;
     String rubro;
-    List<PersonaHumana> representantes;
+    List<Representante> representantes;
 
-    public TipoEmpresa getTipoEmpresa() {
-        return tipoEmpresa;
+    public TipoPersonaJuridica getTipoEmpresa() {
+        return tipo;
     }
 
-    public void setTipoEmpresa(TipoEmpresa tipoEmpresa) {
-        this.tipoEmpresa = tipoEmpresa;
+    public void setTipoEmpresa(TipoPersonaJuridica tipoPersonaJuridica) {
+        this.tipo = tipoPersonaJuridica;
     }
 
     public String getRubro() {
@@ -24,15 +24,16 @@ public class PersonaJuridica extends Donante {
         this.rubro = rubro;
     }
 
-    public List<PersonaHumana> getRepresentantes() {
+    public List<Representante> getRepresentantes() {
         return representantes;
     }
 
-    public void setRepresentantes(List<PersonaHumana> representantes) {
-        this.representantes = representantes;
+    public void agregarRepresentantes(Representante representante) {
+        this.representantes.add(representante);
     }
-    public PersonaJuridica(String tipoD, String doc, String nom, String em, String tel) {
-        super(tipoD, doc, nom, em, tel);
+    public PersonaJuridica(String tipoD, String doc, String nom) {
+        super(tipoD, doc);
+        this.razonSocial = nom;
     }
 
 }

@@ -1,6 +1,6 @@
 package Sdonaciones.dominio.donante;
 
-public enum TipoEmpresa {
+public enum TipoPersonaJuridica {
     GUBERNAMENTAL,
     ONG,
     EMPRESA,

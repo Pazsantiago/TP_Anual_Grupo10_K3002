@@ -2,33 +2,38 @@ package Sdonaciones.dominio.donante;
 
 public class MedioContacto {
 
-    public enum Tipo {
-        CORREO_ELECTRONICO,
-        TELEFONO,
-        WHATSAPP
+    private TipoMedioContacto tipo;
+
+    public String getCorreoElectronico() {
+        return correoElectronico;
     }
 
-    private final Tipo tipo;
-    private final String valor;
-
-    public MedioContacto(Tipo tipo, String valor) {
-        if (valor == null || valor.isBlank()) {
-            throw new IllegalArgumentException("El valor del medio de contacto no puede estar vacío.");
-        }
-        this.tipo = tipo;
-        this.valor = valor;
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
     }
 
-    public Tipo getTipo() {
-        return tipo;
+    private String correoElectronico;
+
+    public String getTelefono() {
+        return telefono;
     }
 
-    public String getValor() {
-        return valor;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
-    @Override
-    public String toString() {
-        return tipo + ": " + valor;
+    private String telefono;
+    private boolean esPredeterminado;
+
+    public MedioContacto(String correo, String telefono, boolean esPredeterminado) {
+        this.correoElectronico = correo;
+        this.telefono = telefono;
+        this.esPredeterminado = esPredeterminado;
     }
+
+//
+//    @Override
+//    public String toString() {
+//        return tipo + ": " + valor;
+//    }
 }

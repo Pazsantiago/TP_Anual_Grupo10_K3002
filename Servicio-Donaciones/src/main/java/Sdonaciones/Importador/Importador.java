@@ -1,6 +1,8 @@
 package Sdonaciones.Importador;
 
 import Sdonaciones.dominio.donante.Donante;
+import Sdonaciones.repositorios.*;
+import Sdonaciones.dominio.donante.MedioContacto;
 import Sdonaciones.dominio.donante.PersonaHumana;
 import Sdonaciones.dominio.donante.PersonaJuridica;
 import com.opencsv.CSVReader;
@@ -10,9 +12,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 
-public  class Importador {
+public class Importador {
     private static Importador instancia = null;
-    private RepositorioDonadores repositorioDonadores = null;
+    private RepositorioDonantes repositorioDonadores = null;
 
 
     private Importador(){}
@@ -22,7 +24,7 @@ public  class Importador {
         return instancia;
     }
 
-    public void setRepositorioDonadores(RepositorioDonadores repo){
+    public void setRepositorioDonadores(RepositorioDonantes repo){
         this.repositorioDonadores = repo;
     }
 
@@ -46,22 +48,26 @@ public  class Importador {
     }
 
     public void controlarDonanteEnLista(String[] fila) {
-        Optional<Donante> donanteExistente = repositorioDonadores.getDonadores().stream().filter(donante -> donante.getCorreoElectronico().equals(fila[4])).findFirst();
+        Optional<Donante> donanteExistente = repositorioDonadores.listarTodos().stream().filter(donante -> donante.obtenerContactoPredeterminado().getCorreoElectronico().equals(fila[4])).findFirst();
         if (donanteExistente.isPresent()) {
-            int i = repositorioDonadores.getDonadores().indexOf(donanteExistente.get());
-            repositorioDonadores.getDonadores().set(i, setearDonante(fila));
+            int i = repositorioDonadores.listarTodos().indexOf(donanteExistente.get());
+            repositorioDonadores.listarTodos().set(i, setearDonante(fila));
         } else {
-            repositorioDonadores.getDonadores().add(setearDonante(fila));
+            repositorioDonadores.listarTodos().add(setearDonante(fila));
         }
     }
 
 
     public Donante setearDonante(String[] fila) {
+        Donante donante = new Donante();
+        donante.agregarMediosDeContacto(new MedioContacto(fila[4], fila[5], false));
         if (fila[0].equalsIgnoreCase("HUMANA")) {
-            return new PersonaHumana(fila[1], fila[2], fila[3], fila[4], fila[5]);
+            donante.setTipoPersona(new PersonaHumana(fila[1], fila[2], fila[3]));
+
         } else {
-            return new PersonaJuridica(fila[1], fila[2], fila[3], fila[4], fila[5]);
+            donante.setTipoPersona(new PersonaJuridica(fila[1], fila[2], fila[3]));
         }
+        return donante;
     }
 
 }
