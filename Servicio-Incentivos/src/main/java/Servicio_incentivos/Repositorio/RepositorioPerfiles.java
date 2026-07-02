@@ -7,16 +7,24 @@ import java.util.List;
 
 public class RepositorioPerfiles {
 
-    private final  List<PerfilDonante>  perfilDonantes = new ArrayList<>();
+    private final List<PerfilDonante> perfilDonantes = new ArrayList<>();
 
     public void guardar(PerfilDonante perfil) {
+        if (perfil == null) {
+            return;
+        }
+        perfilDonantes.removeIf(existing -> existing.getID() == perfil.getID());
         perfilDonantes.add(perfil);
     }
 
     public List<PerfilDonante> getDonaciones() {
         return perfilDonantes;
     }
+
     public PerfilDonante getxId(long donanteId) {
-        return perfilDonantes.stream().filter(p->p.getID() == donanteId ).findFirst().get();
+        return perfilDonantes.stream()
+                .filter(p -> p.getID() == donanteId)
+                .findFirst()
+                .orElse(null);
     }
 }

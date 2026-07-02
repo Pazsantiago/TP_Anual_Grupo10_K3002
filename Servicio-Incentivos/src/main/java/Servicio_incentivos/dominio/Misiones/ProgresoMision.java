@@ -3,38 +3,60 @@ package Servicio_incentivos.dominio.Misiones;
 import Servicio_incentivos.dominio.DonacionImportada;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProgresoMision {
     private Mision MisionAsociada;
     private double progresoActual;
-    // propuesto: historial de donaciones hechas hacia este progreso especifico
-    private List<DonacionImportada> historialDonaciones;
-    //justificacion: de esta manera, se permiten hacer mas comparaciones o pasar progreso de una mision a otra sin que sea un simple numero
+    private List<DonacionImportada> historialDonaciones = new ArrayList<>();
     private LocalDate fechaInicio;
     private LocalDate fechaCompletado;
     private boolean completada;
 
-    public void reiniciar() {}
-    public void actualizar(DonacionImportada donacionImportada) {
-        historialDonaciones.add(donacionImportada);
-        progresoActual= MisionAsociada.calcularProgreso(historialDonaciones);
-        if (progresoActual >= 100) this.marcarCompletada();
-
+    public void reiniciar() {
+        historialDonaciones.clear();
+        progresoActual = 0.0;
+        completada = false;
+        fechaCompletado = null;
     }
-    public void marcarCompletada() {completada = true;}
 
-    public boolean getCompletada() { return completada;}
+    public void actualizar(DonacionImportada donacionImportada) {
+        if (donacionImportada == null || MisionAsociada == null) {
+            return;
+        }
+        historialDonaciones.add(donacionImportada);
+        progresoActual = MisionAsociada.calcularProgreso(historialDonaciones);
+        if (progresoActual >= 100) {
+            marcarCompletada(); // esto quiza lo deberia hacer la mision
+            fechaCompletado = LocalDate.now();        
+        }
+    }
+
+    public void marcarCompletada() {
+        completada = true;
+        if (fechaCompletado == null) {
+            fechaCompletado = LocalDate.now();
+        }
+    }
+
+    public boolean getCompletada() {
+        return completada;
+    }
+
     public Mision getMisionAsociada() {
         return MisionAsociada;
     }
+
     public void setMisionAsociada(Mision misionAsociada) {
         MisionAsociada = misionAsociada;
     }
-    public double getProgresoActual(){
+
+    public double getProgresoActual() {
         return progresoActual;
     }
-    public void setProgresoActual(double valor){
+
+    public void setProgresoActual(double valor) {
         progresoActual = valor;
     }
 }

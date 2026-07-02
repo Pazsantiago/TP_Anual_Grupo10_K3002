@@ -1,10 +1,13 @@
 package Servicio_incentivos.dominio;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class DonacionImportada {
     private int cantidadDonada;
     private String categoria;
     private boolean exitosa;
-    private String mesDonacion; //localtime??? clasefechas???
+    private LocalDate fechaDonacion; 
 
 
     public String getCategoria() {
@@ -29,5 +32,8 @@ public class DonacionImportada {
 
     public void setExitosa(boolean exitosa) {
         this.exitosa = exitosa;
+    }
+    public LocalDate getFechaDonacion() {
+        return this.fechaDonacion;
     }
 }

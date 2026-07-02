@@ -1,6 +1,5 @@
 package Servicio_incentivos.Servicios;
 
-
 import Servicio_incentivos.Repositorio.RepositorioPerfiles;
 import Servicio_incentivos.dominio.DonacionImportada;
 import Servicio_incentivos.dominio.Misiones.Insignia;
@@ -11,29 +10,66 @@ import Servicio_incentivos.dominio.PerfilDonante;
 import java.util.List;
 
 public class ServicioIncentivos {
-    private RepositorioPerfiles repo;
+    private final RepositorioPerfiles repo;
+
+    public ServicioIncentivos() {
+        this(new RepositorioPerfiles());
+    }
+
+    public ServicioIncentivos(RepositorioPerfiles repo) {
+        this.repo = repo;
+    }
 
     public void procesarNuevaDonacion(long donanteID, DonacionImportada donacion) {
-       PerfilDonante perfilAsociado = repo.getxId(donanteID);
-       //le pido a perfildonante su progreso (getprogreso en Perfildonante)
+        PerfilDonante perfilAsociado = obtenerPerfil(donanteID);
+        if (perfilAsociado == null || donacion == null) {
+            return;
+        }
+
+        perfilAsociado.sumarDonacion();
+        perfilAsociado.setUltimaDonacion(donacion.getFechaDonacion());
         ProgresoMision progresoAsociado = perfilAsociado.getProgreso();
-       //me fijo el progreso y le doy la donacion para que calcule el progreso
-        progresoAsociado.actualizar(donacion);  //en esta linea si ya cumple con el progreso se marca como completada
-        // le digo a perfilasociado que sume su progreso y a su vez que vea si completo la mision para darse la insignia
-        perfilAsociado.misionCompletada();
+        progresoAsociado.actualizar(donacion);
+        verificarYCompletarMision(perfilAsociado);
+        //verificarSubidaCategoria(perfilAsociado);
     }
 
+    public void procesarDonacionEntregada(long donanteID, DonacionImportada donacion) {
+        procesarNuevaDonacion(donanteID, donacion);
+    }
 
-
-    public void procesarDonacionEntregada(long donanteID) {}
     public Mision getMisionActual(long donanteID) {
-        return repo.getxId(donanteID).getMisionActual();
+        PerfilDonante perfil = obtenerPerfil(donanteID);
+        return perfil != null ? perfil.getMisionActual() : null;
     }
-    public List<Insignia> getInsignias(long donanteId){ return repo.getxId(donanteId).getInsignias();}
-    public PerfilDonante getMetricas(long donanteID) { return repo.getxId(donanteID); }
-    private void verificarYCompletarMision (PerfilDonante PerfilDonante) {
+
+    public List<Insignia> getInsignias(long donanteId) {
+        PerfilDonante perfil = obtenerPerfil(donanteId);
+        return perfil != null ? perfil.getInsignias() : List.of();
     }
-    private void verificarSubidaCategoria (PerfilDonante  PerfilDonante){
+
+    public PerfilDonante getMetricas(long donanteID) {
+        return obtenerPerfil(donanteID);
+    }
+
+    private void verificarYCompletarMision(PerfilDonante perfilDonante) {
+        if (perfilDonante == null) {
+            return;
+        }
+        perfilDonante.misionCompletada();
+    }
+
+    /*private void verificarSubidaCategoria(PerfilDonante perfilDonante) {
+        if (perfilDonante == null) {
+            return;
+        }
+        if (perfilDonante.getPorcentajeProgreso() >= 100) {
+            perfilDonante.subirCategoria();
+        }
+    }*/
+
+    private PerfilDonante obtenerPerfil(long donanteID) {
+        return repo != null ? repo.getxId(donanteID) : null;
     }
 }
 
