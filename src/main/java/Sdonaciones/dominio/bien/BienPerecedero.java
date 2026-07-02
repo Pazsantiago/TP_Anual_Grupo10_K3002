@@ -14,7 +14,7 @@ public class BienPerecedero extends Bien {
     private final LocalDate fechaVencimiento;
 
     public BienPerecedero(String descripcion, Subcategoria subcategoria,
-                          int cantidad, LocalDate fechaVencimiento, URL foto) {
+                          Integer cantidad, LocalDate fechaVencimiento, URL foto) {
         super(descripcion, subcategoria, cantidad, null, foto);
         if (fechaVencimiento == null)
             throw new IllegalArgumentException("La fecha de vencimiento es obligatoria para bienes perecederos.");
@@ -24,7 +24,7 @@ public class BienPerecedero extends Bien {
     }
 
     public BienPerecedero(String descripcion, Subcategoria subcategoria,
-                          int cantidad, LocalDate fechaVencimiento) {
+                          Integer cantidad, LocalDate fechaVencimiento) {
         this(descripcion, subcategoria, cantidad, fechaVencimiento, null);
     }
 

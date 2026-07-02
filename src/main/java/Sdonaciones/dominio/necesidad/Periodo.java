@@ -4,7 +4,7 @@ package Sdonaciones.dominio.necesidad;
 import java.time.LocalDate;
 
 public class Periodo {
-    private int periodoDias;
+    private Integer periodoDias;
 
     public LocalDate getInicioPeriodo() {
         return inicioPeriodo;
@@ -14,11 +14,11 @@ public class Periodo {
         this.inicioPeriodo = inicioPeriodo;
     }
 
-    public int getPeriodoDias() {
+    public Integer getPeriodoDias() {
         return periodoDias;
     }
 
-    public void setPeriodoDias(int periodoDias) {
+    public void setPeriodoDias(Integer periodoDias) {
         this.periodoDias = periodoDias;
     }
 

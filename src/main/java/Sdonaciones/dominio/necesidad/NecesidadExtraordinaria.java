@@ -10,7 +10,7 @@ public class NecesidadExtraordinaria extends Necesidad {
     public NecesidadExtraordinaria(
             String descripcion,
             Subcategoria subcategoria,
-            int cantidadObjetivo
+            Integer cantidadObjetivo
     ) {
         super(descripcion, subcategoria, cantidadObjetivo);
     }

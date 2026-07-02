@@ -3,6 +3,6 @@ package Sdonaciones.dominio.donante;
 
 public class Representante{
     private String nombre;
-    private int edad;
+    private Integer edad;
     private Genero genero;
 }

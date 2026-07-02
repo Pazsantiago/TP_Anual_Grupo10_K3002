@@ -12,7 +12,7 @@ public class RepositorioDonaciones {
         donaciones.add(donacion);
     }
 
-    public Optional<Donacion> buscarPorId(int id) {
+    public Optional<Donacion> buscarPorId(Integer id) {
         return donaciones.stream().filter(donacion -> donacion.getId()==id).findFirst();
     }
 

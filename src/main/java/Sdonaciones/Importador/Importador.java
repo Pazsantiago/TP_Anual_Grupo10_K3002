@@ -50,7 +50,7 @@ public class Importador {
     public void controlarDonanteEnLista(String[] fila) {
         Optional<Donante> donanteExistente = repositorioDonadores.listarTodos().stream().filter(donante -> donante.obtenerContactoPredeterminado().getCorreoElectronico().equals(fila[4])).findFirst();
         if (donanteExistente.isPresent()) {
-            int i = repositorioDonadores.listarTodos().indexOf(donanteExistente.get());
+            Integer i = repositorioDonadores.listarTodos().indexOf(donanteExistente.get());
             repositorioDonadores.listarTodos().set(i, setearDonante(fila));
         } else {
             repositorioDonadores.listarTodos().add(setearDonante(fila));

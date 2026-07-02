@@ -1,65 +1,71 @@
-//package cDonaciones;
-////import donatrack.dominio.donacion.Donacion;
-//import Sdonaciones.dominio.donacion.*;
+package cDonaciones;
+//import donatrack.dominio.donacion.Donacion;
+import Sdonaciones.dominio.donacion.*;
+
+import Sdonaciones.dominio.donante.Donante;
+import Sdonaciones.repositorios.RepositorioDonaciones;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/donaciones")
+public class cDonacion {
+
+
+    private RepositorioDonaciones repoDonaciones;
+    // Inicializamos con algunos datos
+    public cDonacion() {
+        repoDonaciones = new RepositorioDonaciones();
+        Donacion donacion1 = new Donacion();
+        donacion1.setDescripcionGeneral("algo");
+        donacion1.setId(1);
+        repoDonaciones.guardar(donacion1);
+
+    }
+
+    // READ - Obtener todas las Donaciones
+    @GetMapping
+    public List<Donacion> getAllDonaciones() {
+
+        return repoDonaciones.getDonaciones();
+    }
 //
-//import org.springframework.web.bind.annotation.*;
+    // READ - Obtener una Donaciones por idDonacion
+    @GetMapping("/{idDonacion}")
+    public Donacion getDonacionById(@PathVariable Integer idDonacion) {
+        return repoDonaciones.getDonaciones().stream()
+                .filter(d -> d.getId() == idDonacion)
+                .findFirst()
+                .orElse(null);
+    }
 //
-//import java.util.ArrayList;
-//import java.util.List;
+    // CREATE - Agregar una nueva Donacion
+    @PostMapping
+    public Donacion createDonacion(@RequestBody Donacion donacion) {
+        repoDonaciones.guardar(donacion);
+        return donacion;
+
+    }
 //
-////@RestController
-////@RequestMapping("/Donacion")
-//public class CDonacion {
+    // UPDATE - Actualizar una Donacion existente
+    @PutMapping("/{idDonacion}")
+    public Donacion updateDonacion(@PathVariable Integer idDonacion, @RequestBody Donacion updatedDonacion) {
+        for (Donacion d : repoDonaciones.getDonaciones()) {
+            if (d.getId() == idDonacion) {
+                d.setDescripcionGeneral(updatedDonacion.getDescripcionGeneral());
+
+                return d;
+            }
+        }
+        return null;
+    }
 //
-//    private List<Donacion> donaciones = new ArrayList<>();
-//
-//    // Inicializamos con algunos datos
-//    public CDonacion() {
-//        //donaciones.add(new Donacion("La Carbonilla"));
-//        //donaciones.add(new Donacion("Jardin de Infantes Nro 2"));
-//    }
-//
-//    // READ - Obtener todas las Donaciones
-//    //@GetMapping
-//    public List<Donacion> getAllDonaciones() {
-//
-//        return donaciones;
-//    }
-//
-//    // READ - Obtener una Donaciones por idDonacion
-//    //@GetMapping("/{idDonacion}")
-//    public Donacion getDonacionById(@PathVariable Int idDonacion) {
-//        return donaciones.stream()
-//                .filter(d -> d.getIdDonacion() == idDonacion)
-//                .findFirst()
-//                .orElse(null);
-//    }
-//
-//    // CREATE - Agregar una nueva Donacion
-//    //@PostMapping("/{idDonacion}")
-//    public Donacion createDonacion(@RequestBody Donacion donacion) {
-//        donaciones.add(donacion);
-//        return donaciones;
-//
-//    }
-//
-//    // UPDATE - Actualizar una Donacion existente
-//    //@PutMapping("/{idDonacion}")
-//    public Donacion updateDonacion(@PathVariable Int idDonacion, @RequestBody Donacion updatedDonacion) {
-//        for (Donacion d : donaciones) {
-//            if (d.getIdDonacion() == idDonacion) {
-//                d.setDescripcion(updatedDonacion.getDescripcion());
-//
-//                return d;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    // DELETE - Eliminar una Donacion
-//    //@DeleteMapping("/{idDonacion}")
-//    public String deleteDonacion(@PathVariable Int idDonacion) {
-//        donaciones.removeIf(d -> d.getIdDonacion() == idDonacion);
-//        return "Donacion eliminada.";
-//    }
-//};
+    // DELETE - Eliminar una Donacion
+    @DeleteMapping("/{idDonacion}")
+    public String deleteDonacion(@PathVariable Integer idDonacion) {
+        repoDonaciones.getDonaciones().removeIf(d -> d.getId() == idDonacion);
+        return "Donacion eliminada.";
+    }
+}

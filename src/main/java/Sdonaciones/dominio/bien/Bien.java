@@ -16,10 +16,10 @@ public class Bien {
     private final URL foto;
 //    private final Estado estado;
     private UnidadMedida unidad;
-    private final int cantidad;
+    private final Integer cantidad;
 
     public Bien(String descripcion, Subcategoria subcategoria,
-                int cantidad, Estado estado, URL foto) {
+                Integer cantidad, Estado estado, URL foto) {
         if (descripcion == null || descripcion.isBlank())
             throw new IllegalArgumentException("La descripción del bien es obligatoria.");
         if (subcategoria == null)
@@ -35,7 +35,7 @@ public class Bien {
     }
 
     /** Constructor sin foto ni estado (bienes sin distinción de uso). */
-    public Bien(String descripcion, Subcategoria subcategoria, int cantidad) {
+    public Bien(String descripcion, Subcategoria subcategoria, Integer cantidad) {
         this(descripcion, subcategoria, cantidad, null, null);
     }
 
@@ -47,7 +47,7 @@ public class Bien {
     public Subcategoria getSubcategoria() { return subcategoria; }
     public URL getFoto() { return foto; }
 //    public Estado getEstado() { return estado; }
-    public int getCantidad() { return cantidad; }
+    public Integer getCantidad() { return cantidad; }
 //    @Override
 //    public String toString(){
 //        return subcategoria.getNombre() + " x "+cantidad+ subcategoria.getUnidad();

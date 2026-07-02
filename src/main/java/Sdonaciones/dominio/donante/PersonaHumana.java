@@ -3,7 +3,7 @@ package Sdonaciones.dominio.donante;
 import java.util.List;
 public class PersonaHumana extends TipoPersona{
     private String nombre;
-    private int edad;
+    private Integer edad;
     private Genero genero;
 
 

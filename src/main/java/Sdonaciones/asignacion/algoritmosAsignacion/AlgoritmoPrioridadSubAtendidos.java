@@ -21,7 +21,7 @@ public class AlgoritmoPrioridadSubAtendidos implements IAlgoritmoAsignacion {
                 .toList();
 
         List<RankingEntidadBeneficiaria> rankings = new ArrayList<>();
-        for (int i = 0; i < entidadesOrdenadas.size() && i < 10; i++) {
+        for (Integer i = 0; i < entidadesOrdenadas.size() && i < 10; i++) {
             rankings.add(new RankingEntidadBeneficiaria(entidadesOrdenadas.get(i), i));
         }
         return rankings;

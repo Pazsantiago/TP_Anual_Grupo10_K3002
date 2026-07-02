@@ -6,12 +6,12 @@ import java.time.LocalDate;
 
 public class NecesidadRecurrente extends Necesidad {
     private Periodo periodo;
-    private int cantidadRecibidaEnPeriodo;
+    private Integer cantidadRecibidaEnPeriodo;
 
     public NecesidadRecurrente(
             String descripcion,
             Subcategoria subcategoria,
-            int cantidadObjetivo,
+            Integer cantidadObjetivo,
             Periodo periodo,
             LocalDate fechaInicioPeriodo
     ) {
@@ -23,7 +23,7 @@ public class NecesidadRecurrente extends Necesidad {
     }
 
     @Override
-    public void recibirBienes(int cantidad) {
+    public void recibirBienes(Integer cantidad) {
 
         // si el período ya venció, reinicia el conteo
         if (!periodoVigente()) {
@@ -70,11 +70,11 @@ public class NecesidadRecurrente extends Necesidad {
         this.periodo.setInicioPeriodo(fechaInicioPeriodo);
     }
 
-    public int getCantidadRecibidaEnPeriodo() {
+    public Integer getCantidadRecibidaEnPeriodo() {
         return cantidadRecibidaEnPeriodo;
     }
 
-    public void setCantidadRecibidaEnPeriodo(int cantidadRecibidaEnPeriodo) {
+    public void setCantidadRecibidaEnPeriodo(Integer cantidadRecibidaEnPeriodo) {
         this.cantidadRecibidaEnPeriodo = cantidadRecibidaEnPeriodo;
     }
 }

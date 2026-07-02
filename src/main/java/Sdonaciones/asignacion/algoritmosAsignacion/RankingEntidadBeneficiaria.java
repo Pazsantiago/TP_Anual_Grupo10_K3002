@@ -4,11 +4,11 @@ import Sdonaciones.dominio.entidad.EntidadBeneficiaria;
 
 public class RankingEntidadBeneficiaria {
 	private EntidadBeneficiaria entidadBeneficiaria;
-	private int posicion;
+	private Integer posicion;
 	private double puntaje;
 	//private date dia;
 
-	public RankingEntidadBeneficiaria(EntidadBeneficiaria entidad, int pos) {
+	public RankingEntidadBeneficiaria(EntidadBeneficiaria entidad, Integer pos) {
 		this.entidadBeneficiaria = entidad;
         this.posicion = pos;
 	}

@@ -6,7 +6,7 @@ import Sdonaciones.dominio.categoria.Subcategoria;
 import java.net.URL;
 
 public class BienConEstado extends Bien{
-    public BienConEstado(String descripcion, Subcategoria subcategoria, int cantidad, Estado estado, URL foto) {
+    public BienConEstado(String descripcion, Subcategoria subcategoria, Integer cantidad, Estado estado, URL foto) {
         super(descripcion, subcategoria, cantidad, estado, foto);
     }
 

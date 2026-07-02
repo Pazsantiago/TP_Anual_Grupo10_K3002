@@ -1,5 +1,7 @@
 package com.grupo10.servicio_donaciones;
 
+import Sdonaciones.dominio.donacion.Donacion;
+import Sdonaciones.repositorios.RepositorioDonaciones;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
