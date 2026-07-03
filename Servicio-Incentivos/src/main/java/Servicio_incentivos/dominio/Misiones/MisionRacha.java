@@ -1,6 +1,7 @@
 package Servicio_incentivos.dominio.Misiones;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import Servicio_incentivos.dominio.DonacionImportada;
 
@@ -22,12 +23,19 @@ public class MisionRacha extends Mision {
         if(fechaInstancia == null) {
             fechaInstancia = donacionInstancia.getFechaDonacion();
            contadorMeses += 1;
+           continue;
         }
-        if(fechaInstancia.isBefore(donacionInstancia.getFechaDonacion().minusMonths(1))) {
-            contadorMeses += 1;
+            YearMonth mesUltimaDonacion = YearMonth.from(fechaInstancia);
+            YearMonth mesDonacionActual = YearMonth.from(donacionInstancia.getFechaDonacion());
+
+            if (mesDonacionActual.equals(mesUltimaDonacion.plusMonths(1))) {
+                contadorMeses += 1;
+            }
+            else if (mesDonacionActual.isAfter(mesUltimaDonacion.plusMonths(1))) {
+                contadorMeses = 1;
+            }
             fechaInstancia = donacionInstancia.getFechaDonacion();
-        }
     }
-    return ((contadorMeses / mesesConsecutivosRequeridos)*100);
-    }
+        return ((contadorMeses / mesesConsecutivosRequeridos)*100);
+}
 }

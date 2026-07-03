@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="823a78cc-7332-4fd2-b0bf-4b0daf1cee6b" name="Changes" comment="dominio servicio incentivos">
-      <change afterPath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/DonacionImportada.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_6_2026_11_39_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_6_2026_11_39__Changes_.xml" beforeDir="false" />
+    <list default="true" id="823a78cc-7332-4fd2-b0bf-4b0daf1cee6b" name="Changes" comment="Issue 9: donaciones deben impactar en el calculo progreso.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/Servicios/ServicioIncentivos.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/Servicios/ServicioIncentivos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/Mision.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/Mision.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/MisionCompletitud.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/MisionCompletitud.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/MisionDonacionesExitosas.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/MisionDonacionesExitosas.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/MisionHabilDonador.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/MisionHabilDonador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/ProgresoMision.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/ProgresoMision.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/MisionRacha.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/Misiones/MisionRacha.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/PerfilDonante.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/PerfilDonante.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,6 +45,9 @@
     &quot;accountId&quot;: &quot;340de507-fef4-4919-be1e-1076f4de73cb&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
@@ -102,7 +98,8 @@
       <updated>1781639974579</updated>
       <workItem from="1781816067203" duration="1310000" />
       <workItem from="1782843067698" duration="12214000" />
-      <workItem from="1782932281147" duration="5983000" />
+      <workItem from="1782932281147" duration="11476000" />
+      <workItem from="1783034433497" duration="2534000" />
     </task>
     <task id="LOCAL-00001" summary="dominio servicio incentivos">
       <option name="closed" value="true" />
@@ -112,7 +109,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781793755021</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Issue 9: donaciones deben impactar en el calculo progreso.">
+      <option name="closed" value="true" />
+      <created>1782939099268</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1782939099268</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -120,14 +125,15 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="dominio servicio incentivos" />
-    <option name="LAST_COMMIT_MESSAGE" value="dominio servicio incentivos" />
+    <MESSAGE value="Issue 9: donaciones deben impactar en el calculo progreso." />
+    <option name="LAST_COMMIT_MESSAGE" value="Issue 9: donaciones deben impactar en el calculo progreso." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/Servicio-Incentivos/src/main/java/Servicio_incentivos/dominio/PerfilDonante.java</url>
-          <line>32</line>
+          <line>43</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

@@ -62,7 +62,7 @@ public class PerfilDonante {
     public void misionCompletada() {
         if (historialMisiones.isEmpty()) {
             return;
-        } 
+        }
         ProgresoMision ultimoProgreso = historialMisiones.getLast();
         if (ultimoProgreso.getCompletada() && misionActual != null && misionActual.getInsignia() != null) {
             boolean yaOtorgada = insignias.stream().anyMatch(insignia -> insignia == misionActual.getInsignia());
@@ -94,19 +94,32 @@ public class PerfilDonante {
             historialMisiones.add(progresoInicial);
         }
     }
+
     public void sumarDonacion() {
         totalDonacionesHistoricas++;
     }
+
     public void setUltimaDonacion(LocalDate fecha) {
         this.fechaUltimaDonacion = fecha;
     }
+
     public void verificarRachaDonaciones(LocalDate fechaNuevaDonacion) {
         if (fechaNuevaDonacion != null) {
-            if (fechaNuevaDonacion.minusMonths(1).isAfter(this.fechaUltimaDonacion)) {
+            if (this.fechaUltimaDonacion == null) {
+                this.rachaDonaciones = 1;
+                this.fechaUltimaDonacion = fechaNuevaDonacion;
+                return;
+            }
+            LocalDate nuevaNormalizada = fechaNuevaDonacion.withDayOfMonth(1);
+            LocalDate ultimaNormalizada = this.fechaUltimaDonacion.withDayOfMonth(1);
+
+            if (nuevaNormalizada.minusMonths(1).isEqual(ultimaNormalizada)) {
                 rachaDonaciones++;
-            } 
-        } else {
-            return;
+                this.fechaUltimaDonacion = fechaNuevaDonacion;
+            } else if (nuevaNormalizada.minusMonths(1).isAfter(ultimaNormalizada)) {
+                rachaDonaciones = 1;
+                this.fechaUltimaDonacion = fechaNuevaDonacion;
+            }
         }
     }
 }

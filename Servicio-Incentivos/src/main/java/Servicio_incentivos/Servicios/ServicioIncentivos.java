@@ -27,7 +27,7 @@ public class ServicioIncentivos {
         }
 
         perfilAsociado.sumarDonacion();
-        perfilAsociado.setUltimaDonacion(donacion.getFechaDonacion());
+        perfilAsociado.verificarRachaDonaciones(donacion.getFechaDonacion());
         ProgresoMision progresoAsociado = perfilAsociado.getProgreso();
         progresoAsociado.actualizar(donacion);
         verificarYCompletarMision(perfilAsociado);
