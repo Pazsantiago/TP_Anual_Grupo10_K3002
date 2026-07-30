@@ -2,10 +2,16 @@ package Sdonaciones.repositorios;
 
 
 import Sdonaciones.dominio.entidad.EntidadBeneficiaria;
+import lombok.Data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
-public class RepositorioEntidades {
+
+@Data
+public class RepoEntidades {
 
     private final List<EntidadBeneficiaria> entidadBeneficiarias = new ArrayList<>();
 

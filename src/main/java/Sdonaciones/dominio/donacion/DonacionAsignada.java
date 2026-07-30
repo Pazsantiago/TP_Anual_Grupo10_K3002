@@ -4,7 +4,7 @@ import Sdonaciones.dominio.necesidad.Necesidad;
 
 import java.util.Date;
 
-public class DonacionRegistrada {
+public class DonacionAsignada {
     private DonacionSegmentada donacion;
 
     public DonacionSegmentada getDonacion() {

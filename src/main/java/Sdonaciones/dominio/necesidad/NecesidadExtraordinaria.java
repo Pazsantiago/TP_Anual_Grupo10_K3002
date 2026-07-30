@@ -1,21 +1,21 @@
 package Sdonaciones.dominio.necesidad;
 
-import Sdonaciones.dominio.categoria.Subcategoria;
+import lombok.Data;
 
 import java.time.LocalDate;
 
-
+@Data
 public class NecesidadExtraordinaria extends Necesidad {
 
-    public NecesidadExtraordinaria(
-            String descripcion,
-            Subcategoria subcategoria,
-            Integer cantidadObjetivo
-    ) {
-        super(descripcion, subcategoria, cantidadObjetivo);
-    }
+//    public NecesidadExtraordinaria(
+//            String descripcion,
+//            Subcategoria subcategoria,
+//            Integer cantidadObjetivo
+//    ) {
+//        super(descripcion, subcategoria, cantidadObjetivo);
+//    }
 
-    public LocalDate getSatisfechaEn(){
+    public LocalDate getSatisfechaEn() {
         return LocalDate.now();
     }
 

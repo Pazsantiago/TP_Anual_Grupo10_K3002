@@ -1,26 +1,27 @@
 package Sdonaciones.dominio.necesidad;
 
-import Sdonaciones.dominio.categoria.Subcategoria;
+import lombok.Data;
 
 import java.time.LocalDate;
 
+@Data
 public class NecesidadRecurrente extends Necesidad {
     private Periodo periodo;
     private Integer cantidadRecibidaEnPeriodo;
 
-    public NecesidadRecurrente(
-            String descripcion,
-            Subcategoria subcategoria,
-            Integer cantidadObjetivo,
-            Periodo periodo,
-            LocalDate fechaInicioPeriodo
-    ) {
-        super(descripcion, subcategoria, cantidadObjetivo);
-
-        this.periodo = periodo;
-        this.periodo.setInicioPeriodo(fechaInicioPeriodo);
-        this.cantidadRecibidaEnPeriodo = 0;
-    }
+//    public NecesidadRecurrente(
+//            String descripcion,
+//            Subcategoria subcategoria,
+//            Integer cantidadObjetivo,
+//            Periodo periodo,
+//            LocalDate fechaInicioPeriodo
+//    ) {
+//        super(descripcion, subcategoria, cantidadObjetivo);
+//
+//        this.periodo = periodo;
+//        this.periodo.setInicioPeriodo(fechaInicioPeriodo);
+//        this.cantidadRecibidaEnPeriodo = 0;
+//    }
 
     @Override
     public void recibirBienes(Integer cantidad) {
@@ -49,9 +50,11 @@ public class NecesidadRecurrente extends Necesidad {
         this.cantidadRecibidaEnPeriodo = 0;
         this.periodo.setInicioPeriodo(this.periodo.getInicioPeriodo().plusDays(periodo.getPeriodoDias()));
     }
-    public LocalDate getSatisfechaEn(){
+
+    public LocalDate getSatisfechaEn() {
         return LocalDate.now();
     }
+
     @Override
     public boolean estaSatisfecha() {
 
@@ -59,22 +62,27 @@ public class NecesidadRecurrente extends Necesidad {
                 && cantidadRecibidaEnPeriodo >= getCantidadObjetivo();
     }
 
-    public Periodo getPeriodo() {return periodo;}
-    public void setPeriodo(Periodo periodo) {this.periodo = periodo;}
-
-    public LocalDate getFechaInicioPeriodo() {
-        return periodo.getInicioPeriodo();
+    public Periodo getPeriodo() {
+        return periodo;
     }
 
-    public void setFechaInicioPeriodo(LocalDate fechaInicioPeriodo) {
-        this.periodo.setInicioPeriodo(fechaInicioPeriodo);
-    }
-
-    public Integer getCantidadRecibidaEnPeriodo() {
-        return cantidadRecibidaEnPeriodo;
-    }
-
-    public void setCantidadRecibidaEnPeriodo(Integer cantidadRecibidaEnPeriodo) {
-        this.cantidadRecibidaEnPeriodo = cantidadRecibidaEnPeriodo;
-    }
+//    public void setPeriodo(Periodo periodo) {
+//        this.periodo = periodo;
+//    }
+//
+//    public LocalDate getFechaInicioPeriodo() {
+//        return periodo.getInicioPeriodo();
+//    }
+//
+//    public void setFechaInicioPeriodo(LocalDate fechaInicioPeriodo) {
+//        this.periodo.setInicioPeriodo(fechaInicioPeriodo);
+//    }
+//
+//    public Integer getCantidadRecibidaEnPeriodo() {
+//        return cantidadRecibidaEnPeriodo;
+//    }
+//
+//    public void setCantidadRecibidaEnPeriodo(Integer cantidadRecibidaEnPeriodo) {
+//        this.cantidadRecibidaEnPeriodo = cantidadRecibidaEnPeriodo;
+//    }
 }

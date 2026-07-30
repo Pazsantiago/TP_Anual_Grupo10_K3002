@@ -4,7 +4,7 @@ import Sdonaciones.asignacion.algoritmosAsignacion.IAlgoritmoAsignacion;
 import Sdonaciones.asignacion.algoritmosAsignacion.RankingEntidadBeneficiaria;
 import Sdonaciones.dominio.donacion.DonacionSegmentada;
 import Sdonaciones.dominio.entidad.EntidadBeneficiaria;
-import Sdonaciones.repositorios.RepositorioEntidades;
+import Sdonaciones.repositorios.RepoEntidades;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ServicioAsignacion {
-    private RepositorioEntidades repositorioEntidades;
+    private RepoEntidades repositorioEntidades;
     private ArrayList<IAlgoritmoAsignacion> algoritmos;
 
-    public ServicioAsignacion(RepositorioEntidades repo){
+    public ServicioAsignacion(RepoEntidades repo) {
         this.repositorioEntidades = repo;
     }
 
@@ -23,7 +23,7 @@ public class ServicioAsignacion {
         List<EntidadBeneficiaria> entidades = repositorioEntidades.getEntidadBeneficiarias();
 
         List<List<RankingEntidadBeneficiaria>> resultadosPorAlgoritmo = algoritmos.stream()
-                .map(algoritmo -> algoritmo.rankEntidad(entidades,donacion))
+                .map(algoritmo -> algoritmo.rankear(entidades, donacion))
                 .toList();
 
         Set<EntidadBeneficiaria> interseccion = null;

@@ -1,12 +1,10 @@
 package Sdonaciones.Importador;
 
-import Sdonaciones.dominio.donante.Donante;
-import Sdonaciones.repositorios.*;
-import Sdonaciones.dominio.donante.MedioContacto;
-import Sdonaciones.dominio.donante.PersonaHumana;
-import Sdonaciones.dominio.donante.PersonaJuridica;
+import Sdonaciones.dominio.donante.*;
+import Sdonaciones.repositorios.RepoDonantes;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
@@ -14,17 +12,19 @@ import java.util.Optional;
 
 public class Importador {
     private static Importador instancia = null;
-    private RepositorioDonantes repositorioDonadores = null;
+    private RepoDonantes repositorioDonadores = null;
 
 
-    private Importador(){}
-    public static Importador GetInstance(){
-        if(instancia == null)
+    private Importador() {
+    }
+
+    public static Importador GetInstance() {
+        if (instancia == null)
             instancia = new Importador();
         return instancia;
     }
 
-    public void setRepositorioDonadores(RepositorioDonantes repo){
+    public void setRepositorioDonadores(RepoDonantes repo) {
         this.repositorioDonadores = repo;
     }
 
@@ -33,7 +33,7 @@ public class Importador {
         try (CSVReader csvReader = new CSVReader(new FileReader(ruta_archivo))) {
             String[] fila;
             while ((fila = csvReader.readNext()) != null) {
-                if (first){
+                if (first) {
                     first = false;
                     continue;
                 }
@@ -48,24 +48,28 @@ public class Importador {
     }
 
     public void controlarDonanteEnLista(String[] fila) {
-        Optional<Donante> donanteExistente = repositorioDonadores.listarTodos().stream().filter(donante -> donante.obtenerContactoPredeterminado().getCorreoElectronico().equals(fila[4])).findFirst();
+        Optional<Donante> donanteExistente = repositorioDonadores.getDonantes().stream().filter(donante -> donante.obtenerContactoPredeterminado().getCorreoElectronico().equals(fila[4])).findFirst();
         if (donanteExistente.isPresent()) {
-            Integer i = repositorioDonadores.listarTodos().indexOf(donanteExistente.get());
-            repositorioDonadores.listarTodos().set(i, setearDonante(fila));
+            Integer i = repositorioDonadores.getDonantes().indexOf(donanteExistente.get());
+            repositorioDonadores.getDonantes().set(i, setearDonante(fila));
         } else {
-            repositorioDonadores.listarTodos().add(setearDonante(fila));
+            repositorioDonadores.getDonantes().add(setearDonante(fila));
         }
     }
 
 
     public Donante setearDonante(String[] fila) {
         Donante donante = new Donante();
-        donante.agregarMediosDeContacto(new MedioContacto(fila[4], fila[5], false));
-        if (fila[0].equalsIgnoreCase("HUMANA")) {
-            donante.setTipoPersona(new PersonaHumana(fila[1], fila[2], fila[3]));
+        donante.agregarMedioContacto(new MedioContacto(null, fila[4], fila[5], false));
 
+        if (fila[0].equalsIgnoreCase("HUMANA")) {
+            PersonaHumana nuevo = new PersonaHumana(fila[3], null, null);
+            nuevo.setDocumento(new Documento(fila[1], fila[2]));
+            donante.setPersona(nuevo);
         } else {
-            donante.setTipoPersona(new PersonaJuridica(fila[1], fila[2], fila[3]));
+            PersonaJuridica nuevo = new PersonaJuridica(fila[3], null, null, null);
+            nuevo.setDocumento(new Documento(fila[1], fila[2]));
+            donante.setPersona(nuevo);
         }
         return donante;
     }

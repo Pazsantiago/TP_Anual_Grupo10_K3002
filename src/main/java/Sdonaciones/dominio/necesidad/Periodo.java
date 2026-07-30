@@ -1,8 +1,11 @@
 package Sdonaciones.dominio.necesidad;
 
 
+import lombok.Data;
+
 import java.time.LocalDate;
 
+@Data
 public class Periodo {
     private Integer periodoDias;
 

@@ -12,7 +12,7 @@ import java.util.List;
 public class AlgoritmoPrioridadSubAtendidos implements IAlgoritmoAsignacion {
 
     @Override
-    public List<RankingEntidadBeneficiaria> rankEntidad(List<EntidadBeneficiaria> entidades, DonacionSegmentada donacion) {
+    public List<RankingEntidadBeneficiaria> rankear(List<EntidadBeneficiaria> entidades, DonacionSegmentada donacion) {
         LocalDate hoy = LocalDate.now();
         LocalDate haceTresMeses = hoy.minusMonths(3);
 
