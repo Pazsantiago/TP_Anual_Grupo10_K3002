@@ -1,0 +1,574 @@
+openapi: 3.0.1
+
+info:
+  title: API Servicio de Donaciones - DonaTrack
+  description: API REST para la gestión de donaciones, personas donantes, entidades beneficiarias y necesidades.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
+tags:
+  - name: Donaciones
+    description: Gestión de donaciones.
+  - name: Donantes
+    description: Gestión de personas donantes.
+  - name: Entidades Beneficiarias
+    description: Gestión de entidades beneficiarias.
+  - name: Necesidades
+    description: Gestión de necesidades materiales.
+
+
+paths:
+
+  # =========================================================
+  # DONACIONES
+  # =========================================================
+
+  /api/donaciones:
+
+    get:
+      tags:
+        - Donaciones
+      summary: Obtener todas las donaciones
+      responses:
+        '200':
+          description: Lista de donaciones obtenida correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Donacion'
+
+    post:
+      tags:
+        - Donaciones
+      summary: Crear una nueva donación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Donacion'
+      responses:
+        '200':
+          description: Donación creada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donacion'
+
+    put:
+      tags:
+        - Donaciones
+      summary: Actualizar una donación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Donacion'
+      responses:
+        '200':
+          description: Donación actualizada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donacion'
+
+
+  /api/donaciones/{idDonacion}:
+
+    get:
+      tags:
+        - Donaciones
+      summary: Obtener una donación por ID
+      parameters:
+        - name: idDonacion
+          in: path
+          required: true
+          description: Identificador de la donación.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Donación encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donacion'
+
+    delete:
+      tags:
+        - Donaciones
+      summary: Eliminar una donación por ID
+      parameters:
+        - name: idDonacion
+          in: path
+          required: true
+          description: Identificador de la donación.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Donación eliminada correctamente.
+
+
+  # =========================================================
+  # DONANTES
+  # =========================================================
+
+  /api/donantes:
+
+    get:
+      tags:
+        - Donantes
+      summary: Obtener todas las personas donantes
+      responses:
+        '200':
+          description: Lista de personas donantes obtenida correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Donante'
+
+    post:
+      tags:
+        - Donantes
+      summary: Registrar una nueva persona donante
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Donante'
+      responses:
+        '200':
+          description: Persona donante registrada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donante'
+
+    put:
+      tags:
+        - Donantes
+      summary: Actualizar una persona donante
+      parameters:
+        - name: tipoD
+          in: query
+          required: true
+          description: Tipo de documento de la persona donante.
+          schema:
+            type: string
+        - name: doc
+          in: query
+          required: true
+          description: Número de documento de la persona donante.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Donante'
+      responses:
+        '200':
+          description: Persona donante actualizada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donante'
+
+    delete:
+      tags:
+        - Donantes
+      summary: Eliminar una persona donante
+      parameters:
+        - name: tipoD
+          in: query
+          required: true
+          description: Tipo de documento de la persona donante.
+          schema:
+            type: string
+        - name: doc
+          in: query
+          required: true
+          description: Número de documento de la persona donante.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Persona donante eliminada correctamente.
+          content:
+            text/plain:
+              schema:
+                type: string
+
+
+  /api/donantes/:
+
+    get:
+      tags:
+        - Donantes
+      summary: Obtener una persona donante por correo electrónico
+      parameters:
+        - name: correoElectronico
+          in: query
+          required: true
+          description: Correo electrónico del donante.
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: Persona donante encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donante'
+
+
+  # =========================================================
+  # ENTIDADES BENEFICIARIAS
+  # =========================================================
+
+  /api/entidadesBeneficiarias:
+
+    get:
+      tags:
+        - Entidades Beneficiarias
+      summary: Obtener todas las entidades beneficiarias
+      responses:
+        '200':
+          description: Lista de entidades beneficiarias obtenida correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntidadBeneficiaria'
+
+    post:
+      tags:
+        - Entidades Beneficiarias
+      summary: Crear una nueva entidad beneficiaria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntidadBeneficiaria'
+      responses:
+        '200':
+          description: Entidad beneficiaria creada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntidadBeneficiaria'
+
+    put:
+      tags:
+        - Entidades Beneficiarias
+      summary: Actualizar una entidad beneficiaria
+      parameters:
+        - name: razonSocial
+          in: query
+          required: true
+          description: Razón social actual de la entidad.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntidadBeneficiaria'
+      responses:
+        '200':
+          description: Entidad beneficiaria actualizada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntidadBeneficiaria'
+
+    delete:
+      tags:
+        - Entidades Beneficiarias
+      summary: Eliminar una entidad beneficiaria
+      parameters:
+        - name: razonSocial
+          in: query
+          required: true
+          description: Razón social de la entidad.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Entidad beneficiaria eliminada correctamente.
+          content:
+            text/plain:
+              schema:
+                type: string
+
+
+  /api/entidadesBeneficiarias/:
+
+    get:
+      tags:
+        - Entidades Beneficiarias
+      summary: Obtener una entidad beneficiaria por razón social
+      parameters:
+        - name: razonSocial
+          in: query
+          required: true
+          description: Razón social de la entidad.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Entidad beneficiaria encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntidadBeneficiaria'
+
+
+  # =========================================================
+  # NECESIDADES
+  # =========================================================
+
+  /api/necesidades:
+
+    get:
+      tags:
+        - Necesidades
+      summary: Obtener todas las necesidades
+      responses:
+        '200':
+          description: Lista de necesidades obtenida correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Necesidad'
+
+    delete:
+      tags:
+        - Necesidades
+      summary: Eliminar una necesidad
+      parameters:
+        - name: idNecesidad
+          in: path
+          required: true
+          description: Identificador de la necesidad.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Necesidad eliminada correctamente.
+          content:
+            text/plain:
+              schema:
+                type: string
+
+
+  /api/necesidades/{idNecesidad}:
+
+    get:
+      tags:
+        - Necesidades
+      summary: Obtener una necesidad por ID
+      parameters:
+        - name: idNecesidad
+          in: path
+          required: true
+          description: Identificador de la necesidad.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Necesidad encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Necesidad'
+
+    delete:
+      tags:
+        - Necesidades
+      summary: Eliminar una necesidad por ID
+      parameters:
+        - name: idNecesidad
+          in: path
+          required: true
+          description: Identificador de la necesidad.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Necesidad eliminada correctamente.
+          content:
+            text/plain:
+              schema:
+                type: string
+
+
+  /api/necesidades/Extraordinaria:
+
+    post:
+      tags:
+        - Necesidades
+      summary: Crear una necesidad extraordinaria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NecesidadExtraordinaria'
+      responses:
+        '200':
+          description: Necesidad extraordinaria creada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NecesidadExtraordinaria'
+
+
+  /api/necesidades/Recurrente:
+
+    post:
+      tags:
+        - Necesidades
+      summary: Crear una necesidad recurrente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NecesidadRecurrente'
+      responses:
+        '200':
+          description: Necesidad recurrente creada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NecesidadRecurrente'
+
+
+  /api/necesidades/Extraordinaria/{idNecesidad}:
+
+    put:
+      tags:
+        - Necesidades
+      summary: Actualizar una necesidad extraordinaria
+      parameters:
+        - name: idNecesidad
+          in: path
+          required: true
+          description: Identificador de la necesidad.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NecesidadExtraordinaria'
+      responses:
+        '200':
+          description: Necesidad extraordinaria actualizada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NecesidadExtraordinaria'
+
+
+  /api/necesidades/Recurrente/{idNecesidad}:
+
+    put:
+      tags:
+        - Necesidades
+      summary: Actualizar una necesidad recurrente
+      parameters:
+        - name: idNecesidad
+          in: path
+          required: true
+          description: Identificador de la necesidad.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NecesidadRecurrente'
+      responses:
+        '200':
+          description: Necesidad recurrente actualizada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NecesidadRecurrente'
+
+
+# =========================================================
+# SCHEMAS
+# =========================================================
+
+components:
+
+  schemas:
+
+    Donacion:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identificador de la donación.
+
+
+    Donante:
+      type: object
+      properties:
+        persona:
+          type: object
+          description: Datos de la persona donante.
+        mediosDeContacto:
+          type: array
+          description: Medios de contacto del donante.
+          items:
+            type: object
+
+
+    EntidadBeneficiaria:
+      type: object
+      properties:
+        razonSocial:
+          type: string
+          description: Razón social de la entidad beneficiaria.
+
+
+    Necesidad:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identificador de la necesidad.
+
+
+    NecesidadExtraordinaria:
+      allOf:
+        - $ref: '#/components/schemas/Necesidad'
+      description: Necesidad correspondiente a una situación extraordinaria.
+
+
+    NecesidadRecurrente:
+      allOf:
+        - $ref: '#/components/schemas/Necesidad'
+      description: Necesidad correspondiente a una necesidad recurrente.

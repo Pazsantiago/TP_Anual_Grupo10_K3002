@@ -1,37 +1,25 @@
 openapi: 3.0.1
+
 info:
   title: API Donaciones DonaTrack
-  description: Esta api se encarga de gestionar el crud para las donaciones en el sistema.
+  description: API REST para gestionar las donaciones del sistema.
   version: 1.0.0
 
-
 servers:
-  - url: http://localhost:8080/api/donaciones/
+  - url: http://localhost:8080
 
 tags:
-  - name: donaciones
-    description: Este endpoint se encarga de gestionar las donaciones en el sistema.
+  - name: Donaciones
+    description: Operaciones sobre las donaciones.
 
 paths:
-  /:
-    post:
-      tags:
-        - donaciones
-      summary: Inserta una donacion
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BodyDonacionesPost'
-      responses:
-        '200':
-          description: Todo salio bien.
+
+  /api/donaciones:
+
     get:
       tags:
-        - donaciones
-      summary: Obtiene todas las donaciones
-      description: Devuelve una lista con todas las donaciones registradas en el sistema.
+        - Donaciones
+      summary: Obtener todas las donaciones
       responses:
         '200':
           description: Lista de donaciones obtenida correctamente.
@@ -40,64 +28,93 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BodyDonacionesPost'
+                  $ref: '#/components/schemas/Donacion'
+
+    post:
+      tags:
+        - Donaciones
+      summary: Crear una nueva donación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Donacion'
+      responses:
+        '200':
+          description: Donación creada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donacion'
 
 
+    put:
+      tags:
+        - Donaciones
+      summary: Actualizar una donación existente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Donacion'
+      responses:
+        '200':
+          description: Donación actualizada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donacion'
 
-  /{idDonacion}:
+
+  /api/donaciones/{idDonacion}:
+
     get:
       tags:
-        - donaciones
-      summary: Obtengo la información de la donacion con el id pasado por la url
+        - Donaciones
+      summary: Obtener una donación por su ID
       parameters:
         - name: idDonacion
           in: path
           required: true
+          description: Identificador de la donación.
           schema:
             type: integer
       responses:
         '200':
-          description: Todo salio bien.
+          description: Donación encontrada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donacion'
+        '404':
+          description: Donación no encontrada.
+
 
     delete:
       tags:
-        - donaciones
-      summary: Elimina una donación
-      description: Elimina la donación cuyo identificador se recibe por la URL.
+        - Donaciones
+      summary: Eliminar una donación por su ID
       parameters:
         - name: idDonacion
           in: path
           required: true
-          description: Identificador único de la donación.
+          description: Identificador de la donación.
           schema:
             type: integer
       responses:
         '200':
           description: Donación eliminada correctamente.
-        '404':
-          description: No existe una donación con el identificador indicado.
+
 
 components:
+
   schemas:
-    BodyDonacionesPost:
+
+    Donacion:
       type: object
       properties:
         id:
           type: integer
-        Donante:
-          type: object
-        descripcionGeneral:
-          type: string
-        fechaRegistro:
-          type: string
-          format: date
-        bienesDeEntrada:
-          type: array
-          items:
-            $ref: '#/components/schemas/Bien'
-
-    Bien:
-      type: object
-      properties:
-        nombre:
-          type: string
+          description: Identificador de la donación
