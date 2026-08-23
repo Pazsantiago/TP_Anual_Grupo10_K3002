@@ -17,13 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Orquesta la planificación de rutas y la trazabilidad de las entregas.
- * Por diseño, este componente NUNCA invoca al Servicio de Donaciones, al
- * Servicio de Incentivos ni al Servicio de Notificaciones: solo deja
- * disponible información para que esos servicios la consulten
- * (ver {@link #informarEstadoDeDonaciones()}).
- */
+
 @Service
 public class GestorLogistica {
 
