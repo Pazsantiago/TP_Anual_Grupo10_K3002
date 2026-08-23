@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: servicio-logistica
+
+server:
+  port: 8081
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
