@@ -9,23 +9,18 @@ import java.util.List;
 
 @Getter
 @Setter
-
-
 public abstract class Mision {
-
-
     private long id;
-
     private String nombre;
     private String descripcion;
-    private CategoriaDonante Categoria;
+    private CategoriaDonante categoria; // minúscula inicial
     private int orden;
-    private Insignia Insignia;
+    private Insignia insignia;           // minúscula inicial
 
-    // public boolean estaCompletada (ProgresoMision progreso){ return progreso.getCompletada();  } // VER
-    public abstract double calcularProgreso (List<DonacionImportada> historialProgreso);
-    public String getObjetivo (){return descripcion;}
+    public abstract double calcularProgreso(List<DonacionImportada> historialProgreso);
 
-
+    public String getObjetivo() {
+        return descripcion;
+    }
 }
 

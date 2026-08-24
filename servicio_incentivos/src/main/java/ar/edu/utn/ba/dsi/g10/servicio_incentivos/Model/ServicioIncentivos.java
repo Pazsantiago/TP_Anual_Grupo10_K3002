@@ -6,9 +6,11 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.DonacionImportada;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.ProgresoMision;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Repository.RepositorioPerfiles;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ServicioIncentivos {
     private final RepositorioPerfiles repo;
 

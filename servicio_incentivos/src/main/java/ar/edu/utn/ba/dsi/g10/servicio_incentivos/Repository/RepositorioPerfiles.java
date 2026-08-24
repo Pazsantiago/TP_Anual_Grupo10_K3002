@@ -1,10 +1,12 @@
 package ar.edu.utn.ba.dsi.g10.servicio_incentivos.Repository;
 
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class RepositorioPerfiles {
 
     private final List<PerfilDonante> perfilDonantes = new ArrayList<>();

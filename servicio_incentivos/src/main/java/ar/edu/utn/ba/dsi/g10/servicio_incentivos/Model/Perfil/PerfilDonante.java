@@ -17,9 +17,9 @@ public class PerfilDonante {
     private CategoriaDonante categoria;
     private int totalDonacionesHistoricas;
     private int totalOrganizacionesAyudadas;
-    private LocalDate fechaUltimaDonacion;
-    private int rachaDonaciones;
     private Mision misionActual;
+    private RachaDonante racha;
+
     private final List<Insignia> insignias = new ArrayList<>();
     private final List<ProgresoMision> historialMisiones = new ArrayList<>();
     private RankingPerfil rankingHistoricos;
@@ -28,17 +28,16 @@ public class PerfilDonante {
         this.donanteID = donanteID;
         this.categoria = categoria;
         this.misionActual = misionActual;
+        this.racha = new RachaDonante();
         inicializarProgreso();
     }
 
-
     public double getPorcentajeProgreso() {
-        if (historialMisiones.isEmpty()) {
-            return 0.0;
-        }
+        if (historialMisiones.isEmpty()) return 0.0;
         ProgresoMision ultimoProgreso = historialMisiones.getLast();
         if (misionActual != null && ultimoProgreso.getMisionAsociada() != null) {
-            if (misionActual.getID() == ultimoProgreso.getMisionAsociada().getID()) {
+            // Corrección de getId()
+            if (misionActual.getId() == ultimoProgreso.getMisionAsociada().getId()) {
                 return ultimoProgreso.getProgresoActual();
             }
         }
@@ -46,15 +45,14 @@ public class PerfilDonante {
     }
 
     public void subirCategoria() {
-        if (categoria != null && categoria.siguienteCategoria() != null) {
-            categoria = categoria.siguienteCategoria();
+        if (categoria != null) {
+            // Corrección a avanzarASiguienteCategoria()
+            categoria.avanzarASiguienteCategoria();
         }
     }
 
     public void misionCompletada() {
-        if (historialMisiones.isEmpty()) {
-            return;
-        }
+        if (historialMisiones.isEmpty()) return;
         ProgresoMision ultimoProgreso = historialMisiones.getLast();
         if (ultimoProgreso.getCompletada() && misionActual != null && misionActual.getInsignia() != null) {
             boolean yaOtorgada = insignias.stream().anyMatch(insignia -> insignia == misionActual.getInsignia());
@@ -76,9 +74,7 @@ public class PerfilDonante {
     }
 
     private void inicializarProgreso() {
-        if (misionActual == null) {
-            return;
-        }
+        if (misionActual == null) return;
         if (historialMisiones.isEmpty()) {
             ProgresoMision progresoInicial = new ProgresoMision();
             progresoInicial.setMisionAsociada(misionActual);
@@ -91,25 +87,15 @@ public class PerfilDonante {
         totalDonacionesHistoricas++;
     }
 
+    public void incrementarOrganizacionesAyudadas() {
+        totalOrganizacionesAyudadas++;
+    }
 
     public void verificarRachaDonaciones(LocalDate fechaNuevaDonacion) {
-        if (fechaNuevaDonacion != null) {
-            if (this.fechaUltimaDonacion == null) {
-                this.rachaDonaciones = 1;
-                this.fechaUltimaDonacion = fechaNuevaDonacion;
-                return;
-            }
-            LocalDate nuevaNormalizada = fechaNuevaDonacion.withDayOfMonth(1);
-            LocalDate ultimaNormalizada = this.fechaUltimaDonacion.withDayOfMonth(1);
-
-            if (nuevaNormalizada.minusMonths(1).isEqual(ultimaNormalizada)) {
-                rachaDonaciones++;
-                this.fechaUltimaDonacion = fechaNuevaDonacion;
-            } else if (nuevaNormalizada.minusMonths(1).isAfter(ultimaNormalizada)) {
-                rachaDonaciones = 1;
-                this.fechaUltimaDonacion = fechaNuevaDonacion;
-            }
+        if (this.racha == null) {
+            this.racha = new RachaDonante();
         }
+        this.racha.registrarDonacion(fechaNuevaDonacion);
     }
 }
 
