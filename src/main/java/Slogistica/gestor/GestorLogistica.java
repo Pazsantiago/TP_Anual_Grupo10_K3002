@@ -30,10 +30,10 @@ public class GestorLogistica {
     private final IProveedorPlanificacionRutas proveedorPlanificacionRutas;
 
     public GestorLogistica(RepoDonacionesAsignadas repoDonacionesAsignadas,
-                            RepoCamiones repoCamiones,
-                            RepoPlanesDeRuta repoPlanesDeRuta,
-                            RepoEntregas repoEntregas,
-                            IProveedorPlanificacionRutas proveedorPlanificacionRutas) {
+                           RepoCamiones repoCamiones,
+                           RepoPlanesDeRuta repoPlanesDeRuta,
+                           RepoEntregas repoEntregas,
+                           IProveedorPlanificacionRutas proveedorPlanificacionRutas) {
         this.repoDonacionesAsignadas = repoDonacionesAsignadas;
         this.repoCamiones = repoCamiones;
         this.repoPlanesDeRuta = repoPlanesDeRuta;
@@ -86,13 +86,17 @@ public class GestorLogistica {
         return planesCreados;
     }
 
-    /** Crea el registro de trazabilidad de una donación planificada en un camión. */
+    /**
+     * Crea el registro de trazabilidad de una donación planificada en un camión.
+     */
     public Entrega registrarEntregaDeDonacion(Camion camion, DonacionDTO donacion) {
         Entrega entrega = new Entrega(null, donacion, camion);
         return repoEntregas.guardar(entrega);
     }
 
-    /** El chofer marca el inicio de su ruta: sus entregas pasan a "En traslado". */
+    /**
+     * El chofer marca el inicio de su ruta: sus entregas pasan a "En traslado".
+     */
     public PlanDeRuta iniciarRuta(Integer idPlan) {
         PlanDeRuta plan = repoPlanesDeRuta.buscarPorId(idPlan)
                 .orElseThrow(() -> new IllegalArgumentException("No existe el plan de ruta " + idPlan));
@@ -112,7 +116,9 @@ public class GestorLogistica {
         return plan;
     }
 
-    /** La entidad beneficiaria confirma que recibió la donación (con fotos opcionales). */
+    /**
+     * La entidad beneficiaria confirma que recibió la donación (con fotos opcionales).
+     */
     public Entrega entregarDonacion(Integer idEntrega, List<String> fotos) {
         Entrega entrega = repoEntregas.buscarPorId(idEntrega)
                 .orElseThrow(() -> new IllegalArgumentException("No existe la entrega " + idEntrega));
@@ -120,7 +126,9 @@ public class GestorLogistica {
         return entrega;
     }
 
-    /** La entidad beneficiaria (o la logística) informa que la entrega no se pudo concretar. */
+    /**
+     * La entidad beneficiaria (o la logística) informa que la entrega no se pudo concretar.
+     */
     public Entrega informarNoEntregaDeDonacion(Integer idEntrega, String motivo) {
         Entrega entrega = repoEntregas.buscarPorId(idEntrega)
                 .orElseThrow(() -> new IllegalArgumentException("No existe la entrega " + idEntrega));
