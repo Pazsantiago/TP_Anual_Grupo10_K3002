@@ -16,6 +16,49 @@ public class RachaDonante {
     private int rachaActual;
     private int rachaMaxima;
     private LocalDate fechaUltimaDonacion;
+
+    // antes comparabamos hasta 30 dias, no contemplabamos los meses con 31 dias, en algunos casos la racha se hubiese contabilizado mal
+    // ahora comparamos directamente con el mes, sea cual sea
+
+    public void registrarDonacion(LocalDate fechaDonacion) {
+        if (fechaDonacion == null) return;
+
+        YearMonth nuevoMes = YearMonth.from(fechaDonacion);
+
+        if (fechaUltimaDonacion == null) {
+            rachaActual = 1;
+        } else {
+            YearMonth ultimoMes = YearMonth.from(fechaUltimaDonacion);
+
+            if (nuevoMes.isBefore(ultimoMes)) {
+                return; // donacion vieja
+            }
+
+            if (nuevoMes.equals(ultimoMes)) {
+                return; // ya dono ese mes
+            }
+
+            if (nuevoMes.equals(ultimoMes.plusMonths(1))) {
+                rachaActual++;
+            } else {
+                rachaActual = 1;
+            }
+        }
+
+        fechaUltimaDonacion = fechaDonacion;
+        rachaMaxima = Math.max(rachaMaxima, rachaActual);
+    }
+
+    public boolean estaVigente(LocalDate fechaActual) {
+        if (fechaUltimaDonacion == null) return false;
+
+        YearMonth ultimoMes = YearMonth.from(fechaUltimaDonacion);
+        YearMonth mesActual = YearMonth.from(fechaActual);
+
+        return !mesActual.isAfter(ultimoMes.plusMonths(1));
+    }
+
+    /*
     private boolean estaActiva;
 
     public boolean estaVigente(LocalDate fechaNueva) {
@@ -44,4 +87,5 @@ public class RachaDonante {
             this.rachaMaxima = this.rachaActual;
         }
     }
+    */
 }
