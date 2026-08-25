@@ -24,11 +24,12 @@ public class PerfilDonante {
     private final List<ProgresoMision> historialMisiones = new ArrayList<>();
     private RankingPerfil rankingHistoricos;
 
-    public PerfilDonante(long donanteID, CategoriaDonante categoria, Mision misionActual) {
+    public PerfilDonante(long donanteID, CategoriaDonante categoria, Mision misionActual, RankingPerfil rankingHistoricos) {
         this.donanteID = donanteID;
         this.categoria = categoria;
         this.misionActual = misionActual;
         this.racha = new RachaDonante();
+        this.rankingHistoricos = rankingHistoricos;
         inicializarProgreso();
     }
 
@@ -55,7 +56,8 @@ public class PerfilDonante {
         if (historialMisiones.isEmpty()) return;
         ProgresoMision ultimoProgreso = historialMisiones.getLast();
         if (ultimoProgreso.getCompletada() && misionActual != null && misionActual.getInsignia() != null) {
-            boolean yaOtorgada = insignias.stream().anyMatch(insignia -> insignia == misionActual.getInsignia());
+            boolean yaOtorgada = insignias.stream()
+                .anyMatch(insignia -> insignia.getID() == misionActual.getInsignia().getID()); // cambio, antes comparaba con el objeto en memoria, ahora con el id es con la insignia real, tamb podriamos usar hashcode y equals
             if (!yaOtorgada) {
                 insignias.add(misionActual.getInsignia());
             }
@@ -66,7 +68,7 @@ public class PerfilDonante {
         if (historialMisiones.isEmpty()) {
             inicializarProgreso();
         }
-        return historialMisiones.getLast();
+        return historialMisiones.getLast(); // correccion sugerida: historialMisiones.lista.get(lista.size() - 1)
     }
 
     public long getID() {
@@ -89,7 +91,7 @@ public class PerfilDonante {
 
     public void incrementarOrganizacionesAyudadas() {
         totalOrganizacionesAyudadas++;
-    }
+    } // si es la misma organizacion suma otra vez
 
     public void verificarRachaDonaciones(LocalDate fechaNuevaDonacion) {
         if (this.racha == null) {

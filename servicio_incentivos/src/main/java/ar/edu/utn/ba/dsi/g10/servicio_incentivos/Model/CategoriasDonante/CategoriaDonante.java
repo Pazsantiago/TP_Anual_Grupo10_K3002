@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class CategoriaDonante {
     private Categoria categoria;
-    private List<Mision> Misiones;
+    private List<Mision> misiones = new ArrayList<>();
 
     public void avanzarASiguienteCategoria() {
         if (this.categoria != null) {
@@ -21,7 +21,7 @@ public class CategoriaDonante {
 
     public void agregarMision(Mision mision) {
         if (mision != null) {
-            this.Misiones.add(mision);
+            this.misiones.add(mision);
         }
     }
 
