@@ -26,4 +26,28 @@ public class NotificacionRequestDTO {
     return destinatario;
   }
 
+  public String getEventoOrigen() {
+    return eventoOrigen;
+  }
+
+  public void setMedioNotificacion(MedioNotificacion medioNotificacion) {
+    this.medioNotificacion = medioNotificacion;
+  }
+
+  public void setCuerpo(String cuerpo) {
+    this.cuerpo = cuerpo;
+  }
+
+  public void setAsunto(String asunto) {
+    this.asunto = asunto;
+  }
+
+  public void setDestinatario(DestinatarioRequestDTO destinatario) {
+    this.destinatario = destinatario;
+  }
+
+  public void setEventoOrigen(String eventoOrigen) {
+    this.eventoOrigen = eventoOrigen;
+  }
+
 }

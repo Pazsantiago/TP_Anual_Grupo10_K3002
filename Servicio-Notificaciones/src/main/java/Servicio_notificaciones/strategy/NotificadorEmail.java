@@ -4,10 +4,12 @@ import Servicio_notificaciones.dominio.MedioNotificacion;
 import Servicio_notificaciones.dominio.Notificacion;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Component;
 
+@Component
 public class NotificadorEmail implements INotificador {
 
-  private JavaMailSender mailSender;
+  private final JavaMailSender mailSender;
 
   public NotificadorEmail(JavaMailSender mailSender) {
     this.mailSender = mailSender;

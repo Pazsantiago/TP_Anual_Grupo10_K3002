@@ -21,10 +21,13 @@ public class Notificacion {
 
     public Notificacion(Destinatario destinatario, MedioNotificacion medioNotificacion, String asunto,
                         String cuerpo) {
+        this.id = UUID.randomUUID();
         this.destinatario = destinatario;
         this.medioNotificacion = medioNotificacion;
         this.asunto = asunto;
         this.cuerpo = cuerpo;
+        this.fechaCreacion = LocalDateTime.now();
+        this.estadoNotificacion = EstadoNotificacion.PENDIENTE;
 
     }
 

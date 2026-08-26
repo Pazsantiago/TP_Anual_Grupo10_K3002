@@ -33,6 +33,34 @@ public class NotificacionResponse {
     this.fechaEnvio = fechaEnvio;
   }
 
+  public MedioNotificacion getMedioNotificacion() {
+    return medioNotificacion;
+  }
+
+  public EstadoNotificacion getEstadoNotificacion() {
+    return estadoNotificacion;
+  }
+
+  public String getDestinatario() {
+    return destinatario;
+  }
+
+  public String getAsunto() {
+    return asunto;
+  }
+
+  public String getCuerpo() {
+    return cuerpo;
+  }
+
+  public LocalDateTime getFechaCreacion() {
+    return fechaCreacion;
+  }
+
+  public LocalDateTime getFechaEnvio() {
+    return fechaEnvio;
+  }
+
   public static NotificacionResponse from(Notificacion notificacion) {
     return new NotificacionResponse(
         notificacion.getMedioNotificacion(),

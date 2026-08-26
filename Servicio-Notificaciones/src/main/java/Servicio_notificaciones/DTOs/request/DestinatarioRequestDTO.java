@@ -22,4 +22,20 @@ public class DestinatarioRequestDTO {
   public String getWhatsapp() {
     return whatsapp;
   }
+
+  public void setNombre(String nombre) {
+    this.nombre = nombre;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public void setTelefono(String telefono) {
+    this.telefono = telefono;
+  }
+
+  public void setWhatsapp(String whatsapp) {
+    this.whatsapp = whatsapp;
+  }
 }

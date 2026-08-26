@@ -1,7 +1,7 @@
 package Servicio_notificaciones.dominio;
 
 public enum EstadoNotificacion {
-  PENDENTE,
+  PENDIENTE,
   ENVIADA,
   FALLIDA
 }
