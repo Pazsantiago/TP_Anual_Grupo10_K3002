@@ -3,7 +3,8 @@ package ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.CategoriasDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.Mision;
 import lombok.Getter;
 import lombok.Setter;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.List;
 
 
@@ -25,5 +26,12 @@ public class CategoriaDonante {
         }
     }
 
+    public String getCategoria() {
+        return categoria.getNombre();
+    }
+
+    public void initCategoria(){
+        this.categoria = Categoria.COLABORADOR;
+    }
 
 }

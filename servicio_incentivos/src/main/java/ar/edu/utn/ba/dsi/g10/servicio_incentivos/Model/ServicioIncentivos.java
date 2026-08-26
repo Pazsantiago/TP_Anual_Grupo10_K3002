@@ -13,11 +13,11 @@ import java.util.List;
 @Service
 public class ServicioIncentivos {
     private final RepositorioPerfiles repo;
-
+    /* 
     public ServicioIncentivos() {
         this(new RepositorioPerfiles());
     }
-
+    */
     public ServicioIncentivos(RepositorioPerfiles repo) {
         this.repo = repo;
     }
@@ -29,10 +29,13 @@ public class ServicioIncentivos {
         }
 
         perfilAsociado.sumarDonacion();
-        perfilAsociado.verificarRachaDonaciones(donacion.getFechaDonacion());
-        ProgresoMision progresoAsociado = perfilAsociado.getProgreso();
-        progresoAsociado.actualizar(donacion);
-        verificarYCompletarMision(perfilAsociado);
+        //perfilAsociado.verificarRachaDonaciones(donacion.getFechaDonacion());
+        //ProgresoMision progresoAsociado = perfilAsociado.getProgreso();
+        //progresoAsociado.actualizar(donacion);
+        //verificarYCompletarMision(perfilAsociado);
+        
+        
+        
         //verificarSubidaCategoria(perfilAsociado);
     }
 
@@ -47,7 +50,7 @@ public class ServicioIncentivos {
 
     public List<Insignia> getInsignias(long donanteId) {
         PerfilDonante perfil = obtenerPerfil(donanteId);
-        return perfil != null ? perfil.getInsignias() : List.of();
+        return perfil != null ? perfil.getInsignias() : null;
     }
 
     public PerfilDonante getMetricas(long donanteID) {
@@ -71,6 +74,16 @@ public class ServicioIncentivos {
     }*/
 
     private PerfilDonante obtenerPerfil(long donanteID) {
+    
+        //CODIGO PRUEBA 
+    /*   // Si es la primera vez que aparece este donante, lo creamos e incluimos
+    if (perfil == null) {
+        perfil = new PerfilDonante(donanteID);
+        repo.guardar(perfil);
+        return perfil;
+    }    
+    // FIN CODIGO PRUEBA 
+    */
         return repo != null ? repo.getxId(donanteID) : null;
     }
 }

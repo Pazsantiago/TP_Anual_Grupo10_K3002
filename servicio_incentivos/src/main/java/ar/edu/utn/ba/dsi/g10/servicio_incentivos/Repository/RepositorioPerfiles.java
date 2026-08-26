@@ -1,6 +1,10 @@
 package ar.edu.utn.ba.dsi.g10.servicio_incentivos.Repository;
 
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.CategoriasDonante.CategoriaDonante;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.ProgresoMision;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.MisionCompletitud;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.RankingPerfil;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -29,4 +33,26 @@ public class RepositorioPerfiles {
                 .findFirst()
                 .orElse(null);
     }
+
+    
+      public RepositorioPerfiles() {
+        
+        CategoriaDonante categoriaInicial = new CategoriaDonante(); 
+        categoriaInicial.initCategoria(); 
+
+        MisionCompletitud misionInicial = new MisionCompletitud();
+        RankingPerfil rankingInicial = new RankingPerfil();
+
+     
+        PerfilDonante donanteDePrueba = new PerfilDonante(
+            1L, 
+            categoriaInicial, 
+            misionInicial, 
+            rankingInicial
+        );
+
+   
+        this.perfilDonantes.add(donanteDePrueba);
+    }
+
 }

@@ -6,6 +6,7 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.Mision;
 import lombok.Getter;
 import lombok.Setter;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,6 @@ public class PerfilDonante {
     public long getID() {
         return donanteID;
     }
-
     private void inicializarProgreso() {
         if (misionActual == null) return;
         if (historialMisiones.isEmpty()) {
@@ -98,6 +98,20 @@ public class PerfilDonante {
             this.racha = new RachaDonante();
         }
         this.racha.registrarDonacion(fechaNuevaDonacion);
+    }
+
+    public String getCategoria() {
+        return categoria != null ? categoria.getCategoria() : "Sin categoría";
+    }
+
+    public List<Insignia> getInsignias() {
+        return insignias;
+    }
+
+    public int getMisionesCompletadas() {
+        return (int) historialMisiones.stream()
+                .filter(ProgresoMision::getCompletada)
+                .count();
     }
 }
 

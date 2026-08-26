@@ -3,10 +3,15 @@ package ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Getter
 @Setter

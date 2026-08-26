@@ -22,5 +22,20 @@ public abstract class Mision {
     public String getObjetivo() {
         return descripcion;
     }
+    public long getId() {
+        return id;
+    }
+    public String getNombre() {
+        return nombre;
+    }
+    public String getDescripcion() {
+        return descripcion;
+    }
+    public String getCategoria() {
+        return categoria.getCategoria();
+    }
+    public Insignia getInsignia() {
+        return insignia;
+    } 
 }
 
