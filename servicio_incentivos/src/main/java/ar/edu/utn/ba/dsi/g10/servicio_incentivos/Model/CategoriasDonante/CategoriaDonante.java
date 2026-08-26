@@ -11,8 +11,14 @@ import java.util.List;
 @Getter
 @Setter
 public class CategoriaDonante {
-    private Categoria categoria;
+    // Se agrego una asignación por defecto al declarar el atributo
+    private Categoria categoria = Categoria.COLABORADOR;
     private List<Mision> misiones = new ArrayList<>();
+
+    // Constructor por defecto explícito
+    public CategoriaDonante() {
+        this.categoria = Categoria.COLABORADOR;
+    }
 
     public void avanzarASiguienteCategoria() {
         if (this.categoria != null) {
@@ -26,8 +32,10 @@ public class CategoriaDonante {
         }
     }
 
+    // 2. Control de nulos al obtener el nombre
     public String getCategoria() {
-        return categoria.getNombre();
+        //return categoria.getNombre();
+        return (this.categoria != null) ? this.categoria.getNombre() : Categoria.COLABORADOR.getNombre();
     }
 
     public void initCategoria(){

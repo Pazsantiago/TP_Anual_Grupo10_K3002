@@ -1,5 +1,6 @@
 package ar.edu.utn.ba.dsi.g10.servicio_incentivos.Repository;
 
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.MisionRacha;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.CategoriasDonante.CategoriaDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.ProgresoMision;
@@ -36,7 +37,29 @@ public class RepositorioPerfiles {
 
     
       public RepositorioPerfiles() {
-        
+          CategoriaDonante categoriaInicial = new CategoriaDonante();
+          categoriaInicial.initCategoria();
+
+          // Instanciamos la misión de Racha
+          MisionRacha misionInicial = new MisionRacha();
+
+          // Poblamos sus datos descriptivos
+          misionInicial.setId(1L);
+          misionInicial.setNombre("Racha Donante");
+          misionInicial.setDescripcion("Realizar donaciones consecutivas durante 10 meses");
+
+          RankingPerfil rankingInicial = new RankingPerfil();
+
+          // Asignamos la misión al donante de prueba (ID: 1)
+          PerfilDonante donanteDePrueba = new PerfilDonante(
+                  1L,
+                  categoriaInicial,
+                  misionInicial,
+                  rankingInicial
+          );
+
+          this.perfilDonantes.add(donanteDePrueba);
+        /*
         CategoriaDonante categoriaInicial = new CategoriaDonante(); 
         categoriaInicial.initCategoria(); 
 
@@ -52,7 +75,7 @@ public class RepositorioPerfiles {
         );
 
    
-        this.perfilDonantes.add(donanteDePrueba);
+        this.perfilDonantes.add(donanteDePrueba);*/
     }
 
 }

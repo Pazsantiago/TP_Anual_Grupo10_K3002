@@ -13,7 +13,8 @@ public abstract class Mision {
     private long id;
     private String nombre;
     private String descripcion;
-    private CategoriaDonante categoria; // minúscula inicial
+    //TODO: Revisar si la inicializacion esta bien
+    private CategoriaDonante categoria = new CategoriaDonante()/*Inicializo la categotia*/; // minúscula inicial
     private int orden;
     private Insignia insignia;           // minúscula inicial
 

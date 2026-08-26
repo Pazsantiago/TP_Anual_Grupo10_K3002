@@ -37,6 +37,22 @@ public class ServicioIncentivos {
         
         
         //verificarSubidaCategoria(perfilAsociado);
+        //  TODO: cambios realizados a partir de acá, revisar
+        // Evalúa racha mensual del donante
+        perfilAsociado.verificarRachaDonaciones(donacion.getFechaDonacion());
+
+        // Actualiza el progreso de la misión actual con la nueva donación
+        ProgresoMision progresoAsociado = perfilAsociado.getProgreso();
+        if (progresoAsociado != null) {
+            progresoAsociado.actualizar(donacion);
+        }
+
+        // Otorga insignia si completó la misión
+        verificarYCompletarMision(perfilAsociado);
+
+        // Promueve de categoría si alcanzó el 100% de progreso
+        verificarSubidaCategoria(perfilAsociado);
+
     }
 
     public void procesarDonacionEntregada(long donanteID, DonacionImportada donacion) {
@@ -61,7 +77,12 @@ public class ServicioIncentivos {
         if (perfilDonante == null) {
             return;
         }
-        perfilDonante.misionCompletada();
+        perfilDonante.misionCompletada(); // 2. ¿por que se saca esto?
+
+        //2. ¿porque se reemplaza por esto?
+        if (perfilDonante.getPorcentajeProgreso() >= 100) {
+            perfilDonante.subirCategoria();
+        }
     }
 
     /*private void verificarSubidaCategoria(PerfilDonante perfilDonante) {
@@ -72,6 +93,12 @@ public class ServicioIncentivos {
             perfilDonante.subirCategoria();
         }
     }*/
+
+    private void verificarSubidaCategoria(PerfilDonante perfilDonante) {
+        if (perfilDonante != null && perfilDonante.getPorcentajeProgreso() >= 100.0) {
+            perfilDonante.subirCategoria(); // Eleva la categoría[cite: 12, 22]
+        }
+    }
 
     private PerfilDonante obtenerPerfil(long donanteID) {
     
