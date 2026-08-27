@@ -5,6 +5,9 @@ public class Direccion {
     private String calle;
     private String ciudad;
     private String pais;
+    private Double latitud;
+    private Double longitud;
+}
 
     public Direccion(Long id, String calle, String ciudad, String pais, Double latitud, Double longitud) {
         this.id = id;
@@ -63,6 +66,4 @@ public class Direccion {
         this.longitud = longitud;
     }
 
-    private Double latitud;
-    private Double longitud;
-}
+

@@ -9,6 +9,9 @@ public class Bulto {
 
     @ManyToOne
     private Camion camion;
+    @OneToMany(mappedBy = "bulto")
+    private List<Bien> bienes;
+}
 
     public Long getId() {
         return id;
@@ -58,6 +61,4 @@ public class Bulto {
         this.bienes = bienes;
     }
 
-    @OneToMany(mappedBy = "bulto")
-    private List<Bien> bienes;
-}
+

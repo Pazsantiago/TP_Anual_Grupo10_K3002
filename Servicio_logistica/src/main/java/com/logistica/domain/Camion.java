@@ -2,6 +2,10 @@ public class Camion {
     private String patente;
     private double capacidadCarga;
     private double capacidadVolumen;
+    private double altura;
+    @OneToMany(mappedBy = "camion")
+    private List<Bulto> bultosAsignados;
+}
 
     public Camion(String patente, double capacidadCarga, double capacidadVolumen, double altura, List<Bulto> bultosAsignados) {
         this.patente = patente;
@@ -11,7 +15,7 @@ public class Camion {
         this.bultosAsignados = bultosAsignados;
     }
 
-    private double altura;
+
 
     public String getPatente() {
         return patente;
@@ -53,6 +57,5 @@ public class Camion {
         this.bultosAsignados = bultosAsignados;
     }
 
-    @OneToMany(mappedBy = "camion")
-    private List<Bulto> bultosAsignados;
-}
+
+

@@ -1,5 +1,8 @@
 public class RutaResponse {
     private Camion camion;
+    private List<String> destinos;
+    private List<Entrega> entregas;
+}
 
     public Camion getCamion() {
         return camion;
@@ -31,6 +34,4 @@ public class RutaResponse {
         this.entregas = entregas;
     }
 
-    private List<String> destinos;
-    private List<Entrega> entregas;
-}
+

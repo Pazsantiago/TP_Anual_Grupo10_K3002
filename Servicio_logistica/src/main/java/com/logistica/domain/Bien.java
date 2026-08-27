@@ -2,18 +2,19 @@ public class Bien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    public Bien(Long id, String nombre, int cantidad, String tipo, Bulto bulto) {
-        this.id = id;
-        this.nombre = nombre;
-        this.cantidad = cantidad;
-        this.tipo = tipo;
-        this.bulto = bulto;
-    }
-
     private String nombre;
     private int cantidad;
     private String tipo;
+    @ManyToOne
+    private Bulto bulto;
+}
+public Bien(Long id, String nombre, int cantidad, String tipo, Bulto bulto) {
+    this.id = id;
+    this.nombre = nombre;
+    this.cantidad = cantidad;
+    this.tipo = tipo;
+    this.bulto = bulto;
+}
 
     public Long getId() {
         return id;
@@ -55,6 +56,4 @@ public class Bien {
         this.bulto = bulto;
     }
 
-    @ManyToOne
-    private Bulto bulto;
-}
+

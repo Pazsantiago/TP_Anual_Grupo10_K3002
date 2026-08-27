@@ -4,6 +4,9 @@ public class PlanRuta {
     private Long id;
     @OneToMany
     private List<Direccion> direcciones;
+    private Double distanciaTotal;
+    private String tiempoEstimado;
+}
 
     public PlanRuta(Long id, List<Direccion> direcciones, Double distanciaTotal, String tiempoEstimado) {
         this.id = id;
@@ -44,6 +47,3 @@ public class PlanRuta {
         this.tiempoEstimado = tiempoEstimado;
     }
 
-    private Double distanciaTotal;
-    private String tiempoEstimado;
-}
