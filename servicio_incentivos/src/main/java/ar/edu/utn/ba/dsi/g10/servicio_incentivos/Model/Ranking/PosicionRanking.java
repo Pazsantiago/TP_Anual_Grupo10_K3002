@@ -1,4 +1,4 @@
-package ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil;
+package ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking;
 
 import lombok.Getter;
 import lombok.Setter;

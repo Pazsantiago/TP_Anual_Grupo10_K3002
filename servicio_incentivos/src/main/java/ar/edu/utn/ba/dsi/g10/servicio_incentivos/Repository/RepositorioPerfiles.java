@@ -5,12 +5,17 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.DonacionImportada;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.CategoriasDonante.CategoriaDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.ProgresoMision;
-import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.RankingPerfil;
+//import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.RankingPerfil;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking.PosicionRanking;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking.RankingPerfil;
+
+
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class RepositorioPerfiles {
@@ -96,9 +101,9 @@ public class RepositorioPerfiles {
           insRacha.setDescripcion("Otorgada por mantener una racha de donaciones");
           misionRacha.setInsignia(insRacha); // Vinculación
 
-          RankingPerfil ranking1 = new RankingPerfil();
+         // RankingPerfil ranking1 = new RankingPerfil();
 
-          PerfilDonante donante1 = new PerfilDonante(1L, catInicial1, misionRacha, ranking1);
+          PerfilDonante donante1 = new PerfilDonante(1L, catInicial1, misionRacha);
           this.perfilDonantes.add(donante1);
 
 
@@ -121,8 +126,8 @@ public class RepositorioPerfiles {
           insConstancia.setDescripcion("Otorgada por lograr 5 donaciones exitosas");
           misionCantidad.setInsignia(insConstancia); // Vinculación
 
-          RankingPerfil ranking2 = new RankingPerfil();
-          PerfilDonante donante2 = new PerfilDonante(2L, catInicial2, misionCantidad, ranking2);
+          //RankingPerfil ranking2 = new RankingPerfil();
+          PerfilDonante donante2 = new PerfilDonante(2L, catInicial2, misionCantidad);
 
           DonacionImportada d1 = new DonacionImportada();
           d1.setDonacionId(201L); d1.setDonanteId(2L); d1.setCantidadDonada(5);
@@ -159,8 +164,8 @@ public class RepositorioPerfiles {
           insVariedad.setDescripcion("Otorgada por donar en 3 categorías distintas");
           misionVariedad.setInsignia(insVariedad); // Vinculación directa
 
-          RankingPerfil ranking3 = new RankingPerfil();
-          PerfilDonante donante3 = new PerfilDonante(3L, catInicial3, misionVariedad, ranking3);
+          //RankingPerfil ranking3 = new RankingPerfil();
+          PerfilDonante donante3 = new PerfilDonante(3L, catInicial3, misionVariedad);
 
           DonacionImportada d31 = new DonacionImportada();
           d31.setDonacionId(301L); d31.setDonanteId(3L); d31.setCantidadDonada(2);
@@ -205,8 +210,8 @@ public class RepositorioPerfiles {
           insGranAportante.setDescripcion("Otorgada por aportar 50 bienes en total");
           misionMonto.setInsignia(insGranAportante); // Vinculación
 
-          RankingPerfil ranking4 = new RankingPerfil();
-          PerfilDonante donante4 = new PerfilDonante(4L, catInicial4, misionMonto, ranking4);
+          //RankingPerfil ranking4 = new RankingPerfil();
+          PerfilDonante donante4 = new PerfilDonante(4L, catInicial4, misionMonto);
 
           donante4.sumarDonacion();
           donante4.sumarDonacion();
@@ -235,5 +240,23 @@ public class RepositorioPerfiles {
 
           this.perfilDonantes.add(donante4);
     }
+
+
+// Ranking nuevo
+private RankingPerfil ranking = new RankingPerfil();
+
+public void actualizarRankingPerfil(PerfilDonante perfil) {
+   ranking.actualizarPerfil(perfil);
+}
+public List<PosicionRanking> obtenerRankingMensual(int tamaño){
+    List<PosicionRanking> rankingActual = ranking.getPosicionesHistoricas();
+    
+    List<PosicionRanking> topN = rankingActual.stream()
+    .limit(tamaño)
+    .collect(Collectors.toList());
+
+    return topN;
+}
+
 
 }

@@ -5,6 +5,7 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.Mision;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.DonacionImportada;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.ProgresoMision;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking.PosicionRanking;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Repository.RepositorioPerfiles;
 import org.springframework.stereotype.Service;
 
@@ -77,12 +78,15 @@ public class ServicioIncentivos {
         if (perfilDonante == null) {
             return;
         }
-        perfilDonante.misionCompletada(); 
+        if (perfilDonante.misionCompletada()) repo.actualizarRankingPerfil(perfilDonante);
 
         
         if (perfilDonante.getPorcentajeProgreso() >= 100) {
             perfilDonante.subirCategoria();
         }
+    }
+    public List<PosicionRanking> getRanking(int tamaño) {
+        return repo.obtenerRankingMensual(tamaño);
     }
 
     /*private void verificarSubidaCategoria(PerfilDonante perfilDonante) {
@@ -101,16 +105,6 @@ public class ServicioIncentivos {
     }
 
     private PerfilDonante obtenerPerfil(long donanteID) {
-    
-        //CODIGO PRUEBA 
-    /*   // Si es la primera vez que aparece este donante, lo creamos e incluimos
-    if (perfil == null) {
-        perfil = new PerfilDonante(donanteID);
-        repo.guardar(perfil);
-        return perfil;
-    }    
-    // FIN CODIGO PRUEBA 
-    */
         return repo != null ? repo.getxId(donanteID) : null;
     }
 }

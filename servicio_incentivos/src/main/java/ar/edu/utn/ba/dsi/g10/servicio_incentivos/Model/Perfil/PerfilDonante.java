@@ -25,7 +25,7 @@ public class PerfilDonante {
     private final List<ProgresoMision> historialMisiones = new ArrayList<>();
     //private RankingPerfil rankingHistoricos;
 
-    public PerfilDonante(long donanteID, CategoriaDonante categoria, Mision misionActual, RankingPerfil rankingHistoricos) {
+    public PerfilDonante(long donanteID, CategoriaDonante categoria, Mision misionActual) {
         this.donanteID = donanteID;
         this.categoria = categoria;
         this.misionActual = misionActual;
@@ -53,8 +53,8 @@ public class PerfilDonante {
         }
     }
 
-    public void misionCompletada() {
-        if (historialMisiones.isEmpty()) return;
+    public boolean misionCompletada() {
+        if (historialMisiones.isEmpty()) return false;
         ProgresoMision ultimoProgreso = historialMisiones.getLast();
         if (ultimoProgreso.getCompletada() && misionActual != null && misionActual.getInsignia() != null) {
             boolean yaOtorgada = insignias.stream()
@@ -63,6 +63,7 @@ public class PerfilDonante {
                 insignias.add(misionActual.getInsignia());
             }
         }
+        return ultimoProgreso.getCompletada();
         //TODO: notificacion insignia
     }
 

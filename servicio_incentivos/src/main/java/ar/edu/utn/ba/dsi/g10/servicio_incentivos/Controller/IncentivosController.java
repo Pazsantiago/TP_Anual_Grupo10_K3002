@@ -5,8 +5,10 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.Mision;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.DonacionImportada;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.ProgresoMision;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking.PosicionRanking;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.ServicioIncentivos;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.DTO.MisionResponseDTO;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.DTO.PosicionRankingDTO;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.DTO.PerfilMetricasDTO;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.DTO.InsigniaResponseDTO;
 import org.springframework.http.ResponseEntity;
@@ -126,4 +128,23 @@ public class IncentivosController {
         }
         return ResponseEntity.ok(new PerfilMetricasDTO(perfilDonante));
     }
+  @GetMapping("/ranking-mensual")
+public ResponseEntity<?> obtenerRankingMensual(){
+    // 1. Llamamos al servicio que ejecuta tu proceso de negocio
+    List<PosicionRanking> ranking = servicio.getRanking(10); // Por ejemplo, límite de 10 posiciones
+    /*if (ranking.isEmpty()) {
+        return ResponseEntity.noContent().build();
+    }*/
+    
+    List<PosicionRankingDTO> rankingDTO = ranking.stream()
+                .map(PosicionRankingDTO::new)
+                .toList();
+
+    // 2. Retornamos la lista directamente con un 200 OK
+    System.out.println("DEBUG - Elementos en ranking original: " + ranking.size());
+    System.out.println("DEBUG - Elementos en ranking dto: " + rankingDTO.size());
+    return ResponseEntity.ok(rankingDTO);
 }
+
+}
+
