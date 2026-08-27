@@ -1,14 +1,22 @@
 package Sdonaciones.dominio.categoria;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * La Subcategoria es la unidad mínima de asignación dentro del sistema.
  * Permite identificar con precisión qué bien se necesita o se dona.
  * Ej: dentro de "Alimentos" → fideos secos, arroz, legumbres secas.
  */
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Subcategoria {
 
     private String nombre;
-//    private final int cantidadMinima;
+    //    private final int cantidadMinima;
 //    private final String unidad;
     private Categoria categoria;
 
@@ -29,8 +37,4 @@ public class Subcategoria {
 //        categoria.addSubcategoria(this);
 //    }
 
-    public String getNombre() { return nombre; }
-//    public int getCantidadMinima() { return cantidadMinima; }
-//    public String getUnidad() { return unidad; }
-    public Categoria getCategoria() { return categoria; }
 }

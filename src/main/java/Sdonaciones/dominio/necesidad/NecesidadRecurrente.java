@@ -1,27 +1,32 @@
 package Sdonaciones.dominio.necesidad;
 
+import Sdonaciones.dominio.categoria.Subcategoria;
+import Sdonaciones.dominio.entidad.EntidadBeneficiaria;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
+
 public class NecesidadRecurrente extends Necesidad {
     private Periodo periodo;
     private Integer cantidadRecibidaEnPeriodo;
 
-//    public NecesidadRecurrente(
-//            String descripcion,
-//            Subcategoria subcategoria,
-//            Integer cantidadObjetivo,
-//            Periodo periodo,
-//            LocalDate fechaInicioPeriodo
-//    ) {
-//        super(descripcion, subcategoria, cantidadObjetivo);
-//
-//        this.periodo = periodo;
-//        this.periodo.setInicioPeriodo(fechaInicioPeriodo);
-//        this.cantidadRecibidaEnPeriodo = 0;
-//    }
+    public NecesidadRecurrente(
+            String descripcion,
+            Subcategoria subcategoria,
+            Integer cantidadObjetivo,
+            Periodo periodo,
+            LocalDate fechaInicioPeriodo,
+            Integer cantidadRecibida,
+            EntidadBeneficiaria entidad
+    ) {
+        super(null, descripcion, subcategoria, cantidadObjetivo, cantidadRecibida, entidad);
+
+        this.periodo = periodo;
+        this.periodo.setInicioPeriodo(fechaInicioPeriodo);
+        this.cantidadRecibidaEnPeriodo = 0;
+    }
 
     @Override
     public void recibirBienes(Integer cantidad) {

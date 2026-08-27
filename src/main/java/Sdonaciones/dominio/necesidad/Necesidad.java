@@ -2,17 +2,39 @@ package Sdonaciones.dominio.necesidad;
 
 import Sdonaciones.dominio.categoria.Subcategoria;
 import Sdonaciones.dominio.entidad.EntidadBeneficiaria;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "tipo"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(
+                value = NecesidadExtraordinaria.class,
+                name = "EXTRAORDINARIA"
+        ),
+        @JsonSubTypes.Type(
+                value = NecesidadRecurrente.class,
+                name = "RECURRENTE"
+        )
+})
 public abstract class Necesidad {
     private Integer id;
     private String descripcion;
     private Subcategoria subcategoria;
     private Integer cantidadObjetivo;
     private Integer cantidadRecibida;
+    
+    @JsonIgnore
     private EntidadBeneficiaria entidadBeneficiaria;
 
     public abstract LocalDate getSatisfechaEn();
@@ -33,36 +55,5 @@ public abstract class Necesidad {
     public void recibirBienes(Integer cantidad) {
         this.cantidadRecibida += cantidad;
     }
-//
-//    public String getDescripcion() {
-//        return descripcion;
-//    }
-//
-//    public void setDescripcion(String descripcion) {
-//        this.descripcion = descripcion;
-//    }
-//
-//    public Subcategoria getSubcategoria() {
-//        return subcategoria;
-//    }
-//
-//    public void setSubcategoria(Subcategoria subcategoria) {
-//        this.subcategoria = subcategoria;
-//    }
-//
-//    public Integer getCantidadObjetivo() {
-//        return cantidadObjetivo;
-//    }
-//
-//    public void setCantidadObjetivo(Integer cantidadObjetivo) {
-//        this.cantidadObjetivo = cantidadObjetivo;
-//    }
-//
-//    public Integer getCantidadRecibida() {
-//        return cantidadRecibida;
-//    }
-//
-//    public void setCantidadRecibida(Integer cantidadRecibida) {
-//        this.cantidadRecibida = cantidadRecibida;
-//    }
+
 }

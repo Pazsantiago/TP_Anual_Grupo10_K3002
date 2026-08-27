@@ -1,5 +1,6 @@
 package cDonantes;
 
+import Sdonaciones.Importador.Importador;
 import Sdonaciones.dominio.donante.Donante;
 import Sdonaciones.repositorios.RepoDonantes;
 import org.springframework.http.ResponseEntity;
@@ -12,59 +13,61 @@ import java.util.List;
 @RequestMapping("/api/donantes")
 public class CDonantes {
 
-    private RepoDonantes repoDonantes;
+    private final Importador importadorCSV = Importador.GetInstance();
+    private final RepoDonantes repoDonantes;
 
-    public CDonantes() {
-        repoDonantes = new RepoDonantes();
+    public CDonantes(RepoDonantes repoDonantes) {
+        this.repoDonantes = repoDonantes;
     }
 
     // READ - Obtener todas las Personas
     @GetMapping("")
     public ResponseEntity<List<Donante>> getAllPersonas() {
-        return ResponseEntity.ok(repoDonantes.getDonantes());
+        return ResponseEntity.ok(repoDonantes.listarTodos());
     }
 
     // READ - Obtener una persona por correoElectronico
     @GetMapping("/")
     public ResponseEntity<Donante> getPersonaByEmail(@RequestParam String correoElectronico) {
-        return ResponseEntity.ok(repoDonantes.getDonantes().stream()
-                .filter(p -> p.getMediosDeContacto().stream().anyMatch(m -> m.getCorreoElectronico().equals(correoElectronico)))
-                .findFirst()
-                .orElse(null));
+        return ResponseEntity.ok(repoDonantes.buscarPorCorreo(correoElectronico));
     }
 
     // CREATE - Agregar un nueva persona
     @PostMapping("")
     public ResponseEntity<Donante> createPersona(@RequestBody Donante persona) {
-        repoDonantes.getDonantes().add(persona);
+        repoDonantes.guardar(persona);
         return ResponseEntity.ok(persona);
 
     }
 
+    // Import
+    @PostMapping("/importador")
+    public ResponseEntity<String> importarCSV(@RequestParam String rutaArchivo) {
+        importadorCSV.setRepositorioDonadores(repoDonantes);
+
+        boolean importado = importadorCSV.importarCsv(rutaArchivo);
+
+        if (importado) {
+            return ResponseEntity.ok("Archivo importado correctamente");
+        }
+
+        return ResponseEntity.badRequest().body("No se pudo importar el archivo");
+    }
+
     // UPDATE - Actualizar una persona existente
+    //Con estos datos (tipo persona, tipo doc y nro doc) debe ser posible ubicar a la
+    //persona donante en el sistema. En caso
+    //contrario, se le debe crear un usuario --> Una vez creado el usuario/donante en el sistema
     @PutMapping("")
     public ResponseEntity<Donante> updateDonante(@RequestParam String tipoD, @RequestParam String doc, @RequestBody Donante updateDonante) {
-        Donante oldDonante = repoDonantes.getDonantes().stream()
-                .filter(p -> p.getPersona().getDocumento().getTipoDocumento().equals(tipoD) &&
-                        p.getPersona().getDocumento().getDocumento().equals(doc)
-                )
-                .findFirst()
-                .orElse(null);
-        //System.out.println("#-------#%s" + repoDonantes.getDonantes().indexOf(oldDonante));
-        repoDonantes.getDonantes().set(repoDonantes.getDonantes().indexOf(oldDonante), updateDonante);
+        repoDonantes.actualizarDonante(tipoD, doc, updateDonante);
         return ResponseEntity.ok(updateDonante);
     }
 
     // DELETE - Eliminar una Persona
     @DeleteMapping("")
     public ResponseEntity<String> deletePersona(@RequestParam String tipoD, @RequestParam String doc) {
-        repoDonantes.getDonantes().remove(repoDonantes.getDonantes().stream()
-                .filter(p -> p.getPersona().getDocumento().getTipoDocumento().equals(tipoD) &&
-                        p.getPersona().getDocumento().getDocumento().equals(doc)
-                )
-                .findFirst()
-                .orElse(null));
-        return ResponseEntity.ok("Eliminado");
+        return ResponseEntity.ok(repoDonantes.eliminarDonante(tipoD, doc));
 //        personas.removeIf(p -> p.getEmail() == correoElectronico);
 //        return "Persona con Email " + correoElectronico + " eliminado.";
     }

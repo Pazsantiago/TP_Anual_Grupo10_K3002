@@ -6,5 +6,5 @@ import Sdonaciones.dominio.entidad.EntidadBeneficiaria;
 import java.util.List;
 
 public interface IAlgoritmoAsignacion {
-    public List<RankingEntidadBeneficiaria> rankear(List<EntidadBeneficiaria> entidades, DonacionSegmentada donacion);
+    public List<RankingEntidadBeneficiaria> rankear(DonacionSegmentada donacion, List<EntidadBeneficiaria> entidades);
 }

@@ -1,37 +1,20 @@
 package Sdonaciones.dominio.donacion;
 
 import Sdonaciones.dominio.necesidad.Necesidad;
+import lombok.Data;
 
 import java.util.Date;
 
+@Data
 public class DonacionAsignada {
     private DonacionSegmentada donacion;
-
-    public DonacionSegmentada getDonacion() {
-        return donacion;
-    }
-
-    public void setDonacion(DonacionSegmentada donacion) {
-        this.donacion = donacion;
-    }
-
-    public Necesidad getNecesidadResuelta() {
-        return necesidadResuelta;
-    }
-
-    public void setNecesidadResuelta(Necesidad necesidadResuelta) {
-        this.necesidadResuelta = necesidadResuelta;
-    }
-
+    private int id;
     private Necesidad necesidadResuelta;
+    private Date fechaHora;
 
-    public Date getFechaHora() {
-        return fechaHora;
-    }
-
-    public void setFechaHora(Date fechaHora) {
+    public DonacionAsignada(DonacionSegmentada donacion, Necesidad necesidad, Date fechaHora) {
+        this.donacion = donacion;
+        this.necesidadResuelta = necesidad;
         this.fechaHora = fechaHora;
     }
-
-    private Date fechaHora;
 }

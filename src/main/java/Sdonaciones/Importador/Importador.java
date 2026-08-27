@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
 
-
 public class Importador {
     private static Importador instancia = null;
     private RepoDonantes repositorioDonadores = null;
@@ -28,7 +27,7 @@ public class Importador {
         this.repositorioDonadores = repo;
     }
 
-    public void importarCsv(String ruta_archivo) {
+    public boolean importarCsv(String ruta_archivo) {
         boolean first = true;
         try (CSVReader csvReader = new CSVReader(new FileReader(ruta_archivo))) {
             String[] fila;
@@ -40,18 +39,28 @@ public class Importador {
                 controlarDonanteEnLista(fila);
 
             }
+            return true;
 
         } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
+            return false;
         }
-
     }
+
 
     public void controlarDonanteEnLista(String[] fila) {
         Optional<Donante> donanteExistente = repositorioDonadores.getDonantes().stream().filter(donante -> donante.obtenerContactoPredeterminado().getCorreoElectronico().equals(fila[4])).findFirst();
+        //En caso de que un registro
+        //ya exista (esto quiere decir que el correo electrónico ya se encuentra registrado en el servicio) se deberá
+        //actualizar su información --> Esto es para el csv.
         if (donanteExistente.isPresent()) {
             Integer i = repositorioDonadores.getDonantes().indexOf(donanteExistente.get());
-            repositorioDonadores.getDonantes().set(i, setearDonante(fila));
+            Donante donanteActualizado = setearDonante(fila);
+            MedioContacto nuevoPredeterminado = donanteActualizado.obtenerContactoPredeterminado();
+            repositorioDonadores.getDonantes().get(i).getMediosDeContacto().forEach(contacto -> {
+                donanteActualizado.agregarMedioContacto(contacto);
+            });
+            donanteActualizado.cambiarContactoPredeterminado(nuevoPredeterminado);
+            repositorioDonadores.getDonantes().set(i, donanteActualizado);
         } else {
             repositorioDonadores.getDonantes().add(setearDonante(fila));
         }
@@ -60,8 +69,7 @@ public class Importador {
 
     public Donante setearDonante(String[] fila) {
         Donante donante = new Donante();
-        donante.agregarMedioContacto(new MedioContacto(null, fila[4], fila[5], false));
-
+        donante.agregarMedioContacto(new MedioContacto(null, fila[4], fila[5], true));
         if (fila[0].equalsIgnoreCase("HUMANA")) {
             PersonaHumana nuevo = new PersonaHumana(fila[3], null, null);
             nuevo.setDocumento(new Documento(fila[1], fila[2]));

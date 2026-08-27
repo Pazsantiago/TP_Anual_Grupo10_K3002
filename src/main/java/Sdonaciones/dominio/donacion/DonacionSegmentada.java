@@ -2,50 +2,30 @@ package Sdonaciones.dominio.donacion;
 
 import Sdonaciones.dominio.bien.Bien;
 import Sdonaciones.dominio.categoria.Subcategoria;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DonacionSegmentada {
+    private Integer id;
+    @JsonIgnore
     private Donacion donacionInicial;
-
-    public Donacion getDonacionInicial() {
-        return donacionInicial;
-    }
-
-    public void setDonacionInicial(Donacion donacionInicial) {
-        this.donacionInicial = donacionInicial;
-    }
-
-    public Subcategoria getSubcategoria() {
-        return subcategoria;
-    }
-
-    public void setSubcategoria(Subcategoria subcategoria) {
-        this.subcategoria = subcategoria;
-    }
-
-    public List<EstadoDonacion> getDonacionEstadoHistorico() {
-        return donacionEstadoHistorico;
-    }
-
-    public void setDonacionEstadoHistorico(List<EstadoDonacion> donacionEstadoHistorico) {
-        this.donacionEstadoHistorico = donacionEstadoHistorico;
-    }
-
+    private Bien bien;
+    private EstadoDonacion estadoActual;
+    private List<EstadoDonacion> donacionEstadosHistorico;
     private Subcategoria subcategoria;
 
-    public List<Bien> getBienes() {
-        return bienes;
+    public void cambiarEstadoActual(EstadoDonacion nuevoEstadoActual) {
+        donacionEstadosHistorico.add(estadoActual);
+        estadoActual = nuevoEstadoActual;
     }
 
-    public void setBienes(List<Bien> bienes) {
-        this.bienes = bienes;
-    }
-
-    private List<Bien> bienes;
-    private List<EstadoDonacion> donacionEstadoHistorico;
-
-    public EstadoDonacion obtenerEstadoActual(){
-        return this.donacionEstadoHistorico.getLast();
-    }
 }

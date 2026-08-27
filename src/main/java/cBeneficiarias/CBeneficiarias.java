@@ -12,11 +12,11 @@ import java.util.List;
 @RequestMapping("/api/entidadesBeneficiarias")
 public class CBeneficiarias {
 
-    private RepoEntidades repoBeneficiarias;
+    private final RepoEntidades repoBeneficiarias;
 
     // Inicializamos con algunos datos
-    public CBeneficiarias() {
-        repoBeneficiarias = new RepoEntidades();
+    public CBeneficiarias(RepoEntidades repoBeneficiarias) {
+        this.repoBeneficiarias = repoBeneficiarias;
         //entidades.add(new entidad("La Carbonilla"));
         //entidades.add(new entidad("Jardin de Infantes Nro 2"));
     }
@@ -24,16 +24,14 @@ public class CBeneficiarias {
     // READ - Obtener todas las Entidades Beneficiaria
     @GetMapping("")
     public ResponseEntity<List<EntidadBeneficiaria>> getAllEntidades() {
-        return ResponseEntity.ok(repoBeneficiarias.getEntidadBeneficiarias());
+        return ResponseEntity.ok(repoBeneficiarias.listarTodas());
     }
 
+
     // READ - Obtener una Entidad Beneficiaria por RazonSocial
-    @GetMapping("/")
-    public ResponseEntity<EntidadBeneficiaria> getEntidadByEmail(@RequestParam String razonSocial) {
-        return ResponseEntity.ok(repoBeneficiarias.getEntidadBeneficiarias().stream()
-                .filter(p -> p.getRazonSocial().equals(razonSocial))
-                .findFirst()
-                .orElse(null));
+    @GetMapping("/{idEntidad}")
+    public ResponseEntity<EntidadBeneficiaria> getEntidadById(@PathVariable Integer id) {
+        return ResponseEntity.ok(repoBeneficiarias.obtenerPorId(id));
     }
 
     // CREATE - Agregar una nueva Entidad Beneficiaria
@@ -46,17 +44,13 @@ public class CBeneficiarias {
 
     // UPDATE - Actualizar una Entidad Beneficiaria existente
     @PutMapping("")
-    public ResponseEntity<EntidadBeneficiaria> updateEntidad(@RequestParam String razonSocial, @RequestBody EntidadBeneficiaria updatedEntidad) {
-        EntidadBeneficiaria antigua = repoBeneficiarias.getEntidadBeneficiarias().stream().filter(p -> p.getRazonSocial().equals(razonSocial))
-                .findFirst().orElse(null);
-        repoBeneficiarias.getEntidadBeneficiarias().set(repoBeneficiarias.getEntidadBeneficiarias().indexOf(antigua), updatedEntidad);
-        return ResponseEntity.ok(updatedEntidad);
+    public ResponseEntity<EntidadBeneficiaria> updateEntidad(@PathVariable Integer id, @RequestBody EntidadBeneficiaria updatedEntidad) {
+        return ResponseEntity.ok(repoBeneficiarias.actualizarEntidad(id, updatedEntidad));
     }
 
     // DELETE - Eliminar una Entidad Beneficiaria
     @DeleteMapping("")
-    public ResponseEntity<String> deleteEntidad(@RequestParam String razonSocial) {
-        repoBeneficiarias.getEntidadBeneficiarias().removeIf(e -> e.getRazonSocial().equals(razonSocial));
-        return ResponseEntity.ok("Entidad " + razonSocial + " eliminada.");
+    public ResponseEntity<String> deleteEntidad(@PathVariable Integer id) {
+        return ResponseEntity.ok("Entidad " + repoBeneficiarias.eliminarEntidad(id) + " eliminada.");
     }
 }

@@ -1,6 +1,8 @@
 package Sdonaciones.dominio.bien;
 
-import Sdonaciones.dominio.categoria.*;
+import Sdonaciones.dominio.categoria.Subcategoria;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.net.URL;
 
@@ -9,14 +11,17 @@ import java.net.URL;
  * Cada bien pertenece a una subcategoría (unidad mínima de asignación).
  * Tiene cantidad expresada en la unidad definida por su subcategoría.
  */
+
+@Data
+@NoArgsConstructor
 public class Bien {
 
-    private final String descripcion;
-    private final Subcategoria subcategoria;
-    private final URL foto;
-//    private final Estado estado;
+    private String descripcion;
+    private Subcategoria subcategoria;
+    private URL foto;
+    //    private final Estado estado;
     private UnidadMedida unidad;
-    private final Integer cantidad;
+    private Integer cantidad;
 
     public Bien(String descripcion, Subcategoria subcategoria,
                 Integer cantidad, Estado estado, URL foto) {
@@ -34,20 +39,17 @@ public class Bien {
         this.foto = foto;
     }
 
-    /** Constructor sin foto ni estado (bienes sin distinción de uso). */
-    public Bien(String descripcion, Subcategoria subcategoria, Integer cantidad) {
-        this(descripcion, subcategoria, cantidad, null, null);
-    }
+    /**
+     * Constructor sin foto ni estado (bienes sin distinción de uso).
+     */
+//    public Bien(String descripcion, Subcategoria subcategoria, Integer cantidad) {
+//        this(descripcion, subcategoria, cantidad, null, null);
+//    }
 
 //    public boolean requiereEstado() {
 //        return estado != null;
 //    }
 
-    public String getDescripcion() { return descripcion; }
-    public Subcategoria getSubcategoria() { return subcategoria; }
-    public URL getFoto() { return foto; }
-//    public Estado getEstado() { return estado; }
-    public Integer getCantidad() { return cantidad; }
 //    @Override
 //    public String toString(){
 //        return subcategoria.getNombre() + " x "+cantidad+ subcategoria.getUnidad();

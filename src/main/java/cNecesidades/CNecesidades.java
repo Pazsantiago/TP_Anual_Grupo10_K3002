@@ -3,8 +3,6 @@ package cNecesidades;
 //import donatrack.dominio.donacion.Donacion;
 
 import Sdonaciones.dominio.necesidad.Necesidad;
-import Sdonaciones.dominio.necesidad.NecesidadExtraordinaria;
-import Sdonaciones.dominio.necesidad.NecesidadRecurrente;
 import Sdonaciones.repositorios.RepoNecesidades;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +16,8 @@ public class CNecesidades {
     private RepoNecesidades repoNecesidades;
 
     // Inicializamos con algunos datos
-    public CNecesidades() {
-        repoNecesidades = new RepoNecesidades();
+    public CNecesidades(RepoNecesidades repoNecesidades) {
+        this.repoNecesidades = repoNecesidades;
         //necesidades.add(new entidad("La Carbonilla"));
         //necesidades.add(new entidad("Jardin de Infantes Nro 2"));
     }
@@ -27,54 +25,31 @@ public class CNecesidades {
     // READ - Obtener todas las Necesidades Extraordinarias
     @GetMapping("")
     public ResponseEntity<List<Necesidad>> getAllNecesidades() {
-        return ResponseEntity.ok(repoNecesidades.getNecesidades());
+        return ResponseEntity.ok(repoNecesidades.listarTodas());
     }
 
     // READ - Obtener una Necesidad Extraordinaria por ID
     @GetMapping("/{idNecesidad}")
     public ResponseEntity<Necesidad> getNecesidadById(@PathVariable Integer idNecesidad) {
-        return ResponseEntity.ok(repoNecesidades.getNecesidades().stream()
-                .filter(n -> n.getId().equals(idNecesidad))
-                .findFirst()
-                .orElse(null));
+        return ResponseEntity.ok(repoNecesidades.buscarPorId(idNecesidad));
     }
 
     // CREATE - Agregar una nueva Necesidad Extraordinaria
-    @PostMapping("/Extraordinaria")
-    public ResponseEntity<Necesidad> createNecesidadExtraordinaria(@RequestBody NecesidadExtraordinaria necesidad) {
-        repoNecesidades.getNecesidades().add(necesidad);
-        return ResponseEntity.ok(necesidad);
-    }
-
-    @PostMapping("/Recurrente")
-    public ResponseEntity<Necesidad> createNecesidadRecurrente(@RequestBody NecesidadRecurrente necesidad) {
-        repoNecesidades.getNecesidades().add(necesidad);
+    @PostMapping("")
+    public ResponseEntity<Necesidad> createNecesidad(@RequestBody Necesidad necesidad) {
+        repoNecesidades.guardar(necesidad);
         return ResponseEntity.ok(necesidad);
     }
 
     // UPDATE - Actualizar una Necesidad Extraordinaria existente
-    @PutMapping("/Extraordinaria/{idNecesidad}")
-    public ResponseEntity<Necesidad> updateNecesidad(@PathVariable Integer idNecesidad, @RequestBody NecesidadExtraordinaria updatedNecesidad) {
-        Necesidad antigua = repoNecesidades.getNecesidades().stream().filter(p -> p.getId().equals(idNecesidad))
-                .findFirst().orElse(null);
-        repoNecesidades.getNecesidades().set(repoNecesidades.getNecesidades().indexOf(antigua), updatedNecesidad);
-        return ResponseEntity.ok(updatedNecesidad);
+    @PutMapping("/{idNecesidad}")
+    public ResponseEntity<Necesidad> updateNecesidad(@PathVariable Integer idNecesidad, @RequestBody Necesidad updatedNecesidad) {
+        return ResponseEntity.ok(repoNecesidades.actualizarNecesidad(idNecesidad, updatedNecesidad));
     }
-
-    @PutMapping("/Recurrente/{idNecesidad}")
-    public ResponseEntity<Necesidad> updateNecesidad(@PathVariable Integer idNecesidad, @RequestBody NecesidadRecurrente updatedNecesidad) {
-        Necesidad antigua = repoNecesidades.getNecesidades().stream().filter(p -> p.getId().equals(idNecesidad))
-                .findFirst().orElse(null);
-        repoNecesidades.getNecesidades().set(repoNecesidades.getNecesidades().indexOf(antigua), updatedNecesidad);
-        return ResponseEntity.ok(updatedNecesidad);
-    }
-
 
     // DELETE - Eliminar una Necesidad Extraordinaria
     @DeleteMapping("/{idNecesidad}")
     public ResponseEntity<String> deleteNecesidad(@PathVariable Integer idNecesidad) {
-        boolean es;
-        repoNecesidades.getNecesidades().removeIf(e -> e.getId().equals(idNecesidad));
-        return ResponseEntity.ok("Necesidad eliminada.");
+        return ResponseEntity.ok(repoNecesidades.eliminarEntidad(idNecesidad));
     }
 }

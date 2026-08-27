@@ -3,36 +3,31 @@ package Sdonaciones.repositorios;
 
 import Sdonaciones.dominio.donacion.DonacionAsignada;
 import lombok.Data;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-
+@Repository
 @Data
 public class RepoDonacionesAsignadas {
 
     private final List<DonacionAsignada> donacionesAsignadas = new ArrayList<>();
 
+    public List<DonacionAsignada> listarTodas() {
+        return List.copyOf(donacionesAsignadas);
+    }
 
-//    public void guardar(EntidadBeneficiaria entidadBeneficiaria) {
-//        if (existePorRazonSocial(entidadBeneficiaria.getRazonSocial())) {
-//            throw new IllegalStateException(
-//                    "Ya existe un entidadBeneficiaria con el RazonSocial: " + entidadBeneficiaria.getRazonSocial());
-//        }
-//        entidadBeneficiarias.add(entidadBeneficiaria);
-//    }
-//
-//    public boolean existePorRazonSocial(String razonSocial) {
-//        return entidadBeneficiarias.stream().anyMatch(donante -> Objects.equals(donante.getRazonSocial(), razonSocial));
-//    }
-//
-//
-//    public Optional<EntidadBeneficiaria> buscarPorRazonSocial(String razonSocial) {
-//        return entidadBeneficiarias.stream().filter(d -> Objects.equals(d.getRazonSocial(), razonSocial)).findFirst();
-//    }
-//
-//
-//    public List<EntidadBeneficiaria> getEntidadBeneficiarias() {
-//        return entidadBeneficiarias;
-//    }
+    public void guardar(DonacionAsignada donacionAsignada) {
+        donacionesAsignadas.add(donacionAsignada);
+    }
+
+    public Optional<DonacionAsignada> buscarPorId(Integer id) {
+        return donacionesAsignadas.stream().filter(donacion -> donacion.getId() == id).findFirst();
+    }
+
+    public List<DonacionAsignada> getDonaciones() {
+        return donacionesAsignadas;
+    }
 }
