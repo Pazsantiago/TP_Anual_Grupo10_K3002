@@ -3,19 +3,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-
+	<!--
     <parent>
         <groupId>Sdonaciones</groupId>
         <artifactId>TP_Anual_Grupo10_K3002</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+	-->
     <groupId>Snotificaciones</groupId>
     <artifactId>Servicio-Notificaciones</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>3.3.13</spring-boot.version>
     </properties>
 
