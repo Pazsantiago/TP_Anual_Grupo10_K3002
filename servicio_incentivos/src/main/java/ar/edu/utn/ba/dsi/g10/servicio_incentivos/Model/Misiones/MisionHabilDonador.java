@@ -1,11 +1,15 @@
 package ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones;
 
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.DonacionImportada;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class MisionHabilDonador extends Mision {
-    private double CantidadBienesRequerida = 10.0;
+    private double cantidadBienesRequerida;
 
     @Override
     public double calcularProgreso(List<DonacionImportada> historialMision) {
@@ -15,11 +19,11 @@ public class MisionHabilDonador extends Mision {
         double contadorBienes = 0;
 
         for (DonacionImportada donacionInstancia : historialMision) {
-            if (contadorBienes >= 10) {
+            if (contadorBienes >= cantidadBienesRequerida) {
                 break;
             }
             contadorBienes += donacionInstancia.getCantidadDonada();
         }
-        return ((contadorBienes / CantidadBienesRequerida)*100);
+        return ((contadorBienes / cantidadBienesRequerida)*100);
     }
 }

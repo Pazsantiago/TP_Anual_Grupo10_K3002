@@ -77,9 +77,9 @@ public class ServicioIncentivos {
         if (perfilDonante == null) {
             return;
         }
-        perfilDonante.misionCompletada(); // 2. ¿por que se saca esto?
+        perfilDonante.misionCompletada(); 
 
-        //2. ¿porque se reemplaza por esto?
+        
         if (perfilDonante.getPorcentajeProgreso() >= 100) {
             perfilDonante.subirCategoria();
         }

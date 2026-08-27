@@ -23,14 +23,14 @@ public class PerfilDonante {
 
     private final List<Insignia> insignias = new ArrayList<>();
     private final List<ProgresoMision> historialMisiones = new ArrayList<>();
-    private RankingPerfil rankingHistoricos;
+    //private RankingPerfil rankingHistoricos;
 
     public PerfilDonante(long donanteID, CategoriaDonante categoria, Mision misionActual, RankingPerfil rankingHistoricos) {
         this.donanteID = donanteID;
         this.categoria = categoria;
         this.misionActual = misionActual;
         this.racha = new RachaDonante();
-        this.rankingHistoricos = rankingHistoricos;
+        //this.rankingHistoricos = rankingHistoricos;
         inicializarProgreso();
     }
 
@@ -63,6 +63,7 @@ public class PerfilDonante {
                 insignias.add(misionActual.getInsignia());
             }
         }
+        //TODO: notificacion insignia
     }
 
     public ProgresoMision getProgreso() {

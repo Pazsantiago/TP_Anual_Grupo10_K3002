@@ -63,34 +63,5 @@ public class RachaDonante {
         return !mesActual.isAfter(ultimoMes.plusMonths(1));
     }
 
-    /*
-    private boolean estaActiva;
 
-    public boolean estaVigente(LocalDate fechaNueva) {
-        if (this.fechaUltimaDonacion == null) {
-            return true;
-        }
-        long diasTranscurridos = ChronoUnit.DAYS.between(this.fechaUltimaDonacion, fechaNueva);
-        return diasTranscurridos >= 0 && diasTranscurridos <= 30;
-    }
-
-    public void registrarDonacion(LocalDate fechaDonacion) {
-        if (fechaDonacion == null) return;
-
-        if (estaVigente(fechaDonacion)) {
-            if (this.fechaUltimaDonacion == null || !fechaDonacion.isEqual(this.fechaUltimaDonacion)) {
-                this.rachaActual++;
-            }
-        } else {
-            this.rachaActual = 1;
-        }
-
-        this.fechaUltimaDonacion = fechaDonacion;
-        this.estaActiva = true;
-
-        if (this.rachaActual > this.rachaMaxima) {
-            this.rachaMaxima = this.rachaActual;
-        }
-    }
-    */
 }

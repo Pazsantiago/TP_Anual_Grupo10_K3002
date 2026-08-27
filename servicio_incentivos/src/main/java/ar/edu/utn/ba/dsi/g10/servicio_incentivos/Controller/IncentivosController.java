@@ -33,14 +33,15 @@ public class IncentivosController {
         this.servicio = servicio;
     }
     //post funcionando
-    @PostMapping("/donaciones")
+    @PostMapping("/{donanteId}/donaciones")
     public ResponseEntity<String> procesarDonacion(
-            @RequestParam Long donanteId,
+            @PathVariable Long donanteId,
             @RequestBody DonacionImportada donacion) {
         servicio.procesarNuevaDonacion(donanteId, donacion);
         return ResponseEntity.ok("Donación procesada correctamente");
     }
 
+    /*
     //TODO: revisar logica para diferenciar donaciones entregas o no
     @PostMapping("/donaciones-entregadas")
     public ResponseEntity<String> procesarDonacionEntregada(
@@ -49,8 +50,9 @@ public class IncentivosController {
         servicio.procesarDonacionEntregada(donanteId, donacion);
         return ResponseEntity.ok("Donación entregada procesada correctamente");
     }
+    */
     // get funcionando, Se instancio una mision racha y al donar este iba aumentando el progreso.
-    @GetMapping("/{donanteId}/mision")
+    @GetMapping("/{donanteId}/misiones")
     public ResponseEntity<?> obtenerMisionActual(@PathVariable Long donanteId) {
         //Mision mision = servicio.getMisionActual(donanteId);
 
