@@ -1,5 +1,6 @@
 package Servicio_notificaciones.dominio;
 
+import java.sql.Struct;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -36,6 +37,7 @@ public class Notificacion {
     public String getCuerpo() { return cuerpo; }
     public TipoNotificacion getTipo() { return tipoNotificacion; }
     public LocalDateTime getFechaEnvio() { return fechaEnvio; }
+    public String getError() { return error; }
 
     public MedioNotificacion getMedioNotificacion() {
         return medioNotificacion;

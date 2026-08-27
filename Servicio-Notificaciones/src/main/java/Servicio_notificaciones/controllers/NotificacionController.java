@@ -25,7 +25,7 @@ public class NotificacionController {
     this.notificacionService = notificacionService;
   }
 
-  @PostMapping
+  @PostMapping("/notifications")
   public ResponseEntity<NotificacionResponse> enviar(
       @Valid @RequestBody NotificacionRequestDTO request
   ) {
@@ -46,7 +46,7 @@ public class NotificacionController {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping
+  @GetMapping("/notifications")
   public ResponseEntity<List<NotificacionResponse>> obtenerTodas() {
     List<NotificacionResponse> response = notificacionService.obtenerTodas()
         .stream()
@@ -56,7 +56,7 @@ public class NotificacionController {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("notifications/{id}")
   public ResponseEntity<NotificacionResponse> obtenerPorId(@PathVariable UUID id) {
     return ResponseEntity.ok(
         NotificacionResponse.from(notificacionService.obtenerPorId(id))

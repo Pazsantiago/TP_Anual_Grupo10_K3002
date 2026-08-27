@@ -60,9 +60,9 @@ public class NotificacionResponse {
   public LocalDateTime getFechaEnvio() {
     return fechaEnvio;
   }
-
+  String error = " ";
   public static NotificacionResponse from(Notificacion notificacion) {
-    return new NotificacionResponse(
+      NotificacionResponse n = new NotificacionResponse(
         notificacion.getMedioNotificacion(),
         notificacion.getEstadoNotificacion(),
         notificacion.getDestinatario().getNombre(),
@@ -71,6 +71,8 @@ public class NotificacionResponse {
         notificacion.getFechaCreacion(),
         notificacion.getFechaEnvio()
     );
+      if (notificacion.getError()!=null) n.error =  notificacion.getError();
+      return n;
 
   }
 

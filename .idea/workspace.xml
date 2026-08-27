@@ -5,60 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="823a78cc-7332-4fd2-b0bf-4b0daf1cee6b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_6_2026_11_39_[Changes]/shelved.patch" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/controllers/ControllerInterno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_6_2026_11_39__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/Importador/Importador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/asignacion/ServicioAsignacion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/asignacion/algoritmosAsignacion/AlgoritmoCompatibilidadSemantica.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/asignacion/algoritmosAsignacion/AlgoritmoPrioridadSubAtendidos.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/asignacion/algoritmosAsignacion/IAlgoritmoAsignacion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/asignacion/algoritmosAsignacion/Ranking.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/bien/Bien.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/bien/BienPerecedero.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/bien/Estado.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/categoria/Categoria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/categoria/Subcategoria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/categoria/SubcategoriaFactory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/categoria/TipoCategoria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/donacion/CambioEstado.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/donacion/Donacion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/donacion/DonacionSegmentada.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/donacion/EstadoDonacion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/donante/Donante.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/donante/MedioContacto$Tipo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/donante/MedioContacto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/donante/PersonaHumana.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/donante/PersonaJuridica.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/donante/TipoEmpresa.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/entidad/EntidadBeneficiaria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/necesidad/Necesidad.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/necesidad/NecesidadExtraordinaria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/necesidad/NecesidadRecurrente.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/dominio/necesidad/Periodo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/repositorios/RepositorioDonaciones.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/repositorios/RepositorioDonantes.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/classes/Sdonaciones/repositorios/RepositorioEntidades.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Donaciones/target/test-classes/ServicioDonacionesTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/DTOs/request/DestinatarioRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/DTOs/request/DestinatarioRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/DTOs/request/NotificacionRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/DTOs/request/NotificacionRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/DTOs/response/NotificacionResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/DTOs/response/NotificacionResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/Notificacion/ServicioNotificacionesConsola.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/Notificacion/ServicioNotificacionesConsola.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/ServicioNotificacionesApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/ServicioNotificacionesApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/controllers/NotificacionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/controllers/NotificacionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/dominio/EstadoNotificacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/dominio/EstadoNotificacion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/dominio/Notificacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/dominio/Notificacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/repository/NotificacionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/repository/NotificacionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/service/NotificacionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/service/NotificacionService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/strategy/NotificadorEmail.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/strategy/NotificadorEmail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/strategy/NotificadorSMS.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/strategy/NotificadorSMS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/strategy/NotificadorWhatsapp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/strategy/NotificadorWhatsapp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/target/classes/Snotificaciones/Notificacion/ServicioNotificaciones.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/target/classes/Snotificaciones/Notificacion/ServicioNotificacionesConsola.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/target/classes/Snotificaciones/dominio/Notificacion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/target/classes/Snotificaciones/dominio/TipoNoti.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,25 +49,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.ServicioNotificacionesApplication.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "santiR__rama",
-    "git.auto.fetch.suggestion.counter": "1",
-    "kotlin-language-version-configured": "true",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "onboarding.tips.debug.path": "C:/Users/elian/IdeaProjects/TP_Anual_Grupo10_K3002-gonzalo_rama/Servicio-Incentivos/src/main/java/Sdonaciones/Main.java",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.editor"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ServicioNotificacionesApplication.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;santiR__rama&quot;,
+    &quot;git.auto.fetch.suggestion.counter&quot;: &quot;1&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/elian/IdeaProjects/TP_Anual_Grupo10_K3002-gonzalo_rama/Servicio-Incentivos/src/main/java/Sdonaciones/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="ServicioNotificacionesApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Servicio_notificaciones.ServicioNotificacionesApplication" />
