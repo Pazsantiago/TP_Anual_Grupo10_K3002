@@ -7,11 +7,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @SpringBootApplication(scanBasePackages = {
         "Sdonaciones",
-        "cDonaciones",
-        "cDonantes",
-        "cBeneficiarias",
-        "cNecesidades",
-        "cRankingsEntidades"
+        "Services",
+        "Controllers"
 })
 public class ServicioDonacionesApplication {
 

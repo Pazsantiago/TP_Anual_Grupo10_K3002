@@ -38,17 +38,16 @@ public class RepoEntidades {
         return entidadBeneficiarias.stream().anyMatch(donante -> Objects.equals(donante.getRazonSocial(), razonSocial));
     }
 
-    public EntidadBeneficiaria actualizarEntidad(Integer id, EntidadBeneficiaria updatedEntidad) {
+    public void actualizarEntidad(Integer id, EntidadBeneficiaria updatedEntidad) {
         EntidadBeneficiaria antigua = entidadBeneficiarias.stream().filter(p -> p.getId().equals(id))
                 .findFirst().orElse(null);
+        updatedEntidad.setId(antigua.getId());
         entidadBeneficiarias.set(entidadBeneficiarias.indexOf(antigua), updatedEntidad);
-        return updatedEntidad;
     }
 
-    public String eliminarEntidad(Integer id) {
+    public void eliminarEntidad(Integer id) {
         String razonSocial = entidadBeneficiarias.stream().filter(e -> e.getId().equals(id)).findFirst().get().getRazonSocial();
         entidadBeneficiarias.removeIf(e -> e.getId().equals(id));
-        return razonSocial;
     }
 
     public Optional<EntidadBeneficiaria> buscarPorRazonSocial(String razonSocial) {
@@ -57,9 +56,5 @@ public class RepoEntidades {
 
     public List<EntidadBeneficiaria> listarTodas() {
         return List.copyOf(entidadBeneficiarias);
-    }
-
-    public List<EntidadBeneficiaria> getEntidadBeneficiarias() {
-        return entidadBeneficiarias;
     }
 }

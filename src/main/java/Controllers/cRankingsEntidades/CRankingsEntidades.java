@@ -1,4 +1,4 @@
-package cRankingsEntidades;
+package Controllers.cRankingsEntidades;
 
 import Sdonaciones.asignacion.ServicioAsignacion;
 import Sdonaciones.asignacion.algoritmosAsignacion.RankingEntidadBeneficiaria;

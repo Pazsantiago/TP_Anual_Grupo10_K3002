@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 @Data
 public class RepoDonacionesAsignadas {
-
+    private Integer id = 0;
     private final List<DonacionAsignada> donacionesAsignadas = new ArrayList<>();
 
     public List<DonacionAsignada> listarTodas() {
@@ -20,6 +20,7 @@ public class RepoDonacionesAsignadas {
     }
 
     public void guardar(DonacionAsignada donacionAsignada) {
+        donacionAsignada.setId(++id);
         donacionesAsignadas.add(donacionAsignada);
     }
 

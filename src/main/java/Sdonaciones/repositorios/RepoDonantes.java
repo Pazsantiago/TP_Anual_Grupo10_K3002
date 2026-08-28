@@ -20,12 +20,20 @@ public class RepoDonantes {
         donantes.add(donante);
     }
 
+    public Integer cantidadDeDonantes() {
+        return donantes.size();
+    }
 
     public Donante buscarPorCorreo(String correoElectronico) {
         return donantes.stream()
                 .filter(p -> p.getMediosDeContacto().stream().anyMatch(m -> m.getCorreoElectronico().equals(correoElectronico)))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public Donante buscarPorDocumento(String tipoD, String doc) {
+        return donantes.stream().filter(d -> d.getPersona().getDocumento().getTipoDocumento().equalsIgnoreCase(tipoD) &&
+                d.getPersona().getDocumento().getDocumento().equalsIgnoreCase(doc)).findFirst().orElse(null);
     }
 
 
@@ -41,21 +49,21 @@ public class RepoDonantes {
                 )
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Donante no encontrado"));
-
+        donanteNuevo.cambiarContactoPredeterminado(oldDonante.obtenerContactoPredeterminado());
         int index = donantes.indexOf(oldDonante);
+
         donantes.set(index, donanteNuevo);
     }
 
-    public String eliminarDonante(String tipoD, String doc) {
+    public void eliminarDonante(String tipoD, String doc) {
         donantes.remove(donantes.stream()
                 .filter(p -> p.getPersona().getDocumento().getTipoDocumento().equals(tipoD) &&
                         p.getPersona().getDocumento().getDocumento().equals(doc)
                 )
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Donante no encontrado")));
-        return "Eliminado";
     }
-    
+
 //    public boolean existePorCorreo(String correo) {
 //        return donantes.stream().anyMatch(d -> d.obtenerContactoPredeterminado().getCorreoElectronico().equalsIgnoreCase(correo.toLowerCase()));
 //    }

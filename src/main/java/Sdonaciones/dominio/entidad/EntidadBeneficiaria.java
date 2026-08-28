@@ -19,4 +19,14 @@ public class EntidadBeneficiaria {
     private List<Necesidad> necesidadesActuales;
     private List<Necesidad> necesidadesHistoricas;
 
+
+    public void agregarNecesidadActual(Necesidad necesidad) {
+        necesidadesHistoricas.add(necesidad);
+    }
+
+    public void eliminarNecesidadActual(Necesidad necesidad) {
+        necesidadesActuales.removeIf(e -> e.getId().equals(necesidad.getId()));
+        necesidadesHistoricas.add(necesidad);
+    }
+
 }

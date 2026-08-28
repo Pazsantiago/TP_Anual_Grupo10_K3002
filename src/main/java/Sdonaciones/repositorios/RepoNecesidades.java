@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 @Data
 public class RepoNecesidades {
-
+    private Integer id = 0;
     private final List<Necesidad> necesidades = new ArrayList<>();
 
     public List<Necesidad> listarTodas() {
@@ -19,26 +19,31 @@ public class RepoNecesidades {
     }
 
     public void guardar(Necesidad necesidad) {
+        necesidad.setId(++id);
         necesidades.add(necesidad);
+
     }
 
-    public Necesidad buscarPorId(Integer id) {
+    public Necesidad buscarPorId(Integer idNecesidad, Integer idEntidad) {
         return necesidades.stream()
-                .filter(n -> n.getId().equals(id))
+                .filter(n -> n.getId().equals(idNecesidad) && n.getEntidadBeneficiaria().getId().equals(idEntidad))
                 .findFirst()
                 .orElse(null);
     }
 
-    public Necesidad actualizarNecesidad(Integer id, Necesidad updatedNecesidad) {
-        Necesidad antigua = necesidades.stream().filter(p -> p.getId().equals(id))
+    public void actualizarNecesidad(Integer idNecesidad, Integer idEntidad, Necesidad updatedNecesidad) {
+        Necesidad antigua = necesidades.stream().filter(p -> p.getId().equals(idNecesidad) && p.getEntidadBeneficiaria().getId().equals(idEntidad))
                 .findFirst().orElse(null);
-        necesidades.set(necesidades.indexOf(antigua), updatedNecesidad);
-        return updatedNecesidad;
+        if (antigua != null) {
+            updatedNecesidad.setId(antigua.getId());
+            necesidades.set(necesidades.indexOf(antigua), updatedNecesidad);
+        }
     }
 
-    public String eliminarEntidad(Integer id) {
-        necesidades.removeIf(e -> e.getId().equals(id));
-        return "Necesidad eliminada";
+    public void eliminarNecesidad(Integer idNecesidad, Integer idEntidad) {
+        Necesidad necesidad = necesidades.stream().filter(p -> p.getId().equals(idNecesidad) && p.getEntidadBeneficiaria().getId().equals(idEntidad)).findFirst().orElse(null);
+        necesidad.getEntidadBeneficiaria().eliminarNecesidadActual(necesidad);
+        necesidades.removeIf(e -> e.getId().equals(idNecesidad) && e.getEntidadBeneficiaria().getId().equals(idEntidad));
     }
 
 }

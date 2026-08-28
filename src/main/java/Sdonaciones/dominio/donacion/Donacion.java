@@ -46,7 +46,7 @@ public class Donacion {
     public Integer segmentarse(Integer idActual) {
         this.donacionesSegmentadas = new ArrayList<>();
         for (Integer i = 0; i < bienesDeEntrada.size(); i++) {
-            donacionesSegmentadas.add(new DonacionSegmentada(++idActual, this, bienesDeEntrada.get(i), new EstadoDonacion(TipoEstadoDonacion.EN_DEPOSITO, null), null, bienesDeEntrada.get(i).getSubcategoria()));
+            donacionesSegmentadas.add(new DonacionSegmentada(++idActual, this, bienesDeEntrada.get(i), new EstadoDonacion(TipoEstadoDonacion.EN_DEPOSITO, null), new ArrayList<>(), bienesDeEntrada.get(i).getSubcategoria()));
         }
         return idActual;
     }

@@ -24,7 +24,18 @@ public class RepoDonaciones {
         return donaciones.stream().filter(donacion -> donacion.getId() == id).findFirst();
     }
 
-    public List<Donacion> getDonaciones() {
-        return donaciones;
+    public void actualizarDonacion(Integer id, Donacion updateDonacion) {
+        Donacion oldDonacion = donaciones.stream()
+                .filter(d -> d.getId() == id)
+                .findFirst()
+                .orElse(null);
+        updateDonacion.setId(id);
+        updateDonacion.setDonacionesSegmentadas(oldDonacion.getDonacionesSegmentadas());
+        donaciones.set(donaciones.indexOf(oldDonacion), updateDonacion);
     }
+
+    public void borrarDonacion(Integer id) {
+        donaciones.removeIf(d -> d.getId() == id);
+    }
+
 }
