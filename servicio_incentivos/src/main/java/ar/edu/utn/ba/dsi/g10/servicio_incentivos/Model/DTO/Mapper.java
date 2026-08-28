@@ -13,10 +13,7 @@ public class Mapper {
     private String categoriaActual;
     private int cantidadInsignias;
     private int misionesCompletadas;
-    //private int totalDonacionesHistoricas;
-    //private int totalOrganizacionesAyudadas;
-    //private int rachaActual;
-    //private int rankingHistorico;
+    
 
     //parametros mision e insignia
     private String nombre; 

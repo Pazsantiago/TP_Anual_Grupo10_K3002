@@ -43,26 +43,13 @@ public class IncentivosController {
         return ResponseEntity.ok("Donación procesada correctamente");
     }
 
-    /*
-    //TODO: revisar logica para diferenciar donaciones entregas o no
-    @PostMapping("/donaciones-entregadas")
-    public ResponseEntity<String> procesarDonacionEntregada(
-            @RequestParam Long donanteId,
-            @RequestBody DonacionImportada donacion) {
-        servicio.procesarDonacionEntregada(donanteId, donacion);
-        return ResponseEntity.ok("Donación entregada procesada correctamente");
-    }
-    */
+    
     // get funcionando, Se instancio una mision racha y al donar este iba aumentando el progreso.
     @GetMapping("/{donanteId}/misiones")
     public ResponseEntity<?> obtenerMisionActual(@PathVariable Long donanteId) {
-        //Mision mision = servicio.getMisionActual(donanteId);
+   
 
-    /*if (mision == null) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Mision o perfil no encontrado");
-    }
-        Mapper dto = new Mapper(mision);
-        return ResponseEntity.ok(dto);*/
+  
 
         // cambios para que se pueda ver el progreso de la mision
         PerfilDonante perfil = servicio.getMetricas(donanteId);
@@ -86,7 +73,7 @@ public class IncentivosController {
         return ResponseEntity.ok(dto);
     }
 
-    //TODO: test pendiente
+
     @GetMapping("/{donanteId}/insignias")
     public ResponseEntity<?> obtenerInsignias(@PathVariable Long donanteId) {
         List<Insignia> insignias = servicio.getInsignias(donanteId);
@@ -96,15 +83,6 @@ public class IncentivosController {
             }
         
 
-        //Mapper dto = new Mapper();
-        /*
-        List<Mapper> listaDto = insignias.stream()
-            .map(insignia -> {Mapper dto = new Mapper();
-                dto.transformarInsignia(insignia);
-                return dto;})
-            .toList();
-
-        return ResponseEntity.ok(listaDto);*/
         List<InsigniaResponseDTO> listaDto = insignias.stream()
                 .map(InsigniaResponseDTO::new)
                 .toList();
@@ -116,13 +94,7 @@ public class IncentivosController {
     public ResponseEntity<?> obtenerMetricas(@PathVariable Long donanteId) {
         PerfilDonante perfilDonante = servicio.getMetricas(donanteId);
 
-       /*
-        if (perfilDonante == null) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Perfil no encontrado");
-    }
-        Mapper dto = new Mapper(perfilDonante);
-        return ResponseEntity.ok(dto);
-    }*/
+       
         if (perfilDonante == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Perfil no encontrado");
         }
@@ -130,17 +102,15 @@ public class IncentivosController {
     }
   @GetMapping("/ranking-mensual")
 public ResponseEntity<?> obtenerRankingMensual(){
-    // 1. Llamamos al servicio que ejecuta tu proceso de negocio
-    List<PosicionRanking> ranking = servicio.getRanking(10); // Por ejemplo, límite de 10 posiciones
-    /*if (ranking.isEmpty()) {
-        return ResponseEntity.noContent().build();
-    }*/
+    
+    List<PosicionRanking> ranking = servicio.getRanking(10); 
+
     
     List<PosicionRankingDTO> rankingDTO = ranking.stream()
                 .map(PosicionRankingDTO::new)
                 .toList();
 
-    // 2. Retornamos la lista directamente con un 200 OK
+
     System.out.println("DEBUG - Elementos en ranking original: " + ranking.size());
     System.out.println("DEBUG - Elementos en ranking dto: " + rankingDTO.size());
     return ResponseEntity.ok(rankingDTO);
