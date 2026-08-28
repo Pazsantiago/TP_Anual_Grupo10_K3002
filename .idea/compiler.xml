@@ -6,15 +6,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Servicio-Incentivos" />
-        <module name="Servicio-Notificaciones" />
-        <module name="Servicio-Donaciones" />
+        <module name="TP_Anual_Grupo10_K3002" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Servicio-Donaciones" target="21" />
+      <module name="Servicio-Incentivos" target="25" />
+      <module name="Servicio-Notificaciones" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Servicio-Notificaciones" options="-parameters" />
+      <module name="TP_Anual_Grupo10_K3002" options="-parameters" />
     </option>
   </component>
 </project>

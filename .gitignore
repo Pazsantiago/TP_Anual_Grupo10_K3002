@@ -1,3 +1,6 @@
-Servicio-Notificaciones/target
-Servicio-Incentivos/target
-Servicio-Donaciones/target
+target\*
+Servicio-Notificaciones\*
+
+target/*
+Servicio-Notificaciones/s*
+
