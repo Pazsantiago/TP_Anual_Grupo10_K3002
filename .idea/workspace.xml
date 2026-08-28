@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="823a78cc-7332-4fd2-b0bf-4b0daf1cee6b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/controllers/ControllerInterno.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_18_6_2026_11_39__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/DTOs/response/NotificacionResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/DTOs/response/NotificacionResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/controllers/NotificacionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/controllers/NotificacionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/dominio/Notificacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servicio-Notificaciones/src/main/java/Servicio_notificaciones/dominio/Notificacion.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
