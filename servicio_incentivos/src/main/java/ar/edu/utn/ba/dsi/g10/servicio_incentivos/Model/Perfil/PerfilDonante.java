@@ -23,14 +23,14 @@ public class PerfilDonante {
 
     private final List<Insignia> insignias = new ArrayList<>();
     private final List<ProgresoMision> historialMisiones = new ArrayList<>();
-    //private RankingPerfil rankingHistoricos;
+
 
     public PerfilDonante(long donanteID, CategoriaDonante categoria, Mision misionActual) {
         this.donanteID = donanteID;
         this.categoria = categoria;
         this.misionActual = misionActual;
         this.racha = new RachaDonante();
-        //this.rankingHistoricos = rankingHistoricos;
+
         inicializarProgreso();
     }
 
@@ -58,22 +58,19 @@ public class PerfilDonante {
         ProgresoMision ultimoProgreso = historialMisiones.getLast();
         if (ultimoProgreso.getCompletada() && misionActual != null && misionActual.getInsignia() != null) {
             boolean yaOtorgada = insignias.stream()
-                .anyMatch(insignia -> insignia.getID() == misionActual.getInsignia().getID()); // cambio, antes comparaba con el objeto en memoria, ahora con el id es con la insignia real, tamb podriamos usar hashcode y equals
-            if (!yaOtorgada) {
+                .anyMatch(insignia -> insignia.getID() == misionActual.getInsignia().getID()); 
                 insignias.add(misionActual.getInsignia());
             }
-        }
+        
         return ultimoProgreso.getCompletada();
-        //TODO: notificacion insignia
     }
 
     public ProgresoMision getProgreso() {
         if (historialMisiones.isEmpty()) {
             inicializarProgreso();
         }
-        return historialMisiones.getLast(); // correccion sugerida: historialMisiones.lista.get(lista.size() - 1)
+        return historialMisiones.getLast();
     }
-
     public long getID() {
         return donanteID;
     }
@@ -93,7 +90,7 @@ public class PerfilDonante {
 
     public void incrementarOrganizacionesAyudadas() {
         totalOrganizacionesAyudadas++;
-    } // si es la misma organizacion suma otra vez
+    }
 
     public void verificarRachaDonaciones(LocalDate fechaNuevaDonacion) {
         if (this.racha == null) {

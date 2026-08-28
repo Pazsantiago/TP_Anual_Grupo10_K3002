@@ -5,7 +5,6 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.DonacionImportada;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.CategoriasDonante.CategoriaDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.ProgresoMision;
-//import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.RankingPerfil;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking.PosicionRanking;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking.RankingPerfil;
 
@@ -41,52 +40,11 @@ public class RepositorioPerfiles {
                 .orElse(null);
     }
 
-    public void reiniciarRankingMensual() {
-        this.ranking.reiniciarRanking();
-    }
+    
 
     
       public RepositorioPerfiles() {
-          /*esto lo mio
-          CategoriaDonante categoriaInicial = new CategoriaDonante();
-          categoriaInicial.initCategoria();
-
-          // Instanciamos la misión de Racha
-          MisionRacha misionInicial = new MisionRacha();
-
-          // Poblamos sus datos descriptivos
-          misionInicial.setId(1L);
-          misionInicial.setNombre("Racha Donante");
-          misionInicial.setDescripcion("Realizar donaciones consecutivas durante 10 meses");
-
-          RankingPerfil rankingInicial = new RankingPerfil();
-
-          // Asignamos la misión al donante de prueba (ID: 1)
-          PerfilDonante donanteDePrueba = new PerfilDonante(
-                  1L,
-                  categoriaInicial,
-                  misionInicial,
-                  rankingInicial
-          );
-
-          this.perfilDonantes.add(donanteDePrueba);*/
-        /* Esto le que armo elian
-        CategoriaDonante categoriaInicial = new CategoriaDonante(); 
-        categoriaInicial.initCategoria(); 
-
-        MisionCompletitud misionInicial = new MisionCompletitud();
-        RankingPerfil rankingInicial = new RankingPerfil();
-
-     
-        PerfilDonante donanteDePrueba = new PerfilDonante(
-            1L, 
-            categoriaInicial, 
-            misionInicial, 
-            rankingInicial
-        );
-
-   
-        this.perfilDonantes.add(donanteDePrueba);*/
+ 
 
           // Donante ID 1
           CategoriaDonante catInicial1 = new CategoriaDonante();
@@ -278,5 +236,8 @@ public List<PosicionRanking> obtenerRankingMensual(int tamaño){
     return topN;
 }
 
+public void reiniciarRankingMensual() {
+        ranking.reiniciarRanking();
+    }
 
 }

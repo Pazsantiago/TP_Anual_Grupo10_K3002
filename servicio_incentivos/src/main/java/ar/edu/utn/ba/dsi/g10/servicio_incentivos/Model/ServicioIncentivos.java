@@ -9,17 +9,14 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking.PosicionRanking;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Repository.RepositorioPerfiles;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 
 @Service
 public class ServicioIncentivos {
     private final RepositorioPerfiles repo;
-    /* 
-    public ServicioIncentivos() {
-        this(new RepositorioPerfiles());
-    }
-    */
+   
     public ServicioIncentivos(RepositorioPerfiles repo) {
         this.repo = repo;
     }
@@ -31,15 +28,6 @@ public class ServicioIncentivos {
         }
 
         perfilAsociado.sumarDonacion();
-        //perfilAsociado.verificarRachaDonaciones(donacion.getFechaDonacion());
-        //ProgresoMision progresoAsociado = perfilAsociado.getProgreso();
-        //progresoAsociado.actualizar(donacion);
-        //verificarYCompletarMision(perfilAsociado);
-        
-        
-        
-        //verificarSubidaCategoria(perfilAsociado);
-        //  TODO: cambios realizados a partir de acá, revisar
         // Evalúa racha mensual del donante
         perfilAsociado.verificarRachaDonaciones(donacion.getFechaDonacion());
 
@@ -90,14 +78,6 @@ public class ServicioIncentivos {
         return repo.obtenerRankingMensual(tamaño);
     }
 
-    /*private void verificarSubidaCategoria(PerfilDonante perfilDonante) {
-        if (perfilDonante == null) {
-            return;
-        }
-        if (perfilDonante.getPorcentajeProgreso() >= 100) {
-            perfilDonante.subirCategoria();
-        }
-    }*/
 
     private void verificarSubidaCategoria(PerfilDonante perfilDonante) {
         if (perfilDonante != null && perfilDonante.getPorcentajeProgreso() >= 100.0) {
@@ -109,12 +89,7 @@ public class ServicioIncentivos {
         return repo != null ? repo.getxId(donanteID) : null;
     }
 
-    /* TODO: Revisar
-    @Scheduled(cron = "0 59 23 L * ?")
-    public void resetearRanking() {
-        repo.reiniciarRankingMensual();
-        System.out.println("Se ha reiniciado el ranking mensual exitosamente.");
-    }*/
+
 
     public void asignarNuevaMision(long donanteID, Mision nuevaMision) {
         PerfilDonante perfil = obtenerPerfil(donanteID);
@@ -127,4 +102,9 @@ public class ServicioIncentivos {
             perfil.getHistorialMisiones().add(nuevoProgreso);
         }
     }
+@Scheduled(cron = "0 59 23 L * ?")
+public void reiniciarRanking() { // 👈 CAMBIA EL CORCHETE/LLAVE POR ESTA LLAVE DE APERTURA
+    repo.reiniciarRankingMensual();
+    System.out.println("Se ha reinventado el ranking mensual exitosamente.");
+}
 }
