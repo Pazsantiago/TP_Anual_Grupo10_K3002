@@ -1,6 +1,5 @@
 package Servicio_notificaciones.dominio;
 
-import java.sql.Struct;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

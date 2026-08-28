@@ -12,10 +12,15 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.NestedExceptionUtils;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificacionService {
+
+  private static final Logger log = LoggerFactory.getLogger(NotificacionService.class);
 
   private final NotificacionRepository repository;
   private final Map<MedioNotificacion, INotificador> canales;
@@ -52,14 +57,21 @@ public class NotificacionService {
       INotificador notificador = canales.get(notificacionRequest.getMedioNotificacion());
 
       if (notificador == null) {
-        throw new IllegalArgumentException("No existe canal para el medio: " + notificacionRequest.getMedioNotificacion());
+        throw new IllegalArgumentException(
+            "No existe canal para el medio: " + notificacionRequest.getMedioNotificacion());
       }
 
       notificador.enviar(notificacion);
       notificacion.marcarCompletada();
+      log.info("Notificación {} enviada correctamente por {} a {}",
+          notificacion.getId(), notificacion.getMedioNotificacion(),
+          notificacion.getDestinatario().getNombre());
 
     } catch (Exception e) {
-      notificacion.marcarFallida(e.getMessage());
+      String causaRaiz = NestedExceptionUtils.getMostSpecificCause(e).getMessage();
+      log.error("Falló el envío de la notificación {} por {}: {}",
+          notificacion.getId(), notificacion.getMedioNotificacion(), causaRaiz, e);
+      notificacion.marcarFallida(causaRaiz);
     }
 
     return repository.save(notificacion);

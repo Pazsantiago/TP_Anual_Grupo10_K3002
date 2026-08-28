@@ -1,0 +1,19 @@
+services:
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog-demo
+    ports:
+      - "1025:1025"   # puerto SMTP donde el servicio va a "enviar" los mails
+      - "8025:8025"   # interfaz web para ver los mails recibidos
+
+  servicio-notificaciones:
+    build: .
+    container_name: servicio-notificaciones-demo
+    depends_on:
+      - mailhog
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: demo
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
