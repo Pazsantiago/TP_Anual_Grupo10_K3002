@@ -146,5 +146,21 @@ public ResponseEntity<?> obtenerRankingMensual(){
     return ResponseEntity.ok(rankingDTO);
 }
 
+    // hardcodeado para probar la donacion 5
+    @PostMapping("/{donanteId}/nueva-mision")
+    public ResponseEntity<String> asignarMision(
+            @PathVariable Long donanteId) {
+
+        // Creamos una misión genérica rápida para la prueba
+        ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.MisionCompletitud nuevaMision = new ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.MisionCompletitud();
+        nuevaMision.setId(99L);
+        nuevaMision.setNombre("Misión de Refuerzo");
+        nuevaMision.setCategoriasDistintasRequeridas(1.0);
+
+        servicio.asignarNuevaMision(donanteId, nuevaMision);
+
+        return ResponseEntity.ok("Nueva misión asignada correctamente");
+    }
+
 }
 

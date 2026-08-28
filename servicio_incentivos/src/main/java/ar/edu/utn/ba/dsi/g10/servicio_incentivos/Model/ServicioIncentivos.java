@@ -7,6 +7,7 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.ProgresoMision;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking.PosicionRanking;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Repository.RepositorioPerfiles;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -106,5 +107,24 @@ public class ServicioIncentivos {
 
     private PerfilDonante obtenerPerfil(long donanteID) {
         return repo != null ? repo.getxId(donanteID) : null;
+    }
+
+    /* TODO: Revisar
+    @Scheduled(cron = "0 59 23 L * ?")
+    public void resetearRanking() {
+        repo.reiniciarRankingMensual();
+        System.out.println("Se ha reiniciado el ranking mensual exitosamente.");
+    }*/
+
+    public void asignarNuevaMision(long donanteID, Mision nuevaMision) {
+        PerfilDonante perfil = obtenerPerfil(donanteID);
+        if (perfil != null && nuevaMision != null) {
+            perfil.setMisionActual(nuevaMision);
+
+            ProgresoMision nuevoProgreso = new ProgresoMision();
+            nuevoProgreso.setMisionAsociada(nuevaMision);
+            nuevoProgreso.setProgresoActual(0.0);
+            perfil.getHistorialMisiones().add(nuevoProgreso);
+        }
     }
 }

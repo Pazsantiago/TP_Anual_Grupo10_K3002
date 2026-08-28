@@ -41,6 +41,10 @@ public class RepositorioPerfiles {
                 .orElse(null);
     }
 
+    public void reiniciarRankingMensual() {
+        this.ranking.reiniciarRanking();
+    }
+
     
       public RepositorioPerfiles() {
           /*esto lo mio
@@ -83,9 +87,8 @@ public class RepositorioPerfiles {
 
    
         this.perfilDonantes.add(donanteDePrueba);*/
-          // =========================================================================
-          // CASO 1: DONANTE INICIAL (ID: 1) - Racha activa desde cero
-          // =========================================================================
+
+          // Donante ID 1
           CategoriaDonante catInicial1 = new CategoriaDonante();
           catInicial1.initCategoria();
 
@@ -107,9 +110,7 @@ public class RepositorioPerfiles {
           this.perfilDonantes.add(donante1);
 
 
-          // =========================================================================
-          // CASO 2: DONANTE EN PROGRESO PARCIAL (ID: 2) - Donaciones Exitosas
-          // =========================================================================
+          // Donante ID 3
           CategoriaDonante catInicial2 = new CategoriaDonante();
           catInicial2.initCategoria();
 
@@ -145,9 +146,7 @@ public class RepositorioPerfiles {
           this.perfilDonantes.add(donante2);
 
 
-          // =========================================================================
-          // CASO 3: DONANTE EXPERTO (ID: 3) - Misión Completada y Subida de Categoría
-          // =========================================================================
+          // Donante ID 3
           CategoriaDonante catInicial3 = new CategoriaDonante();
           catInicial3.initCategoria();
 
@@ -191,9 +190,7 @@ public class RepositorioPerfiles {
 
           this.perfilDonantes.add(donante3);
 
-          // =========================================================================
-          // CASO 4: DONANTE VETERANO (ID: 4) - Múltiples Insignias Cargadas
-          // =========================================================================
+          // Donante ID 4
           CategoriaDonante catInicial4 = new CategoriaDonante();
           catInicial4.initCategoria();
 
@@ -203,7 +200,7 @@ public class RepositorioPerfiles {
           misionMonto.setDescripcion("Aportar un total de 50 elementos");
           misionMonto.setCantidadBienesRequerida(50.0);
 
-          // NUEVO: Insignia para la Misión Habil Donador
+          // Insignia para la Misión Habil Donador
           Insignia insGranAportante = new Insignia();
           insGranAportante.setID(104L);
           insGranAportante.setNombre("Corazón de Oro");
@@ -239,6 +236,29 @@ public class RepositorioPerfiles {
           donante4.subirCategoria();
 
           this.perfilDonantes.add(donante4);
+
+
+          // Donante ID 5
+          CategoriaDonante catInicial5 = new CategoriaDonante();
+          catInicial5.initCategoria();
+
+          // Misión: Requiere exactamente 2 donaciones para llegar al 100%
+          MisionDonacionesExitosas mision5 = new MisionDonacionesExitosas();
+          mision5.setId(5L);
+          mision5.setNombre("Desafío Postman");
+          mision5.setDescripcion("Realizar 2 donaciones exitosas");
+          mision5.setDonacionesExitosasRequeridas(2.0);
+
+          Insignia insPostman = new Insignia();
+          insPostman.setID(105L);
+          insPostman.setNombre("Tester de Oro");
+          insPostman.setDescripcion("Otorgada por probar el circuito completo");
+          mision5.setInsignia(insPostman);
+
+          // Inicializamos el donante con la misión, pero SIN DONACIONES
+          PerfilDonante donante5 = new PerfilDonante(5L, catInicial5, mision5);
+
+          this.perfilDonantes.add(donante5);
     }
 
 
