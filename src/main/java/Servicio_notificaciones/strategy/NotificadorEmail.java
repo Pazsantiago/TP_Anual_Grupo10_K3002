@@ -1,9 +1,19 @@
 package Servicio_notificaciones.strategy;
 
+import Servicio_notificaciones.dominio.*;
 import Servicio_notificaciones.dominio.MedioNotificacion;
 import Servicio_notificaciones.dominio.Notificacion;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.*;
+import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.client.RestTemplate;
+
+import java.time.Duration;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
