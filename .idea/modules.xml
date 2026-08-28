@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/TP_Anual_Grupo10_K3002.iml" filepath="$PROJECT_DIR$/.idea/TP_Anual_Grupo10_K3002.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Servicio-Donaciones/Servicio-Donaciones.iml" filepath="$PROJECT_DIR$/Servicio-Donaciones/Servicio-Donaciones.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Servicio-Incentivos/Servicio-Incentivos.iml" filepath="$PROJECT_DIR$/Servicio-Incentivos/Servicio-Incentivos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Servicio-Notificaciones/Servicio-Notificaciones.iml" filepath="$PROJECT_DIR$/Servicio-Notificaciones/Servicio-Notificaciones.iml" />
     </modules>
   </component>
 </project>
