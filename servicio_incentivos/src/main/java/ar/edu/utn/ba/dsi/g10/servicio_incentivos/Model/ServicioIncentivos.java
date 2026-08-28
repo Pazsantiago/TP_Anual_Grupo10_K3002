@@ -1,5 +1,12 @@
 package ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.Insignia;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.Mision;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.DonacionImportada;
@@ -7,10 +14,6 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.ProgresoMision;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking.PosicionRanking;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Repository.RepositorioPerfiles;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ServicioIncentivos {
@@ -75,17 +78,50 @@ public class ServicioIncentivos {
         return obtenerPerfil(donanteID);
     }
 
-    private void verificarYCompletarMision(PerfilDonante perfilDonante) {
-        if (perfilDonante == null) {
-            return;
-        }
-        if (perfilDonante.misionCompletada()) repo.actualizarRankingPerfil(perfilDonante);
+    public void enviarInsigniaAN8N(PerfilDonante perfil) {
 
-        
-        if (perfilDonante.getPorcentajeProgreso() >= 100) {
-            perfilDonante.subirCategoria();
-        }
+    try {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map<String, Object> body = new HashMap<>();
+
+        Insignia ultimaInsignia =
+                perfil.getInsignias().get(perfil.getInsignias().size() - 1);
+
+        body.put("user", perfil.getDonanteID());
+        body.put("badge", ultimaInsignia.getNombre());
+        body.put("description", ultimaInsignia.getDescripcion());
+
+        restTemplate.postForEntity(
+                "http://localhost:5678/webhook/Insignias",
+                body,
+                String.class
+        );
+
+    } catch (Exception e) {
+        System.out.println("Error enviando evento a n8n: " + e.getMessage());
     }
+}
+
+    private void verificarYCompletarMision(PerfilDonante perfilDonante) {
+
+    if (perfilDonante == null) {
+        return;
+    }
+
+    if (perfilDonante.misionCompletada()) {
+
+        repo.actualizarRankingPerfil(perfilDonante);
+
+        enviarInsigniaAN8N(perfilDonante);
+    }
+
+    if (perfilDonante.getPorcentajeProgreso() >= 100) {
+        perfilDonante.subirCategoria();
+    }
+}
+
     public List<PosicionRanking> getRanking(int tamaño) {
         return repo.obtenerRankingMensual(tamaño);
     }
