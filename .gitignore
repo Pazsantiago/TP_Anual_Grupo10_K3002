@@ -1,6 +1,7 @@
 target\*
 Servicio-Notificaciones\*
-
+.env.*
+!.env.example
 target/*
 Servicio-Notificaciones/s*
 
