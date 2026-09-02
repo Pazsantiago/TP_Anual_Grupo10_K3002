@@ -51,7 +51,7 @@ public class ServicioBeneficiarias {
 
     public String deleteEntidad(Integer idEntidad) {
         repoBeneficiarias.obtenerPorId(idEntidad).getNecesidadesActuales().forEach(n ->
-                repoNecesidades.eliminarNecesidad(n.getId(), idEntidad)
+                repoNecesidades.eliminarNecesidad(n.getId())
         );
         repoBeneficiarias.eliminarEntidad(idEntidad);
         return "Entidad eliminada.";

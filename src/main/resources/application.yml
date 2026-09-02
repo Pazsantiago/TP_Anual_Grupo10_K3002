@@ -2,6 +2,15 @@ spring:
   application:
     name: servicio-donaciones
 
+server:
+  port: ${SERVER_PORT:8080}
+
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
+    path: /endpoints-docs
+
+conexiones:
+  servicio-incentivos: ${SERVICIO_INCENTIVOS_URL:http://localhost:8081}
+
+horario-baja-carga:
+  cron: ${HORARIO_CRON:0 0 3-8 * * *}

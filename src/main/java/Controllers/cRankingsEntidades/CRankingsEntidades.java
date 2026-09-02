@@ -1,12 +1,9 @@
 package Controllers.cRankingsEntidades;
 
-import Sdonaciones.asignacion.ServicioAsignacion;
 import Sdonaciones.asignacion.algoritmosAsignacion.RankingEntidadBeneficiaria;
+import Services.ServiceAsignacion.ServicioAsignacion;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -30,5 +27,10 @@ public class CRankingsEntidades {
         return ResponseEntity.ok(servicioAsignacion.filtrarEntidades(idDonacion));
     }
 
+    @PostMapping("")
+    public ResponseEntity<String> crearRankings() {
+        servicioAsignacion.generarRanking();
+        return ResponseEntity.ok("Rankings creados exitosamente");
+    }
 
 }

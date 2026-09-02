@@ -1,4 +1,4 @@
-package Sdonaciones.asignacion;
+package Services.ServiceAsignacion;
 
 import Sdonaciones.asignacion.algoritmosAsignacion.IAlgoritmoAsignacion;
 import Sdonaciones.asignacion.algoritmosAsignacion.RankingEntidadBeneficiaria;
@@ -11,7 +11,7 @@ import Sdonaciones.repositorios.RepoDonacionesAsignadas;
 import Sdonaciones.repositorios.RepoEntidades;
 import Sdonaciones.repositorios.RepoNecesidades;
 import lombok.Data;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -44,7 +44,7 @@ public class ServicioAsignacion {
         return Map.copyOf(rankings);
     }
 
-    @Async
+    @Scheduled(cron = "${horario-baja-carga.cron}")
     public void generarRanking() {
         donacionesSegmentadas.forEach(donacionSegmentada -> {
             List<RankingEntidadBeneficiaria> rankAux = new ArrayList<>();
@@ -62,7 +62,7 @@ public class ServicioAsignacion {
         DonacionAsignada donacionFinal = new DonacionAsignada(donacion, necesidad, new Date());
         donacionesSegmentadas.stream().filter(d -> idDonacion.equals(d.getId())).findFirst().get().cambiarEstadoActual(new EstadoDonacion(TipoEstadoDonacion.ASIGNACION_REALIZADA, null));
         donacionesSegmentadas.removeIf(d -> d.getId().equals(idDonacion));
-        repositorioNecesidades.eliminarNecesidad(idNecesidad, idEntidad);
+        repositorioNecesidades.eliminarNecesidad(idNecesidad);
         repositorioDonacionesAsignadas.guardar(donacionFinal);
         return donacionFinal;
     }

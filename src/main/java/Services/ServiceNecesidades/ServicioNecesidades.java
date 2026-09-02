@@ -5,8 +5,6 @@ import Sdonaciones.dominio.necesidad.Necesidad;
 import Sdonaciones.repositorios.RepoEntidades;
 import Sdonaciones.repositorios.RepoNecesidades;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 
@@ -26,8 +24,8 @@ public class ServicioNecesidades {
     }
 
 
-    public Necesidad getNecesidadById(Integer idNecesidad, Integer idEntidad) {
-        return repoNecesidades.buscarPorId(idNecesidad, idEntidad);
+    public Necesidad getNecesidadById(Integer idNecesidad) {
+        return repoNecesidades.buscarPorId(idNecesidad);
     }
 
 
@@ -39,22 +37,20 @@ public class ServicioNecesidades {
         return necesidad;
     }
 
-
-    @PutMapping("/{idNecesidad}/entidad/{idEntidad}")
-    public Necesidad updateNecesidad(Integer idNecesidad, Integer idEntidad, Necesidad updatedNecesidad) {
-        EntidadBeneficiaria entidad = repoEntidades.obtenerPorId(idEntidad);
+    // FIJARSE ACA DEVUELTA POR SI ACASO
+    public Necesidad updateNecesidad(Integer idNecesidad, Necesidad updatedNecesidad) {
+        EntidadBeneficiaria entidad = repoNecesidades.buscarPorId(idNecesidad).getEntidadBeneficiaria();
         entidad.agregarNecesidadActual(updatedNecesidad);
         repoEntidades.actualizarEntidad(entidad.getId(), entidad);
-        repoNecesidades.actualizarNecesidad(idNecesidad, idEntidad, updatedNecesidad);
+        repoNecesidades.actualizarNecesidad(idNecesidad, entidad.getId(), updatedNecesidad);
         return updatedNecesidad;
     }
 
-    @DeleteMapping("/{idNecesidad}/entidad/{idEntidad}")
-    public String deleteNecesidad(Integer idNecesidad, Integer idEntidad) {
-        EntidadBeneficiaria entidad = repoEntidades.obtenerPorId(idEntidad);
-        Necesidad necesidad = entidad.getNecesidadesActuales().stream().filter(n -> n.getId().equals(idNecesidad)).findFirst().orElse(null);
+    public String deleteNecesidad(Integer idNecesidad) {
+        Necesidad necesidad = repoNecesidades.buscarPorId(idNecesidad);
+        EntidadBeneficiaria entidad = necesidad.getEntidadBeneficiaria();
         entidad.eliminarNecesidadActual(necesidad);
-        repoNecesidades.eliminarNecesidad(idNecesidad, idEntidad);
+        repoNecesidades.eliminarNecesidad(idNecesidad);
         return "Necesidad borrada";
     }
 }

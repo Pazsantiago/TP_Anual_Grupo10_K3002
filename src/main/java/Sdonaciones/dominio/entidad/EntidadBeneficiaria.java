@@ -21,7 +21,7 @@ public class EntidadBeneficiaria {
 
 
     public void agregarNecesidadActual(Necesidad necesidad) {
-        necesidadesHistoricas.add(necesidad);
+        necesidadesActuales.add(necesidad);
     }
 
     public void eliminarNecesidadActual(Necesidad necesidad) {

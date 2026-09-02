@@ -1,13 +1,13 @@
 package Services.ServiceDonaciones;
 
-import Sdonaciones.asignacion.ServicioAsignacion;
 import Sdonaciones.dominio.donacion.Donacion;
 import Sdonaciones.dominio.donacion.DonacionAsignada;
 import Sdonaciones.dominio.donacion.DonacionSegmentada;
 import Sdonaciones.repositorios.RepoDonaciones;
 import Sdonaciones.repositorios.RepoDonacionesAsignadas;
+import Sdonaciones.repositorios.RepoDonantes;
+import Services.ServiceAsignacion.ServicioAsignacion;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,13 @@ public class ServicioDonacion {
     private RepoDonaciones repoDonaciones;
     private RepoDonacionesAsignadas repoDonacionesAsignadas;
     private ServicioAsignacion servicioAsignacion;
+    private RepoDonantes repoDonantes;
 
-
-    public ServicioDonacion(ServicioAsignacion servicioAsignacion, RepoDonacionesAsignadas repoDonacionesAsignadas, RepoDonaciones repoDonaciones) {
+    public ServicioDonacion(ServicioAsignacion servicioAsignacion, RepoDonacionesAsignadas repoDonacionesAsignadas, RepoDonaciones repoDonaciones, RepoDonantes repoDonantes) {
         this.servicioAsignacion = servicioAsignacion;
         this.repoDonacionesAsignadas = repoDonacionesAsignadas;
         this.repoDonaciones = repoDonaciones;
+        this.repoDonantes = repoDonantes;
     }
 
 
@@ -61,10 +62,10 @@ public class ServicioDonacion {
     }
 
 
-    public Donacion createDonacion(Donacion donacion) {
+    public Donacion createDonacion(Donacion donacion, Integer idDonante) {
+        donacion.setDonante(repoDonantes.buscarPorId(idDonante));
         repoDonaciones.guardar(donacion);
         servicioAsignacion.agregarDonacionesSegmentadas(donacion.getDonacionesSegmentadas());
-        servicioAsignacion.generarRanking();
         return donacion;
 
     }
@@ -80,7 +81,7 @@ public class ServicioDonacion {
     }
 
 
-    public String deleteDonacion(@PathVariable Integer idDonacion) {
+    public String deleteDonacion(Integer idDonacion) {
         repoDonaciones.borrarDonacion(idDonacion);
         return "Donacion borrada";
     }

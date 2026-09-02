@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Donante {
+    private Integer id;
     private List<Donacion> donaciones;
     private Persona persona;
     private List<MedioContacto> mediosDeContacto = new ArrayList<>();

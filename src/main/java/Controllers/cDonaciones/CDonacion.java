@@ -29,7 +29,7 @@ public class CDonacion {
     }
 
     //
-    // READ - Obtener una Donaciones por idDonacion
+    // READ - Obtener una Donacion  por idDonacion
     @GetMapping("/{idDonacion}")
     public ResponseEntity<Donacion> getDonacionById(@PathVariable Integer idDonacion) {
         return ResponseEntity.ok(servicioDonacion.getDonacionById(idDonacion));
@@ -56,9 +56,9 @@ public class CDonacion {
 
 
     // CREATE - Agregar una nueva Donacion  
-    @PostMapping("")
-    public ResponseEntity<Donacion> createDonacion(@RequestBody Donacion donacion) {
-        return ResponseEntity.ok(servicioDonacion.createDonacion(donacion));
+    @PostMapping("/{idDonante}")
+    public ResponseEntity<Donacion> createDonacion(@RequestBody Donacion donacion, @PathVariable Integer idDonante) {
+        return ResponseEntity.ok(servicioDonacion.createDonacion(donacion, idDonante));
 
     }
 

@@ -39,19 +39,5 @@ public class Bien {
         this.foto = foto;
     }
 
-    /**
-     * Constructor sin foto ni estado (bienes sin distinción de uso).
-     */
-//    public Bien(String descripcion, Subcategoria subcategoria, Integer cantidad) {
-//        this(descripcion, subcategoria, cantidad, null, null);
-//    }
 
-//    public boolean requiereEstado() {
-//        return estado != null;
-//    }
-
-//    @Override
-//    public String toString(){
-//        return subcategoria.getNombre() + " x "+cantidad+ subcategoria.getUnidad();
-//    }
 }

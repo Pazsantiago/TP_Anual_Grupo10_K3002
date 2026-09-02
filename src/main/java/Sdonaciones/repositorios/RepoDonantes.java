@@ -13,15 +13,21 @@ import java.util.List;
 public class RepoDonantes {
 
     //private final Map<String, Donante> donantes = new ConcurrentHashMap<>();
+    private Integer id = 0;
     private List<Donante> donantes = new ArrayList<>();
 
 
     public void guardar(Donante donante) {
+        donante.setId(++id);
         donantes.add(donante);
     }
 
     public Integer cantidadDeDonantes() {
         return donantes.size();
+    }
+
+    public Donante buscarPorId(Integer id) {
+        return donantes.stream().filter(d -> d.getId().equals(id)).findFirst().orElse(null);
     }
 
     public Donante buscarPorCorreo(String correoElectronico) {

@@ -24,9 +24,9 @@ public class RepoNecesidades {
 
     }
 
-    public Necesidad buscarPorId(Integer idNecesidad, Integer idEntidad) {
+    public Necesidad buscarPorId(Integer idNecesidad) {
         return necesidades.stream()
-                .filter(n -> n.getId().equals(idNecesidad) && n.getEntidadBeneficiaria().getId().equals(idEntidad))
+                .filter(n -> n.getId().equals(idNecesidad))
                 .findFirst()
                 .orElse(null);
     }
@@ -40,10 +40,8 @@ public class RepoNecesidades {
         }
     }
 
-    public void eliminarNecesidad(Integer idNecesidad, Integer idEntidad) {
-        Necesidad necesidad = necesidades.stream().filter(p -> p.getId().equals(idNecesidad) && p.getEntidadBeneficiaria().getId().equals(idEntidad)).findFirst().orElse(null);
-        necesidad.getEntidadBeneficiaria().eliminarNecesidadActual(necesidad);
-        necesidades.removeIf(e -> e.getId().equals(idNecesidad) && e.getEntidadBeneficiaria().getId().equals(idEntidad));
+    public void eliminarNecesidad(Integer idNecesidad) {
+        necesidades.removeIf(e -> e.getId().equals(idNecesidad));
     }
 
 }
