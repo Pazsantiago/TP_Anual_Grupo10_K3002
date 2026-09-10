@@ -3,6 +3,8 @@ package com.Donatrack.Logistica.controller;
 import com.Donatrack.Logistica.Rutas.domain.Ruta;
 import com.Donatrack.Logistica.Rutas.service.GPSService;
 import java.util.List;
+
+import com.Donatrack.Logistica.domain.Direccion;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +21,7 @@ public class GPSController {
     }
 
     @PostMapping("/planificar")
-    public ResponseEntity<Ruta> planificarRuta(@RequestBody List<String> direcciones) {
-        return ResponseEntity.ok(gpsService.generarRuta(direcciones));
+    public ResponseEntity<Ruta> planificarRuta(@RequestBody List<Direccion> direcciones) {
+        return ResponseEntity.ok(gpsService.planificarRuta(direcciones));
     }
 }

@@ -17,9 +17,10 @@ public class gpsCallbackController {
         this.gpsService = gpsService;
     }
 
-    @PostMapping("/resultado")
-    public ResponseEntity<String> recibirResultado(@RequestBody RutaResponse rutaResponse) {
-        GPSService.registrarRuta(rutaResponse);
+    @PostMapping("/guardar")
+    public ResponseEntity<String> guardar(@RequestBody RutaResponse rutaResponse) {
+        gpsService.guardar(rutaResponse); // 👈 usar la instancia, no la interfaz
         return ResponseEntity.ok("Ruta recibida y registrada correctamente");
     }
+
 }

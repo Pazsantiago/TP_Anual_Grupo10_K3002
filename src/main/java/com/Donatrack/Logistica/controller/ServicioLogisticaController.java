@@ -1,5 +1,6 @@
 package com.Donatrack.Logistica.controller;
 
+import com.Donatrack.Logistica.domain.Direccion;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,7 @@ public class ServicioLogisticaController {
     }
 
     @PostMapping("/planificar")
-    public ResponseEntity<Ruta> planificar(@RequestBody List<String> direcciones) {
+    public ResponseEntity<Ruta> planificar(@RequestBody List<Direccion> direcciones) {
         Ruta ruta = servicioLogistica.planificarRuta(direcciones);
         return ResponseEntity.ok(ruta);
     }

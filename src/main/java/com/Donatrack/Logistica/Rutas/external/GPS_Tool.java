@@ -11,7 +11,7 @@ public class GPS_Tool {
         Ruta ruta = new Ruta();
         ruta.setDestinos(direcciones);
         ruta.setPasos(List.of("Salida", "Llegada"));
-        ruta.setEstado("Planificada");
+        ruta.setEstado(Ruta.EstadoRuta.PLANIFICADA);
         return ruta;
     }
 }

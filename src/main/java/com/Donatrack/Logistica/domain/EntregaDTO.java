@@ -4,7 +4,6 @@ import com.Donatrack.Logistica.domain.EstadoEntrega;
 import com.Donatrack.Logistica.domain.Direccion;
 import jakarta.persistence.Entity;
 
-@Entity
 public class EntregaDTO {
     private Long id;
     private EstadoEntrega estado;

@@ -4,6 +4,7 @@ import com.Donatrack.Logistica.Rutas.domain.Ruta;
 import com.Donatrack.Logistica.Rutas.service.GPSService;
 import com.Donatrack.Logistica.domain.Bulto;
 import com.Donatrack.Logistica.domain.Camion;
+import com.Donatrack.Logistica.domain.Direccion;
 import com.Donatrack.Logistica.domain.Entrega;
 import com.Donatrack.Logistica.repository.EntregaRepository;
 import java.time.LocalDateTime;
@@ -37,13 +38,13 @@ public class ServicioLogisticoImpl implements ServicioLogistica {
     }
 
     @Override
-    public Ruta planificarRuta(List<String> direcciones) {
-        return gpsService.generarRuta(direcciones);
+    public Ruta planificarRuta(List<Direccion> direcciones) {
+        return gpsService.planificarRuta(direcciones);
     }
 
     @Override
     public void iniciarRuta(Ruta ruta) {
-        ruta.setEstado("EN_TRANSITO");
+        ruta.setEstado(Ruta.EstadoRuta.EN_TRANSITO);
     }
 
     @Override

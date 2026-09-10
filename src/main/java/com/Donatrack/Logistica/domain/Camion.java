@@ -23,9 +23,10 @@ public class Camion {
     public Camion() {
     }
 
-    public Camion(String patente, double capacidadCarga) {
+    public Camion(String patente, double capacidadCarga,double cargaActual) {
         this.patente = patente;
         this.capacidadCarga = capacidadCarga;
+        this.cargaActual=cargaActual
     }
 
     public Long getId() { return id; }
