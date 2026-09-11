@@ -1,0 +1,9 @@
+package domain;
+
+public enum TipoEvento {
+    DONACION_ASIGNADA_ENTIDAD,
+    DONACION_ASIGNADA_DONANTE,
+    DONANTE_INACTIVO,
+    MISION_CUMPLIDA,
+    CAMBIO_CATEGORIA
+}
