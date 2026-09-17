@@ -40,9 +40,10 @@ public class RepositorioPerfiles {
                 .orElse(null);
     }
 
-    
+    public boolean eliminar(long donanteId) {
+        return perfilDonantes.removeIf(p -> p.getID() == donanteId);
+    }
 
-    
       public RepositorioPerfiles() {
  
 

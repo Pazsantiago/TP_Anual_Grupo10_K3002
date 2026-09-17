@@ -132,5 +132,41 @@ public ResponseEntity<?> obtenerRankingMensual(){
         return ResponseEntity.ok("Nueva misión asignada correctamente");
     }
 
+    //todo: revisar estos endpoint
+
+    // POST: Crear un nuevo perfil de donante conectado desde el servicio de donaciones
+    @PostMapping("/perfiles")
+    public ResponseEntity<String> crearPerfil(@RequestBody PerfilDonante perfil) {
+        servicio.guardarPerfil(perfil);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Perfil creado correctamente");
+    }
+
+    // PUT: Actualizar un perfil existente buscando por ID
+    @PutMapping("/perfiles/{donanteId}")
+    public ResponseEntity<String> actualizarPerfil(
+            @PathVariable Long donanteId,
+            @RequestBody PerfilDonante perfilActualizado) {
+
+        PerfilDonante existente = servicio.getMetricas(donanteId);
+        if (existente == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Perfil no encontrado");
+        }
+
+        perfilActualizado.setDonanteID(donanteId); // Asegura que conserve el ID de la URL
+        servicio.guardarPerfil(perfilActualizado);
+
+        return ResponseEntity.ok("Perfil actualizado correctamente");
+    }
+
+    // DELETE: Eliminar un perfil de donante por ID
+    @DeleteMapping("/perfiles/{donanteId}")
+    public ResponseEntity<String> eliminarPerfil(@PathVariable Long donanteId) {
+        boolean eliminado = servicio.eliminarPerfil(donanteId);
+        if (!eliminado) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Perfil no encontrado");
+        }
+        return ResponseEntity.ok("Perfil eliminado correctamente");
+    }
+
 }
 

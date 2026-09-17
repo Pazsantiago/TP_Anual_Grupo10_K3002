@@ -5,7 +5,7 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.Insignia;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.Mision;
 import lombok.Getter;
 import lombok.Setter;
-
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,8 +13,9 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class PerfilDonante {
-    private final long donanteID;
+    private long donanteID; // saque el "final" para que sea privado común y se pueda deserializar
     private CategoriaDonante categoria;
     private int totalDonacionesHistoricas;
     private int totalOrganizacionesAyudadas;

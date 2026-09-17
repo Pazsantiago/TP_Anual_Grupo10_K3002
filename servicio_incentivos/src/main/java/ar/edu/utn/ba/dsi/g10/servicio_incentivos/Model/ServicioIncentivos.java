@@ -14,7 +14,7 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.ProgresoMision;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking.PosicionRanking;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Repository.RepositorioPerfiles;
-<<<<<<< HEAD
+/*<<<<<<< HEAD
 =======
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 >>>>>>> d1de2abbcb740c34e73ef770a5a6216c902a9c8d
-
+*/
 @Service
 public class ServicioIncentivos {
     private final RepositorioPerfiles repo;
@@ -145,9 +145,17 @@ public class ServicioIncentivos {
             perfil.getHistorialMisiones().add(nuevoProgreso);
         }
     }
-@Scheduled(cron = "0 59 23 L * ?")
+/*@Scheduled(cron = "0 59 23 L * ?")
 public void reiniciarRanking() { // 👈 CAMBIA EL CORCHETE/LLAVE POR ESTA LLAVE DE APERTURA
     repo.reiniciarRankingMensual();
     System.out.println("Se ha reinventado el ranking mensual exitosamente.");
-}
+}*/
+    public void guardarPerfil(PerfilDonante perfil) {
+        repo.guardar(perfil);
+    }
+
+    public boolean eliminarPerfil(long donanteId) {
+        return repo.eliminar(donanteId);
+    }
+
 }
