@@ -18,7 +18,7 @@ public class CRankingsEntidades {
     }
 
     @GetMapping("")
-    public ResponseEntity<Map<Integer, List<RankingEntidadBeneficiaria>>> obtenerRankings() {
+    public ResponseEntity<Map<Long, List<RankingEntidadBeneficiaria>>> obtenerRankings() {
         return ResponseEntity.ok(servicioAsignacion.obtenerRankings());
     }
 

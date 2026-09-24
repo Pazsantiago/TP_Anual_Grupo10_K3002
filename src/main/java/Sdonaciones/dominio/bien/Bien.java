@@ -21,7 +21,8 @@ public class Bien {
     private URL foto;
     //    private final Estado estado;
     private UnidadMedida unidad;
-    private Integer cantidad;
+    private Integer cantidadOriginal;
+    private Integer cantidadActual;
 
     public Bien(String descripcion, Subcategoria subcategoria,
                 Integer cantidad, Estado estado, URL foto) {
@@ -34,10 +35,18 @@ public class Bien {
 
         this.descripcion = descripcion;
         this.subcategoria = subcategoria;
-        this.cantidad = cantidad;
+        this.cantidadOriginal = cantidad;
+        this.cantidadActual = cantidadOriginal;
 //        this.estado = estado;
         this.foto = foto;
     }
 
+    public void restarCantidad(Integer cantidad) {
+        this.cantidadActual -= cantidad;
+    }
+
+    public void sumarCantidad(Integer cantidad) {
+        this.cantidadActual += cantidad;
+    }
 
 }

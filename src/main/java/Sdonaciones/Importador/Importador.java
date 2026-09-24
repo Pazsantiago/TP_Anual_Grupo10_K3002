@@ -53,16 +53,11 @@ public class Importador {
         //ya exista (esto quiere decir que el correo electrónico ya se encuentra registrado en el servicio) se deberá
         //actualizar su información --> Esto es para el csv.
         if (donanteExistente.isPresent()) {
-            Integer i = repositorioDonadores.getDonantes().indexOf(donanteExistente.get());
-            Donante donanteActualizado = setearDonante(fila);
-            MedioContacto nuevoPredeterminado = donanteActualizado.obtenerContactoPredeterminado();
-            repositorioDonadores.getDonantes().get(i).getMediosDeContacto().forEach(contacto -> {
-                donanteActualizado.agregarMedioContacto(contacto);
-            });
-            donanteActualizado.cambiarContactoPredeterminado(nuevoPredeterminado);
-            repositorioDonadores.getDonantes().set(i, donanteActualizado);
+            Donante updateDonante = setearDonante(fila);
+            updateDonante.setId(donanteExistente.get().getId());
+            repositorioDonadores.actualizarDonante(updateDonante);
         } else {
-            repositorioDonadores.getDonantes().add(setearDonante(fila));
+            repositorioDonadores.guardar(setearDonante(fila));
         }
     }
 

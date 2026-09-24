@@ -8,6 +8,8 @@ import java.time.LocalDate;
 @Data
 public class Periodo {
     private Integer periodoDias;
+    private LocalDate inicioPeriodo;
+
 
     public LocalDate getInicioPeriodo() {
         return inicioPeriodo;
@@ -24,7 +26,5 @@ public class Periodo {
     public void setPeriodoDias(Integer periodoDias) {
         this.periodoDias = periodoDias;
     }
-
-    private LocalDate inicioPeriodo;
 
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Donante {
-    private Integer id;
-    private List<Donacion> donaciones;
+    private Long id;
+    private List<Donacion> donaciones = new ArrayList<>();
     private Persona persona;
     private List<MedioContacto> mediosDeContacto = new ArrayList<>();
+    private LocalDateTime ultimaInteraccion;
 
     public void agregarMedioContacto(MedioContacto contacto) {
         mediosDeContacto.add(contacto);
@@ -23,6 +25,14 @@ public class Donante {
 
     public MedioContacto obtenerContactoPredeterminado() {
         return mediosDeContacto.stream().filter(p -> p.isEsPredeterminado()).findFirst().orElse(null);
+    }
+
+    public void eliminarDonacion(Long idDonacion) {
+        donaciones.removeIf(d -> d.getId().equals(idDonacion));
+    }
+
+    public void agregarDonacion(Donacion donacion) {
+        donaciones.add(donacion);
     }
 
     public void cambiarContactoPredeterminado(MedioContacto contactoPredeterminado) {

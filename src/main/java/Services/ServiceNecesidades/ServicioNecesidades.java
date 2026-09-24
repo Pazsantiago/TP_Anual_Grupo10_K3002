@@ -2,8 +2,8 @@ package Services.ServiceNecesidades;
 
 import Sdonaciones.dominio.entidad.EntidadBeneficiaria;
 import Sdonaciones.dominio.necesidad.Necesidad;
-import Sdonaciones.repositorios.RepoEntidades;
 import Sdonaciones.repositorios.RepoNecesidades;
+import Services.ServiceBeneficiarias.ServicioBeneficiarias;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,11 +11,11 @@ import java.util.List;
 @Service
 public class ServicioNecesidades {
     private RepoNecesidades repoNecesidades;
-    private RepoEntidades repoEntidades;
+    private ServicioBeneficiarias servicioBeneficiarias;
 
-    public ServicioNecesidades(RepoNecesidades repoNecesidades, RepoEntidades repoEntidades) {
+    public ServicioNecesidades(RepoNecesidades repoNecesidades, ServicioBeneficiarias servicioBeneficiarias) {
         this.repoNecesidades = repoNecesidades;
-        this.repoEntidades = repoEntidades;
+        this.servicioBeneficiarias = servicioBeneficiarias;
 
     }
 
@@ -24,29 +24,29 @@ public class ServicioNecesidades {
     }
 
 
-    public Necesidad getNecesidadById(Integer idNecesidad) {
+    public Necesidad getNecesidadById(Long idNecesidad) {
         return repoNecesidades.buscarPorId(idNecesidad);
     }
 
 
-    public Necesidad createNecesidad(Integer idEntidad, Necesidad necesidad) {
-        EntidadBeneficiaria entidad = repoEntidades.obtenerPorId(idEntidad);
+    public Necesidad createNecesidad(Long idEntidad, Necesidad necesidad) {
+        EntidadBeneficiaria entidad = servicioBeneficiarias.getEntidadById(idEntidad);
+        necesidad.setEntidadBeneficiaria(entidad);
         entidad.agregarNecesidadActual(necesidad);
-        repoEntidades.actualizarEntidad(entidad.getId(), entidad);
+        servicioBeneficiarias.updateEntidad(entidad.getId(), entidad);
         repoNecesidades.guardar(necesidad);
         return necesidad;
     }
 
-    // FIJARSE ACA DEVUELTA POR SI ACASO
-    public Necesidad updateNecesidad(Integer idNecesidad, Necesidad updatedNecesidad) {
-        EntidadBeneficiaria entidad = repoNecesidades.buscarPorId(idNecesidad).getEntidadBeneficiaria();
-        entidad.agregarNecesidadActual(updatedNecesidad);
-        repoEntidades.actualizarEntidad(entidad.getId(), entidad);
-        repoNecesidades.actualizarNecesidad(idNecesidad, entidad.getId(), updatedNecesidad);
+    public Necesidad updateNecesidad(Long idNecesidad, Necesidad updatedNecesidad) {
+        Necesidad necesidad = servicioBeneficiarias.buscarNecesidadDeEntidad(idNecesidad);
+        necesidad.aplicarActualizacion(updatedNecesidad);
+        EntidadBeneficiaria entidadBeneficiaria = servicioBeneficiarias.getEntidadById(necesidad.getEntidadBeneficiaria().getId());
+        servicioBeneficiarias.updateEntidad(entidadBeneficiaria.getId(), entidadBeneficiaria);
         return updatedNecesidad;
     }
 
-    public String deleteNecesidad(Integer idNecesidad) {
+    public String deleteNecesidad(Long idNecesidad) {
         Necesidad necesidad = repoNecesidades.buscarPorId(idNecesidad);
         EntidadBeneficiaria entidad = necesidad.getEntidadBeneficiaria();
         entidad.eliminarNecesidadActual(necesidad);

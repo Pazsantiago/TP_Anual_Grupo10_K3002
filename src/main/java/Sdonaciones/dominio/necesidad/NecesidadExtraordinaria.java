@@ -16,8 +16,13 @@ public class NecesidadExtraordinaria extends Necesidad {
             Integer cantidadRecibida,
             EntidadBeneficiaria entidad
     ) {
-        super(null, descripcion, subcategoria, cantidadObjetivo, cantidadRecibida, entidad);
+        super(descripcion, subcategoria, cantidadObjetivo, entidad);
     }
+
+    @Override
+    public void aplicarActualizacion(Necesidad necesidad) {
+    }
+
 
     public LocalDate getSatisfechaEn() {
         return LocalDate.now();

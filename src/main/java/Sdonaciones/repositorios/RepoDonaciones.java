@@ -1,41 +1,39 @@
 package Sdonaciones.repositorios;
 
 import Sdonaciones.dominio.donacion.Donacion;
+import Sdonaciones.dominio.donacion.DonacionSegmentada;
 import lombok.Data;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @Data
 public class RepoDonaciones {
-    private Integer ultimoIdDonacionOriginal = 0, ultimoIdDonacionSegmentada = 0;
+    private Long ultimoIdDonacionOriginal = 0L, ultimoIdDonacionSegmentada = 0L;
     private final List<Donacion> donaciones = new ArrayList<>();
 
     public void guardar(Donacion donacion) {
         donacion.setId(++ultimoIdDonacionOriginal);
-        ultimoIdDonacionSegmentada = donacion.segmentarse(ultimoIdDonacionSegmentada);
+        donacion.getDonacionesSegmentadas().stream().max(Comparator.comparingLong(DonacionSegmentada::getId))
+                .ifPresent(d -> ultimoIdDonacionSegmentada = d.getId());
+        //Por ahora se fija si a es mayor que b, devuelve a si es positivo o b si es negativo.
         donaciones.add(donacion);
     }
 
-    public Optional<Donacion> buscarPorId(Integer id) {
-        return donaciones.stream().filter(donacion -> donacion.getId() == id).findFirst();
+    public Donacion buscarPorId(Long id) {
+        return donaciones.stream().filter(donacion -> donacion.getId().equals(id)).findFirst().orElse(null);
     }
 
-    public void actualizarDonacion(Integer id, Donacion updateDonacion) {
-        Donacion oldDonacion = donaciones.stream()
-                .filter(d -> d.getId() == id)
-                .findFirst()
-                .orElse(null);
-        updateDonacion.setId(id);
-        updateDonacion.setDonacionesSegmentadas(oldDonacion.getDonacionesSegmentadas());
-        donaciones.set(donaciones.indexOf(oldDonacion), updateDonacion);
+
+    public void actualizarDonacion(Donacion updateDonacion) {
+        donaciones.set(donaciones.indexOf(updateDonacion), updateDonacion);
     }
 
-    public void borrarDonacion(Integer id) {
-        donaciones.removeIf(d -> d.getId() == id);
+    public void borrarDonacion(Long id) {
+        donaciones.removeIf(d -> d.getId().equals(id));
     }
 
 }

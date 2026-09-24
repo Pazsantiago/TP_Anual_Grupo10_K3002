@@ -15,10 +15,11 @@ import java.util.Optional;
 @Data
 public class RepoEntidades {
 
-    private Integer idEntidad = 0;
+    private Long idEntidad = 0L;
+    private Long idNecesidad = 0L;
     private final List<EntidadBeneficiaria> entidadBeneficiarias = new ArrayList<>();
 
-    public EntidadBeneficiaria obtenerPorId(Integer id) {
+    public EntidadBeneficiaria obtenerPorId(Long id) {
         return entidadBeneficiarias.stream()
                 .filter(p -> p.getId().equals(id))
                 .findFirst()
@@ -30,25 +31,27 @@ public class RepoEntidades {
             throw new IllegalStateException(
                     "Ya existe un entidadBeneficiaria con el RazonSocial: " + entidadBeneficiaria.getRazonSocial());
         }
-        entidadBeneficiaria.setId(++idEntidad);
+        entidadBeneficiaria.setId(obtenerSiguienteIDNecesidad());
         entidadBeneficiarias.add(entidadBeneficiaria);
     }
+
+    public Long obtenerSiguienteIDNecesidad() {
+        return ++idNecesidad;
+    }
+
 
     public boolean existePorRazonSocial(String razonSocial) {
         return entidadBeneficiarias.stream().anyMatch(donante -> Objects.equals(donante.getRazonSocial(), razonSocial));
     }
 
-    public void actualizarEntidad(Integer id, EntidadBeneficiaria updatedEntidad) {
-        EntidadBeneficiaria antigua = entidadBeneficiarias.stream().filter(p -> p.getId().equals(id))
-                .findFirst().orElse(null);
-        updatedEntidad.setId(antigua.getId());
-        entidadBeneficiarias.set(entidadBeneficiarias.indexOf(antigua), updatedEntidad);
+    public void actualizarEntidad(EntidadBeneficiaria updatedEntidad) {
+        entidadBeneficiarias.set(entidadBeneficiarias.indexOf(obtenerPorId(updatedEntidad.getId())), updatedEntidad);
     }
 
-    public void eliminarEntidad(Integer id) {
-        String razonSocial = entidadBeneficiarias.stream().filter(e -> e.getId().equals(id)).findFirst().get().getRazonSocial();
+    public void eliminarEntidad(Long id) {
         entidadBeneficiarias.removeIf(e -> e.getId().equals(id));
     }
+
 
     public Optional<EntidadBeneficiaria> buscarPorRazonSocial(String razonSocial) {
         return entidadBeneficiarias.stream().filter(d -> Objects.equals(d.getRazonSocial(), razonSocial)).findFirst();

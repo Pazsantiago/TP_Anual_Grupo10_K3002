@@ -1,9 +1,13 @@
 package Controllers.cDonantes;
 
+import Sdonaciones.dominio.donacion.Donacion;
 import Sdonaciones.dominio.donante.Donante;
+import Services.ServiceDonaciones.ServicioDonacion;
 import Services.ServiceDonantes.ServicioDonantes;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
@@ -13,27 +17,39 @@ import java.util.List;
 public class CDonantes {
 
     private final ServicioDonantes servicioDonantes;
+    private final ServicioDonacion servicioDonacion;
 
-    public CDonantes(ServicioDonantes servicioDonantes) {
+    public CDonantes(ServicioDonantes servicioDonantes, ServicioDonacion servicioDonacion, @Qualifier("restClientIncentivos") RestClient restClientIncentivos,
+                     @Qualifier("restClientMensajes") RestClient restClientMensajes) {
         this.servicioDonantes = servicioDonantes;
+        this.servicioDonacion = servicioDonacion;
     }
 
     // READ - Obtener todas las Personas
     @GetMapping("")
-    public ResponseEntity<List<Donante>> getAllPersonas() {
+    public ResponseEntity<List<Donante>> getAllPersonas(@RequestParam(value = "tipoD", required = false) String tipoD, @RequestParam(value = "doc", required = false) String doc) {
+        if (tipoD != null && doc != null) {
+            servicioDonantes.obtenerPersonaPorDocumento(tipoD, doc);
+        }
         return ResponseEntity.ok(servicioDonantes.getAllPersonas());
     }
 
-    // READ - Obtener una persona por correoElectronico
-    @GetMapping("/")
-    public ResponseEntity<Donante> obtenerPersonaPorDocumento(@RequestParam String tipoD, @RequestParam String doc) {
-        return ResponseEntity.ok(servicioDonantes.obtenerPersonaPorDocumento(tipoD, doc));
+    @GetMapping("/{id}")
+    public ResponseEntity<Donante> getPersonaById(@PathVariable Long id) {
+        return ResponseEntity.ok(servicioDonantes.obtenerPorId(id));
     }
 
     // CREATE - Agregar un nueva persona
     @PostMapping("")
     public ResponseEntity<Donante> createPersona(@RequestBody Donante persona) {
         return ResponseEntity.ok(servicioDonantes.createPersona(persona));
+
+    }
+
+    // Agregar una nueva Donacion
+    @PostMapping("/{idDonante}/donaciones")
+    public ResponseEntity<Donacion> createDonacion(@RequestBody Donacion donacion, @PathVariable Long idDonante) {
+        return ResponseEntity.ok(servicioDonacion.createDonacion(donacion, idDonante));
 
     }
 
@@ -48,15 +64,15 @@ public class CDonantes {
     //Con estos datos (tipo persona, tipo doc y nro doc) debe ser posible ubicar a la
     //persona donante en el sistema. En caso
     //contrario, se le debe crear un usuario --> Una vez creado el usuario/donante en el sistema
-    @PutMapping("")
-    public ResponseEntity<Donante> updateDonante(@RequestParam String tipoD, @RequestParam String doc, @RequestBody Donante updateDonante) {
-        return ResponseEntity.ok(servicioDonantes.updateDonante(tipoD, doc, updateDonante));
+    @PutMapping("/{id}")
+    public ResponseEntity<Donante> updateDonante(@PathVariable Long id, @RequestBody Donante updateDonante) {
+        return ResponseEntity.ok(servicioDonantes.updateDonante(id, updateDonante));
     }
 
     // DELETE - Eliminar una Persona
-    @DeleteMapping("")
-    public ResponseEntity<String> deletePersona(@RequestParam String tipoD, @RequestParam String doc) {
-        return ResponseEntity.ok(servicioDonantes.deletePersona(tipoD, doc));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePersona(@PathVariable Long id) {
+        return ResponseEntity.ok(servicioDonantes.deletePersona(id));
     }
 
 

@@ -7,7 +7,6 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-
 public class NecesidadRecurrente extends Necesidad {
     private Periodo periodo;
     private Integer cantidadRecibidaEnPeriodo;
@@ -17,15 +16,25 @@ public class NecesidadRecurrente extends Necesidad {
             Subcategoria subcategoria,
             Integer cantidadObjetivo,
             Periodo periodo,
-            LocalDate fechaInicioPeriodo,
-            Integer cantidadRecibida,
             EntidadBeneficiaria entidad
     ) {
-        super(null, descripcion, subcategoria, cantidadObjetivo, cantidadRecibida, entidad);
+        super(descripcion, subcategoria, cantidadObjetivo, entidad);
 
         this.periodo = periodo;
-        this.periodo.setInicioPeriodo(fechaInicioPeriodo);
         this.cantidadRecibidaEnPeriodo = 0;
+    }
+
+    @Override
+    public void aplicarActualizacion(Necesidad necesidad) {
+        NecesidadRecurrente recurrente = (NecesidadRecurrente) necesidad;
+        this.setCantidadRecibida(recurrente.getCantidadRecibida());
+        this.setDescripcion(recurrente.getDescripcion());
+        this.setEntidadBeneficiaria(recurrente.getEntidadBeneficiaria());
+        this.setSubcategoria(recurrente.getSubcategoria());
+        this.setCantidadObjetivo(recurrente.getCantidadObjetivo());
+        this.setPeriodo(recurrente.getPeriodo());
+        this.setCantidadRecibidaEnPeriodo(recurrente.getCantidadRecibidaEnPeriodo());
+        this.setCantidadRecibida(recurrente.getCantidadRecibida());
     }
 
     @Override
@@ -67,27 +76,5 @@ public class NecesidadRecurrente extends Necesidad {
                 && cantidadRecibidaEnPeriodo >= getCantidadObjetivo();
     }
 
-    public Periodo getPeriodo() {
-        return periodo;
-    }
 
-//    public void setPeriodo(Periodo periodo) {
-//        this.periodo = periodo;
-//    }
-//
-//    public LocalDate getFechaInicioPeriodo() {
-//        return periodo.getInicioPeriodo();
-//    }
-//
-//    public void setFechaInicioPeriodo(LocalDate fechaInicioPeriodo) {
-//        this.periodo.setInicioPeriodo(fechaInicioPeriodo);
-//    }
-//
-//    public Integer getCantidadRecibidaEnPeriodo() {
-//        return cantidadRecibidaEnPeriodo;
-//    }
-//
-//    public void setCantidadRecibidaEnPeriodo(Integer cantidadRecibidaEnPeriodo) {
-//        this.cantidadRecibidaEnPeriodo = cantidadRecibidaEnPeriodo;
-//    }
 }

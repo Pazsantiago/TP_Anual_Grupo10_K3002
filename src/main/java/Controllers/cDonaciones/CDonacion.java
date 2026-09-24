@@ -21,17 +21,17 @@ public class CDonacion {
         this.servicioDonacion = servicioDonacion;
     }
 
-    // READ - Obtener todas las Donaciones
+    // Obtener todas las Donaciones
     @GetMapping("")
     public ResponseEntity<List<Donacion>> getAllDonaciones() {
 
         return ResponseEntity.ok(servicioDonacion.getAllDonaciones());
     }
 
-    //
-    // READ - Obtener una Donacion  por idDonacion
+
+    // Obtener una Donacion  por idDonacion
     @GetMapping("/{idDonacion}")
-    public ResponseEntity<Donacion> getDonacionById(@PathVariable Integer idDonacion) {
+    public ResponseEntity<Donacion> getDonacionById(@PathVariable Long idDonacion) {
         return ResponseEntity.ok(servicioDonacion.getDonacionById(idDonacion));
     }
 
@@ -43,7 +43,7 @@ public class CDonacion {
 
     // Obtener una donacion segmentada especifica
     @GetMapping("/segmentadas/{idSegmentada}")
-    public ResponseEntity<DonacionSegmentada> obtenerDonacionSegmentada(@PathVariable Integer idSegmentada) {
+    public ResponseEntity<DonacionSegmentada> obtenerDonacionSegmentada(@PathVariable Long idSegmentada) {
         return ResponseEntity.ok(servicioDonacion.obtenerDonacionSegmentada(idSegmentada));
     }
 
@@ -55,30 +55,16 @@ public class CDonacion {
     }
 
 
-    // CREATE - Agregar una nueva Donacion  
-    @PostMapping("/{idDonante}")
-    public ResponseEntity<Donacion> createDonacion(@RequestBody Donacion donacion, @PathVariable Integer idDonante) {
-        return ResponseEntity.ok(servicioDonacion.createDonacion(donacion, idDonante));
-
-    }
-
-    // SELECT - DADA una entidad, se le asigna finalmente la donacion segmentada a su necesidad.
-    @PostMapping("/{idDonacion}/entidad/{idEntidad}/necesidad/{idNecesidad}")
-    public ResponseEntity<DonacionAsignada> asignarDonacionAEntidadPorNecesidad(@PathVariable Integer idDonacion, @PathVariable Integer idEntidad, @PathVariable Integer idNecesidad) {
-        return ResponseEntity.ok(servicioDonacion.asignarDonacionAEntidadPorNecesidad(idDonacion, idEntidad, idNecesidad));
-    }
-
-
-    // UPDATE - Actualizar una Donacion existente
+    // Actualizar una Donacion existente
     @PutMapping("/{idDonacion}")
-    public ResponseEntity<Donacion> updateDonacion(@RequestBody Donacion updateDonacion, @PathVariable Integer idDonacion) {
-        return ResponseEntity.ok(servicioDonacion.updateDonacion(updateDonacion, idDonacion));
+    public ResponseEntity<Donacion> updateDonacion(@RequestBody Donacion updateDonacion, @PathVariable Long idDonacion) {
+        return ResponseEntity.ok(servicioDonacion.updateDonacion(idDonacion, updateDonacion));
     }
 
     //
-    // DELETE - Eliminar una Donacion
+    // Eliminar una Donacion
     @DeleteMapping("/{idDonacion}")
-    public ResponseEntity<String> deleteDonacion(@PathVariable Integer idDonacion) {
+    public ResponseEntity<String> deleteDonacion(@PathVariable Long idDonacion) {
         return ResponseEntity.ok(servicioDonacion.deleteDonacion(idDonacion));
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 public class RepoDonantes {
 
     //private final Map<String, Donante> donantes = new ConcurrentHashMap<>();
-    private Integer id = 0;
+    private Long id = 0L;
     private List<Donante> donantes = new ArrayList<>();
 
 
@@ -22,11 +22,8 @@ public class RepoDonantes {
         donantes.add(donante);
     }
 
-    public Integer cantidadDeDonantes() {
-        return donantes.size();
-    }
 
-    public Donante buscarPorId(Integer id) {
+    public Donante buscarPorId(Long id) {
         return donantes.stream().filter(d -> d.getId().equals(id)).findFirst().orElse(null);
     }
 
@@ -47,24 +44,14 @@ public class RepoDonantes {
         return List.copyOf(donantes);
     }
 
-    public void actualizarDonante(String tipoD, String doc, Donante donanteNuevo) {
-        Donante oldDonante = donantes.stream()
-                .filter(p ->
-                        p.getPersona().getDocumento().getTipoDocumento().equals(tipoD)
-                                && p.getPersona().getDocumento().getDocumento().equals(doc)
-                )
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Donante no encontrado"));
-        donanteNuevo.cambiarContactoPredeterminado(oldDonante.obtenerContactoPredeterminado());
-        int index = donantes.indexOf(oldDonante);
-
-        donantes.set(index, donanteNuevo);
+    public void actualizarDonante(Donante donanteNuevo) {
+        eliminarDonante(donanteNuevo.getId());
+        guardar(donanteNuevo);
     }
 
-    public void eliminarDonante(String tipoD, String doc) {
+    public void eliminarDonante(Long id) {
         donantes.remove(donantes.stream()
-                .filter(p -> p.getPersona().getDocumento().getTipoDocumento().equals(tipoD) &&
-                        p.getPersona().getDocumento().getDocumento().equals(doc)
+                .filter(p -> p.getId().equals(id)
                 )
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Donante no encontrado")));

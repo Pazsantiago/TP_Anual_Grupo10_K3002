@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 @Data
 public class RepoNecesidades {
-    private Integer id = 0;
+    private Long id = 0L;
     private final List<Necesidad> necesidades = new ArrayList<>();
 
     public List<Necesidad> listarTodas() {
@@ -24,24 +24,23 @@ public class RepoNecesidades {
 
     }
 
-    public Necesidad buscarPorId(Integer idNecesidad) {
+    public Long obtenerSiguienteIDNecesidad() {
+        return ++id;
+    }
+
+    public Necesidad buscarPorId(Long idNecesidad) {
         return necesidades.stream()
                 .filter(n -> n.getId().equals(idNecesidad))
                 .findFirst()
                 .orElse(null);
     }
 
-    public void actualizarNecesidad(Integer idNecesidad, Integer idEntidad, Necesidad updatedNecesidad) {
-        Necesidad antigua = necesidades.stream().filter(p -> p.getId().equals(idNecesidad) && p.getEntidadBeneficiaria().getId().equals(idEntidad))
-                .findFirst().orElse(null);
-        if (antigua != null) {
-            updatedNecesidad.setId(antigua.getId());
-            necesidades.set(necesidades.indexOf(antigua), updatedNecesidad);
-        }
+    public void eliminarNecesidad(Long idNecesidad) {
+        necesidades.removeIf(e -> e.getId().equals(idNecesidad));
     }
 
-    public void eliminarNecesidad(Integer idNecesidad) {
-        necesidades.removeIf(e -> e.getId().equals(idNecesidad));
+    public void eliminarNecesidadesDeEntidad(Long idEntidad) {
+        necesidades.removeIf(e -> e.getEntidadBeneficiaria().getId().equals(idEntidad));
     }
 
 }

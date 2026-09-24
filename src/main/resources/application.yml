@@ -10,7 +10,9 @@ springdoc:
     path: /endpoints-docs
 
 conexiones:
-  servicio-incentivos: ${SERVICIO_INCENTIVOS_URL:http://localhost:8081}
+  servicio-incentivos: ${SERVICIO_INCENTIVOS_URL:http://localhost:8081/incentivos}
+  cola-de-mensajes: ${COLA_DE_MENSAJES:http://localhost:8082}
+  broker-logistica: ${BROKER_LOGISTICA:http://localhost:8083}
 
 horario-baja-carga:
   cron: ${HORARIO_CRON:0 0 3-8 * * *}

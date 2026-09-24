@@ -2,14 +2,9 @@ package Services.ServiceAsignacion;
 
 import Sdonaciones.asignacion.algoritmosAsignacion.IAlgoritmoAsignacion;
 import Sdonaciones.asignacion.algoritmosAsignacion.RankingEntidadBeneficiaria;
-import Sdonaciones.dominio.donacion.DonacionAsignada;
-import Sdonaciones.dominio.donacion.DonacionSegmentada;
-import Sdonaciones.dominio.donacion.EstadoDonacion;
-import Sdonaciones.dominio.donacion.TipoEstadoDonacion;
-import Sdonaciones.dominio.necesidad.Necesidad;
-import Sdonaciones.repositorios.RepoDonacionesAsignadas;
-import Sdonaciones.repositorios.RepoEntidades;
-import Sdonaciones.repositorios.RepoNecesidades;
+import Services.ServiceBeneficiarias.ServicioBeneficiarias;
+import Services.ServiceDonaciones.ServicioDonacion;
+import Services.ServiceNecesidades.ServicioNecesidades;
 import lombok.Data;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -19,53 +14,36 @@ import java.util.*;
 @Service
 @Data
 public class ServicioAsignacion {
-    private RepoEntidades repositorioEntidades;
-    private RepoNecesidades repositorioNecesidades;
+    private ServicioBeneficiarias servicioBeneficiarias;
+    private ServicioDonacion servicioDonacion;
     private List<IAlgoritmoAsignacion> algoritmos;
-    private Map<Integer, List<RankingEntidadBeneficiaria>> rankings;
-    private RepoDonacionesAsignadas repositorioDonacionesAsignadas;
-    private List<DonacionSegmentada> donacionesSegmentadas;
+    private Map<Long, List<RankingEntidadBeneficiaria>> rankings;
 
 
-    public ServicioAsignacion(List<IAlgoritmoAsignacion> algoritmos, RepoEntidades repo, RepoDonacionesAsignadas repositorioDonacionesAsignadas, RepoNecesidades repositorioNecesidades) {
+    public ServicioAsignacion(List<IAlgoritmoAsignacion> algoritmos, ServicioBeneficiarias servicioBeneficiarias, ServicioNecesidades servicioNecesidades,
+                              ServicioDonacion servicioDonacion) {
         this.algoritmos = algoritmos;
-        this.repositorioEntidades = repo;
-        this.repositorioDonacionesAsignadas = repositorioDonacionesAsignadas;
-        this.repositorioNecesidades = repositorioNecesidades;
-        donacionesSegmentadas = new ArrayList<>();
-        rankings = new HashMap<Integer, List<RankingEntidadBeneficiaria>>();
+        this.servicioBeneficiarias = servicioBeneficiarias;
+        this.servicioDonacion = servicioDonacion;
+        rankings = new HashMap<Long, List<RankingEntidadBeneficiaria>>();
+
     }
 
-    public void agregarDonacionesSegmentadas(List<DonacionSegmentada> donaciones) {
-        this.donacionesSegmentadas.addAll(donaciones);
-    }
-
-    public Map<Integer, List<RankingEntidadBeneficiaria>> obtenerRankings() {
+    public Map<Long, List<RankingEntidadBeneficiaria>> obtenerRankings() {
         return Map.copyOf(rankings);
     }
 
     @Scheduled(cron = "${horario-baja-carga.cron}")
     public void generarRanking() {
-        donacionesSegmentadas.forEach(donacionSegmentada -> {
+        servicioDonacion.obtenerDonacionesSegmentadasEnDeposito().forEach(donacionSegmentada -> {
             List<RankingEntidadBeneficiaria> rankAux = new ArrayList<>();
             algoritmos.forEach(algoritmo -> {
-                rankAux.addAll(algoritmo.rankear(donacionSegmentada, repositorioEntidades.getEntidadBeneficiarias()));
+                rankAux.addAll(algoritmo.rankear(donacionSegmentada, servicioBeneficiarias.getAllEntidades()));
             });
             rankings.put(donacionSegmentada.getId(), rankAux);
         });
     }
 
-    public DonacionAsignada asignarDonacion(Integer idDonacion, Integer idEntidad, Integer idNecesidad) {
-        DonacionSegmentada donacion = donacionesSegmentadas.stream().filter(d -> idDonacion.equals(d.getId())).findFirst().orElse(null);
-        Necesidad necesidad = repositorioEntidades.getEntidadBeneficiarias().stream().filter(e -> e.getId().equals(idEntidad))
-                .findFirst().get().getNecesidadesActuales().stream().filter(e -> e.getId().equals(idNecesidad)).findFirst().get();
-        DonacionAsignada donacionFinal = new DonacionAsignada(donacion, necesidad, new Date());
-        donacionesSegmentadas.stream().filter(d -> idDonacion.equals(d.getId())).findFirst().get().cambiarEstadoActual(new EstadoDonacion(TipoEstadoDonacion.ASIGNACION_REALIZADA, null));
-        donacionesSegmentadas.removeIf(d -> d.getId().equals(idDonacion));
-        repositorioNecesidades.eliminarNecesidad(idNecesidad);
-        repositorioDonacionesAsignadas.guardar(donacionFinal);
-        return donacionFinal;
-    }
 
     public List<RankingEntidadBeneficiaria> filtrarEntidades(Integer idDonacion) {
         return Optional.of(rankings.get(idDonacion).stream().filter(ranking ->

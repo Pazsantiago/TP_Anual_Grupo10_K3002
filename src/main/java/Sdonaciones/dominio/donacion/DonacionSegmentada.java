@@ -15,17 +15,33 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DonacionSegmentada {
-    private Integer id;
+    private Long id;
     @JsonIgnore
     private Donacion donacionInicial;
     private Bien bien;
     private EstadoDonacion estadoActual;
     private List<EstadoDonacion> donacionEstadosHistorico;
     private Subcategoria subcategoria;
+    private List<BienAsignado> bienesAsignados;
 
     public void cambiarEstadoActual(EstadoDonacion nuevoEstadoActual) {
         donacionEstadosHistorico.add(estadoActual);
         estadoActual = nuevoEstadoActual;
     }
 
+    public void agregarCantidadDeBienDonado(BienAsignado bien) {
+        bienesAsignados.add(bien);
+    }
+
+    public Integer getCantidadBienAsignadoPorId(Long idNecesidad) {
+        return bienesAsignados.stream().filter(b -> b.getIdNecesidadAsignada().equals(idNecesidad)).findFirst().orElse(null).getCantidadEntregada();
+    }
+
+    public void restarBienesAsignados(Integer cantidad) {
+        bien.restarCantidad(cantidad);
+    }
+
+    public void sumarBienesAsignados(Integer cantidad) {
+        bien.sumarCantidad(cantidad);
+    }
 }

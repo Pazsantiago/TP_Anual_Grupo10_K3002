@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/necesidades")
 public class CNecesidades {
 
     private final ServicioNecesidades servicioNecesidades;
@@ -21,32 +21,27 @@ public class CNecesidades {
     }
 
     // READ - Obtener todas las Necesidades
-    @GetMapping("/necesidades")
+    @GetMapping("")
     public ResponseEntity<List<Necesidad>> getAllNecesidades() {
         return ResponseEntity.ok(servicioNecesidades.getAllNecesidades());
     }
 
-    // READ - Obtener una Necesidad  por ID de una entidad
-    @GetMapping("/necesidades/{idNecesidad}")
-    public ResponseEntity<Necesidad> getNecesidadById(@PathVariable Integer idNecesidad) {
+    // READ - Obtener una Necesidad  por ID
+    @GetMapping("/{idNecesidad}")
+    public ResponseEntity<Necesidad> getNecesidadById(@PathVariable Long idNecesidad) {
         return ResponseEntity.ok(servicioNecesidades.getNecesidadById(idNecesidad));
     }
 
-    // CREATE - Agregar una nueva Necesidad
-    @PostMapping("/entidad/{idEntidad}")
-    public ResponseEntity<Necesidad> createNecesidad(@PathVariable Integer idEntidad, @RequestBody Necesidad necesidad) {
-        return ResponseEntity.ok(servicioNecesidades.createNecesidad(idEntidad, necesidad));
-    }
 
     // UPDATE - Actualizar una Necesidad existente de una entidad
-    @PutMapping("/necesidad/{idNecesidad}")
-    public ResponseEntity<Necesidad> updateNecesidad(@PathVariable Integer idNecesidad, @RequestBody Necesidad updatedNecesidad) {
+    @PutMapping("/{idNecesidad}")
+    public ResponseEntity<Necesidad> updateNecesidad(@PathVariable Long idNecesidad, @RequestBody Necesidad updatedNecesidad) {
         return ResponseEntity.ok(servicioNecesidades.updateNecesidad(idNecesidad, updatedNecesidad));
     }
 
     // DELETE - Eliminar una Necesidad
-    @DeleteMapping("/necesidad/{idNecesidad}")
-    public ResponseEntity<String> deleteNecesidad(@PathVariable Integer idNecesidad) {
+    @DeleteMapping("/{idNecesidad}")
+    public ResponseEntity<String> deleteNecesidad(@PathVariable Long idNecesidad) {
         return ResponseEntity.ok(servicioNecesidades.deleteNecesidad(idNecesidad));
     }
 }
