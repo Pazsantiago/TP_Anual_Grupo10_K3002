@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Destinatario {
+    private String nombre;   //faltaba nombre
     private String email;
     private String telefono;
     private String whatsapp;
