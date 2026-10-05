@@ -1,13 +1,38 @@
 services:
+  mysql:
+    image: mysql:8.4
+    container_name: notificaciones-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_DATABASE: notificaciones
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_PASSWORD:-root}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
   servicio-notificaciones:
     build: .
+    depends_on:
+      mysql:
+        condition: service_healthy
     ports:
       - "8083:8083"
 
     environment:
+      DB_URL: jdbc:mysql://mysql:3306/notificaciones?serverTimezone=UTC
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD:-root}
       BREVO_API_KEY: ${BREVO_API_KEY}
       BREVO_SENDER_EMAIL: ${BREVO_SENDER_EMAIL}
       BREVO_SENDER_NAME: ${BREVO_SENDER_NAME}
       TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
       TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
       TWILIO_PHONE_NUMBER: ${TWILIO_PHONE_NUMBER}
+
+volumes:
+  mysql_data:

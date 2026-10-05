@@ -1,10 +1,12 @@
 package Servicio_notificaciones.service;
 
+import Servicio_notificaciones.DTOs.request.DestinatarioRequestDTO;
 import Servicio_notificaciones.DTOs.request.LoteNotificacionRequestDTO;
 import Servicio_notificaciones.DTOs.request.NotificacionRequestDTO;
 import Servicio_notificaciones.dominio.Destinatario;
 import Servicio_notificaciones.dominio.MedioNotificacion;
 import Servicio_notificaciones.dominio.Notificacion;
+import Servicio_notificaciones.repository.DestinatarioRepository;
 import Servicio_notificaciones.repository.NotificacionRepository;
 import Servicio_notificaciones.strategy.INotificador;
 import java.util.List;
@@ -23,13 +25,16 @@ public class NotificacionService {
   private static final Logger log = LoggerFactory.getLogger(NotificacionService.class);
 
   private final NotificacionRepository repository;
+  private final DestinatarioRepository destinatarioRepository;
   private final Map<MedioNotificacion, INotificador> canales;
 
   public NotificacionService(
       NotificacionRepository repository,
+      DestinatarioRepository destinatarioRepository,
       List<INotificador> canales
   ) {
     this.repository = repository;
+    this.destinatarioRepository = destinatarioRepository;
     this.canales = canales.stream()
         .collect(Collectors.toMap(INotificador::medio, Function.identity()));
   }
@@ -37,12 +42,12 @@ public class NotificacionService {
   public Notificacion enviar(NotificacionRequestDTO notificacionRequest) {
     validarContacto(notificacionRequest);
 
-    Destinatario destinatario = new Destinatario(
-        notificacionRequest.getDestinatario().getNombre(),
-        notificacionRequest.getDestinatario().getEmail(),
-        notificacionRequest.getDestinatario().getTelefono(),
-        notificacionRequest.getDestinatario().getWhatsapp()
-    );
+    DestinatarioRequestDTO dto = notificacionRequest.getDestinatario();
+    Destinatario destinatario = destinatarioRepository
+        .findFirstByNombreAndEmailAndTelefonoAndWhatsapp(
+            dto.getNombre(), dto.getEmail(), dto.getTelefono(), dto.getWhatsapp())
+        .orElseGet(() -> destinatarioRepository.save(
+            new Destinatario(dto.getNombre(), dto.getEmail(), dto.getTelefono(), dto.getWhatsapp())));
 
     Notificacion notificacion = new Notificacion(
         destinatario,
@@ -74,7 +79,8 @@ public class NotificacionService {
       notificacion.marcarFallida(causaRaiz);
     }
 
-    return repository.save(notificacion);
+    repository.save(notificacion);
+    return notificacion;
 
   }
 

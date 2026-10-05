@@ -6,6 +6,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
 import Servicio_notificaciones.DTOs.request.DestinatarioRequestDTO;
@@ -13,9 +15,12 @@ import Servicio_notificaciones.DTOs.request.NotificacionRequestDTO;
 import Servicio_notificaciones.dominio.EstadoNotificacion;
 import Servicio_notificaciones.dominio.MedioNotificacion;
 import Servicio_notificaciones.dominio.Notificacion;
+import Servicio_notificaciones.dominio.Destinatario;
+import Servicio_notificaciones.repository.DestinatarioRepository;
 import Servicio_notificaciones.repository.NotificacionRepository;
 import Servicio_notificaciones.strategy.INotificador;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +34,7 @@ import org.springframework.mail.MailAuthenticationException;
 class NotificacionServiceTest {
 
   private NotificacionRepository repository;
+  private DestinatarioRepository destinatarioRepository;
   private INotificador notificadorEmail;
   private INotificador notificadorSms;
   private INotificador notificadorWhatsapp;
@@ -36,7 +42,15 @@ class NotificacionServiceTest {
 
   @BeforeEach
   void setUp() {
-    repository = new NotificacionRepository();
+    // Repositorios simulados: los tests no necesitan base de datos.
+    repository = mock(NotificacionRepository.class);
+    destinatarioRepository = mock(DestinatarioRepository.class);
+    when(destinatarioRepository.findFirstByNombreAndEmailAndTelefonoAndWhatsapp(
+        any(), any(), any(), any())).thenReturn(Optional.empty());
+    when(destinatarioRepository.save(any(Destinatario.class)))
+        .thenAnswer(inv -> inv.getArgument(0));
+    when(repository.save(any(Notificacion.class)))
+        .thenAnswer(inv -> inv.getArgument(0));
 
     notificadorEmail = mock(INotificador.class);
     Mockito.when(notificadorEmail.medio()).thenReturn(MedioNotificacion.EMAIL);
@@ -49,6 +63,7 @@ class NotificacionServiceTest {
 
     service = new NotificacionService(
         repository,
+        destinatarioRepository,
         List.of(notificadorEmail, notificadorSms, notificadorWhatsapp)
     );
   }
@@ -102,8 +117,9 @@ class NotificacionServiceTest {
 
     assertThat(resultado.getEstadoNotificacion()).isEqualTo(EstadoNotificacion.FALLIDA);
     assertThat(resultado.getError()).contains("Authentication failed");
-    // Aunque falló el envío, la notificación queda persistida con su estado y motivo (trazabilidad).
-    assertThat(repository.findById(resultado.getId())).isPresent();
+    // Aunque falló el envío, la notificación se persiste con su estado y motivo (trazabilidad):
+    // una vez al crearla (PENDIENTE) y otra al registrar el resultado.
+    verify(repository, times(2)).save(resultado);
   }
 
   @Test
@@ -115,7 +131,7 @@ class NotificacionServiceTest {
 
   @Test
   void enviar_sinCanalRegistradoParaElMedio_marcaLaNotificacionComoFallida() {
-    NotificacionService serviceSinCanales = new NotificacionService(repository, List.of());
+    NotificacionService serviceSinCanales = new NotificacionService(repository, destinatarioRepository, List.of());
 
     Notificacion resultado = serviceSinCanales.enviar(requestSms("+541155555555"));
 
@@ -126,6 +142,7 @@ class NotificacionServiceTest {
   @Test
   void obtenerPorId_conIdInexistente_lanzaIllegalArgumentException() {
     UUID idInexistente = UUID.randomUUID();
+    when(repository.findById(idInexistente)).thenReturn(Optional.empty());
 
     assertThrows(IllegalArgumentException.class, () -> service.obtenerPorId(idInexistente));
   }
@@ -134,10 +151,23 @@ class NotificacionServiceTest {
   void obtenerPorId_conIdExistente_devuelveLaNotificacion() throws Exception {
     doNothing().when(notificadorSms).enviar(any(Notificacion.class));
     Notificacion creada = service.enviar(requestSms("+541155555555"));
+    when(repository.findById(creada.getId())).thenReturn(Optional.of(creada));
 
     Notificacion encontrada = service.obtenerPorId(creada.getId());
 
     assertThat(encontrada.getId()).isEqualTo(creada.getId());
+  }
+
+  @Test
+  void enviar_conDestinatarioExistente_loReutilizaSinCrearUnoNuevo() throws Exception {
+    Destinatario existente = new Destinatario("Ana Pérez", null, "+541155555555", null);
+    when(destinatarioRepository.findFirstByNombreAndEmailAndTelefonoAndWhatsapp(
+        "Ana Pérez", null, "+541155555555", null)).thenReturn(Optional.of(existente));
+
+    Notificacion resultado = service.enviar(requestSms("+541155555555"));
+
+    assertThat(resultado.getDestinatario()).isSameAs(existente);
+    verify(destinatarioRepository, times(0)).save(any(Destinatario.class));
   }
 
 }

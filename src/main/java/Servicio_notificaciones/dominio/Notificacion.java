@@ -1,23 +1,61 @@
 package Servicio_notificaciones.dominio;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
+@Entity
+@Table(name = "notificacion")
 public class Notificacion {
 
+    @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(name = "id", columnDefinition = "CHAR(36)", nullable = false, updatable = false)
     private UUID id;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "destinatario_id", nullable = false)
     private Destinatario destinatario;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "medio_notificacion", length = 20, nullable = false)
     private MedioNotificacion medioNotificacion;
+
+    @Column(name = "asunto", length = 200)
     private String asunto;
+
+    @Column(name = "cuerpo", columnDefinition = "TEXT")
     private String cuerpo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_notificacion", length = 30)
     private TipoNotificacion tipoNotificacion;
-    private LocalDateTime fechaEnvio;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_notificacion", length = 20, nullable = false)
     private EstadoNotificacion estadoNotificacion;
+
+    @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
-    //private String eventoOrigen;
-    // private String referenciaId;
+
+    @Column(name = "fecha_envio")
+    private LocalDateTime fechaEnvio;
+
+    @Column(name = "error", length = 1000)
     private String error;
 
+    protected Notificacion() {
+    }
 
     public Notificacion(Destinatario destinatario, MedioNotificacion medioNotificacion, String asunto,
                         String cuerpo) {
@@ -65,10 +103,8 @@ public class Notificacion {
 
     public void marcarFallida(String error){
         this.estadoNotificacion = EstadoNotificacion.FALLIDA;
-        this.error = error;
+        this.error = error != null && error.length() > 1000 ? error.substring(0, 1000) : error;
     }
-
-    //getters y setters
 
     @Override
     public String toString() {

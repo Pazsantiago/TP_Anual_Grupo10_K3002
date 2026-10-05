@@ -5,7 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="823a78cc-7332-4fd2-b0bf-4b0daf1cee6b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/dominio/Destinatario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/dominio/Destinatario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/dominio/Notificacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/dominio/Notificacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/repository/NotificacionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/repository/NotificacionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/service/NotificacionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/service/NotificacionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-demo.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-demo.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Servicio_notificaciones/service/NotificacionServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Servicio_notificaciones/service/NotificacionServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
