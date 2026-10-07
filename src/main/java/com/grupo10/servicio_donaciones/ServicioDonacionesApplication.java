@@ -7,12 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @EnableAsync
-@SpringBootApplication(scanBasePackages = {
-        "Sdonaciones",
-        "Services",
-        "Controllers",
-        "configuration"
-})
+@SpringBootApplication
 public class ServicioDonacionesApplication {
 
     public static void main(String[] args) {
@@ -21,3 +16,4 @@ public class ServicioDonacionesApplication {
     }
 
 }
+

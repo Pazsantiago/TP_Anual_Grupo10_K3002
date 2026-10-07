@@ -1,0 +1,12 @@
+package com.grupo10.servicio_donaciones.Sdonaciones.dominio.mensajes;
+
+public enum TipoEvento {
+    DONACION_ASIGNADA_ENTIDAD,
+    DONACION_ASIGNADA_DONANTE,
+    DONANTE_INACTIVO,
+    MISION_CUMPLIDA,
+    CAMBIO_CATEGORIA,
+    INICIO_DE_RUTA,
+    ENTREGA_REALIZADA,
+    ENTREGA_NO_SATISFACTORIA
+}
