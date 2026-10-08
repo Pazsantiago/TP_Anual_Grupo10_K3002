@@ -79,7 +79,7 @@ public class ServicioDonantes {
 
         setearCategorias(persona);
         repoDonantes.save(persona);
-        comunicador.enviarDonante(persona, "/perfiles", restClientIncentivos);
+        comunicador.enviarDonante(persona, restClientIncentivos);
         return persona;
 
     }
@@ -117,7 +117,7 @@ public class ServicioDonantes {
         });
         setearCategorias(oldDonante);
         repoDonantes.save(oldDonante);
-        comunicador.enviarDonanteActualizado(updateDonante, "/perfiles/{idDonante}" + updateDonante.getId(), restClientIncentivos);
+        comunicador.enviarDonanteActualizado(updateDonante, restClientIncentivos);
         return oldDonante;
     }
 
@@ -130,7 +130,7 @@ public class ServicioDonantes {
                 repoDonaciones.save(d);
             }
         });
-        comunicador.avisarDonanteEliminado("/perfiles/{idDonante}" + id, restClientIncentivos);
+        comunicador.avisarDonanteEliminado(id, restClientIncentivos);
         return "Donante borrado";
     }
 }

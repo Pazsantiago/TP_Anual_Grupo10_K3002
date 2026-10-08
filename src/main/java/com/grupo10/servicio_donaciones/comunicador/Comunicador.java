@@ -67,10 +67,10 @@ public class Comunicador {
         }
     }
 
-    public void enviarDonante(Donante donante, String ruta, RestClient restclient) {
+    public void enviarDonante(Donante donante, RestClient restclient) {
         Integer result = restclient
                 .post()
-                .uri(ruta)
+                .uri("/perfiles")
                 .body(aDonanteDTO(donante))
                 .retrieve()
                 .body(Integer.class);
@@ -79,10 +79,10 @@ public class Comunicador {
         }
     }
 
-    public void enviarDonanteActualizado(Donante donante, String ruta, RestClient restclient) {
+    public void enviarDonanteActualizado(Donante donante, RestClient restclient) {
         Integer result = restclient
                 .put()
-                .uri(ruta)
+                .uri("/perfiles/{idDonante}" + donante.getId())
                 .body(aDonanteDTO(donante))
                 .retrieve()
                 .body(Integer.class);
@@ -91,10 +91,10 @@ public class Comunicador {
         }
     }
 
-    public void avisarDonanteEliminado(String ruta, RestClient restclient) {
+    public void avisarDonanteEliminado(Long id, RestClient restclient) {
         Integer result = restclient
                 .delete()
-                .uri(ruta)
+                .uri("/perfiles/{idDonante}" + id)
                 .retrieve()
                 .body(Integer.class);
         if (result != 200) {

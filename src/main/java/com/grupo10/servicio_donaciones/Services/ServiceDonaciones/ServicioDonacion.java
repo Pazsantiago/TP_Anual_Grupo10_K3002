@@ -70,7 +70,7 @@ public class ServicioDonacion {
         repoDonaciones.save(donacion);
         servicioDonantes.setearCategorias(donante);
         repoDonantes.save(donante);
-        comunicador.enviarDonante(donante, "/donantes", restClientIncentivos);
+        comunicador.enviarDonante(donante, restClientIncentivos);
         return donacion;
 
     }
@@ -90,7 +90,7 @@ public class ServicioDonacion {
         repoDonaciones.save(oldDonacion);
         servicioDonantes.setearCategorias(donante);
         repoDonantes.save(donante);
-        comunicador.enviarDonanteActualizado(donante, "/donantes/{id}" + donante.getId(), restClientIncentivos);
+        comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return oldDonacion;
     }
 
@@ -99,7 +99,7 @@ public class ServicioDonacion {
         Donante donante = repoDonaciones.findById(idDonacion).map(d -> d.getDonante()).orElse(null);
         donante.eliminarDonacion(idDonacion);
         repoDonaciones.deleteById(idDonacion);
-        comunicador.enviarDonanteActualizado(donante, "/donantes/{id}" + donante.getId(), restClientIncentivos);
+        comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return "Donacion borrada";
     }
 
