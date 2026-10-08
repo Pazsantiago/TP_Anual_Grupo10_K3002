@@ -14,6 +14,10 @@ import java.util.UUID;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+/**
+ * Un Destinatario (1) recibe muchas Notificaciones (N):
+ * DESTINATARIO ||--o{ NOTIFICACION  (la FK destinatario_id vive en NOTIFICACION).
+ */
 @Entity
 @Table(name = "notificacion")
 public class Notificacion {
@@ -51,9 +55,11 @@ public class Notificacion {
     @Column(name = "fecha_envio")
     private LocalDateTime fechaEnvio;
 
+    // Columna extra (no está en el DER): guarda el motivo cuando el envío falla.
     @Column(name = "error", length = 1000)
     private String error;
 
+    /** Requerido por JPA/Hibernate. */
     protected Notificacion() {
     }
 

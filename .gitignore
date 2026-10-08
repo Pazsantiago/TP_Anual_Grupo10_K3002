@@ -5,3 +5,6 @@ Servicio-Notificaciones\*
 target/*
 Servicio-Notificaciones/s*
 
+# Secretos: nunca subir
+.env
+.idea/

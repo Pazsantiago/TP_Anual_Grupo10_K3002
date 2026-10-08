@@ -1,0 +1,51 @@
+# Blueprint de Render: crea la base PostgreSQL y el servicio web juntos.
+# Uso: Render > New + > Blueprint > elegir este repo.
+databases:
+  - name: notificaciones-db
+    databaseName: notificaciones
+    user: notificaciones
+    plan: free            # la gratuita expira a los 30 días; cambiá a un plan pago si querés conservarla
+
+services:
+  - type: web
+    name: servicio-notificaciones
+    runtime: docker
+    plan: free
+    # Usar la misma región que la base (si cambiás una, cambiá la otra)
+    region: oregon
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DB_HOST
+        fromDatabase:
+          name: notificaciones-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: notificaciones-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: notificaciones-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: notificaciones-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: notificaciones-db
+          property: password
+      # Secretos: Render te los pide en el panel (no se guardan en el repo)
+      - key: BREVO_API_KEY
+        sync: false
+      - key: BREVO_SENDER_EMAIL
+        sync: false
+      - key: BREVO_SENDER_NAME
+        value: DonaTrack
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false
