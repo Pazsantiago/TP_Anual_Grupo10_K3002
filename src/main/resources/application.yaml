@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: broker
+
+server:
+  port: ${SERVER_PORT:8083}
+
+springdoc:
+  swagger-ui:
+    path: /endpoints-docs
+
+conexiones:
+  servicio-donaciones: ${SERVICIO_DONACIONES:http://localhost:8080/api/notificaciones}
+  servicio-incentivos: ${SERVICIO_INCENTIVOS:http://localhost:8081/incentivos/perfiles}
+  servicio-logistica-online: ${SERVICIO_LOGISTICA_ONLINE}
+  servicio-logistica-local: ${SERVICIO_LOGISTICA_LOCAL:http://localhost:8084}
+

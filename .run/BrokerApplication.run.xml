@@ -1,0 +1,22 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BrokerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <envs>
+      <env name="SERVICIO_DONACIONES" value="http://localhost:8080/api/notificaciones" />
+      <env name="SERVICIO_INCENTIVOS" value="http://localhost:8081/incentivos/perfiles" />
+      <env name="SERVICIO_LOGISTICA_ONLINE" value="http://ip:8080" />
+      <env name="SERVICIO_LOGISTICA_LOCAL" value="http://localhost:8084" />
+    </envs>
+    <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
+    <module name="broker" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.example.broker.BrokerApplication" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="org.example.broker.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
