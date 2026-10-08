@@ -67,6 +67,11 @@ public class PerfilDonante {
     }
 
     public ProgresoMision getProgreso() {
+
+        if (misionActual == null) {
+            return null;
+        }
+
         if (historialMisiones.isEmpty()) {
             inicializarProgreso();
         }

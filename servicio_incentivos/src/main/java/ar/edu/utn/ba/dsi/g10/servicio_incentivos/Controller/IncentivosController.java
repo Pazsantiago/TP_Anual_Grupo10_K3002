@@ -14,6 +14,7 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.DTO.InsigniaResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.DTO.CrearPerfilRequest;
 
 import java.util.Collections;
 import java.util.List;
@@ -134,12 +135,41 @@ public ResponseEntity<?> obtenerRankingMensual(){
 
     //todo: revisar estos endpoint
 
+
+    /*
     // POST: Crear un nuevo perfil de donante conectado desde el servicio de donaciones
     @PostMapping("/perfiles")
     public ResponseEntity<String> crearPerfil(@RequestBody PerfilDonante perfil) {
         servicio.guardarPerfil(perfil);
         return ResponseEntity.status(HttpStatus.CREATED).body("Perfil creado correctamente");
     }
+*/
+    // crear perfil propuesto
+    @PostMapping("/perfiles")
+    public ResponseEntity<String> crearPerfil(
+        @RequestBody CrearPerfilRequest datos
+    ) {
+        Long donanteID = datos.donanteID();
+
+        if (donanteID == null || donanteID <= 0) {
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("donanteID es obligatorio y debe ser positivo");
+        }
+
+        if (servicio.getMetricas(donanteID) != null) {
+            return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body("El donante ya tiene un perfil de incentivos");
+        }
+
+        servicio.crearPerfil(donanteID);
+
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body("Perfil creado correctamente");
+    }
+
 
     // PUT: Actualizar un perfil existente buscando por ID
     @PutMapping("/perfiles/{donanteId}")

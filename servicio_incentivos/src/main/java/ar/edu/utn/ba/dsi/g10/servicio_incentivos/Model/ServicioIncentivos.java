@@ -14,6 +14,7 @@ import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.PerfilDonante;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Perfil.ProgresoMision;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Ranking.PosicionRanking;
 import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Repository.RepositorioPerfiles;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.CategoriasDonante.CategoriaDonante;
 /*<<<<<<< HEAD
 =======
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,9 +27,13 @@ import java.util.List;
 @Service
 public class ServicioIncentivos {
     private final RepositorioPerfiles repo;
+    private final CatalogoMisiones catalogoMisiones;
    
-    public ServicioIncentivos(RepositorioPerfiles repo) {
+    public ServicioIncentivos(RepositorioPerfiles repo,
+                              CatalogoMisiones catalogoMisiones) {
+
         this.repo = repo;
+        this.catalogoMisiones = catalogoMisiones;
     }
 
     public void procesarNuevaDonacion(long donanteID, DonacionImportada donacion) {
@@ -157,5 +162,22 @@ public void reiniciarRanking() { // 👈 CAMBIA EL CORCHETE/LLAVE POR ESTA LLAVE
     public boolean eliminarPerfil(long donanteId) {
         return repo.eliminar(donanteId);
     }
+
+    public PerfilDonante crearPerfil(long donanteID) {
+        CategoriaDonante categoriaInicial = new CategoriaDonante();
+
+        Mision misionInicial = catalogoMisiones.obtenerPrimeraMision();
+
+        PerfilDonante nuevoPerfil = new PerfilDonante(
+            donanteID,
+            categoriaInicial,
+            misionInicial
+        );
+
+        repo.guardar(nuevoPerfil);
+
+        return nuevoPerfil;
+    }
+
 
 }
