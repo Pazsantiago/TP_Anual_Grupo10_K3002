@@ -14,7 +14,7 @@ import java.util.List;
 
 public class gpsController {
     @RestController
-    @RequestMapping("/api/rutas")
+    @RequestMapping("/api/rutas/planificar")
     public class GPSController {
 
         private final GPSService gpsService;
