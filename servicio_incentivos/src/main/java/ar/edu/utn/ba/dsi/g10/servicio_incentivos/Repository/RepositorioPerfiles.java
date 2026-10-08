@@ -144,7 +144,7 @@ public class RepositorioPerfiles {
           donante3.sumarDonacion();
           donante3.sumarDonacion();
 
-          donante3.misionCompletada();
+          donante3.otorgarInsigniaSiCorresponde();
           donante3.subirCategoria();
 
           this.perfilDonantes.add(donante3);

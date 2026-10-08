@@ -26,14 +26,22 @@ public class ProgresoMision {
     }
 
     public void actualizar(DonacionImportada donacionImportada) {
+        if (completada) {
+            return;
+        }
+
         if (donacionImportada == null || MisionAsociada == null) {
             return;
         }
+
         historialDonaciones.add(donacionImportada);
-        progresoActual = MisionAsociada.calcularProgreso(historialDonaciones);
-        if (progresoActual >= 100) {
-            marcarCompletada(); // esto quiza lo deberia hacer la mision
-            fechaCompletado = LocalDate.now();
+
+        progresoActual = MisionAsociada.calcularProgreso(
+            historialDonaciones
+        );
+
+        if (progresoActual >= 100.0) {
+            marcarCompletada();
         }
     }
 

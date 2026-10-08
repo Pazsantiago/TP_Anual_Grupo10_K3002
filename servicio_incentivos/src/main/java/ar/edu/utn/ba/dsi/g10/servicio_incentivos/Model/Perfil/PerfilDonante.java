@@ -55,15 +55,62 @@ public class PerfilDonante {
     }
 
     public boolean misionCompletada() {
-        if (historialMisiones.isEmpty()) return false;
-        ProgresoMision ultimoProgreso = historialMisiones.getLast();
-        if (ultimoProgreso.getCompletada() && misionActual != null && misionActual.getInsignia() != null) {
-            boolean yaOtorgada = insignias.stream()
-                .anyMatch(insignia -> insignia.getID() == misionActual.getInsignia().getID()); 
-                insignias.add(misionActual.getInsignia());
-            }
-        
-        return ultimoProgreso.getCompletada();
+        ProgresoMision progresoActual = getProgreso();
+
+        if (progresoActual == null || misionActual == null) {
+            return false;
+        }
+
+        Mision misionDelProgreso = progresoActual.getMisionAsociada();
+
+        if (misionDelProgreso == null) {
+            return false;
+        }
+
+        boolean correspondeALaMisionActual =
+            misionDelProgreso.getId() == misionActual.getId();
+
+        return correspondeALaMisionActual
+            && progresoActual.getCompletada();
+    }
+
+    public boolean otorgarInsigniaSiCorresponde() {
+        if (!misionCompletada()) {
+            return false;
+        }
+
+        Insignia insigniaDeLaMision = misionActual.getInsignia();
+
+        if (insigniaDeLaMision == null) {
+            return false;
+        }
+
+        boolean yaOtorgada = insignias.stream()
+            .anyMatch(insignia ->
+                insignia.getID() == insigniaDeLaMision.getID()
+            );
+
+        if (yaOtorgada) {
+            return false;
+        }
+
+        Insignia insigniaDelDonante = new Insignia();
+
+        insigniaDelDonante.setID(insigniaDeLaMision.getID());
+        insigniaDelDonante.setNombre(insigniaDeLaMision.getNombre());
+        insigniaDelDonante.setDescripcion(
+            insigniaDeLaMision.getDescripcion()
+        );
+        insigniaDelDonante.setImagenURL(
+            insigniaDeLaMision.getImagenURL()
+        );
+        insigniaDelDonante.setEsVisible(
+            insigniaDeLaMision.isEsVisible()
+        );
+
+        insignias.add(insigniaDelDonante);
+
+        return true;
     }
 
     public ProgresoMision getProgreso() {

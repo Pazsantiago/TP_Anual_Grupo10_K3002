@@ -104,23 +104,24 @@ public class ServicioIncentivos {
     }
 }
 
-    private void verificarYCompletarMision(PerfilDonante perfilDonante) {
+    private void verificarYCompletarMision(
+        PerfilDonante perfilDonante)
+    {
+        if (perfilDonante == null) {
+            return;
+        }
 
-    if (perfilDonante == null) {
-        return;
-    }
+        boolean seOtorgoInsignia =
+            perfilDonante.otorgarInsigniaSiCorresponde();
 
-    if (perfilDonante.misionCompletada()) {
+        if (!seOtorgoInsignia) {
+            return;
+        }
 
         repo.actualizarRankingPerfil(perfilDonante);
 
         enviarInsigniaAN8N(perfilDonante);
     }
-
-    if (perfilDonante.getPorcentajeProgreso() >= 100) {
-        perfilDonante.subirCategoria();
-    }
-}
 
     public List<PosicionRanking> getRanking(int tamaño) {
         return repo.obtenerRankingMensual(tamaño);
