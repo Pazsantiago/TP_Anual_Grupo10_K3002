@@ -26,7 +26,7 @@ public class Camion {
     public Camion(String patente, double capacidadCarga,double cargaActual) {
         this.patente = patente;
         this.capacidadCarga = capacidadCarga;
-        this.cargaActual=cargaActual
+        this.cargaActual=cargaActual;
     }
 
     public Long getId() { return id; }

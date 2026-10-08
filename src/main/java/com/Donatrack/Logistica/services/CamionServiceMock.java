@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Profile("mock")
 public class CamionServiceMock implements CamionService {
     private final List<Camion> camiones = new ArrayList<>(List.of(
-            new Camion("ABC123", 5000),
-            new Camion("XYZ789", 8000)
+            new Camion("ABC123", 5000, 0),
+            new Camion("XYZ789", 8000, 0)
     ));
 
     @Override
