@@ -1,12 +1,12 @@
 package com.grupo10.servicio_donaciones.Services.ServiceDonaciones;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.comunicador.Comunicador;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.Donacion;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionAsignada;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.TipoEstadoDonacion;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.Donante;
 import com.grupo10.servicio_donaciones.Services.ServiceDonantes.ServicioDonantes;
+import com.grupo10.servicio_donaciones.comunicador.Comunicador;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonaciones;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonacionesAsignadas;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonantes;
@@ -70,7 +70,7 @@ public class ServicioDonacion {
         repoDonaciones.save(donacion);
         servicioDonantes.setearCategorias(donante);
         repoDonantes.save(donante);
-        //comunicador.enviarDonante(repoDonantes.buscarPorId(idDonante), "/donantes", restClientIncentivos);
+        comunicador.enviarDonante(donante, "/donantes", restClientIncentivos);
         return donacion;
 
     }
@@ -90,7 +90,7 @@ public class ServicioDonacion {
         repoDonaciones.save(oldDonacion);
         servicioDonantes.setearCategorias(donante);
         repoDonantes.save(donante);
-        //comunicador.enviarDonanteActualizado(donante, "/donantes/{id}" + donante.getId(), restClientIncentivos);
+        comunicador.enviarDonanteActualizado(donante, "/donantes/{id}" + donante.getId(), restClientIncentivos);
         return oldDonacion;
     }
 
@@ -99,7 +99,7 @@ public class ServicioDonacion {
         Donante donante = repoDonaciones.findById(idDonacion).map(d -> d.getDonante()).orElse(null);
         donante.eliminarDonacion(idDonacion);
         repoDonaciones.deleteById(idDonacion);
-        //comunicador.enviarDonanteActualizado(donante, "/donantes/{id}" + donante.getId(), restClientIncentivos);
+        comunicador.enviarDonanteActualizado(donante, "/donantes/{id}" + donante.getId(), restClientIncentivos);
         return "Donacion borrada";
     }
 

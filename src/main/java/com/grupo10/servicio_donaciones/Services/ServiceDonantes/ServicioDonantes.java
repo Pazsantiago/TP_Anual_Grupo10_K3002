@@ -1,10 +1,10 @@
 package com.grupo10.servicio_donaciones.Services.ServiceDonantes;
 
 import com.grupo10.servicio_donaciones.Sdonaciones.Importador.Importador;
-import com.grupo10.servicio_donaciones.Sdonaciones.comunicador.Comunicador;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.categoria.Categoria;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.Donante;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.mensajes.TipoEvento;
+import com.grupo10.servicio_donaciones.comunicador.Comunicador;
 import com.grupo10.servicio_donaciones.repositorios.RepoCategorias;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonaciones;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonantes;
@@ -79,7 +79,7 @@ public class ServicioDonantes {
 
         setearCategorias(persona);
         repoDonantes.save(persona);
-        //comunicador.enviarDonante(persona, "/perfiles", restClientIncentivos);
+        comunicador.enviarDonante(persona, "/perfiles", restClientIncentivos);
         return persona;
 
     }
@@ -117,7 +117,7 @@ public class ServicioDonantes {
         });
         setearCategorias(oldDonante);
         repoDonantes.save(oldDonante);
-        //comunicador.enviarDonanteActualizado(updateDonante, "/perfiles/{idDonante}" + updateDonante.getId(), restClientIncentivos);
+        comunicador.enviarDonanteActualizado(updateDonante, "/perfiles/{idDonante}" + updateDonante.getId(), restClientIncentivos);
         return oldDonante;
     }
 
@@ -130,7 +130,7 @@ public class ServicioDonantes {
                 repoDonaciones.save(d);
             }
         });
-        //comunicador.avisarDonanteEliminado("/perfiles/{idDonante}" + id, restClientIncentivos);
+        comunicador.avisarDonanteEliminado("/perfiles/{idDonante}" + id, restClientIncentivos);
         return "Donante borrado";
     }
 }

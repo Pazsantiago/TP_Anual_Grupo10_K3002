@@ -1,9 +1,6 @@
-package com.grupo10.servicio_donaciones.Sdonaciones.comunicador;
+package com.grupo10.servicio_donaciones.comunicador;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionAsignada;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionAsignadaDTO;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionSegmentada;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionSegmentadaDTO;
+import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.*;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.Donante;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.DonanteDTO;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.TipoMedioContacto;
@@ -37,20 +34,24 @@ public class Comunicador {
                 .toBodilessEntity();
     }
 
-    public DonanteDTO aDonanteDTO(Donante donante) {
-        return new DonanteDTO(donante.getId(), donante.getDonaciones(), donante.obtenerContactoPredeterminado());
+    public DonacionDTO aDonacionDTO(Donacion donacion) {
+        return new DonacionDTO(donacion.getId(), donacion.getFechaRegistro(), donacion.conocerCategorias(), donacion.conocerCantidadDeBienesDonados(), donacion.conocerCantSegmentadasEntregadas());
     }
 
-    public DonacionSegmentadaDTO aDonacionSegmentadaDTO(DonacionSegmentada donacionSegmentada, Long idNecesidad) {
-        return new DonacionSegmentadaDTO(donacionSegmentada.getId(), donacionSegmentada.getEstadoActual().getTipoEstado(),
-                donacionSegmentada.getSubcategoria(), idNecesidad, donacionSegmentada.getCantidadBienAsignadoPorId(idNecesidad)
-        );
+    public DonanteDTO aDonanteDTO(Donante donante) {
+        return new DonanteDTO(donante.getId(), donante.getDonaciones().stream().map(this::aDonacionDTO).toList(), donante.obtenerContactoPredeterminado());
+    }
+
+    public DonacionSegmentadaDTO aDonacionSegmentadaDTO(DonacionSegmentada donacionSegmentada) {
+        return new DonacionSegmentadaDTO(donacionSegmentada.getId(), donacionSegmentada.getDonacionInicial().getDonante().getId());
     }
 
     public DonacionAsignadaDTO aDonacionAsignadaDTO(DonacionAsignada donacionAsignada) {
-        return new DonacionAsignadaDTO(donacionAsignada.getId(), donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getDireccion(),
-                donacionAsignada.getDonacionesSegmentadas().stream().map(s -> aDonacionSegmentadaDTO(s, donacionAsignada.getNecesidadResuelta().getId()))
-                        .toList()
+        return new DonacionAsignadaDTO(donacionAsignada.getId(),
+                donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getDireccion(),
+                donacionAsignada.getDonacionesSegmentadas().stream().map(s -> aDonacionSegmentadaDTO(s))
+                        .toList(),
+                donacionAsignada.getNecesidadResuelta().getId()
         );
     }
 

@@ -1,14 +1,17 @@
 package com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
 @AllArgsConstructor
+@Setter
+@Getter
 public class DonacionAsignadaDTO {
     private Long id;
-    private String direccionEntidadBeneficiaria;
-    private List<DonacionSegmentadaDTO> donacionSegmentadas;
+    private String direccionEntidad;
+    private List<DonacionSegmentadaDTO> donacionesSegmentadas;
+    private Long necesidadResuelta;
 }
