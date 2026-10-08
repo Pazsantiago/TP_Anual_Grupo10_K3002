@@ -44,6 +44,18 @@ public class IncentivosController {
         return ResponseEntity.ok("Donación procesada correctamente");
     }
 
+    //todo: revisar el post donaciones dto
+
+    // POST: Recibe una nueva donación desde el servicio de donaciones usando DonacionDTO
+    /*@PostMapping("/{donanteId}/donaciones")
+    public ResponseEntity<String> procesarDonacion(
+            @PathVariable Long donanteId,
+            @RequestBody DonacionDTO donacionDTO) {
+
+        servicio.procesarNuevaDonacionDTO(donanteId, donacionDTO);
+        return ResponseEntity.ok("Donación procesada correctamente");
+    }*/
+
     
     // get funcionando, Se instancio una mision racha y al donar este iba aumentando el progreso.
     @GetMapping("/{donanteId}/misiones")
@@ -144,6 +156,31 @@ public ResponseEntity<?> obtenerRankingMensual(){
         return ResponseEntity.status(HttpStatus.CREATED).body("Perfil creado correctamente");
     }
 */
+
+    //todo: revisar como funciona con donador dto
+
+    // POST: Crear perfil de donante desde Servicio de Donaciones enviando DonanteDTO
+    /*@PostMapping("/perfiles")
+    public ResponseEntity<String> crearPerfil(@RequestBody DonanteDTO donanteDTO) {
+        if (donanteDTO == null || donanteDTO.getId() == null || donanteDTO.getId() <= 0) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("El ID del donante es obligatorio y debe ser un valor positivo");
+        }
+
+        if (servicio.getMetricas(donanteDTO.getId()) != null) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("El donante ya posee un perfil de incentivos registrado");
+        }
+
+        servicio.crearPerfilDesdeDTO(donanteDTO);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Perfil de incentivos creado correctamente");
+    }*/
+
     // crear perfil propuesto
     @PostMapping("/perfiles")
     public ResponseEntity<String> crearPerfil(
@@ -169,6 +206,28 @@ public ResponseEntity<?> obtenerRankingMensual(){
             .status(HttpStatus.CREATED)
             .body("Perfil creado correctamente");
     }
+
+    //todo: revisar como funciona con donador dto
+
+    // PUT: Actualizar o sincronizar el perfil de un donante existente
+    /*@PutMapping("/perfiles/{donanteId}")
+    public ResponseEntity<String> actualizarPerfil(
+            @PathVariable Long donanteId,
+            @RequestBody DonanteDTO donanteDTO) {
+
+        PerfilDonante existente = servicio.getMetricas(donanteId);
+        if (existente == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Perfil no encontrado");
+        }
+
+        if (donanteDTO != null && donanteDTO.getDonaciones() != null) {
+            for (DonacionDTO donacion : donanteDTO.getDonaciones()) {
+                servicio.procesarNuevaDonacionDTO(donanteId, donacion);
+            }
+        }
+
+        return ResponseEntity.ok("Perfil actualizado correctamente");
+    }*/
 
 
     // PUT: Actualizar un perfil existente buscando por ID

@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.DTO.Integracion.DonacionDTO;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.DTO.Integracion.DonacionMapper;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.DTO.Integracion.DonanteDTO;
+import ar.edu.utn.ba.dsi.g10.servicio_incentivos.Model.Misiones.CatalogoMisiones;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,12 +32,20 @@ import java.util.List;
 public class ServicioIncentivos {
     private final RepositorioPerfiles repo;
     private final CatalogoMisiones catalogoMisiones;
-   
-    public ServicioIncentivos(RepositorioPerfiles repo,
-                              CatalogoMisiones catalogoMisiones) {
+    private final DonacionMapper donacionMapper; // 1. Inyección del Mapper
 
+    public ServicioIncentivos(RepositorioPerfiles repo,
+                              CatalogoMisiones catalogoMisiones,
+                              DonacionMapper donacionMapper) { // 2. Constructor actualizado
         this.repo = repo;
         this.catalogoMisiones = catalogoMisiones;
+        this.donacionMapper = donacionMapper;
+    }
+
+    // 3. Nuevo método para ser llamado desde IncentivosController recibiendo el DTO
+    public void procesarNuevaDonacionDTO(long donanteID, DonacionDTO donacionDTO) {
+        DonacionImportada donacion = donacionMapper.aDonacionImportada(donacionDTO, donanteID);
+        this.procesarNuevaDonacion(donanteID, donacion);
     }
 
     public void procesarNuevaDonacion(long donanteID, DonacionImportada donacion) {
@@ -152,7 +164,7 @@ public class ServicioIncentivos {
         }
     }
 /*@Scheduled(cron = "0 59 23 L * ?")
-public void reiniciarRanking() { // 👈 CAMBIA EL CORCHETE/LLAVE POR ESTA LLAVE DE APERTURA
+public void reiniciarRanking() { // CAMBIA EL CORCHETE/LLAVE POR ESTA LLAVE DE APERTURA
     repo.reiniciarRankingMensual();
     System.out.println("Se ha reinventado el ranking mensual exitosamente.");
 }*/
@@ -176,6 +188,26 @@ public void reiniciarRanking() { // 👈 CAMBIA EL CORCHETE/LLAVE POR ESTA LLAVE
         );
 
         repo.guardar(nuevoPerfil);
+
+        return nuevoPerfil;
+    }
+
+    public PerfilDonante crearPerfilDesdeDTO(DonanteDTO donanteDTO) {
+        if (donanteDTO == null || donanteDTO.getId() == null) {
+            return null;
+        }
+
+        Long donanteId = donanteDTO.getId();
+
+        // 1. Crear el perfil inicial con su categoría y primera misión
+        PerfilDonante nuevoPerfil = crearPerfil(donanteId);
+
+        // 2. Si el DTO de donaciones trae historial previo, lo procesamos
+        if (donanteDTO.getDonaciones() != null && !donanteDTO.getDonaciones().isEmpty()) {
+            for (DonacionDTO donacionDTO : donanteDTO.getDonaciones()) {
+                procesarNuevaDonacionDTO(donanteId, donacionDTO);
+            }
+        }
 
         return nuevoPerfil;
     }
