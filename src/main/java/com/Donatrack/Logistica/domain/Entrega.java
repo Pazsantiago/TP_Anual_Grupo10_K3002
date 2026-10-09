@@ -31,6 +31,8 @@ public class Entrega {
         this.direccion = direccion;
     }
 
+    // Getters y Setters
+
     public Long getId() { return id; }
     public Estado getEstado() { return estado; }
     public void setEstado(Estado estado) { this.estado = estado; }

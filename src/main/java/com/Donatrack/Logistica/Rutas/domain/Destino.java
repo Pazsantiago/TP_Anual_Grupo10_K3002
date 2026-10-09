@@ -1,8 +1,15 @@
 package com.Donatrack.Logistica.Rutas.domain;
 
 import com.Donatrack.Logistica.domain.Direccion;
+import jakarta.persistence.*;
 
+@Entity
 public class Destino {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Embedded
     private Direccion direccion;
     private String distancia;
     private String duracion;

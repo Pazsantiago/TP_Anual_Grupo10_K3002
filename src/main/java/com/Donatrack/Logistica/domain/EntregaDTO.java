@@ -2,7 +2,6 @@ package com.Donatrack.Logistica.domain;
 
 import com.Donatrack.Logistica.domain.EstadoEntrega;
 import com.Donatrack.Logistica.domain.Direccion;
-import jakarta.persistence.Entity;
 
 public class EntregaDTO {
     private Long id;

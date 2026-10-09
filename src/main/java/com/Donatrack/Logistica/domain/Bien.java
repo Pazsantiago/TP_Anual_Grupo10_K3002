@@ -1,10 +1,25 @@
 package com.Donatrack.Logistica.domain;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Bien {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;   // clave primaria
     private String nombre;
     private int cantidad;
     private String tipo;
+
+    @ManyToOne
+    @JoinColumn(name = "bulto_id") // FK hacia la tabla bulto
     private Bulto bulto;
+
+    // Constructor vacío obligatorio para JPA
+    public Bien() {}
+
+    // Constructor con validaciones
+
 
     public Bien(String nombre, int cantidad, String tipo, Bulto bulto) {
         if (nombre == null || nombre.isBlank()) {
@@ -18,6 +33,10 @@ public class Bien {
         this.tipo = tipo;
         this.bulto = bulto;
     }
+
+    // Getters y Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getNombre() {
         return nombre;

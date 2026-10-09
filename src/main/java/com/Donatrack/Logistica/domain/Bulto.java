@@ -1,10 +1,8 @@
 package com.Donatrack.Logistica.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Bulto {
@@ -16,7 +14,11 @@ public class Bulto {
     private double altura;
 
     @ManyToOne
+    @JoinColumn(name = "camion_id") // FK hacia la tabla camion
     private Camion camion;
+
+    @OneToMany(mappedBy = "bulto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bien> bienes; // relación inversa con Bien
 
     public Bulto() {
     }
@@ -30,7 +32,7 @@ public class Bulto {
         this.volumen = volumen;
         this.altura = altura;
     }
-
+    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public double getPeso() { return peso; }

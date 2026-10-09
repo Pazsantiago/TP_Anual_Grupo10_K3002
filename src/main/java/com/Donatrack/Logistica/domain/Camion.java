@@ -17,7 +17,7 @@ public class Camion {
     private String patente;
     private double capacidadCarga;
     private double cargaActual;
-    @OneToMany(mappedBy = "camion", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "camion", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Bulto> bultosAsignados = new ArrayList<>();
 
     public Camion() {
@@ -28,7 +28,7 @@ public class Camion {
         this.capacidadCarga = capacidadCarga;
         this.cargaActual=cargaActual;
     }
-
+    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getPatente() { return patente; }
@@ -37,6 +37,8 @@ public class Camion {
     public void setCapacidadCarga(double capacidadCarga) { this.capacidadCarga = capacidadCarga; }
     public double getCargaActual() { return cargaActual; }
     public List<Bulto> getBultosAsignados() { return bultosAsignados; }
+
+    // Método de negocio
 
     public boolean asignar(Bulto bulto) {
         if (cargaActual + bulto.getPeso() > capacidadCarga) return false;
