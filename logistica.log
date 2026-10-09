@@ -6346,3 +6346,4 @@ Unconditional classes:
 2026-10-09T06:15:07.456-03:00  INFO 5488 --- [Logistica] [http-nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2026-10-09T06:15:07.457-03:00  INFO 5488 --- [Logistica] [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2026-10-09T06:15:07.462-03:00  INFO 5488 --- [Logistica] [http-nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2026-10-09T07:00:14.946-03:00  WARN 5488 --- [Logistica] [HikariPool-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=9m2s217ms252µs700ns).
