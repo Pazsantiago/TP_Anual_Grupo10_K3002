@@ -3,8 +3,8 @@
     <envs>
       <env name="SERVICIO_DONACIONES" value="http://localhost:8080/api/notificaciones" />
       <env name="SERVICIO_INCENTIVOS" value="http://localhost:8081/incentivos/perfiles" />
-      <env name="SERVICIO_LOGISTICA_ONLINE" value="http://ip:8080" />
       <env name="SERVICIO_LOGISTICA_LOCAL" value="http://localhost:8084" />
+      <env name="SERVICIO_LOGISTICA_ONLINE" value="https://tp-anual-grupo10-k3002.onrender.com" />
     </envs>
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
     <module name="broker" />

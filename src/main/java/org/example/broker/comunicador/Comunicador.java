@@ -1,7 +1,4 @@
 package org.example.broker.comunicador;
-
-
-import lombok.RequiredArgsConstructor;
 import org.example.broker.dominio.donacion.DonacionAsignadaDTO;
 import org.example.broker.dominio.mensajes.MensajeConfirmacionEntrega;
 import org.example.broker.dominio.mensajes.MensajeEntregaFallida;
@@ -12,24 +9,31 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
-@RequiredArgsConstructor
 public class Comunicador {
-    @Qualifier("restClientDonaciones")
     private final RestClient restClientDonaciones;
-    @Qualifier("restClientIncentivos")
     private final RestClient restClientIncentivos;
-    @Qualifier("restClientLogistica")
     private final RestClient restClientLogistica;
-    @Value("${conexiones.servicio-logistica-online}")
     private String urlLogistica;
-    @Value("${conexiones.servicio-logistica-local}")
-    private String urlLogisticaLocal;
+    private final String urlLogisticaLocal;
+
+    public Comunicador(
+            @Qualifier("restClientDonaciones") RestClient restClientDonaciones,
+            @Qualifier("restClientIncentivos") RestClient restClientIncentivos,
+            @Qualifier("restClientLogistica") RestClient restClientLogistica,
+            @Value("${conexiones.servicio-logistica-online}") String urlLogistica,
+            @Value("${conexiones.servicio-logistica-local}") String urlLogisticaLocal
+    ) {
+        this.restClientDonaciones = restClientDonaciones;
+        this.restClientIncentivos = restClientIncentivos;
+        this.restClientLogistica = restClientLogistica;
+        this.urlLogistica = urlLogistica;
+        this.urlLogisticaLocal = urlLogisticaLocal;
+    }
 
     @EventListener(ApplicationReadyEvent.class)
     public void iniciar() {
@@ -40,11 +44,12 @@ public class Comunicador {
     public void verificarConexionConLogisticaEnNube(){
         try {
             ResponseEntity<Void> response = this.restClientLogistica
-                    .post()
-                    .uri(urlLogistica + "/healthcheck")
+                    .get()
+                    .uri(urlLogistica + "/api/healthCheck")
                     .retrieve()
                     .toBodilessEntity();
             if (response.getStatusCode().value() == 200) {
+                System.out.println("La ruta finalmente es: " + urlLogistica + " :)");
                 return;
             }
         } catch (Exception e){
@@ -52,6 +57,7 @@ public class Comunicador {
         }
         // Pasamos a la local
         this.urlLogistica = urlLogisticaLocal;
+        System.out.println("No funciona el despliegue de logistica, url actual: " + urlLogistica + " :(");
     }
 
     public void enviarDonacionAsignada(DonacionAsignadaDTO donacionAsignada) {
@@ -72,9 +78,6 @@ public class Comunicador {
                 .body(mensaje)
                 .retrieve()
                 .body(Integer.class);
-        if (result != 200) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
     public void enviarEntregaRealizada(MensajeConfirmacionEntrega mensaje) {
         Integer result = this.restClientDonaciones

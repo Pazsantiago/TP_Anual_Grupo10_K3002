@@ -1,14 +1,14 @@
 package org.example.broker.dominio.mensajes;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 public class MensajeInicioDeRuta {
-    private Long idEntidadBeneficiaria;
+    private Long idAsignada;
     private List<Long> idDonantesIncluidos;
-    private Long idNecesidad;
 }

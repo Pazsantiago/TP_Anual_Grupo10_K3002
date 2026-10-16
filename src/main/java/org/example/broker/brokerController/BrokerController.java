@@ -1,5 +1,6 @@
 package org.example.broker.brokerController;
 
+import lombok.RequiredArgsConstructor;
 import org.example.broker.comunicador.Comunicador;
 import org.example.broker.dominio.donacion.DonacionAsignadaDTO;
 import org.example.broker.dominio.mensajes.MensajeConfirmacionEntrega;
@@ -11,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/donacionesAsignadas")
+@RequestMapping("/api")
+@RequiredArgsConstructor
 public class BrokerController {
-    private Comunicador comunicador;
-    @GetMapping("/donacionesAsignadas")
+    private final Comunicador comunicador;
+    @PostMapping("/donacionesAsignadas")
     public ResponseEntity<Void> enviarDonacionAsignada(@RequestBody DonacionAsignadaDTO donacionAsignada) {
         comunicador.enviarDonacionAsignada(donacionAsignada);
         return ResponseEntity.ok().build();
