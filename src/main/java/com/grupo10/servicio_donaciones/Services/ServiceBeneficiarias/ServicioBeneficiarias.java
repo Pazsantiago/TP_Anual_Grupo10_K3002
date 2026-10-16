@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -40,9 +41,9 @@ public class ServicioBeneficiarias {
 
     @Transactional
     public void seSatisfaceLaNecesidad(Necesidad necesidadResuelta) {
-        EntidadBeneficiaria entidad = getEntidadById(necesidadResuelta.getEntidadBeneficiaria().getId());
-        necesidadResuelta.setEstaSatisfechaConDonacion(true);
-        repoBeneficiarias.save(entidad);
+        Necesidad necesidad = repoBeneficiarias.findNecesidadById(necesidadResuelta.getId()).get();
+        necesidad.setEstaSatisfechaConDonacion(true);
+        necesidad.setSatisfechaEn(LocalDate.now());
     }
 
     public Necesidad buscarNecesidadDeEntidad(Long idNecesidad) {
@@ -61,9 +62,11 @@ public class ServicioBeneficiarias {
     @Transactional
     public EntidadBeneficiaria updateEntidad(Long idEntidad, EntidadBeneficiaria updatedEntidad) {
         EntidadBeneficiaria antigua = repoBeneficiarias.findById(idEntidad).orElse(null);
-        antigua.setId(idEntidad);
         antigua.eliminarNecesidades();
-        antigua.setNecesidadesActuales(updatedEntidad.getNecesidadesActuales());
+        antigua.getNecesidadesActuales().addAll(
+                updatedEntidad.getNecesidadesActuales()
+        );
+        antigua.setearNecesidadesActuales();
         antigua.setDireccion(updatedEntidad.getDireccion());
         antigua.setTelefono(updatedEntidad.getTelefono());
         antigua.setRazonSocial(updatedEntidad.getRazonSocial());

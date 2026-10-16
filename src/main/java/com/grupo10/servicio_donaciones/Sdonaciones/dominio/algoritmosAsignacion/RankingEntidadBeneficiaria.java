@@ -1,4 +1,4 @@
-package com.grupo10.servicio_donaciones.Sdonaciones.asignacion.algoritmosAsignacion;
+package com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion;
 
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.entidad.EntidadBeneficiaria;
 import lombok.Data;
@@ -18,5 +18,5 @@ public class RankingEntidadBeneficiaria {
         this.posicion = pos;
         this.algoritmoUsado = algoritmoUsado;
     }
-    
+
 }

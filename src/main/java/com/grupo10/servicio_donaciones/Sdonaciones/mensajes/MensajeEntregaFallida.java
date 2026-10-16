@@ -1,16 +1,19 @@
-package com.grupo10.servicio_donaciones.Sdonaciones.dominio.mensajes;
+package com.grupo10.servicio_donaciones.Sdonaciones.mensajes;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 public class MensajeEntregaFallida {
-    private Long idEntidadBeneficiaria;
+    private Long idAsignada;
     private List<Long> idDonantesIncluidos;
     private String justificacion;
-    private Long idNecesidad;
     private Boolean sePuedeReplanificar;
 }

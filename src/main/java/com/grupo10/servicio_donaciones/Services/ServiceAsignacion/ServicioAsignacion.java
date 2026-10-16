@@ -1,8 +1,8 @@
 package com.grupo10.servicio_donaciones.Services.ServiceAsignacion;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.asignacion.algoritmosAsignacion.IAlgoritmoAsignacion;
-import com.grupo10.servicio_donaciones.Sdonaciones.asignacion.algoritmosAsignacion.RankingEntidadBeneficiaria;
-import com.grupo10.servicio_donaciones.Sdonaciones.asignacion.algoritmosAsignacion.SegmentadaRankings;
+import com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion.IAlgoritmoAsignacion;
+import com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion.RankingEntidadBeneficiaria;
+import com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion.SegmentadaRankings;
 import com.grupo10.servicio_donaciones.Services.ServiceBeneficiarias.ServicioBeneficiarias;
 import com.grupo10.servicio_donaciones.Services.ServiceDonaciones.ServicioDonacion;
 import lombok.Data;

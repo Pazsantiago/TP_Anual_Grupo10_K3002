@@ -1,0 +1,22 @@
+package com.grupo10.servicio_donaciones.Sdonaciones.mensajes;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.Date;
+import java.util.List;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
+public class MensajeConfirmacionEntrega {
+    private Long idAsignada;
+    private List<Long> idDonantesIncluidos;
+    private Integer nroComprobante;
+    private Date fecha;
+    private Long idCamionAsignado;
+
+}

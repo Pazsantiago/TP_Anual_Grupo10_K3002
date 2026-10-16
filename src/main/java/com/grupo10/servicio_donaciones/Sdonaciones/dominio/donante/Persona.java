@@ -36,7 +36,7 @@ public class Persona {
     private Documento documento;
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Direccion direccion;
-    
+
     public Persona(Documento documento, Direccion direccion) {
         this.documento = documento;
         this.direccion = direccion;

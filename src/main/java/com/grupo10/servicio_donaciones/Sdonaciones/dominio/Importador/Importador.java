@@ -1,4 +1,4 @@
-package com.grupo10.servicio_donaciones.Sdonaciones.Importador;
+package com.grupo10.servicio_donaciones.Sdonaciones.dominio.Importador;
 
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.*;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonantes;
@@ -42,6 +42,17 @@ public class Importador {
                     continue;
                 }
                 donantes.add(controlarDonanteEnLista(fila));
+//                Con esto busca siempre si se repite pero tarda mucho.
+//                String correo = fila[4];
+//
+//                Donante donante = controlarDonanteEnLista(fila);
+//
+//                donantes.removeIf(d ->
+//                        d.getMediosDeContacto().stream()
+//                                .anyMatch(m -> m.getCorreoElectronico().equalsIgnoreCase(correo))
+//                );
+//
+//                donantes.add(donante);
             }
             repositorioDonadores.saveAll(donantes);
             return true;
@@ -60,14 +71,26 @@ public class Importador {
         //actualizar su información --> Esto es para el csv.
         Donante donanteAGuardar;
         if (donanteExistente.isPresent()) {
-            donanteAGuardar = setearDonante(fila);
-            donanteAGuardar.setId(donanteExistente.get().getId());
-        } else {
-            donanteAGuardar = setearDonante(fila);
+            Donante donante = donanteExistente.get();
+            Donante datosCSV = setearDonante(fila);
+
+            donante.setPersona(datosCSV.getPersona());
+
+            MedioContacto contactoCSV = datosCSV.getMediosDeContacto().get(0);
+
+            donante.getMediosDeContacto().stream()
+                    .filter(m -> fila[4].equalsIgnoreCase(m.getCorreoElectronico()))
+                    .findFirst()
+                    .ifPresent(m -> {
+                        m.setTelefono(contactoCSV.getTelefono());
+                        m.setEsPredeterminado(true);
+                    });
+
+            return donante;
         }
-        return donanteAGuardar;
+        return setearDonante(fila);
     }
-    
+
     public Donante setearDonante(String[] fila) {
         Donante donante = new Donante();
         MedioContacto medioDeContacto = new MedioContacto();
@@ -89,6 +112,7 @@ public class Importador {
             nuevo.setDocumento(doc);
             donante.setPersona(nuevo);
         }
+
         return donante;
     }
 

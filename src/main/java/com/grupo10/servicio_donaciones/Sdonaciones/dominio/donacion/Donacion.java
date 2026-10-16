@@ -30,7 +30,7 @@ public class Donacion {
     private Donante donante;
 
     private Date fechaRegistro;
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacionInicial")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacionInicial", orphanRemoval = true)
     private List<DonacionSegmentada> donacionesSegmentadas;
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacion")
     private List<Bien> bienesDeEntrada;

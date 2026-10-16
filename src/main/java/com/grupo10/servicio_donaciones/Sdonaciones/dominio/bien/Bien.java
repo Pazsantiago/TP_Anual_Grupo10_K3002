@@ -59,6 +59,10 @@ public class Bien {
         this.foto = foto;
     }
 
+    public void setearRelaciones() {
+
+    }
+
     public void restarCantidad(Integer cantidad) {
         this.cantidadActual -= cantidad;
     }

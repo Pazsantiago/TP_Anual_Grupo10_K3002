@@ -3,11 +3,12 @@ package com.grupo10.servicio_donaciones.comunicador;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.*;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.Donante;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.DonanteDTO;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.TipoMedioContacto;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.mensajes.Destinatario;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.mensajes.MensajeNotificacion;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.mensajes.TipoEvento;
+import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.MedioNotificacion;
+import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.DestinatarioRequestDTO;
+import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.NotificacionRequestDTO;
+import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.TipoEvento;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -16,23 +17,15 @@ import org.springframework.web.server.ResponseStatusException;
 @Component
 public class Comunicador {
     @Async
-    public void comunicarMensaje(String correo, TipoMedioContacto tipoTel, String telefono, TipoEvento tipoEvento, RestClient restClient) {
-        Destinatario destinatario = new Destinatario();
-        destinatario.setEmail(correo);
-        if (tipoTel.equals(TipoMedioContacto.TELEFONO)) {
-            destinatario.setTelefono(telefono);
-            destinatario.setWhatsapp(null);
-        } else if (tipoTel.equals(TipoMedioContacto.WHATSAPP)) {
-            destinatario.setWhatsapp(telefono);
-            destinatario.setTelefono(null);
-        }
+    public void comunicarMensaje(String nombre, String correo, String telefono, MedioNotificacion tipoNotificacion, TipoEvento tipoEvento, RestClient restClient) {
         restClient
                 .post()
                 .uri("/mensajes")
-                .body(new MensajeNotificacion(tipoEvento, destinatario, "", ""))
+                .body(new NotificacionRequestDTO(tipoNotificacion, "", "", new DestinatarioRequestDTO(nombre, telefono, correo, telefono), tipoEvento.toString()))
                 .retrieve()
                 .toBodilessEntity();
     }
+
 
     public DonacionDTO aDonacionDTO(Donacion donacion) {
         return new DonacionDTO(donacion.getId(), donacion.getFechaRegistro(), donacion.conocerCategorias(), donacion.conocerCantidadDeBienesDonados(), donacion.conocerCantSegmentadasEntregadas());
@@ -48,24 +41,24 @@ public class Comunicador {
 
     public DonacionAsignadaDTO aDonacionAsignadaDTO(DonacionAsignada donacionAsignada) {
         return new DonacionAsignadaDTO(donacionAsignada.getId(),
-                donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getDireccion(),
-                donacionAsignada.getDonacionesSegmentadas().stream().map(s -> aDonacionSegmentadaDTO(s))
-                        .toList(),
-                donacionAsignada.getNecesidadResuelta().getId()
+                donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getId(),
+                donacionAsignada.getDonacionesSegmentadas().stream().map(s -> s.getDonacionInicial().getDonante().getId()).toList(),
+                donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getDireccion()
         );
     }
 
-    public void enviarDonacionAsignada(DonacionAsignada donacionAsignada, String ruta, RestClient restclient) {
-        Integer result = restclient
+    public void enviarDonacionAsignada(DonacionAsignada donacionAsignada, RestClient restclient) {
+        ResponseEntity<Void> result = restclient
                 .post()
-                .uri(ruta)
+                .uri("/api/donacionesAsignadas")
                 .body(aDonacionAsignadaDTO(donacionAsignada))
                 .retrieve()
-                .body(Integer.class);
-        if (result != 200) {
+                .toBodilessEntity();
+        if (result.getStatusCode().value() != 200) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public void enviarDonante(Donante donante, RestClient restclient) {
         Integer result = restclient

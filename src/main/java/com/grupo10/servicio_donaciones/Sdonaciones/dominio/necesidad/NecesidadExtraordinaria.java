@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,10 +25,6 @@ public class NecesidadExtraordinaria extends Necesidad {
         super(descripcion, subcategoria, cantidadObjetivo, cantidadRecibida, entidad, estaSatisfecha);
     }
 
-
-    public LocalDate getSatisfechaEn() {
-        return LocalDate.now();
-    }
 
     @Override
     public boolean estaSatisfecha() {

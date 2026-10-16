@@ -9,7 +9,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
 
@@ -20,7 +20,7 @@ server:
 
 springdoc:
   swagger-ui:
-    path: /endpoints-docs
+    path: /api-docs
 
 conexiones:
   servicio-incentivos: ${SERVICIO_INCENTIVOS_URL:http://localhost:8081/incentivos}

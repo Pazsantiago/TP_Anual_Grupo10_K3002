@@ -1,9 +1,12 @@
-FROM maven:3.9.11-eclipse-temurin-21-alpine
+FROM eclipse-temurin:26-jdk
 
-WORKDIR /spring
+WORKDIR /app
 
 COPY . .
 
-RUN mvn clean install
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
 
-CMD ["mvn", "spring-boot:run"]
+EXPOSE 8080
+
+CMD ["java", "-jar", "target/servicio-donaciones-0.0.1-SNAPSHOT.jar"]

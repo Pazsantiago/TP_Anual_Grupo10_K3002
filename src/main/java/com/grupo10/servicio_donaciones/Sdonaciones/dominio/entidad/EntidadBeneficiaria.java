@@ -19,7 +19,7 @@ public class EntidadBeneficiaria {
     private String telefono;
     private String correoRepresentante;
     private String direccion;
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "entidadBeneficiaria")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "entidadBeneficiaria", orphanRemoval = true)
     private List<Necesidad> necesidadesActuales = new ArrayList<>();
 
     public EntidadBeneficiaria(String razonSocial, String telefono, String correoRepresentante, String direccion, List<Necesidad> necesidadesActuales) {
@@ -52,7 +52,7 @@ public class EntidadBeneficiaria {
     public void actualizarNecesidad(Necesidad necesidadActualizada) {
         necesidadesActuales.forEach(n -> {
             if (n.getId().equals(necesidadActualizada.getId())) {
-                n = necesidadActualizada;
+                necesidadesActuales.set(getNecesidadesActuales().indexOf(n), necesidadActualizada);
             }
         });
     }

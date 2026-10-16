@@ -46,7 +46,8 @@ public abstract class Necesidad {
     @ManyToOne()
     @JsonIgnore
     private EntidadBeneficiaria entidadBeneficiaria;
-    private Boolean estaSatisfechaConDonacion;
+    private Boolean estaSatisfechaConDonacion = false;
+    private LocalDate satisfechaEn;
 
     public Necesidad(String descripcion, Subcategoria subcategoria, Integer cantidadObjetivo, Integer cantidadRecibida, EntidadBeneficiaria entidadBeneficiaria, Boolean estaSatisfecha) {
         this.descripcion = descripcion;
@@ -62,7 +63,6 @@ public abstract class Necesidad {
     }
 
     public void aplicarActualizacion(Necesidad necesidad) {
-        this.setId(necesidad.getId());
         this.setCantidadRecibida(necesidad.getCantidadRecibida());
         this.setDescripcion(necesidad.getDescripcion());
         this.setEntidadBeneficiaria(necesidad.getEntidadBeneficiaria());
@@ -70,9 +70,6 @@ public abstract class Necesidad {
         this.setCantidadObjetivo(necesidad.getCantidadObjetivo());
         this.setCantidadRecibida(necesidad.getCantidadRecibida());
     }
-
-
-    public abstract LocalDate getSatisfechaEn();
 
     // Las subclases tienen su manera de conocer si esta estan satisfechas con su override
     // Pero si o si requieren que ademas la necesidad ya tenga la donacion realizada

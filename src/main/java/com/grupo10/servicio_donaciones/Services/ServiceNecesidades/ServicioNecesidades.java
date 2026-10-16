@@ -50,7 +50,6 @@ public class ServicioNecesidades {
         Necesidad necesidad = this.servicioBeneficiarias.buscarNecesidadDeEntidad(idNecesidad);
         EntidadBeneficiaria entidad = necesidad.getEntidadBeneficiaria();
         entidad.eliminarNecesidadActual(necesidad.getId());
-        servicioBeneficiarias.updateEntidad(entidad.getId(), entidad);
         return "Necesidad borrada";
     }
 }

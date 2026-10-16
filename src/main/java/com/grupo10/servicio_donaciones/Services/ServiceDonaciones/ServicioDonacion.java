@@ -70,7 +70,7 @@ public class ServicioDonacion {
         repoDonaciones.save(donacion);
         servicioDonantes.setearCategorias(donante);
         repoDonantes.save(donante);
-        comunicador.enviarDonante(donante, restClientIncentivos);
+        //comunicador.enviarDonante(donante, restClientIncentivos);
         return donacion;
 
     }
@@ -79,9 +79,10 @@ public class ServicioDonacion {
     public Donacion updateDonacion(Long idDonacion, Donacion updateDonacion) {
         Donacion oldDonacion = repoDonaciones.findById(idDonacion).orElse(null);
         Donante donante = repoDonantes.findById(oldDonacion.getDonante().getId()).orElse(null);
-        oldDonacion.setId(idDonacion);
+
         oldDonacion.eliminarSegmentadas();
-        oldDonacion.setDonacionesSegmentadas(updateDonacion.getDonacionesSegmentadas());
+        oldDonacion.getDonacionesSegmentadas()
+                .addAll(updateDonacion.getDonacionesSegmentadas());
         oldDonacion.setDonante(updateDonacion.getDonante());
         oldDonacion.setDescripcionGeneral(updateDonacion.getDescripcionGeneral());
         oldDonacion.setFechaRegistro(updateDonacion.getFechaRegistro());
@@ -90,7 +91,7 @@ public class ServicioDonacion {
         repoDonaciones.save(oldDonacion);
         servicioDonantes.setearCategorias(donante);
         repoDonantes.save(donante);
-        comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
+        //comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return oldDonacion;
     }
 

@@ -20,7 +20,6 @@ public class NecesidadRecurrente extends Necesidad {
     private Periodo periodo;
     private Integer cantidadRecibidaEnPeriodo = 0;
 
-
     public NecesidadRecurrente(
             String descripcion,
             Subcategoria subcategoria,
@@ -80,15 +79,12 @@ public class NecesidadRecurrente extends Necesidad {
         this.periodo.setInicioPeriodo(this.periodo.getInicioPeriodo().plusDays(periodo.getPeriodoDias()));
     }
 
-    public LocalDate getSatisfechaEn() {
-        return LocalDate.now();
-    }
 
     @Override
     public boolean estaSatisfecha() {
 
         return periodoVigente()
-                && cantidadRecibidaEnPeriodo >= getCantidadObjetivo() && this.estaSatisfecha();
+                && cantidadRecibidaEnPeriodo >= getCantidadObjetivo() && this.getEstaSatisfechaConDonacion();
     }
 
 

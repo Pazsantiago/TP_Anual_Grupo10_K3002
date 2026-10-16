@@ -1,7 +1,7 @@
 package com.grupo10.servicio_donaciones.Controllers.cRankingsEntidades;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.asignacion.algoritmosAsignacion.RankingEntidadBeneficiaria;
-import com.grupo10.servicio_donaciones.Sdonaciones.asignacion.algoritmosAsignacion.SegmentadaRankings;
+import com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion.RankingEntidadBeneficiaria;
+import com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion.SegmentadaRankings;
 import com.grupo10.servicio_donaciones.Services.ServiceAsignacion.ServicioAsignacion;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

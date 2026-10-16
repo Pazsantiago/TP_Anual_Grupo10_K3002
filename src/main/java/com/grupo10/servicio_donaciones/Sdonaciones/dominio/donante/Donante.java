@@ -42,9 +42,9 @@ public class Donante {
     }
 
     public void actualizarDonacion(Donacion donacion) {
-        getDonaciones().forEach(d -> {
+        donaciones.forEach(d -> {
             if (d.getId().equals(donacion.getId())) {
-                d = donacion;
+                donaciones.set(donaciones.indexOf(d), donacion);
             }
         });
     }

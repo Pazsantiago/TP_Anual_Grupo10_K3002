@@ -15,7 +15,7 @@ public class MedioContacto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
-    private TipoMedioContacto tipo;
+    private MedioNotificacion tipo;
     private String correoElectronico;
     private String telefono;
     private boolean esPredeterminado;

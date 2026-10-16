@@ -22,9 +22,9 @@ public class Periodo {
     private Integer periodoDias;
     private LocalDate inicioPeriodo;
 
-    public Periodo(Integer periodoDias, LocalDate inicioPeriodo) {
+    public Periodo(Integer periodoDias) {
         this.periodoDias = periodoDias;
-        this.inicioPeriodo = inicioPeriodo;
+        this.inicioPeriodo = LocalDate.now();
     }
 
 

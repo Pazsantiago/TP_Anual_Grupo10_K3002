@@ -1,4 +1,4 @@
-package com.grupo10.servicio_donaciones.Sdonaciones.dominio.mensajes;
+package com.grupo10.servicio_donaciones.Sdonaciones.mensajes;
 
 public enum TipoEvento {
     DONACION_ASIGNADA_ENTIDAD,

@@ -1,9 +1,8 @@
 package com.grupo10.servicio_donaciones.Services.ServiceDonantes;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.Importador.Importador;
+import com.grupo10.servicio_donaciones.Sdonaciones.dominio.Importador.Importador;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.categoria.Categoria;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.Donante;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.mensajes.TipoEvento;
 import com.grupo10.servicio_donaciones.comunicador.Comunicador;
 import com.grupo10.servicio_donaciones.repositorios.RepoCategorias;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonaciones;
@@ -45,6 +44,7 @@ public class ServicioDonantes {
         return repoDonantes.findById(id).orElse(null);
     }
 
+    @Transactional
     public void setearCategorias(Donante persona) {
         persona.getDonaciones().forEach(d -> {
             d.getBienesDeEntrada().forEach(bien -> {
@@ -59,10 +59,10 @@ public class ServicioDonantes {
         LocalDateTime limite = LocalDateTime.now().minusDays(20);
         repoDonantes.findAll().forEach(donante -> {
             if (donante.getUltimaInteraccion().isBefore(limite)) {
-                comunicador.comunicarMensaje(donante.obtenerContactoPredeterminado().getCorreoElectronico(),
-                        donante.obtenerContactoPredeterminado().getTipo(),
-                        donante.obtenerContactoPredeterminado().getTelefono(),
-                        TipoEvento.DONANTE_INACTIVO, restClientMensajes);
+                //comunicador.comunicarMensaje(donante.obtenerContactoPredeterminado().getCorreoElectronico(),
+//                        donante.obtenerContactoPredeterminado().getTipo(),
+//                        donante.obtenerContactoPredeterminado().getTelefono(),
+//                        TipoEvento.DONANTE_INACTIVO, restClientMensajes);
             }
         });
     }
@@ -79,7 +79,7 @@ public class ServicioDonantes {
 
         setearCategorias(persona);
         repoDonantes.save(persona);
-        comunicador.enviarDonante(persona, restClientIncentivos);
+        //comunicador.enviarDonante(persona, restClientIncentivos);
         return persona;
 
     }
@@ -101,7 +101,6 @@ public class ServicioDonantes {
     @Transactional
     public Donante updateDonante(Long id, Donante updateDonante) {
         Donante oldDonante = repoDonantes.findById(id).orElse(null);
-        oldDonante.setId(id);
         oldDonante.setPersona(updateDonante.getPersona());
         oldDonante.setUltimaInteraccion(updateDonante.getUltimaInteraccion());
         oldDonante.setMediosDeContacto(updateDonante.getMediosDeContacto());
@@ -117,20 +116,20 @@ public class ServicioDonantes {
         });
         setearCategorias(oldDonante);
         repoDonantes.save(oldDonante);
-        comunicador.enviarDonanteActualizado(updateDonante, restClientIncentivos);
+        //comunicador.enviarDonanteActualizado(updateDonante, restClientIncentivos);
         return oldDonante;
     }
 
     @Transactional
     public String deletePersona(Long id) {
-        repoDonantes.deleteById(id);
         repoDonantes.findByIdWithDonaciones(id).orElse(null).getDonaciones().forEach(d -> {
             if (d.getDonante().getId().equals(id)) {
                 d.setDonante(null);
                 repoDonaciones.save(d);
             }
         });
-        comunicador.avisarDonanteEliminado(id, restClientIncentivos);
+        repoDonantes.deleteById(id);
+        //comunicador.avisarDonanteEliminado(id, restClientIncentivos);
         return "Donante borrado";
     }
 }

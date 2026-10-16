@@ -1,7 +1,8 @@
-package com.grupo10.servicio_donaciones.Sdonaciones.asignacion.algoritmosAsignacion;
+package com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion;
 
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.entidad.EntidadBeneficiaria;
+import com.grupo10.servicio_donaciones.Sdonaciones.dominio.necesidad.Necesidad;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ public class AlgoritmoPrioridadSubAtendidos implements IAlgoritmoAsignacion {
 
     private long contarNecesidadesSatisfechasUltimoTrimestre(EntidadBeneficiaria entidad, LocalDate desde, LocalDate hasta) {
         return entidad.obtenerNecesidadesHistoricas().stream()
-                .filter(n -> n.estaSatisfecha())
+                .filter(Necesidad::estaSatisfecha)
                 .filter(n -> !n.getSatisfechaEn().isBefore(desde) && !n.getSatisfechaEn().isAfter(hasta))
                 .count();
     }
