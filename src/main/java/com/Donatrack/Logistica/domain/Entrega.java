@@ -9,7 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 
-@Entity
+@Document(collection = "entregas")
 public class Entrega {
     public enum Estado { PENDIENTE, EN_TRASLADO, ENTREGADA, NO_RECIBIDA }
 

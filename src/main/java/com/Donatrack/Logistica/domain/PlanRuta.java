@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.ElementCollection;
 import java.util.List;
 
-@Entity
+@Document(collection = "planesDeRutas")
 public class PlanRuta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

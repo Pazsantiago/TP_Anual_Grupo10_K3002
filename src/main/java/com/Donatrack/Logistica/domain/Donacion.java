@@ -12,7 +12,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 
-@Entity
+@Document(collection = "donaciones")
 public class Donacion {
 
     @Id

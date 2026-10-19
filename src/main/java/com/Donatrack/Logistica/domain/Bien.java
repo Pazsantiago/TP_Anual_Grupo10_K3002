@@ -2,7 +2,7 @@ package com.Donatrack.Logistica.domain;
 
 import jakarta.persistence.*;
 
-@Entity
+@Document(collection = "bienes")
 public class Bien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

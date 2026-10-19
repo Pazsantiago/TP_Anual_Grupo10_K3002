@@ -4,7 +4,7 @@ import com.Donatrack.Logistica.domain.Direccion;
 import jakarta.persistence.*;
 
 import java.util.List;
-@Entity
+@Document(collection = "rutas")
 public class Ruta {
 
     public enum EstadoRuta {

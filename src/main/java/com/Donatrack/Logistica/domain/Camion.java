@@ -9,7 +9,7 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Document(collection = "camiones")
 public class Camion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

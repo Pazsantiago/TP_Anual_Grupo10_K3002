@@ -3,7 +3,7 @@ package com.Donatrack.Logistica.Rutas.domain;
 import com.Donatrack.Logistica.domain.Direccion;
 import jakarta.persistence.*;
 
-@Entity
+@Document(collection = "destinos")
 public class Destino {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

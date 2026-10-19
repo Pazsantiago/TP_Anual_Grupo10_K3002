@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
+@Document(collection = "bultos")
 public class Bulto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
