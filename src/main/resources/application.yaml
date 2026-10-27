@@ -6,4 +6,4 @@ server:
   PORT: ${SERVER_PORT:8082}
 
 conexiones:
-  servicio-notificaciones: ${SERVICIO_NOTIFICACIONES:http://localhost:8083/notificaciones}
+  servicio-notificaciones: ${SERVICIO_NOTIFICACIONES:http://localhost:8083}

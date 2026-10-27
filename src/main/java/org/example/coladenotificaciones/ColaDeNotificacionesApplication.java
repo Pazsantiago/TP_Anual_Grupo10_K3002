@@ -4,13 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-@SpringBootApplication(scanBasePackages = {
-        "configuration",
-        "Controllers",
-        "domain",
-        "Repository",
-        "Services"
-})
+@SpringBootApplication
 public class ColaDeNotificacionesApplication {
 
     public static void main(String[] args) {
