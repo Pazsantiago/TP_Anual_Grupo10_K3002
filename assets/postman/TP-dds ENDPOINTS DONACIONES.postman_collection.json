@@ -1,0 +1,848 @@
+{
+  "info": {
+    "_postman_id": "85217033-afd7-4c86-ab3d-d546b216b1b7",
+    "name": "TP-dds ENDPOINTS DONACIONES",
+    "description": "Colección con los endpoints de las entregas para el servicio de donaciones.\n\nHasta ahora estan funcionando los 4 endpoints de la entrega 2.\n\nLos de incentivos creo que ya los habian hechos.\n\nFaltan los de notificaciones",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "17829497"
+  },
+  "item": [
+    {
+      "name": "Donantes",
+      "item": [
+        {
+          "name": "Obtener donantes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/donantes",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donantes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener donante por documento",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/donantes?tipoD=DNI&doc=30-58644047-7",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donantes"
+              ],
+              "query": [
+                {
+                  "key": "tipoD",
+                  "value": "DNI"
+                },
+                {
+                  "key": "doc",
+                  "value": "30-58644047-7"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener donante por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/donantes/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donantes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar donante",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"donaciones\": [\r\n        {\r\n            \"descripcionGeneral\": \"Lo que sea\",\r\n            \"bienesDeEntrada\": [\r\n                {\r\n                    \"tipo\": \"CON_ESTADO\",\r\n                    \"estado\": \"NUEVO\",\r\n                    \"descripcion\": \"Algo1\",\r\n                    \"subcategoria\": {\r\n                        \"nombre\": \"arroz\",\r\n                        \"categoria\": {\r\n                           \"id\": 1\r\n                        }   \r\n                    },\r\n                    \"unidad\": \"KILOGRAMOS\" ,\r\n                    \"cantidadOriginal\": 2,\r\n                    \"cantidadActual\": 2\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"persona\": {\r\n        \"tipo\": \"HUMANA\",\r\n        \"documento\": {\r\n            \"tipoDocumento\": \"DNI\",\r\n            \"documento\": \"30-58644047-7\"\r\n        },\r\n        \"direccion\": {\r\n            \"calle\": \"Av. Siempre Viva\",\r\n            \"altura\": \"123\",\r\n            \"localidad\": \"Buenos Aires\",\r\n            \"codigoPostal\": \"1000\"\r\n        },\r\n        \"nombre\": \"Santiago\"\r\n    },\r\n    \"mediosDeContacto\": [\r\n        {\r\n            \"esPredeterminado\": true,\r\n            \"correoElectronico\": \"peacedemonicunicorn@gmail.com\",\r\n            \"telefono\": \"+5491123456789\",\r\n            \"tipo\": \"EMAIL\"\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/donantes",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donantes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar donante",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"donaciones\": [\r\n        {\r\n            \"descripcionGeneral\": \"Lo que sea\",\r\n            \"bienesDeEntrada\": [\r\n                {\r\n                    \"descripcion\": \"Algo1\",\r\n                    \"subcategoria\": {\r\n                        \"nombre\": \"arroz\",\r\n                        \"categoria\": {\r\n                           \"id\": 1\r\n                        }   \r\n                    },\r\n                    \"unidad\": \"KILOGRAMOS\" ,\r\n                    \"cantidadOriginal\": 2,\r\n                    \"cantidadActual\": 2\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"persona\": {\r\n        \"tipo\": \"HUMANA\",\r\n        \"documento\": {\r\n            \"tipoDocumento\": \"DNI\",\r\n            \"documento\": \"30-58644047-7\"\r\n        },\r\n        \"direccion\": {\r\n            \"calle\": \"Av. Siempre Viva\",\r\n            \"altura\": \"123\",\r\n            \"localidad\": \"Buenos Aires\",\r\n            \"codigoPostal\": \"1000\"\r\n        },\r\n        \"nombre\": \"Juan\"\r\n    },\r\n    \"mediosDeContacto\": [\r\n        {\r\n            \"esPredeterminado\": true,\r\n            \"correoElectronico\": \"sarasa@gmail.com\",\r\n            \"telefono\": 68825757,\r\n            \"tipo\": \"WHATSAPP\"\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/donantes/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donantes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar donante",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/donantes/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donantes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Importar donantes",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/donantes/importador?rutaArchivo=donantes.csv",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donantes",
+                "importador"
+              ],
+              "query": [
+                {
+                  "key": "rutaArchivo",
+                  "value": "donantes.csv"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Donaciones",
+      "item": [
+        {
+          "name": "Obtener donaciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/donaciones",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donaciones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener donacion con id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/donaciones/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donaciones",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener donaciones segmentadas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/donaciones/segmentadas",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donaciones",
+                "segmentadas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener donacion segmentada por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/donaciones/segmentadas/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donaciones",
+                "segmentadas",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener donaciones asignadas",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"bienesDeEntrada\": [\r\n        {\r\n            \"descripcion\": \"Algo1\",\r\n             \"subcategoria\": {\r\n                \"nombre\": \"fideos\",\r\n                \"categoria\": {\r\n                    \"nombre\": \"Comida\",\r\n                    \"subcategorias\": [],\r\n                    \"tipo\": \"ALIMENTICIO\"\r\n                }   \r\n            }\r\n        },\r\n        {\r\n            \"descripcion\": \"Algo2\",\r\n             \"subcategoria\": {\r\n                \"nombre\": \"papa\",\r\n                \"categoria\": {\r\n                    \"nombre\": \"Comida\",\r\n                    \"subcategorias\": [],\r\n                    \"tipo\": \"ALIMENTICIO\"\r\n                }   \r\n             }\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/donaciones/asignadas",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donaciones",
+                "asignadas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar donacion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"bienesDeEntrada\": [\r\n        {\r\n            \"tipo\": \"CON_ESTADO\",\r\n            \"estado\": \"USADO\",\r\n            \"descripcion\": \"Algo1\",\r\n             \"subcategoria\": {\r\n                \"nombre\": \"arroz\",\r\n                \"categoria\": {\r\n                    \"id\": 1\r\n                }   \r\n            },\r\n            \"unidad\": \"KILOGRAMOS\",\r\n            \"cantidadOriginal\": 2\r\n        },\r\n        {\r\n            \"tipo\": \"CON_ESTADO\",\r\n            \"estado\": \"NUEVO\",\r\n            \"descripcion\": \"Algo1\",\r\n             \"subcategoria\": {\r\n                \"nombre\": \"fideos\",\r\n                \"categoria\": {\r\n                    \"id\": 1\r\n                }   \r\n            },\r\n            \"unidad\": \"KILOGRAMOS\",\r\n            \"cantidadOriginal\": 3\r\n        },\r\n        {\r\n            \"tipo\": \"PERECEDERO\",\r\n            \"fechaVencimiento\": \"2026-12-31\",\r\n            \"descripcion\": \"Algo1\",\r\n             \"subcategoria\": {\r\n                \"nombre\": \"naranja\",\r\n                \"categoria\": {\r\n                    \"id\": 1\r\n                }   \r\n            },\r\n            \"unidad\": \"KILOGRAMOS\",\r\n            \"cantidadOriginal\": 10\r\n        }\r\n    ]   \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/donantes/1/donaciones",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donantes",
+                "1",
+                "donaciones"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Asignar donación a una entidad",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "",
+                "value": "",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/entidadesBeneficiarias/1/necesidades/1/donaciones/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "entidadesBeneficiarias",
+                "1",
+                "necesidades",
+                "1",
+                "donaciones",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar donacion por id",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"bienesDeEntrada\": [\r\n        {\r\n            \"descripcion\": \"Algo2\",\r\n             \"subcategoria\": {\r\n                \"nombre\": \"fideos\",\r\n                \"categoria\": {\r\n                    \"nombre\": \"Comida\",\r\n                    \"subcategorias\": [],\r\n                    \"tipo\": \"ALIMENTICIO\"\r\n                }   \r\n            }\r\n        },\r\n        {\r\n            \"descripcion\": \"Algo2\",\r\n             \"subcategoria\": {\r\n                \"nombre\": \"papa\",\r\n                \"categoria\": {\r\n                    \"nombre\": \"Comida\",\r\n                    \"subcategorias\": [],\r\n                    \"tipo\": \"ALIMENTICIO\"\r\n                }   \r\n             }\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/donaciones/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donaciones",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar donacion por id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/donaciones/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "donaciones",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar donacion segmentada a asignada",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/entidadesBeneficiarias/donacionesAsignadas/1/donaciones/2",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "entidadesBeneficiarias",
+                "donacionesAsignadas",
+                "1",
+                "donaciones",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Entidades Beneficiarias",
+      "item": [
+        {
+          "name": "Obtener entidades",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/entidadesBeneficiarias",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "entidadesBeneficiarias"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener entidad por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/entidadesBeneficiarias/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "entidadesBeneficiarias",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar entidad",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"razonSocial\": \"La-carbonilla\",\r\n    \"telefono\": \"+5491123456789\",\r\n    \"correoRepresentante\": \"peacedemonicunicorn@gmail.com\",\r\n    \"necesidades\": [\r\n        {\r\n            \"tipo\": \"EXTRAORDINARIA\",\r\n            \"descripcion\": \"\",\r\n            \"subcategoria\": {\r\n                \"nombre\": \"arroz\",\r\n                \"categoria\": \r\n                {\r\n                    \"id\": 1\r\n                }\r\n            },\r\n            \"cantidadObjetivo\": 2\r\n\r\n        },\r\n        {\r\n            \"tipo\": \"EXTRAORDINARIA\",\r\n            \"descripcion\": \"algo\",\r\n            \"subcategoria\": {\r\n                \"nombre\": \"fideos\",\r\n                \"categoria\": {\r\n                    \"id\": 1\r\n                }\r\n            },\r\n            \"cantidadObjetivo\": 2\r\n        },\r\n        {\r\n            \"tipo\": \"EXTRAORDINARIA\",\r\n            \"descripcion\": \"algo\",\r\n            \"subcategoria\": {\r\n                \"nombre\": \"naranja\",\r\n                \"categoria\": {\r\n                    \"id\": 1\r\n                }\r\n            },\r\n            \"cantidadObjetivo\": 1\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/entidadesBeneficiarias",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "entidadesBeneficiarias"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar entidad",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"razonSocial\": \"La-Beneficiaria\",\r\n    \"necesidadesActuales\": [\r\n        {\r\n            \"tipo\": \"EXTRAORDINARIA\",\r\n            \"descripcion\": \"\",\r\n            \"subcategoria\": {\r\n                \"nombre\": \"arroz\",\r\n                \"categoria\": \r\n                {\r\n                    \"id\": 1\r\n                }\r\n            },\r\n            \"cantidadObjetivo\": 5\r\n\r\n        },\r\n        {\r\n            \"tipo\": \"EXTRAORDINARIA\",\r\n            \"descripcion\": \"algo\",\r\n            \"subcategoria\": {\r\n                \"nombre\": \"fideos\",\r\n                \"categoria\": {\r\n                    \"id\": 1\r\n                }\r\n            },\r\n            \"cantidadObjetivo\": 2\r\n        },\r\n        {\r\n            \"tipo\": \"EXTRAORDINARIA\",\r\n            \"descripcion\": \"algo\",\r\n            \"subcategoria\": {\r\n                \"nombre\": \"naranja\",\r\n                \"categoria\": {\r\n                    \"id\": 1\r\n                }\r\n            },\r\n            \"cantidadObjetivo\": 1\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/entidadesBeneficiarias/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "entidadesBeneficiarias",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar entidad",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/entidadesBeneficiarias/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "entidadesBeneficiarias",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Necesidades",
+      "item": [
+        {
+          "name": "Obtener necesidades",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/necesidades",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "necesidades"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener necesidad por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/necesidades/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "necesidades",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar necesidad",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"tipo\": \"EXTRAORDINARIA\",\r\n    \"descripcion\": \"algo\",\r\n    \"subcategoria\": {\r\n        \"nombre\": \"naranja\",\r\n        \"categoria\": {\r\n            \"id\": 1\r\n        }\r\n    },\r\n    \"cantidadObjetivo\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/entidadesBeneficiarias/1/necesidades",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "entidadesBeneficiarias",
+                "1",
+                "necesidades"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar necesidad por id",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"tipo\": \"EXTRAORDINARIA\",\r\n    \"descripcion\": \"algo\",\r\n    \"subcategoria\": {\r\n        \"nombre\": \"galletitas\",\r\n        \"categoria\": {\r\n            \"id\": 1\r\n        }\r\n    },\r\n    \"cantidadObjetivo\": 2\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/necesidades/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "necesidades",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar necesidad por id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/necesidades/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "necesidades",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "RankingsEntidades",
+      "item": [
+        {
+          "name": "Obtener todos los rankings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/rankings",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "rankings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener ranking de entidades repetidas por donacion",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/rankings/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "rankings",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear rankings",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/rankings",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "rankings"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "NotificacionesDonaciones",
+      "item": [
+        {
+          "name": "Mandar inicio de ruta",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idAsignada\": 1,\r\n    \"idDonantesIncluidos\": [\r\n        1\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/notificaciones/iniciosDeRutas",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "notificaciones",
+                "iniciosDeRutas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Confirmar entrega",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idAsignada\": 1,\r\n    \"idDonantesIncluidos\": [\r\n        1\r\n    ],\r\n    \"nroComprobante\": 1234124521,\r\n    \"idCamionAsignado\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/notificaciones/entregasConfirmadas",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "notificaciones",
+                "entregasConfirmadas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Entrega fallida",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idAsignada\": 1,\r\n    \"idDonantesIncluidos\": [\r\n        1\r\n    ],\r\n    \"justificacion\": \"Fallo\",\r\n    \"sePuedeReplanificar\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/notificaciones/entregasFallidas",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "notificaciones",
+                "entregasFallidas"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": ""
+    }
+  ]
+}
