@@ -100,34 +100,28 @@ public class ServicioDonantes {
 
     @Transactional
     public Donante updateDonante(Long id, Donante updateDonante) {
-        Donante oldDonante = repoDonantes.findById(id).orElse(null);
-        oldDonante.setPersona(updateDonante.getPersona());
-        oldDonante.setUltimaInteraccion(updateDonante.getUltimaInteraccion());
-        oldDonante.setMediosDeContacto(updateDonante.getMediosDeContacto());
-        oldDonante.getDonaciones().forEach(d -> {
+        Donante donante = repoDonantes.findById(id).orElse(null);
+        donante.setPersona(updateDonante.getPersona());
+        donante.setUltimaInteraccion(updateDonante.getUltimaInteraccion());
+        donante.setMediosDeContacto(updateDonante.getMediosDeContacto());
+        donante.getDonaciones().forEach(d -> {
             repoDonaciones.deleteById(d.getId());
         });
-        oldDonante.borrarDonaciones();
-        oldDonante.setDonaciones(updateDonante.getDonaciones());
-        oldDonante.setearRelaciones();
-        oldDonante.getDonaciones().forEach(d -> {
+        donante.borrarDonaciones();
+        donante.setDonaciones(updateDonante.getDonaciones());
+        donante.setearRelaciones();
+        donante.getDonaciones().forEach(d -> {
             d.setearRelaciones();
             repoDonaciones.save(d);
         });
-        setearCategorias(oldDonante);
-        repoDonantes.save(oldDonante);
-        //comunicador.enviarDonanteActualizado(updateDonante, restClientIncentivos);
-        return oldDonante;
+        setearCategorias(donante);
+        //comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
+        return donante;
     }
 
     @Transactional
     public String deletePersona(Long id) {
-        repoDonantes.findByIdWithDonaciones(id).orElse(null).getDonaciones().forEach(d -> {
-            if (d.getDonante().getId().equals(id)) {
-                d.setDonante(null);
-                repoDonaciones.save(d);
-            }
-        });
+        repoDonantes.findByIdWithDonaciones(id).orElse(null).desvincularRelaciones();
         repoDonantes.deleteById(id);
         //comunicador.avisarDonanteEliminado(id, restClientIncentivos);
         return "Donante borrado";

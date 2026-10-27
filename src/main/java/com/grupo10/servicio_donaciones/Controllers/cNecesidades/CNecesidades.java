@@ -4,6 +4,7 @@ package com.grupo10.servicio_donaciones.Controllers.cNecesidades;
 
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.necesidad.Necesidad;
 import com.grupo10.servicio_donaciones.Services.ServiceNecesidades.ServicioNecesidades;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,25 +24,41 @@ public class CNecesidades {
     // READ - Obtener todas las Necesidades
     @GetMapping("")
     public ResponseEntity<List<Necesidad>> getAllNecesidades() {
-        return ResponseEntity.ok(servicioNecesidades.getAllNecesidades());
+        try {
+            return ResponseEntity.ok(servicioNecesidades.getAllNecesidades());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // READ - Obtener una Necesidad  por ID
     @GetMapping("/{idNecesidad}")
     public ResponseEntity<Necesidad> getNecesidadById(@PathVariable Long idNecesidad) {
-        return ResponseEntity.ok(servicioNecesidades.getNecesidadById(idNecesidad));
+        try {
+            return ResponseEntity.ok(servicioNecesidades.getNecesidadById(idNecesidad));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 
     // UPDATE - Actualizar una Necesidad existente de una entidad
     @PutMapping("/{idNecesidad}")
     public ResponseEntity<Necesidad> updateNecesidad(@PathVariable Long idNecesidad, @RequestBody Necesidad updatedNecesidad) {
-        return ResponseEntity.ok(servicioNecesidades.updateNecesidad(idNecesidad, updatedNecesidad));
+        try {
+            return ResponseEntity.ok(servicioNecesidades.updateNecesidad(idNecesidad, updatedNecesidad));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     // DELETE - Eliminar una Necesidad
     @DeleteMapping("/{idNecesidad}")
     public ResponseEntity<String> deleteNecesidad(@PathVariable Long idNecesidad) {
-        return ResponseEntity.ok(servicioNecesidades.deleteNecesidad(idNecesidad));
+        try {
+            return ResponseEntity.ok(servicioNecesidades.deleteNecesidad(idNecesidad));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

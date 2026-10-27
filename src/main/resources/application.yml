@@ -13,7 +13,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
 
-
+diasTolerablesDeVencimiento: ${DIASTOLERABLESDEVENCIMIENTO:14}
 
 server:
   port: ${SERVER_PORT:8080}

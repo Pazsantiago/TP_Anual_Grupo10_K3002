@@ -31,7 +31,6 @@ public class ServicioNecesidades {
     public Necesidad createNecesidad(Long idEntidad, Necesidad necesidad) {
         EntidadBeneficiaria entidad = servicioBeneficiarias.getEntidadById(idEntidad);
         entidad.agregarNecesidadActual(necesidad);
-        repoEntidades.save(entidad);
         return necesidad;
     }
 
@@ -41,7 +40,6 @@ public class ServicioNecesidades {
         EntidadBeneficiaria entidadBeneficiaria = servicioBeneficiarias.getEntidadById(necesidad.getEntidadBeneficiaria().getId());
         necesidad.aplicarActualizacion(updatedNecesidad);
         entidadBeneficiaria.actualizarNecesidad(necesidad);
-        repoEntidades.save(entidadBeneficiaria);
         return necesidad;
     }
 

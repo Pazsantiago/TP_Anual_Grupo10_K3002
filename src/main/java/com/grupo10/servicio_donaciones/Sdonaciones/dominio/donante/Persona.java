@@ -10,7 +10,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -27,6 +26,7 @@ import lombok.Setter;
         )
 })
 @Entity
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Persona {
     @Id
@@ -37,9 +37,6 @@ public class Persona {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Direccion direccion;
 
-    public Persona(Documento documento, Direccion direccion) {
-        this.documento = documento;
-        this.direccion = direccion;
+    public void desvincularRelaciones() {
     }
-
 }

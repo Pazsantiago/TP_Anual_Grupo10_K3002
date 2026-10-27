@@ -2,15 +2,17 @@ package com.grupo10.servicio_donaciones.Sdonaciones.dominio.entidad;
 
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.necesidad.Necesidad;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class EntidadBeneficiaria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,54 +21,51 @@ public class EntidadBeneficiaria {
     private String telefono;
     private String correoRepresentante;
     private String direccion;
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "entidadBeneficiaria", orphanRemoval = true)
-    private List<Necesidad> necesidadesActuales = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "entidadBeneficiaria")
+    private List<Necesidad> necesidades = new ArrayList<>();
 
-    public EntidadBeneficiaria(String razonSocial, String telefono, String correoRepresentante, String direccion, List<Necesidad> necesidadesActuales) {
+    public EntidadBeneficiaria(String razonSocial, String telefono, String correoRepresentante, String direccion, List<Necesidad> necesidades) {
         this.razonSocial = razonSocial;
         this.telefono = telefono;
         this.correoRepresentante = correoRepresentante;
         this.direccion = direccion;
-        setNecesidadesActuales(necesidadesActuales);
+        setNecesidades(necesidades);
     }
 
     public void eliminarNecesidades() {
-        this.necesidadesActuales.clear();
+        this.necesidades.clear();
     }
 
-    public void setNecesidadesActuales(List<Necesidad> necesidades) {
-        this.necesidadesActuales = necesidades;
+    public void setNecesidades(List<Necesidad> necesidades) {
+        this.necesidades = necesidades;
         setearNecesidadesActuales();
     }
 
     public void setearNecesidadesActuales() {
-        getNecesidadesActuales().forEach(n -> n.setEntidadBeneficiaria(this));
+        getNecesidades().forEach(n -> n.setEntidadBeneficiaria(this));
     }
 
     public void agregarNecesidadActual(Necesidad necesidad) {
         necesidad.setEstaSatisfechaConDonacion(false);
-        necesidadesActuales.add(necesidad);
+        necesidades.add(necesidad);
         necesidad.setEntidadBeneficiaria(this);
     }
 
     public void actualizarNecesidad(Necesidad necesidadActualizada) {
-        necesidadesActuales.forEach(n -> {
+        necesidades.forEach(n -> {
             if (n.getId().equals(necesidadActualizada.getId())) {
-                necesidadesActuales.set(getNecesidadesActuales().indexOf(n), necesidadActualizada);
+                necesidades.set(getNecesidades().indexOf(n), necesidadActualizada);
             }
         });
     }
 
     public void eliminarNecesidadActual(Long idNecesidad) {
-        necesidadesActuales.removeIf(n -> n.getId().equals(idNecesidad));
+        necesidades.removeIf(n -> n.getId().equals(idNecesidad));
     }
 
-    public Necesidad obtenerNecesidadPorId(Long idNecesidad) {
-        return necesidadesActuales.stream().filter(e -> e.getId().equals(idNecesidad)).findFirst().orElse(null);
-    }
 
     public List<Necesidad> obtenerNecesidadesHistoricas() {
-        return necesidadesActuales.stream().filter(n -> n.estaSatisfecha()).toList();
+        return necesidades.stream().filter(n -> n.estaSatisfecha()).toList();
     }
 
 }

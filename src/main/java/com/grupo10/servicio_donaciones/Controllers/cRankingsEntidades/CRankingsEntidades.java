@@ -3,6 +3,7 @@ package com.grupo10.servicio_donaciones.Controllers.cRankingsEntidades;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion.RankingEntidadBeneficiaria;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion.SegmentadaRankings;
 import com.grupo10.servicio_donaciones.Services.ServiceAsignacion.ServicioAsignacion;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,6 @@ public class CRankingsEntidades {
     }
 
     public Map<String, Object> aSegmentadaRankingsREST(SegmentadaRankings segmentadaRankings) {
-
         Map<String, Object> dto = new HashMap<>();
         dto.put("idSegmentada", segmentadaRankings.getSegmentada().getId());
         dto.put("ranking", segmentadaRankings.getRankings().stream().map(this::aRankingEntidadREST));
@@ -39,18 +39,29 @@ public class CRankingsEntidades {
 
     @GetMapping("")
     public ResponseEntity<Stream<Map<String, Object>>> obtenerRankings() {
-        return ResponseEntity.ok(servicioAsignacion.obtenerRankings().stream().map(this::aSegmentadaRankingsREST));
+        try {
+            return ResponseEntity.ok(servicioAsignacion.obtenerRankings().stream().map(this::aSegmentadaRankingsREST));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping("/{idDonacion}")
     public ResponseEntity<List<RankingEntidadBeneficiaria>> obtenerEntidadesRepetidas(@PathVariable Long idDonacion) {
-        return ResponseEntity.ok(servicioAsignacion.filtrarEntidades(idDonacion));
+        try {
+            return ResponseEntity.ok(servicioAsignacion.filtrarEntidades(idDonacion));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("")
     public ResponseEntity<String> crearRankings() {
-        servicioAsignacion.generarRanking();
-        return ResponseEntity.ok("Rankings creados exitosamente");
+        try {
+            return ResponseEntity.ok(servicioAsignacion.generarRanking());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }

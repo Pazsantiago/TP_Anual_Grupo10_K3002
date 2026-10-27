@@ -69,7 +69,6 @@ public class ServicioDonacion {
         donacion.setearRelaciones();
         repoDonaciones.save(donacion);
         servicioDonantes.setearCategorias(donante);
-        repoDonantes.save(donante);
         //comunicador.enviarDonante(donante, restClientIncentivos);
         return donacion;
 
@@ -77,28 +76,31 @@ public class ServicioDonacion {
 
     @Transactional
     public Donacion updateDonacion(Long idDonacion, Donacion updateDonacion) {
-        Donacion oldDonacion = repoDonaciones.findById(idDonacion).orElse(null);
-        Donante donante = repoDonantes.findById(oldDonacion.getDonante().getId()).orElse(null);
+        Donacion donacion = repoDonaciones.findById(idDonacion).orElse(null);
+        Donante donante = repoDonantes.findById(donacion.getDonante().getId()).orElse(null);
 
-        oldDonacion.eliminarSegmentadas();
-        oldDonacion.getDonacionesSegmentadas()
-                .addAll(updateDonacion.getDonacionesSegmentadas());
-        oldDonacion.setDonante(updateDonacion.getDonante());
-        oldDonacion.setDescripcionGeneral(updateDonacion.getDescripcionGeneral());
-        oldDonacion.setFechaRegistro(updateDonacion.getFechaRegistro());
-        oldDonacion.setBienesDeEntrada(updateDonacion.getBienesDeEntrada());
-        donante.actualizarDonacion(oldDonacion);
-        repoDonaciones.save(oldDonacion);
+        donacion.eliminarSegmentadas();
+        donacion.setDonante(updateDonacion.getDonante());
+        donacion.setDescripcionGeneral(updateDonacion.getDescripcionGeneral());
+        donacion.setFechaRegistro(updateDonacion.getFechaRegistro());
+        donacion.setBienesDeEntrada(updateDonacion.getBienesDeEntrada());
+        if (donante != updateDonacion.getDonante()) {
+            donante = updateDonacion.getDonante();
+        }
+        donante.actualizarDonacion(donacion);
+        donacion.setearRelaciones();
+        repoDonaciones.save(donacion);
         servicioDonantes.setearCategorias(donante);
-        repoDonantes.save(donante);
         //comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
-        return oldDonacion;
+        return donacion;
     }
 
     @Transactional
     public String deleteDonacion(Long idDonacion) {
-        Donante donante = repoDonaciones.findById(idDonacion).map(d -> d.getDonante()).orElse(null);
-        donante.eliminarDonacion(idDonacion);
+        Donacion donacion = repoDonaciones.findById(idDonacion).orElse(null);
+        Donante donante = donacion.getDonante();
+        donante.eliminarDonacion(donacion.getId());
+        donacion.getDonacionesSegmentadas().forEach(DonacionSegmentada::desvincularAsignadas);
         repoDonaciones.deleteById(idDonacion);
         comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return "Donacion borrada";

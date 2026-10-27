@@ -12,20 +12,19 @@ import java.util.Date;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class AsignacionCompleta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer nroComprobante;
     private Long idCamionAsignado;
-    private Date fecha;
+    private Date fecha = new Date();
 
     public AsignacionCompleta(Integer nroComprobante, Long idCamionAsignado) {
         this.nroComprobante = nroComprobante;
         this.idCamionAsignado = idCamionAsignado;
-        this.fecha = new Date();
     }
 }
 

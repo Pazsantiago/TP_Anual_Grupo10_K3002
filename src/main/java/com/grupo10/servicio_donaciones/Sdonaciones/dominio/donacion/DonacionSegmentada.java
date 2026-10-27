@@ -2,6 +2,7 @@ package com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.bien.Bien;
+import com.grupo10.servicio_donaciones.Sdonaciones.dominio.bien.BienPerecedero;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.categoria.Subcategoria;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,8 +17,8 @@ import java.util.List;
 @Setter
 @Getter
 @ToString(exclude = {"donacionInicial", "donacionesAsignadas"})
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class DonacionSegmentada {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,31 +30,30 @@ public class DonacionSegmentada {
     private Bien bien;
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private EstadoDonacion estadoActual;
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacionSegmentada")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacionSegmentada")
     @SQLRestriction("es_historico = true")
     private List<EstadoDonacion> donacionEstadosHistorico = new ArrayList<>();
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Subcategoria subcategoria;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
-            mappedBy = "donacionSegmentada",
-            orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            mappedBy = "donacionSegmentada")
     private List<BienAsignado> bienesAsignados = new ArrayList<>();
 
     @ManyToMany(mappedBy = "donacionesSegmentadas", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     private List<DonacionAsignada> donacionesAsignadas = new ArrayList<>();
 
+    public Boolean estaVencida(Integer diasTolerablesDeVencimiento) {
+        return (bien instanceof BienPerecedero) && ((BienPerecedero) this.bien).estaVencido(diasTolerablesDeVencimiento);
+    }
 
-    public DonacionSegmentada(Donacion donacionInicial, Bien bien, EstadoDonacion estadoActual, List<EstadoDonacion> donacionEstadosHistorico, Subcategoria subcategoria, List<BienAsignado> bienesAsignados) {
-        this.donacionInicial = donacionInicial;
-        this.bien = bien;
-        this.estadoActual = estadoActual;
-        setDonacionEstadosHistorico(donacionEstadosHistorico);
-        setBienesAsignados(bienesAsignados);
-        setDonacionesAsignadas(donacionesAsignadas);
-        this.subcategoria = subcategoria;
-        this.bienesAsignados = bienesAsignados;
+    public void desvincularAsignadas() {
+        this.donacionesAsignadas.forEach(a -> a.eliminarSegmentada(this.getId()));
+    }
+
+    public void eliminarAsignada(Long idAsignada) {
+        this.donacionesAsignadas.removeIf(a -> a.getId().equals(idAsignada));
     }
 
     public void eliminarBienesAsignados(Long idNecesidad) {

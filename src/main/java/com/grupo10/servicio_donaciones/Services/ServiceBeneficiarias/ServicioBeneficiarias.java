@@ -32,7 +32,7 @@ public class ServicioBeneficiarias {
 
     public void setearCategorias(EntidadBeneficiaria entidad) {
         if (entidad != null) {
-            entidad.getNecesidadesActuales().forEach(n -> {
+            entidad.getNecesidades().forEach(n -> {
                 Categoria categoria = repoCategorias.findById(n.getSubcategoria().getCategoria().getId()).orElse(null);
                 n.getSubcategoria().setCategoria(categoria);
             });
@@ -61,19 +61,18 @@ public class ServicioBeneficiarias {
 
     @Transactional
     public EntidadBeneficiaria updateEntidad(Long idEntidad, EntidadBeneficiaria updatedEntidad) {
-        EntidadBeneficiaria antigua = repoBeneficiarias.findById(idEntidad).orElse(null);
-        antigua.eliminarNecesidades();
-        antigua.getNecesidadesActuales().addAll(
-                updatedEntidad.getNecesidadesActuales()
+        EntidadBeneficiaria entidad = repoBeneficiarias.findById(idEntidad).orElse(null);
+        entidad.eliminarNecesidades();
+        entidad.getNecesidades().addAll(
+                updatedEntidad.getNecesidades()
         );
-        antigua.setearNecesidadesActuales();
-        antigua.setDireccion(updatedEntidad.getDireccion());
-        antigua.setTelefono(updatedEntidad.getTelefono());
-        antigua.setRazonSocial(updatedEntidad.getRazonSocial());
-        antigua.setCorreoRepresentante(updatedEntidad.getCorreoRepresentante());
-        setearCategorias(antigua);
-        repoBeneficiarias.save(antigua);
-        return antigua;
+        entidad.setearNecesidadesActuales();
+        entidad.setDireccion(updatedEntidad.getDireccion());
+        entidad.setTelefono(updatedEntidad.getTelefono());
+        entidad.setRazonSocial(updatedEntidad.getRazonSocial());
+        entidad.setCorreoRepresentante(updatedEntidad.getCorreoRepresentante());
+        setearCategorias(entidad);
+        return entidad;
     }
 
     @Transactional
@@ -87,7 +86,7 @@ public class ServicioBeneficiarias {
         Integer cantidadPorEntregar = Math.min(donacion.getBien().getCantidadActual(), necesidad.getCantidadObjetivo());
         necesidad.recibirBienes(cantidadPorEntregar);
         donacion.restarBienesAsignados(cantidadPorEntregar);
-        donacion.agregarCantidadDeBienDonado(new BienAsignado(null, cantidadPorEntregar, necesidad.getId(), donacion));
+        donacion.agregarCantidadDeBienDonado(new BienAsignado(cantidadPorEntregar, necesidad.getId(), donacion));
     }
 
 

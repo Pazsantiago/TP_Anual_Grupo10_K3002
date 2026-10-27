@@ -4,12 +4,13 @@ import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 public class DonanteDTO {
     private Long id;
-    private List<DonacionDTO> donaciones;
+    private List<DonacionDTO> donaciones = new ArrayList<>();
     private MedioContacto contactoPredeterminado;
 }

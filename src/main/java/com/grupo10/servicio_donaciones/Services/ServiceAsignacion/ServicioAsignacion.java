@@ -31,7 +31,7 @@ public class ServicioAsignacion {
 
     @Transactional
     @Scheduled(cron = "${horario-baja-carga.cron}")
-    public void generarRanking() {
+    public String generarRanking() {
         if (!this.rankings.isEmpty()) {
             this.rankings.clear();
         }
@@ -42,6 +42,7 @@ public class ServicioAsignacion {
             });
             rankings.add(new SegmentadaRankings(donacionSegmentada, rankAux));
         });
+        return "Rankings creados exitosamente";
     }
 
 

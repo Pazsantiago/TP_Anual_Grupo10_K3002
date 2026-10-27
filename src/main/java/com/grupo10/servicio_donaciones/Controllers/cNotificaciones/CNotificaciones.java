@@ -22,20 +22,29 @@ public class CNotificaciones {
 
     @PostMapping("/iniciosDeRutas")
     public ResponseEntity<String> comenzarRuta(@RequestBody MensajeInicioDeRuta mensajeInicioDeRuta) {
-        servicioDonacionAsignada.comenzarRuta(mensajeInicioDeRuta);
-        return ResponseEntity.ok("OK");
+        // try {
+        return ResponseEntity.ok(servicioDonacionAsignada.comenzarRuta(mensajeInicioDeRuta));
+        // } catch (Exception e) {
+        //  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        //       }
     }
 
     @PostMapping("/entregasConfirmadas")
     public ResponseEntity<String> updateEstadoDonacion(@RequestBody MensajeConfirmacionEntrega mensajeConfirmacionEntrega) {
-        servicioDonacionAsignada.entregaConfirmada(mensajeConfirmacionEntrega);
-        return ResponseEntity.ok("OK");
+        // try {
+        return ResponseEntity.ok(servicioDonacionAsignada.entregaConfirmada(mensajeConfirmacionEntrega));
+        // } catch (Exception e) {
+        //  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        //       }
     }
 
     @PostMapping("/entregasFallidas")
     public ResponseEntity<String> updateEstadoDonacion(@RequestBody MensajeEntregaFallida mensajeEntregaFallida) {
-        servicioDonacionAsignada.entregaFallida(mensajeEntregaFallida);
-        return ResponseEntity.ok("OK");
+        // try {
+        return ResponseEntity.ok(servicioDonacionAsignada.entregaFallida(mensajeEntregaFallida));
+        // } catch (Exception e) {
+        //  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        //       }
     }
 
 }

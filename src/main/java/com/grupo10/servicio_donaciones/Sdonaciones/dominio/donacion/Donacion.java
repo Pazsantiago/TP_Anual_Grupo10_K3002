@@ -17,31 +17,23 @@ import java.util.List;
 @Setter
 @Getter
 @ToString(exclude = {"donante"})
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class Donacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // private final String administrador;
     private String descripcionGeneral;
     @ManyToOne()
     @JsonIgnore
     private Donante donante;
 
-    private Date fechaRegistro;
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacionInicial", orphanRemoval = true)
-    private List<DonacionSegmentada> donacionesSegmentadas;
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacion")
-    private List<Bien> bienesDeEntrada;
+    private Date fechaRegistro = new Date();
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacionInicial")
+    private List<DonacionSegmentada> donacionesSegmentadas = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacion")
+    private List<Bien> bienesDeEntrada = new ArrayList<>();
 
-    public Donacion(String descripcionGeneral, Donante donante, List<DonacionSegmentada> donacionesSegmentadas, List<Bien> bienesDeEntrada) {
-        this.descripcionGeneral = descripcionGeneral;
-        this.donante = donante;
-        this.fechaRegistro = new Date();
-        setDonacionesSegmentadas(donacionesSegmentadas);
-        setBienesDeEntrada(bienesDeEntrada);
-    }
 
     public void eliminarSegmentadas() {
         this.donacionesSegmentadas.clear();

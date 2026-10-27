@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -13,5 +14,6 @@ import java.util.List;
 @Getter
 public class MensajeInicioDeRuta {
     private Long idAsignada;
-    private List<Long> idDonantesIncluidos;
+    private List<Long> idDonantesIncluidos = new ArrayList<>();
+    ;
 }

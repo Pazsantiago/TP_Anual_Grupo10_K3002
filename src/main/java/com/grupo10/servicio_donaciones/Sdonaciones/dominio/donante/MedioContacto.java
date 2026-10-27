@@ -2,14 +2,16 @@ package com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
 @ToString(exclude = {"donante"})
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class MedioContacto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

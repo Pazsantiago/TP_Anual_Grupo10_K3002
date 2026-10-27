@@ -15,14 +15,14 @@ import java.util.List;
 @Setter
 @Getter
 @ToString(exclude = {"subcategorias"})
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "categoria")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "categoria")
     @JsonIgnore
     private List<Subcategoria> subcategorias = new ArrayList<>();
     @Enumerated(EnumType.STRING)
@@ -36,6 +36,6 @@ public class Categoria {
     public void agregarSubCategoria(Subcategoria subcategoria) {
         this.subcategorias.add(subcategoria);
     }
-    
+
 }
 

@@ -5,28 +5,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class PersonaHumana extends Persona {
     private Long id;
     private String nombre;
     private Integer edad;
-
-    public PersonaHumana(Documento documento, Direccion direccion, String nombre, Integer edad, Genero genero) {
-        super(documento, direccion);
-        this.nombre = nombre;
-        this.edad = edad;
-        this.genero = genero;
-        this.personaJuridica = null;
-    }
-
     @Enumerated(EnumType.STRING)
     private Genero genero;
     @ManyToOne()
     @JsonIgnore
-    private PersonaJuridica personaJuridica;
+    private PersonaJuridica personaJuridica = null;
+
 }

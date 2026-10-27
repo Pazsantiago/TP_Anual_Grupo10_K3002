@@ -13,8 +13,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class Periodo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

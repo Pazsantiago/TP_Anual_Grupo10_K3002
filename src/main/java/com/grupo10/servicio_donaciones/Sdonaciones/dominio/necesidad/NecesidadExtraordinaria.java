@@ -9,8 +9,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor
 public class NecesidadExtraordinaria extends Necesidad {
 
 

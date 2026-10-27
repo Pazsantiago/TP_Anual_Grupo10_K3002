@@ -11,10 +11,10 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class NecesidadRecurrente extends Necesidad {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Periodo periodo;

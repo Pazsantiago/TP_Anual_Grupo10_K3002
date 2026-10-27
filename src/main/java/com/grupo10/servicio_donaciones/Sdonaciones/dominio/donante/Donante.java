@@ -2,34 +2,35 @@ package com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante;
 
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.Donacion;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class Donante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany(mappedBy = "donante", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Donacion> donaciones = new ArrayList<>();
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "id_persona")
     private Persona persona;
     @OneToMany(mappedBy = "donante", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<MedioContacto> mediosDeContacto = new ArrayList<>();
-    private LocalDateTime ultimaInteraccion;
+    private LocalDateTime ultimaInteraccion = LocalDateTime.now();
 
-    public Donante(List<Donacion> donaciones, Persona persona, List<MedioContacto> mediosDeContacto) {
-        this.persona = persona;
-        setDonaciones(donaciones);
-        setMediosDeContacto(mediosDeContacto);
-        this.ultimaInteraccion = LocalDateTime.now();
+
+    public void desvincularRelaciones() {
+        donaciones.forEach(d -> d.setDonante(null));
+        persona.desvincularRelaciones();
     }
 
     public void borrarDonaciones() {

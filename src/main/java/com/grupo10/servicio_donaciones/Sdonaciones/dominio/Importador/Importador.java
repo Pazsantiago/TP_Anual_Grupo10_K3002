@@ -37,22 +37,33 @@ public class Importador {
             String[] fila;
             List<Donante> donantes = new ArrayList<>();
             while ((fila = csvReader.readNext()) != null) {
+                Boolean repetido = false;
                 if (first) {
                     first = false;
                     continue;
                 }
-                donantes.add(controlarDonanteEnLista(fila));
+                //donantes.add(controlarDonanteEnLista(fila));
 //                Con esto busca siempre si se repite pero tarda mucho.
-//                String correo = fila[4];
-//
-//                Donante donante = controlarDonanteEnLista(fila);
-//
+                String correo = fila[4];
+
+                Donante donante = setearDonante(fila);
+
+                for (Donante d : donantes) {
+                    if (d.getMediosDeContacto().stream().anyMatch(m -> m.getCorreoElectronico().equalsIgnoreCase(correo))) {
+                        donantes.set(donantes.indexOf(d), donante);
+                        repetido = true;
+                        break;
+                    }
+                }
+                if (!repetido) {
+                    donantes.add(donante);
+                }
+
 //                donantes.removeIf(d ->
 //                        d.getMediosDeContacto().stream()
 //                                .anyMatch(m -> m.getCorreoElectronico().equalsIgnoreCase(correo))
 //                );
-//
-//                donantes.add(donante);
+
             }
             repositorioDonadores.saveAll(donantes);
             return true;
@@ -107,12 +118,9 @@ public class Importador {
             nuevo.setDocumento(doc);
             donante.setPersona(nuevo);
         } else {
-            PersonaJuridica nuevo = new PersonaJuridica();
-            nuevo.setRazonSocial(fila[3]);
-            nuevo.setDocumento(doc);
+            PersonaJuridica nuevo = new PersonaJuridica(doc, null, fila[3], null, null, new ArrayList<>());
             donante.setPersona(nuevo);
         }
-
         return donante;
     }
 

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -12,7 +13,8 @@ import java.util.List;
 @Setter
 public class SegmentadaRankings {
     private DonacionSegmentada segmentada;
-    private List<RankingEntidadBeneficiaria> rankings;
+    private List<RankingEntidadBeneficiaria> rankings = new ArrayList<>();
+    ;
 
     public SegmentadaRankings(DonacionSegmentada segmentada, List<RankingEntidadBeneficiaria> rankings) {
         this.segmentada = segmentada;

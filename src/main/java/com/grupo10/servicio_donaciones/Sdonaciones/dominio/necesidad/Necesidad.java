@@ -15,7 +15,6 @@ import java.time.LocalDate;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @ToString(exclude = {"entidadBeneficiaria"})
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -33,6 +32,7 @@ import java.time.LocalDate;
         )
 })
 @Entity
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Necesidad {
     @Id
