@@ -21,7 +21,7 @@ public class Comunicador {
         restClient
                 .post()
                 .uri("/mensajes")
-                .body(new NotificacionRequestDTO(tipoNotificacion, "", "", new DestinatarioRequestDTO(nombre, telefono, correo, telefono), tipoEvento.toString()))
+                .body(new NotificacionRequestDTO(tipoNotificacion, "Prueba", "Notificacion de evento", new DestinatarioRequestDTO(nombre, telefono, correo, telefono), tipoEvento.toString()))
                 .retrieve()
                 .toBodilessEntity();
     }
