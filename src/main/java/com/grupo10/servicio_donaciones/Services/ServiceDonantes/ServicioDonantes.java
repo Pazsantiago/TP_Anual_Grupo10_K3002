@@ -3,6 +3,8 @@ package com.grupo10.servicio_donaciones.Services.ServiceDonantes;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.Importador.Importador;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.categoria.Categoria;
 import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.Donante;
+import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.PersonaHumana;
+import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.TipoEvento;
 import com.grupo10.servicio_donaciones.comunicador.Comunicador;
 import com.grupo10.servicio_donaciones.repositorios.RepoCategorias;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonaciones;
@@ -29,6 +31,7 @@ public class ServicioDonantes {
     private final RestClient restClientIncentivos;
     @Qualifier("restClientMensajes")
     private final RestClient restClientMensajes;
+
     private final Comunicador comunicador;
 
     public List<Donante> getAllPersonas() {
@@ -59,10 +62,12 @@ public class ServicioDonantes {
         LocalDateTime limite = LocalDateTime.now().minusDays(20);
         repoDonantes.findAll().forEach(donante -> {
             if (donante.getUltimaInteraccion().isBefore(limite)) {
-                //comunicador.comunicarMensaje(donante.obtenerContactoPredeterminado().getCorreoElectronico(),
-//                        donante.obtenerContactoPredeterminado().getTipo(),
-//                        donante.obtenerContactoPredeterminado().getTelefono(),
-//                        TipoEvento.DONANTE_INACTIVO, restClientMensajes);
+                comunicador.comunicarMensaje(
+                        ((PersonaHumana) donante.getPersona()).getNombre(),
+                        donante.obtenerContactoPredeterminado().getCorreoElectronico(),
+                        donante.obtenerContactoPredeterminado().getTelefono(),
+                        donante.obtenerContactoPredeterminado().getTipo(),
+                        TipoEvento.DONANTE_INACTIVO, restClientMensajes);
             }
         });
     }

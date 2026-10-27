@@ -14,7 +14,6 @@ import java.util.List;
 public class MensajeConfirmacionEntrega {
     private Long idAsignada;
     private List<Long> idDonantesIncluidos = new ArrayList<>();
-    ;
     private Integer nroComprobante;
     private Date fecha = new Date();
     private Long idCamionAsignado;

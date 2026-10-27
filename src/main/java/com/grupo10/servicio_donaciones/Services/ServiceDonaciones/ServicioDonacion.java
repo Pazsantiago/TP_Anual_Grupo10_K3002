@@ -69,7 +69,7 @@ public class ServicioDonacion {
         donacion.setearRelaciones();
         repoDonaciones.save(donacion);
         servicioDonantes.setearCategorias(donante);
-        //comunicador.enviarDonante(donante, restClientIncentivos);
+        comunicador.enviarDonante(donante, restClientIncentivos);
         return donacion;
 
     }
@@ -91,7 +91,7 @@ public class ServicioDonacion {
         donacion.setearRelaciones();
         repoDonaciones.save(donacion);
         servicioDonantes.setearCategorias(donante);
-        //comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
+        comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return donacion;
     }
 

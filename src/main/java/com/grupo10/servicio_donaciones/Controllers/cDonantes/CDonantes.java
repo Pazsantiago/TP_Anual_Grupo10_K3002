@@ -71,11 +71,11 @@ public class CDonantes {
     // Import
     @PostMapping("/importador")
     public ResponseEntity<String> importarCSV(@RequestParam String rutaArchivo) {
-        //try {
-        return ResponseEntity.ok(servicioDonantes.importarCSV(rutaArchivo));
-        //} catch (Exception e) {
-        //    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        //}
+        try {
+            return ResponseEntity.ok(servicioDonantes.importarCSV(rutaArchivo));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 

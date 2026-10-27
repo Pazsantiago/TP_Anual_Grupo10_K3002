@@ -15,5 +15,4 @@ import java.util.List;
 public class MensajeInicioDeRuta {
     private Long idAsignada;
     private List<Long> idDonantesIncluidos = new ArrayList<>();
-    ;
 }
