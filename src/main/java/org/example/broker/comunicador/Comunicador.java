@@ -1,6 +1,9 @@
 package org.example.broker.comunicador;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.example.broker.dominio.donacion.DonacionAsignadaDTO;
 import org.example.broker.dominio.mensajes.MensajeConfirmacionEntrega;
+import org.example.broker.dominio.mensajes.MensajeConfirmacionIncentivos;
 import org.example.broker.dominio.mensajes.MensajeEntregaFallida;
 import org.example.broker.dominio.mensajes.MensajeInicioDeRuta;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,26 +17,20 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
+@Data
+@RequiredArgsConstructor
 public class Comunicador {
+    @Qualifier("restClientDonaciones")
     private final RestClient restClientDonaciones;
+    @Qualifier("restClientIncentivos")
     private final RestClient restClientIncentivos;
+    @Qualifier("restClientLogistica")
     private final RestClient restClientLogistica;
+    @Value("${conexiones.servicio-logistica-online}")
     private String urlLogistica;
-    private final String urlLogisticaLocal;
+    @Value("${conexiones.servicio-logistica-local}")
+    private String urlLogisticaLocal;
 
-    public Comunicador(
-            @Qualifier("restClientDonaciones") RestClient restClientDonaciones,
-            @Qualifier("restClientIncentivos") RestClient restClientIncentivos,
-            @Qualifier("restClientLogistica") RestClient restClientLogistica,
-            @Value("${conexiones.servicio-logistica-online}") String urlLogistica,
-            @Value("${conexiones.servicio-logistica-local}") String urlLogisticaLocal
-    ) {
-        this.restClientDonaciones = restClientDonaciones;
-        this.restClientIncentivos = restClientIncentivos;
-        this.restClientLogistica = restClientLogistica;
-        this.urlLogistica = urlLogistica;
-        this.urlLogisticaLocal = urlLogisticaLocal;
-    }
 
     @EventListener(ApplicationReadyEvent.class)
     public void iniciar() {
@@ -81,6 +78,17 @@ public class Comunicador {
     }
     public void enviarEntregaRealizada(MensajeConfirmacionEntrega mensaje) {
         Integer result = this.restClientDonaciones
+                .post()
+                .uri("/entregasConfirmadas")
+                .body(mensaje)
+                .retrieve()
+                .body(Integer.class);
+        if (result != 200) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    public void comunicarEntregaIncentivos(MensajeConfirmacionIncentivos mensaje) {
+        Integer result = this.restClientIncentivos
                 .post()
                 .uri("/entregasConfirmadas")
                 .body(mensaje)

@@ -15,5 +15,6 @@ public class DonacionAsignadaDTO {
     private Long idAsignada;
     private Long idEntidad;
     private List<Long> idDonantes;
+    private List<Long> idSegmentadas;
     private String direccionEntidad;
 }
