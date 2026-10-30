@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 @RequestMapping("/api/healthCheck")
 public class healthCheckController {
-    
+
     @GetMapping("")
     public ResponseEntity<Void> healthCheck() {
         return ResponseEntity.ok().build();

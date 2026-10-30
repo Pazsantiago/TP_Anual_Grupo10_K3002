@@ -1,11 +1,21 @@
-# Imagen base con Java
+FROM maven:3.8.8-eclipse-temurin-17 AS build
+WORKDIR /app
+
+
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+
 FROM eclipse-temurin:17-jdk
+WORKDIR /app
 
-# Copiar el JAR generado por Maven
-COPY target/Logistica-0.0.1-SNAPSHOT.jar app.jar
 
-# Exponer el puerto de tu aplicación
+COPY --from=build /app/target/*.jar app.jar
+
+
 EXPOSE 8081
 
-# Comando para ejecutar la app
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
