@@ -21,7 +21,7 @@ public class BultoController {
     }
 
     // Listar todos los bultos pendientes
-    @GetMapping@GetMapping("/pendientes")
+    @GetMapping("/pendientes")
     public List<Bulto> listarBultos() {
         return bultoService.obtenerBultosPendientes();
     }

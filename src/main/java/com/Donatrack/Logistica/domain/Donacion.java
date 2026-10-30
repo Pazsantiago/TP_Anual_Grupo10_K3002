@@ -1,6 +1,11 @@
 package com.Donatrack.Logistica.domain;
 
-import jakarta.persistence.Entity;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.ArrayList;
+import java.util.List;
+
+/*import jakarta.persistence.Entity;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
@@ -10,30 +15,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
-import java.util.List;
+import java.util.List; */
 
 @Document(collection = "donaciones")
 public class Donacion {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idDonacion;
+    private String idDonacion;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Bulto> bultos;
-
-    @Embedded
+    private List<Bulto> bultos = new ArrayList<>();
     private Direccion direccion;
-
     private String destinatario;
-
-    @Enumerated(EnumType.STRING)
     private EstadoEntrega estadoDonacion;
 
-    public Donacion() {
-    }
+    public Donacion() {}
 
-    public Donacion(Long idDonacion, List<Bulto> bultos, Direccion direccion, String destinatario, EstadoEntrega estadoDonacion) {
+    public Donacion(String idDonacion, List<Bulto> bultos, Direccion direccion,
+                    String destinatario, EstadoEntrega estadoDonacion) {
         this.idDonacion = idDonacion;
         this.bultos = bultos;
         this.direccion = direccion;
@@ -41,19 +38,14 @@ public class Donacion {
         this.estadoDonacion = estadoDonacion;
     }
 
-    // Getters y Setters
-    public Long getIdDonacion() { return idDonacion; }
-    public void setIdDonacion(Long idDonacion) { this.idDonacion = idDonacion; }
-
+    public String getIdDonacion() { return idDonacion; }
+    public void setIdDonacion(String idDonacion) { this.idDonacion = idDonacion; }
     public List<Bulto> getBultos() { return bultos; }
     public void setBultos(List<Bulto> bultos) { this.bultos = bultos; }
-
     public Direccion getDireccion() { return direccion; }
     public void setDireccion(Direccion direccion) { this.direccion = direccion; }
-
     public String getDestinatario() { return destinatario; }
     public void setDestinatario(String destinatario) { this.destinatario = destinatario; }
-
     public EstadoEntrega getEstadoDonacion() { return estadoDonacion; }
-    public void setEstadoDonacion(EstadoEntrega estadoDonacion) { this.estadoDonacion = estadoDonacion; }
+    public void setEstadoDonacion(EstadoEntrega e) { this.estadoDonacion = e; }
 }
