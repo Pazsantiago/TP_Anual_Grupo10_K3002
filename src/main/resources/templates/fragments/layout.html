@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:fragment="head(titulo)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${titulo} + ' - DonaTrack'">DonaTrack</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+  <script th:src="@{/js/app.js}" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#contenido">Ir al contenido</a>
+
+  <header class="topbar" th:fragment="header">
+    <nav class="topbar__inner" aria-label="Principal">
+      <a class="topbar__brand" th:href="@{/notificaciones}">DonaTrack</a>
+      <a class="nav-link" th:href="@{/notificaciones}">Notificaciones</a>
+    </nav>
+  </header>
+
+  <!-- Avisos: éxito (flash tras redirect) y error del servicio -->
+  <div th:fragment="mensajes">
+    <p class="banner banner--ok" role="status" th:if="${exito}" th:text="${exito}"></p>
+    <p class="banner banner--error" role="alert" th:if="${errorServicio}" th:text="${errorServicio}"></p>
+  </div>
+</body>
+</html>

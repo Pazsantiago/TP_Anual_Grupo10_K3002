@@ -2,23 +2,21 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile name="Maven default annotation processors profile" enabled="true">
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Annotation profile for donatrack-frontend" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="TP_Anual_Grupo10_K3002" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.48/lombok-1.18.48.jar" />
+        </processorPath>
+        <module name="donatrack-frontend" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Servicio-Donaciones" target="21" />
-      <module name="Servicio-Incentivos" target="25" />
-      <module name="Servicio-Notificaciones" target="21" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Servicio-Notificaciones" options="-parameters" />
-      <module name="TP_Anual_Grupo10_K3002" options="-parameters" />
+      <module name="donatrack-frontend" options="-parameters" />
     </option>
   </component>
 </project>

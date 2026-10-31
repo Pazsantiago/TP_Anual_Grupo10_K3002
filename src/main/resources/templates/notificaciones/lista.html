@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Notificaciones')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<main id="contenido">
+  <div class="page-head">
+    <h1>Notificaciones</h1>
+    <a class="btn" th:href="@{/notificaciones/nueva}">Enviar notificación</a>
+  </div>
+
+  <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+  <section class="card" aria-labelledby="titulo-lista">
+
+    <div class="empty" th:if="${#lists.isEmpty(notificaciones)}">
+      <p th:unless="${errorServicio}">Todavía no se envió ninguna notificación.</p>
+      <p th:if="${errorServicio}">No pudimos cargar el listado.</p>
+      <a class="btn btn--secondary" th:href="@{/notificaciones/nueva}">Enviar la primera</a>
+    </div>
+
+    <div class="table-wrap" th:unless="${#lists.isEmpty(notificaciones)}">
+      <table>
+        <caption th:text="${#lists.size(notificaciones)} + ' notificaciones'">Notificaciones</caption>
+        <thead>
+          <tr>
+            <th scope="col">Destinatario</th>
+            <th scope="col">Medio</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Asunto y mensaje</th>
+            <th scope="col">Creada</th>
+            <th scope="col">Enviada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="n : ${notificaciones}">
+            <td th:text="${n.destinatario}">Ana Pérez</td>
+            <td th:text="${n.medioNotificacion}">EMAIL</td>
+            <td><span class="badge" th:text="${n.estadoNotificacion}">ENVIADA</span></td>
+            <td>
+              <strong th:if="${n.asunto}" th:text="${n.asunto}">Asunto</strong>
+              <div th:text="${n.cuerpo}">Cuerpo</div>
+            </td>
+            <td th:text="${#temporals.format(n.fechaCreacion, 'dd/MM/yyyy HH:mm')}">01/01/2027 10:00</td>
+            <td>
+              <span th:if="${n.fechaEnvio}" th:text="${#temporals.format(n.fechaEnvio, 'dd/MM/yyyy HH:mm')}">01/01/2027 10:01</span>
+              <span th:unless="${n.fechaEnvio}">Sin enviar</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</body>
+</html>

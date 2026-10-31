@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Enviar notificación')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header}"></header>
+
+<main id="contenido">
+  <div class="page-head">
+    <h1>Enviar notificación</h1>
+  </div>
+
+  <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+  <section class="card">
+    <form th:action="@{/notificaciones/nueva}" th:object="${form}" method="post" novalidate>
+
+      <fieldset>
+        <legend>Destinatario</legend>
+
+        <div>
+          <label for="nombre">Nombre</label>
+          <input id="nombre" type="text" th:field="*{nombre}" placeholder="Ana Pérez" autocomplete="name"
+                 th:attr="aria-describedby=${#fields.hasErrors('nombre')} ? 'nombre-error'">
+          <p class="field-error" id="nombre-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
+        </div>
+
+        <div>
+          <label for="email">Correo electrónico <span class="hint">(para envíos por correo)</span></label>
+          <input id="email" type="email" th:field="*{email}" placeholder="ana@mail.com" autocomplete="email">
+        </div>
+
+        <div>
+          <label for="telefono">Teléfono <span class="hint">(para SMS)</span></label>
+          <input id="telefono" type="tel" th:field="*{telefono}" placeholder="+54 11 5555-5555" autocomplete="tel">
+        </div>
+
+        <div>
+          <label for="whatsapp">WhatsApp <span class="hint">(para WhatsApp)</span></label>
+          <input id="whatsapp" type="tel" th:field="*{whatsapp}" placeholder="+54 11 5555-5555">
+        </div>
+      </fieldset>
+
+      <div>
+        <label for="medio">Medio de envío</label>
+        <select id="medio" th:field="*{medio}"
+                th:attr="aria-describedby=${#fields.hasErrors('medio')} ? 'medio-error'">
+          <option value="">Elegí un medio</option>
+          <option th:each="m : ${medios}" th:value="${m.name()}" th:text="${m.etiqueta}">Correo electrónico</option>
+        </select>
+        <p class="field-error" id="medio-error" th:if="${#fields.hasErrors('medio')}" th:errors="*{medio}"></p>
+      </div>
+
+      <div>
+        <label for="asunto">Asunto <span class="hint">(opcional)</span></label>
+        <input id="asunto" type="text" th:field="*{asunto}" placeholder="Tu donación fue asignada">
+      </div>
+
+      <div>
+        <label for="cuerpo">Mensaje</label>
+        <textarea id="cuerpo" th:field="*{cuerpo}" placeholder="Escribí el texto que va a recibir la persona"
+                  th:attr="aria-describedby=${#fields.hasErrors('cuerpo')} ? 'cuerpo-error'"></textarea>
+        <p class="field-error" id="cuerpo-error" th:if="${#fields.hasErrors('cuerpo')}" th:errors="*{cuerpo}"></p>
+      </div>
+
+      <div class="actions">
+        <button class="btn" type="submit">Enviar notificación</button>
+        <a class="btn btn--secondary" th:href="@{/notificaciones}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+</body>
+</html>
