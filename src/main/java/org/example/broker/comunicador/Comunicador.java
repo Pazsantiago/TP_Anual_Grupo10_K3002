@@ -43,7 +43,7 @@ public class Comunicador {
                     .retrieve()
                     .toBodilessEntity();
             if (response.getStatusCode().value() == 200) {
-                System.out.println("La ruta finalmente es: " + urlLogistica + " :)");
+                System.out.println("La ruta finalmente es: " + urlLogistica);
                 return;
             }
         } catch (Exception e){
