@@ -5,17 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class MensajeConfirmacionIncentivos {
+public class PaqueteEntregado {
     private Long idAsignada;
-    private List<Long> idDonantesIncluidos;
     private List<Long> idSegmentadasIncluidos;
-    private Long idEntidad;
 }
 

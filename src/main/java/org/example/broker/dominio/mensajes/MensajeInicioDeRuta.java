@@ -10,5 +10,4 @@ import java.util.List;
 @Getter
 public class MensajeInicioDeRuta {
     private Long idAsignada;
-    private List<Long> idDonantesIncluidos;
 }

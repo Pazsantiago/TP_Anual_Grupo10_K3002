@@ -13,8 +13,7 @@ import java.util.List;
 @Getter
 public class DonacionAsignadaDTO {
     private Long idAsignada;
+    private List<DonacionSegmentadaDTO> donacionesSegmentadas;
     private Long idEntidad;
-    private List<Long> idDonantes;
-    private List<Long> idSegmentadas;
     private String direccionEntidad;
 }

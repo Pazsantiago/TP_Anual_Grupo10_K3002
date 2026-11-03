@@ -2,10 +2,7 @@ package org.example.broker.comunicador;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.example.broker.dominio.donacion.DonacionAsignadaDTO;
-import org.example.broker.dominio.mensajes.MensajeConfirmacionEntrega;
-import org.example.broker.dominio.mensajes.MensajeConfirmacionIncentivos;
-import org.example.broker.dominio.mensajes.MensajeEntregaFallida;
-import org.example.broker.dominio.mensajes.MensajeInicioDeRuta;
+import org.example.broker.dominio.mensajes.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -54,7 +51,7 @@ public class Comunicador {
         }
         // Pasamos a la local
         this.urlLogistica = urlLogisticaLocal;
-        System.out.println("No funciona el despliegue de logistica, url actual: " + urlLogistica + " :(");
+        System.out.println("No funciona el despliegue de logistica, url actual: " + urlLogistica);
     }
 
     public void enviarDonacionAsignada(DonacionAsignadaDTO donacionAsignada) {
@@ -87,7 +84,7 @@ public class Comunicador {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    public void comunicarEntregaIncentivos(MensajeConfirmacionIncentivos mensaje) {
+    public void comunicarEntregaIncentivos(PaqueteEntregado mensaje) {
         Integer result = this.restClientIncentivos
                 .post()
                 .uri("/entregasConfirmadas")

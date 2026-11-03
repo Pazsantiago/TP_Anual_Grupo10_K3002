@@ -3,10 +3,7 @@ package org.example.broker.brokerController;
 import lombok.RequiredArgsConstructor;
 import org.example.broker.comunicador.Comunicador;
 import org.example.broker.dominio.donacion.DonacionAsignadaDTO;
-import org.example.broker.dominio.mensajes.MensajeConfirmacionEntrega;
-import org.example.broker.dominio.mensajes.MensajeConfirmacionIncentivos;
-import org.example.broker.dominio.mensajes.MensajeEntregaFallida;
-import org.example.broker.dominio.mensajes.MensajeInicioDeRuta;
+import org.example.broker.dominio.mensajes.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,12 +30,10 @@ public class BrokerController {
     @PostMapping("/entregasConfirmadas")
     public ResponseEntity<String> avisarEntregaRealizada(@RequestBody MensajeConfirmacionEntrega mensajeConfirmacionEntrega) {
         comunicador.enviarEntregaRealizada(mensajeConfirmacionEntrega);
-        comunicador.comunicarEntregaIncentivos(new MensajeConfirmacionIncentivos(
+        comunicador.comunicarEntregaIncentivos(new PaqueteEntregado(
                 mensajeConfirmacionEntrega.getIdAsignada(),
-                mensajeConfirmacionEntrega.getIdDonantesIncluidos(),
-                mensajeConfirmacionEntrega.getIdSegmentadasIncluidos(),
-                mensajeConfirmacionEntrega.getIdEntidad())
-        );
+                mensajeConfirmacionEntrega.getIdSegmentadasIncluidos()
+        ));
         return ResponseEntity.ok("OK");
     }
 

@@ -2,7 +2,7 @@
   <configuration default="false" name="BrokerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <envs>
       <env name="SERVICIO_DONACIONES" value="http://localhost:8080/api/notificaciones" />
-      <env name="SERVICIO_INCENTIVOS" value="http://localhost:8081/incentivos/perfiles" />
+      <env name="SERVICIO_INCENTIVOS" value="http://localhost:8081/incentivos" />
       <env name="SERVICIO_LOGISTICA_LOCAL" value="http://localhost:8084" />
       <env name="SERVICIO_LOGISTICA_ONLINE" value="https://tp-anual-grupo10-k3002.onrender.com" />
     </envs>

@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 public class MensajeEntregaFallida {
     private Long idAsignada;
-    private List<Long> idDonantesIncluidos;
     private String justificacion;
     private Boolean sePuedeReplanificar;
 }
