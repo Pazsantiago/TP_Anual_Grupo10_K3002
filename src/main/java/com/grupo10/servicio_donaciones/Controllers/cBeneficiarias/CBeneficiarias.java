@@ -105,13 +105,13 @@ public class CBeneficiarias {
     // DADA una entidad, se le asigna finalmente la donacion segmentada a su necesidad.
     @PostMapping("/{idEntidad}/necesidades/{idNecesidad}/donaciones/{idDonacion}")
     public ResponseEntity<Map<String, Object>> asignarDonacionAEntidadPorNecesidad(@PathVariable Long idEntidad, @PathVariable Long idNecesidad, @PathVariable Long idDonacion) {
-        try {
-            return ResponseEntity.ok(aDonacionAsignadaREST(servicioDonacionAsignada.asignarDonacionAEntidadConNecesidad(idDonacion, idEntidad, idNecesidad)));
-        } catch (DonacionVencidaException donacionVencidaException) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(aDonacionSegmentadaFallidaREST(idDonacion, donacionVencidaException.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+//        try {
+        return ResponseEntity.ok(aDonacionAsignadaREST(servicioDonacionAsignada.asignarDonacionAEntidadConNecesidad(idDonacion, idEntidad, idNecesidad)));
+//        } catch (DonacionVencidaException donacionVencidaException) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(aDonacionSegmentadaFallidaREST(idDonacion, donacionVencidaException.getMessage()));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
     }
 
     //Se le agrega una donacion segmentada a la asignada para ir completando

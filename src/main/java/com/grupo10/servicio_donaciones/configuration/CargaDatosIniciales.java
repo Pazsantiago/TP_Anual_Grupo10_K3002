@@ -7,30 +7,30 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.concurrent.CompletableFuture;
+
 @Configuration
 public class CargaDatosIniciales {
-
 
     @Bean
     CommandLineRunner cargarCategorias(RepoCategorias repoCategorias) {
         return args -> {
-            if (repoCategorias.count() == 0) {
-                repoCategorias.save(
-                        new Categoria("Comida", TipoCategoria.ALIMENTICIO)
-                );
-
-                repoCategorias.save(
-                        new Categoria("Ropa", TipoCategoria.VESTIMENTA)
-                );
-
-                repoCategorias.save(
-                        new Categoria("Muebles", TipoCategoria.MOBILIARIO)
-                );
-
-                repoCategorias.save(
-                        new Categoria("Perecederos", TipoCategoria.PERECEDERO)
-                );
-            }
+            CompletableFuture.runAsync(() -> {
+                if (repoCategorias.count() == 0) {
+                    repoCategorias.save(
+                            new Categoria("Comida", TipoCategoria.ALIMENTICIO)
+                    );
+                    repoCategorias.save(
+                            new Categoria("Ropa", TipoCategoria.VESTIMENTA)
+                    );
+                    repoCategorias.save(
+                            new Categoria("Muebles", TipoCategoria.MOBILIARIO)
+                    );
+                    repoCategorias.save(
+                            new Categoria("Perecederos", TipoCategoria.PERECEDERO)
+                    );
+                }
+            });
         };
     }
 }
