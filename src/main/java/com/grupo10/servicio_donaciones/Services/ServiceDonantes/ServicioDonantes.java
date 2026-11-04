@@ -88,7 +88,7 @@ public class ServicioDonantes {
         persona.setUltimaInteraccion(LocalDateTime.now());
         setearCategorias(persona);
         repoDonantes.save(persona);
-        comunicador.enviarDonante(persona, restClientIncentivos);
+        //comunicador.enviarDonante(persona, restClientIncentivos);
         return persona;
 
     }
