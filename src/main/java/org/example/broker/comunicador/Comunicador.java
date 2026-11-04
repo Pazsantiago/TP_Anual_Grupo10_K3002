@@ -1,7 +1,7 @@
 package org.example.broker.comunicador;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.example.broker.dominio.donacion.DonacionAsignadaDTO;
+import org.example.broker.dominio.donacion.*;
 import org.example.broker.dominio.mensajes.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

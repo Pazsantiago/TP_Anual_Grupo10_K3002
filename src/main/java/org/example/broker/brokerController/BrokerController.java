@@ -2,12 +2,11 @@ package org.example.broker.brokerController;
 
 import lombok.RequiredArgsConstructor;
 import org.example.broker.comunicador.Comunicador;
-import org.example.broker.dominio.donacion.DonacionAsignadaDTO;
+import org.example.broker.dominio.donacion.*;
 import org.example.broker.dominio.mensajes.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -22,7 +21,7 @@ public class BrokerController {
 
     // #-- Recibir de logistica --#
     @PostMapping("/iniciosDeRutas")
-    public ResponseEntity<String> comenzarRuta(@RequestBody MensajeInicioDeRuta mensajeInicioDeRuta) {
+    public ResponseEntity<String> comenzarRuta(@RequestBody MensajeInicioDeRuta  mensajeInicioDeRuta) {
         comunicador.enviarInicioDeRuta(mensajeInicioDeRuta);
         return ResponseEntity.ok("OK");
     }
@@ -32,7 +31,7 @@ public class BrokerController {
         comunicador.enviarEntregaRealizada(mensajeConfirmacionEntrega);
         comunicador.comunicarEntregaIncentivos(new PaqueteEntregado(
                 mensajeConfirmacionEntrega.getIdAsignada(),
-                mensajeConfirmacionEntrega.getIdSegmentadasIncluidos()
+                mensajeConfirmacionEntrega.getIdSegmentadasIncluidos().stream().toList()
         ));
         return ResponseEntity.ok("OK");
     }
