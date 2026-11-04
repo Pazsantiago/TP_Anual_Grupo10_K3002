@@ -1,22 +1,18 @@
 package com.grupo10.servicio_donaciones.comunicador;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.*;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.Donante;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.DonanteDTO;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.MedioNotificacion;
-import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.DestinatarioRequestDTO;
-import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.NotificacionRequestDTO;
-import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.TipoEvento;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.*;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donante.*;
+import com.grupo10.servicio_donaciones.donaciones.mensajes.DestinatarioRequestDTO;
+import com.grupo10.servicio_donaciones.donaciones.mensajes.NotificacionRequestDTO;
+import com.grupo10.servicio_donaciones.donaciones.mensajes.TipoEvento;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class Comunicador {
-    @Async
     public void comunicarMensaje(String nombre, String correo, String telefono, MedioNotificacion tipoNotificacion, TipoEvento tipoEvento, RestClient restClient) {
         restClient
                 .post()
@@ -28,24 +24,30 @@ public class Comunicador {
 
 
     public DonacionDTO aDonacionDTO(Donacion donacion) {
-        return new DonacionDTO(donacion.getId(), donacion.getFechaRegistro(), donacion.conocerCategorias(), donacion.conocerCantidadDeBienesDonados(), donacion.conocerCantSegmentadasEntregadas());
+        return new DonacionDTO(donacion.getId(), donacion.getFechaRegistro(), donacion.conocerCategorias(), donacion.conocerCantidadDeBienesDonados(), donacion.getDonacionesSegmentadas().stream().map(DonacionSegmentada::getId).toList());
     }
 
     public DonanteDTO aDonanteDTO(Donante donante) {
-        return new DonanteDTO(donante.getId(), donante.getDonaciones().stream().map(this::aDonacionDTO).toList(), donante.obtenerContactoPredeterminado());
+        String nombre = (donante.getPersona() instanceof PersonaHumana ph)
+                ? ph.getNombre()
+                : ((PersonaJuridica) donante.getPersona()).getRazonSocial();
+        return new DonanteDTO(donante.getId(), nombre, donante.getDonaciones().stream().map(this::aDonacionDTO).toList(), donante.obtenerContactoPredeterminado());
     }
 
     public DonacionSegmentadaDTO aDonacionSegmentadaDTO(DonacionSegmentada donacionSegmentada) {
-        return new DonacionSegmentadaDTO(donacionSegmentada.getId(), donacionSegmentada.getDonacionInicial().getDonante().getId());
+        return new DonacionSegmentadaDTO(donacionSegmentada.getId(),
+                donacionSegmentada.getBien().getCantidadActual(),
+                donacionSegmentada.getBien().getUnidad());
     }
 
     public DonacionAsignadaDTO aDonacionAsignadaDTO(DonacionAsignada donacionAsignada) {
         return new DonacionAsignadaDTO(donacionAsignada.getId(),
+                donacionAsignada.getDonacionesSegmentadas().stream().map(this::aDonacionSegmentadaDTO).toList(),
                 donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getId(),
-                donacionAsignada.getDonacionesSegmentadas().stream().map(s -> s.getDonacionInicial().getDonante().getId()).toList(),
                 donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getDireccion()
         );
     }
+
 
     public void enviarDonacionAsignada(DonacionAsignada donacionAsignada, RestClient restclient) {
         ResponseEntity<Void> result = restclient

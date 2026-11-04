@@ -1,22 +1,22 @@
 package com.grupo10.servicio_donaciones.Services.ServiceDonacionAsignada;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.*;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.Donante;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.MedioNotificacion;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.PersonaHumana;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.entidad.EntidadBeneficiaria;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.necesidad.Necesidad;
-import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.MensajeConfirmacionEntrega;
-import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.MensajeEntregaFallida;
-import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.MensajeInicioDeRuta;
-import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.TipoEvento;
 import com.grupo10.servicio_donaciones.Services.ServiceBeneficiarias.ServicioBeneficiarias;
 import com.grupo10.servicio_donaciones.Services.ServiceDonaciones.ServicioDonacion;
 import com.grupo10.servicio_donaciones.Services.ServiceDonantes.ServicioDonantes;
 import com.grupo10.servicio_donaciones.comunicador.Comunicador;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.*;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donante.Donante;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donante.MedioNotificacion;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donante.PersonaHumana;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donante.PersonaJuridica;
+import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
+import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
+import com.grupo10.servicio_donaciones.donaciones.mensajes.MensajeConfirmacionEntrega;
+import com.grupo10.servicio_donaciones.donaciones.mensajes.MensajeEntregaFallida;
+import com.grupo10.servicio_donaciones.donaciones.mensajes.MensajeInicioDeRuta;
+import com.grupo10.servicio_donaciones.donaciones.mensajes.TipoEvento;
 import com.grupo10.servicio_donaciones.excepciones.DonacionVencidaException;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonacionesAsignadas;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Data
 @Transactional(readOnly = true)
 public class ServicioDonacionAsignada {
     private final ServicioDonantes servicioDonantes;
@@ -47,8 +46,11 @@ public class ServicioDonacionAsignada {
     public void notificarMensajes(List<Long> donantesID, Long idEntidad, TipoEvento tipoEvento) {
         donantesID.forEach(id -> {
             Donante donante = servicioDonantes.obtenerPorId(id);
+            String nombre = (donante.getPersona() instanceof PersonaHumana ph)
+                    ? ph.getNombre()
+                    : ((PersonaJuridica) donante.getPersona()).getRazonSocial();
             comunicador.comunicarMensaje(
-                    ((PersonaHumana) donante.getPersona()).getNombre(),
+                    nombre,
                     donante.obtenerContactoPredeterminado().getCorreoElectronico(),
                     donante.obtenerContactoPredeterminado().getTelefono(),
                     donante.obtenerContactoPredeterminado().getTipo(),
@@ -69,7 +71,9 @@ public class ServicioDonacionAsignada {
         donacionAsignada.getDonacionesSegmentadas().forEach(s -> {
             s.cambiarEstadoActual(new EstadoDonacion(TipoEstadoDonacion.EN_TRASLADO, null, s));
         });
-        notificarMensajes(mensajeInicioDeRuta.getIdDonantesIncluidos(), donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getId(), TipoEvento.INICIO_DE_RUTA);
+        notificarMensajes(donacionAsignada.getDonacionesSegmentadas().stream().map(s -> s.getDonacionInicial().getDonante().getId()).toList(),
+                donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getId(),
+                TipoEvento.INICIO_DE_RUTA);
         return "Se ha comenzado la ruta";
     }
 
@@ -82,8 +86,10 @@ public class ServicioDonacionAsignada {
             s.cambiarEstadoActual(new EstadoDonacion(TipoEstadoDonacion.ENTREGADA, null, s));
         });
         servicioBeneficiarias.seSatisfaceLaNecesidad(donacionAsignada.getNecesidadResuelta());
-        repoDonacionesAsignadas.save(donacionAsignada);
-        notificarMensajes(mensajeConfirmacionEntrega.getIdDonantesIncluidos(), donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getId(), TipoEvento.ENTREGA_REALIZADA);
+        notificarMensajes(donacionAsignada.getDonacionesSegmentadas().stream().map(s -> s.getDonacionInicial().getDonante().getId()).toList(),
+                donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getId(),
+                TipoEvento.ENTREGA_REALIZADA);
+
         return "La entrega de las donaciones ya ha sido recibida";
     }
 
@@ -98,7 +104,10 @@ public class ServicioDonacionAsignada {
             donacionAsignada.desvincularSegmentadas();
             repoDonacionesAsignadas.deleteById(donacionAsignada.getId());
         }
-        notificarMensajes(mensajeEntregaFallida.getIdDonantesIncluidos(), donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getId(), TipoEvento.ENTREGA_REALIZADA);
+
+        notificarMensajes(donacionAsignada.getDonacionesSegmentadas().stream().map(s -> s.getDonacionInicial().getDonante().getId()).toList(),
+                donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria().getId(),
+                TipoEvento.ENTREGA_NO_SATISFACTORIA);
         return "Entrega fallida";
     }
 
@@ -123,12 +132,32 @@ public class ServicioDonacionAsignada {
         }
         donacionAsignada.agregarDonacionSegmentada(donacionSegmentada);
         servicioBeneficiarias.asignarDonacionANecesidad(donacionAsignada.getNecesidadResuelta(), donacionSegmentada);
+        comunicarAsignacionDeDonaciones(donacionSegmentada.getDonacionInicial().getDonante(), donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria());
         if (donacionAsignada.sePuedePlanificarEnvio()) {
-            comunicador.enviarDonacionAsignada(donacionAsignada, restClientBrokerLogistica);
+            //comunicador.enviarDonacionAsignada(donacionAsignada, restClientBrokerLogistica);
         }
         return donacionAsignada;
     }
 
+    public void comunicarAsignacionDeDonaciones(Donante donante, EntidadBeneficiaria entidad) {
+        String nombre = (donante.getPersona() instanceof PersonaHumana ph)
+                ? ph.getNombre()
+                : ((PersonaJuridica) donante.getPersona()).getRazonSocial();
+        comunicador.comunicarMensaje(
+                nombre,
+                donante.obtenerContactoPredeterminado().getCorreoElectronico(),
+                donante.obtenerContactoPredeterminado().getTelefono(),
+                donante.obtenerContactoPredeterminado().getTipo(),
+                TipoEvento.DONACION_ASIGNADA_DONANTE, restClientMensajes);
+
+        comunicador.comunicarMensaje(
+                entidad.getRazonSocial(),
+                entidad.getCorreoRepresentante(),
+                entidad.getTelefono(),
+                MedioNotificacion.EMAIL,
+                TipoEvento.DONACION_ASIGNADA_ENTIDAD, restClientMensajes);
+
+    }
 
     @Transactional
     public DonacionAsignada asignarDonacionAEntidadConNecesidad(Long idDonacionSegmentada, Long idEntidad, Long idNecesidad) {
@@ -151,23 +180,10 @@ public class ServicioDonacionAsignada {
 
 
         Donante donante = donacionSegmentada.getDonacionInicial().getDonante();
-        comunicador.comunicarMensaje(
-                ((PersonaHumana) donante.getPersona()).getNombre(),
-                donante.obtenerContactoPredeterminado().getCorreoElectronico(),
-                donante.obtenerContactoPredeterminado().getTelefono(),
-                donante.obtenerContactoPredeterminado().getTipo(),
-                TipoEvento.DONACION_ASIGNADA_DONANTE, restClientMensajes);
-
-        comunicador.comunicarMensaje(
-                entidad.getRazonSocial(),
-                entidad.getCorreoRepresentante(),
-                entidad.getTelefono(),
-                MedioNotificacion.EMAIL,
-                TipoEvento.DONACION_ASIGNADA_ENTIDAD, restClientMensajes);
-
-        if (donacionFinal.sePuedePlanificarEnvio()) {
-            comunicador.enviarDonacionAsignada(donacionFinal, restClientBrokerLogistica);
-        }
+        comunicarAsignacionDeDonaciones(donante, entidad);
+//        if (donacionFinal.sePuedePlanificarEnvio()) {
+//            comunicador.enviarDonacionAsignada(donacionFinal, restClientBrokerLogistica);
+//        }
         return donacionFinal;
     }
 

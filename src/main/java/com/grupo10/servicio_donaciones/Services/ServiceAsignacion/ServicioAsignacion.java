@@ -1,10 +1,10 @@
 package com.grupo10.servicio_donaciones.Services.ServiceAsignacion;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion.IAlgoritmoAsignacion;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion.RankingEntidadBeneficiaria;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.algoritmosAsignacion.SegmentadaRankings;
 import com.grupo10.servicio_donaciones.Services.ServiceBeneficiarias.ServicioBeneficiarias;
 import com.grupo10.servicio_donaciones.Services.ServiceDonaciones.ServicioDonacion;
+import com.grupo10.servicio_donaciones.donaciones.dominio.algoritmosAsignacion.IAlgoritmoAsignacion;
+import com.grupo10.servicio_donaciones.donaciones.dominio.algoritmosAsignacion.RankingEntidadBeneficiaria;
+import com.grupo10.servicio_donaciones.donaciones.dominio.algoritmosAsignacion.SegmentadaRankings;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;

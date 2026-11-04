@@ -1,7 +1,7 @@
 package com.grupo10.servicio_donaciones.configuration;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.categoria.Categoria;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.categoria.TipoCategoria;
+import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Categoria;
+import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.TipoCategoria;
 import com.grupo10.servicio_donaciones.repositorios.RepoCategorias;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

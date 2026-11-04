@@ -1,11 +1,12 @@
 package com.grupo10.servicio_donaciones.Services.ServiceDonantes;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.Importador.Importador;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.categoria.Categoria;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.Donante;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.PersonaHumana;
-import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.TipoEvento;
 import com.grupo10.servicio_donaciones.comunicador.Comunicador;
+import com.grupo10.servicio_donaciones.donaciones.dominio.Importador.Importador;
+import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Categoria;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donante.Donante;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donante.PersonaHumana;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donante.PersonaJuridica;
+import com.grupo10.servicio_donaciones.donaciones.mensajes.TipoEvento;
 import com.grupo10.servicio_donaciones.repositorios.RepoCategorias;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonaciones;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonantes;
@@ -62,8 +63,11 @@ public class ServicioDonantes {
         LocalDateTime limite = LocalDateTime.now().minusDays(20);
         repoDonantes.findAll().forEach(donante -> {
             if (donante.getUltimaInteraccion().isBefore(limite)) {
+                String nombre = (donante.getPersona() instanceof PersonaHumana ph)
+                        ? ph.getNombre()
+                        : ((PersonaJuridica) donante.getPersona()).getRazonSocial();
                 comunicador.comunicarMensaje(
-                        ((PersonaHumana) donante.getPersona()).getNombre(),
+                        nombre,
                         donante.obtenerContactoPredeterminado().getCorreoElectronico(),
                         donante.obtenerContactoPredeterminado().getTelefono(),
                         donante.obtenerContactoPredeterminado().getTipo(),
@@ -81,10 +85,10 @@ public class ServicioDonantes {
                 repoDonaciones.save(d);
             });
         }
-
+        persona.setUltimaInteraccion(LocalDateTime.now());
         setearCategorias(persona);
         repoDonantes.save(persona);
-        //comunicador.enviarDonante(persona, restClientIncentivos);
+        comunicador.enviarDonante(persona, restClientIncentivos);
         return persona;
 
     }
@@ -107,7 +111,7 @@ public class ServicioDonantes {
     public Donante updateDonante(Long id, Donante updateDonante) {
         Donante donante = repoDonantes.findById(id).orElse(null);
         donante.setPersona(updateDonante.getPersona());
-        donante.setUltimaInteraccion(updateDonante.getUltimaInteraccion());
+        donante.setUltimaInteraccion(LocalDateTime.now());
         donante.setMediosDeContacto(updateDonante.getMediosDeContacto());
         donante.getDonaciones().forEach(d -> {
             repoDonaciones.deleteById(d.getId());

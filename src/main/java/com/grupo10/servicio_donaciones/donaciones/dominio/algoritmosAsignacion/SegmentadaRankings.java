@@ -1,0 +1,24 @@
+package com.grupo10.servicio_donaciones.donaciones.dominio.algoritmosAsignacion;
+
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@NoArgsConstructor
+@Getter
+@Setter
+public class SegmentadaRankings {
+    private DonacionSegmentada segmentada;
+    private List<RankingEntidadBeneficiaria> rankings = new ArrayList<>();
+    ;
+
+    public SegmentadaRankings(DonacionSegmentada segmentada, List<RankingEntidadBeneficiaria> rankings) {
+        this.segmentada = segmentada;
+        this.rankings = rankings;
+    }
+}
+

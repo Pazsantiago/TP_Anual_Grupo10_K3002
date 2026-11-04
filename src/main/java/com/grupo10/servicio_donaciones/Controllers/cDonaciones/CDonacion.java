@@ -1,10 +1,9 @@
 package com.grupo10.servicio_donaciones.Controllers.cDonaciones;
 //import donatrack.dominio.donacion.Donacion;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.Donacion;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionAsignada;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.Services.ServiceDonaciones.ServicioDonacion;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/donaciones")
+@RequestMapping("/api/donantes/{idDonante}/donaciones")
 public class CDonacion {
 
     private final ServicioDonacion servicioDonacion;
@@ -24,16 +23,16 @@ public class CDonacion {
 
     // Obtener todas las Donaciones
     @GetMapping("")
-    public ResponseEntity<List<Donacion>> getAllDonaciones() {
+    public ResponseEntity<List<Donacion>> getAllDonaciones(@PathVariable Long idDonante) {
         try {
-            return ResponseEntity.ok(servicioDonacion.getAllDonaciones());
+            return ResponseEntity.ok(servicioDonacion.getAllDonaciones(idDonante));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
 
-    // Obtener una Donacion  por idDonacion
+    // Obtener una Donacion por idDonacion
     @GetMapping("/{idDonacion}")
     public ResponseEntity<Donacion> getDonacionById(@PathVariable Long idDonacion) {
         try {
@@ -44,18 +43,18 @@ public class CDonacion {
     }
 
     // Obtener todas las donaciones segmentadas
-    @GetMapping("/segmentadas")
-    public ResponseEntity<List<DonacionSegmentada>> obtenerDonacionesSegmentadas() {
+    @GetMapping("/{idDonacion}/segmentadas")
+    public ResponseEntity<List<DonacionSegmentada>> obtenerDonacionesSegmentadas(@PathVariable Long idDonante, @PathVariable Long idDonacion) {
         try {
-            return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadas());
+            return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadas(idDonante, idDonacion));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     // Obtener una donacion segmentada especifica
-    @GetMapping("/segmentadas/{idSegmentada}")
-    public ResponseEntity<DonacionSegmentada> obtenerDonacionSegmentada(@PathVariable Long idSegmentada) {
+    @GetMapping("/{idDonacion}/segmentadas/{idSegmentada}")
+    public ResponseEntity<DonacionSegmentada> obtenerDonacionSegmentada(@PathVariable Long idDonante, @PathVariable Long idDonacion, @PathVariable Long idSegmentada) {
         try {
             return ResponseEntity.ok(servicioDonacion.obtenerDonacionSegmentada(idSegmentada));
         } catch (Exception e) {
@@ -63,12 +62,11 @@ public class CDonacion {
         }
     }
 
-
-    // Conocer las donaciones ya asignadas
-    @GetMapping("/asignadas")
-    public ResponseEntity<List<DonacionAsignada>> obtenerDonacionesAsignadas() {
+    // Agregar una nueva Donacion
+    @PostMapping("")
+    public ResponseEntity<Donacion> createDonacion(@RequestBody Donacion donacion, @PathVariable Long idDonante) {
         try {
-            return ResponseEntity.ok(servicioDonacion.obtenerDonacionesAsignadas());
+            return ResponseEntity.ok(servicioDonacion.createDonacion(donacion, idDonante));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -88,7 +86,7 @@ public class CDonacion {
     //
     // Eliminar una Donacion
     @DeleteMapping("/{idDonacion}")
-    public ResponseEntity<String> deleteDonacion(@PathVariable Long idDonacion) {
+    public ResponseEntity<String> deleteDonacion(@PathVariable Long idDonante, @PathVariable Long idDonacion) {
         try {
             return ResponseEntity.ok(servicioDonacion.deleteDonacion(idDonacion));
         } catch (Exception e) {

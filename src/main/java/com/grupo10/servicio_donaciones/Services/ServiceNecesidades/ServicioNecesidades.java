@@ -1,8 +1,8 @@
 package com.grupo10.servicio_donaciones.Services.ServiceNecesidades;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.entidad.EntidadBeneficiaria;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.necesidad.Necesidad;
 import com.grupo10.servicio_donaciones.Services.ServiceBeneficiarias.ServicioBeneficiarias;
+import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
+import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
 import com.grupo10.servicio_donaciones.repositorios.RepoEntidades;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,8 @@ public class ServicioNecesidades {
     private final ServicioBeneficiarias servicioBeneficiarias;
 
 
-    public List<Necesidad> getAllNecesidades() {
-        return repoEntidades.findNecesidades();
+    public List<Necesidad> getAllNecesidades(Long idEntidad) {
+        return repoEntidades.findNecesidades(idEntidad);
     }
 
 

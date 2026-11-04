@@ -1,9 +1,9 @@
 package com.grupo10.servicio_donaciones.Controllers.cNotificaciones;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.MensajeConfirmacionEntrega;
-import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.MensajeEntregaFallida;
-import com.grupo10.servicio_donaciones.Sdonaciones.mensajes.MensajeInicioDeRuta;
 import com.grupo10.servicio_donaciones.Services.ServiceDonacionAsignada.ServicioDonacionAsignada;
+import com.grupo10.servicio_donaciones.donaciones.mensajes.MensajeConfirmacionEntrega;
+import com.grupo10.servicio_donaciones.donaciones.mensajes.MensajeEntregaFallida;
+import com.grupo10.servicio_donaciones.donaciones.mensajes.MensajeInicioDeRuta;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

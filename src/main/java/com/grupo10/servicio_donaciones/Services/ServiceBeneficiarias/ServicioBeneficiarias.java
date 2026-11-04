@@ -1,10 +1,10 @@
 package com.grupo10.servicio_donaciones.Services.ServiceBeneficiarias;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.categoria.Categoria;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.BienAsignado;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionSegmentada;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.entidad.EntidadBeneficiaria;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.necesidad.Necesidad;
+import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Categoria;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.BienAsignado;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
+import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
+import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
 import com.grupo10.servicio_donaciones.repositorios.RepoCategorias;
 import com.grupo10.servicio_donaciones.repositorios.RepoEntidades;
 import lombok.RequiredArgsConstructor;
@@ -83,7 +83,8 @@ public class ServicioBeneficiarias {
 
     @Transactional
     public void asignarDonacionANecesidad(Necesidad necesidad, DonacionSegmentada donacion) {
-        Integer cantidadPorEntregar = Math.min(donacion.getBien().getCantidadActual(), necesidad.getCantidadObjetivo());
+        Integer faltante = necesidad.getCantidadObjetivo() - necesidad.getCantidadRecibida();
+        Integer cantidadPorEntregar = Math.min(donacion.getBien().getCantidadActual(), faltante);
         necesidad.recibirBienes(cantidadPorEntregar);
         donacion.restarBienesAsignados(cantidadPorEntregar);
         donacion.agregarCantidadDeBienDonado(new BienAsignado(cantidadPorEntregar, necesidad.getId(), donacion));

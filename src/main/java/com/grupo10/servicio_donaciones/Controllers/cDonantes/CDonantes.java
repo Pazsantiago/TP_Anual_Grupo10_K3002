@@ -1,9 +1,8 @@
 package com.grupo10.servicio_donaciones.Controllers.cDonantes;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.Donacion;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.Donante;
 import com.grupo10.servicio_donaciones.Services.ServiceDonaciones.ServicioDonacion;
 import com.grupo10.servicio_donaciones.Services.ServiceDonantes.ServicioDonantes;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donante.Donante;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,16 +52,6 @@ public class CDonantes {
     public ResponseEntity<Donante> createPersona(@RequestBody Donante persona) {
         try {
             return ResponseEntity.ok(servicioDonantes.createPersona(persona));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    // Agregar una nueva Donacion
-    @PostMapping("/{idDonante}/donaciones")
-    public ResponseEntity<Donacion> createDonacion(@RequestBody Donacion donacion, @PathVariable Long idDonante) {
-        try {
-            return ResponseEntity.ok(servicioDonacion.createDonacion(donacion, idDonante));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

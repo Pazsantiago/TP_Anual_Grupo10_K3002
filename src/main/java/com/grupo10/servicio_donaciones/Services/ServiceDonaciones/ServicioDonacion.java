@@ -1,12 +1,12 @@
 package com.grupo10.servicio_donaciones.Services.ServiceDonaciones;
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.Donacion;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionAsignada;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionSegmentada;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.TipoEstadoDonacion;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donante.Donante;
 import com.grupo10.servicio_donaciones.Services.ServiceDonantes.ServicioDonantes;
 import com.grupo10.servicio_donaciones.comunicador.Comunicador;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.TipoEstadoDonacion;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donante.Donante;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonaciones;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonacionesAsignadas;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonantes;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,8 +31,8 @@ public class ServicioDonacion {
     private final RestClient restClientIncentivos;
     private final Comunicador comunicador;
 
-    public List<Donacion> getAllDonaciones() {
-        return repoDonaciones.findAll();
+    public List<Donacion> getAllDonaciones(Long idDonante) {
+        return repoDonaciones.findByDonanteId(idDonante);
     }
 
 
@@ -53,8 +54,8 @@ public class ServicioDonacion {
         return repoDonacionesAsignadas.findAll();
     }
 
-    public List<DonacionSegmentada> obtenerDonacionesSegmentadas() {
-        return repoDonaciones.getAllSegmentadas();
+    public List<DonacionSegmentada> obtenerDonacionesSegmentadas(Long idDonante, Long idDonacion) {
+        return repoDonaciones.getAllSegmentadasWithIdDonacionAndIdDonante(idDonante, idDonacion);
     }
 
     public DonacionSegmentada obtenerDonacionSegmentada(Long idSegmentada) {
@@ -66,10 +67,11 @@ public class ServicioDonacion {
         Donante donante = repoDonantes.findById(idDonante).orElse(null);
         donacion.setDonante(donante);
         donante.agregarDonacion(donacion);
+        donante.setUltimaInteraccion(LocalDateTime.now());
         donacion.setearRelaciones();
         repoDonaciones.save(donacion);
         servicioDonantes.setearCategorias(donante);
-        comunicador.enviarDonante(donante, restClientIncentivos);
+        //comunicador.enviarDonante(donante, restClientIncentivos);
         return donacion;
 
     }
@@ -78,20 +80,15 @@ public class ServicioDonacion {
     public Donacion updateDonacion(Long idDonacion, Donacion updateDonacion) {
         Donacion donacion = repoDonaciones.findById(idDonacion).orElse(null);
         Donante donante = repoDonantes.findById(donacion.getDonante().getId()).orElse(null);
-
         donacion.eliminarSegmentadas();
-        donacion.setDonante(updateDonacion.getDonante());
         donacion.setDescripcionGeneral(updateDonacion.getDescripcionGeneral());
         donacion.setFechaRegistro(updateDonacion.getFechaRegistro());
         donacion.setBienesDeEntrada(updateDonacion.getBienesDeEntrada());
-        if (donante != updateDonacion.getDonante()) {
-            donante = updateDonacion.getDonante();
-        }
         donante.actualizarDonacion(donacion);
+        donante.setUltimaInteraccion(LocalDateTime.now());
         donacion.setearRelaciones();
-        repoDonaciones.save(donacion);
         servicioDonantes.setearCategorias(donante);
-        comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
+        //comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return donacion;
     }
 
@@ -101,8 +98,8 @@ public class ServicioDonacion {
         Donante donante = donacion.getDonante();
         donante.eliminarDonacion(donacion.getId());
         donacion.getDonacionesSegmentadas().forEach(DonacionSegmentada::desvincularAsignadas);
-        repoDonaciones.deleteById(idDonacion);
-        comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
+        repoDonaciones.delete(donacion);
+        //comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return "Donacion borrada";
     }
 

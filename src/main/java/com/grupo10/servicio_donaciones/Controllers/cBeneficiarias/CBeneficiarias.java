@@ -1,13 +1,12 @@
 package com.grupo10.servicio_donaciones.Controllers.cBeneficiarias;
 
 
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionAsignada;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.donacion.DonacionSegmentada;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.entidad.EntidadBeneficiaria;
-import com.grupo10.servicio_donaciones.Sdonaciones.dominio.necesidad.Necesidad;
 import com.grupo10.servicio_donaciones.Services.ServiceBeneficiarias.ServicioBeneficiarias;
 import com.grupo10.servicio_donaciones.Services.ServiceDonacionAsignada.ServicioDonacionAsignada;
 import com.grupo10.servicio_donaciones.Services.ServiceNecesidades.ServicioNecesidades;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
+import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
 import com.grupo10.servicio_donaciones.excepciones.DonacionVencidaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,16 +77,6 @@ public class CBeneficiarias {
     public ResponseEntity<EntidadBeneficiaria> createEntidad(@RequestBody EntidadBeneficiaria entidad) {
         try {
             return ResponseEntity.ok(servicioBeneficiarias.createEntidad(entidad));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    // CREATE - Agregar una nueva Necesidad
-    @PostMapping("/{idEntidad}/necesidades")
-    public ResponseEntity<Necesidad> createNecesidad(@PathVariable Long idEntidad, @RequestBody Necesidad necesidad) {
-        try {
-            return ResponseEntity.ok(servicioNecesidades.createNecesidad(idEntidad, necesidad));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
