@@ -32,7 +32,7 @@ public class PersonaJuridica extends Persona {
 
     @Override
     public void desvincularRelaciones() {
-        representantes.forEach(personaHumana -> personaHumana.setPersonaJuridica(null));
+        if (!representantes.isEmpty()) representantes.forEach(personaHumana -> personaHumana.setPersonaJuridica(null));
     }
 
     public void setRepresentantes(List<PersonaHumana> representantes) {

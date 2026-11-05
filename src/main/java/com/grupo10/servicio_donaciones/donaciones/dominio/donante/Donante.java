@@ -29,7 +29,7 @@ public class Donante {
 
 
     public void desvincularRelaciones() {
-        donaciones.forEach(d -> d.setDonante(null));
+        if (!donaciones.isEmpty()) donaciones.forEach(d -> d.setDonante(null));
         persona.desvincularRelaciones();
     }
 

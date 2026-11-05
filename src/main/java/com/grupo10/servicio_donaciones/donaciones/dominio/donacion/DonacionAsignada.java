@@ -62,7 +62,7 @@ public class DonacionAsignada {
     }
 
     public void desvincularSegmentadas() {
-        this.donacionesSegmentadas.forEach(s -> s.eliminarAsignada(this.getId()));
+        if (!donacionesSegmentadas.isEmpty()) this.donacionesSegmentadas.forEach(s -> s.eliminarAsignada(this.getId()));
     }
 
 
