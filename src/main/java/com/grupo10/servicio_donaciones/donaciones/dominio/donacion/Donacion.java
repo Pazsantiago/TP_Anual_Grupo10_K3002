@@ -2,7 +2,6 @@ package com.grupo10.servicio_donaciones.donaciones.dominio.donacion;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grupo10.servicio_donaciones.donaciones.dominio.bien.Bien;
-import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Categoria;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donante.Donante;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -39,8 +38,8 @@ public class Donacion {
         this.donacionesSegmentadas.clear();
     }
 
-    public List<Categoria> conocerCategorias() {
-        return this.getBienesDeEntrada().stream().map(b -> b.getSubcategoria().getCategoria()).toList();
+    public List<String> conocerCategorias() {
+        return this.getBienesDeEntrada().stream().map(b -> b.getSubcategoria().getCategoria().toString()).toList();
     }
 
     public Integer conocerCantidadDeBienesDonados() {

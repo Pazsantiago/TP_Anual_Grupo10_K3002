@@ -1,10 +1,13 @@
 package com.grupo10.servicio_donaciones.comunicador;
 
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.*;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donante.*;
 import com.grupo10.servicio_donaciones.donaciones.mensajes.DestinatarioRequestDTO;
 import com.grupo10.servicio_donaciones.donaciones.mensajes.NotificacionRequestDTO;
 import com.grupo10.servicio_donaciones.donaciones.mensajes.TipoEvento;
+import com.grupo10.servicio_donaciones.dtos.backend.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -27,11 +30,15 @@ public class Comunicador {
         return new DonacionDTO(donacion.getId(), donacion.getFechaRegistro(), donacion.conocerCategorias(), donacion.conocerCantidadDeBienesDonados(), donacion.getDonacionesSegmentadas().stream().map(DonacionSegmentada::getId).toList());
     }
 
+    public MedioContactoDTO aMedioContactoDTO(MedioContacto medioContacto) {
+        return new MedioContactoDTO(medioContacto.getTipo(), medioContacto.getCorreoElectronico(), medioContacto.getTelefono());
+    }
+
     public DonanteDTO aDonanteDTO(Donante donante) {
         String nombre = (donante.getPersona() instanceof PersonaHumana ph)
                 ? ph.getNombre()
                 : ((PersonaJuridica) donante.getPersona()).getRazonSocial();
-        return new DonanteDTO(donante.getId(), nombre, donante.getDonaciones().stream().map(this::aDonacionDTO).toList(), donante.obtenerContactoPredeterminado());
+        return new DonanteDTO(donante.getId(), nombre, donante.getDonaciones().stream().map(this::aDonacionDTO).toList(), aMedioContactoDTO(donante.obtenerContactoPredeterminado()));
     }
 
     public DonacionSegmentadaDTO aDonacionSegmentadaDTO(DonacionSegmentada donacionSegmentada) {

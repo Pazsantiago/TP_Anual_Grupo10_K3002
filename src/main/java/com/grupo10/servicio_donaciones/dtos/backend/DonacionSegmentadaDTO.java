@@ -1,4 +1,4 @@
-package com.grupo10.servicio_donaciones.donaciones.dominio.donacion;
+package com.grupo10.servicio_donaciones.dtos.backend;
 
 import com.grupo10.servicio_donaciones.donaciones.dominio.bien.UnidadMedida;
 import lombok.AllArgsConstructor;

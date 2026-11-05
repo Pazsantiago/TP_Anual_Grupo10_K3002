@@ -3,11 +3,13 @@ package com.grupo10.servicio_donaciones.Controllers.cBeneficiarias;
 
 import com.grupo10.servicio_donaciones.Services.ServiceBeneficiarias.ServicioBeneficiarias;
 import com.grupo10.servicio_donaciones.Services.ServiceDonacionAsignada.ServicioDonacionAsignada;
-import com.grupo10.servicio_donaciones.Services.ServiceNecesidades.ServicioNecesidades;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
+import com.grupo10.servicio_donaciones.dtos.frontend.EntidadBeneficiariaDTO;
 import com.grupo10.servicio_donaciones.excepciones.DonacionVencidaException;
+import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,20 +20,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/entidadesBeneficiarias")
+@RequiredArgsConstructor
 public class CBeneficiarias {
 
+    private final DTOSMapper mapper;
     private final ServicioBeneficiarias servicioBeneficiarias;
-    private final ServicioNecesidades servicioNecesidades;
     private final ServicioDonacionAsignada servicioDonacionAsignada;
-
-    // Inicializamos con algunos datos
-    public CBeneficiarias(ServicioBeneficiarias servicioBeneficiarias, ServicioNecesidades servicioNecesidades,
-                          ServicioDonacionAsignada servicioDonacionAsignada) {
-        this.servicioBeneficiarias = servicioBeneficiarias;
-        this.servicioNecesidades = servicioNecesidades;
-        this.servicioDonacionAsignada = servicioDonacionAsignada;
-    }
-
 
     public Map<String, Object> aDonacionAsignadaREST(DonacionAsignada donacionAsignada) {
 
@@ -53,9 +47,9 @@ public class CBeneficiarias {
 
     // READ - Obtener todas las Entidades Beneficiaria
     @GetMapping("")
-    public ResponseEntity<List<EntidadBeneficiaria>> getAllEntidades() {
+    public ResponseEntity<List<EntidadBeneficiariaDTO>> getAllEntidades() {
         try {
-            return ResponseEntity.ok(servicioBeneficiarias.getAllEntidades());
+            return ResponseEntity.ok(servicioBeneficiarias.getAllEntidades().stream().map(mapper::aEntidadDTO).toList());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -64,9 +58,9 @@ public class CBeneficiarias {
 
     // READ - Obtener una Entidad Beneficiaria por id
     @GetMapping("/{idEntidad}")
-    public ResponseEntity<EntidadBeneficiaria> getEntidadById(@PathVariable Long idEntidad) {
+    public ResponseEntity<EntidadBeneficiariaDTO> getEntidadById(@PathVariable Long idEntidad) {
         try {
-            return ResponseEntity.ok(servicioBeneficiarias.getEntidadById(idEntidad));
+            return ResponseEntity.ok(mapper.aEntidadDTO(servicioBeneficiarias.getEntidadById(idEntidad)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -74,9 +68,9 @@ public class CBeneficiarias {
 
     // CREATE - Agregar una nueva Entidad Beneficiaria
     @PostMapping("")
-    public ResponseEntity<EntidadBeneficiaria> createEntidad(@RequestBody EntidadBeneficiaria entidad) {
+    public ResponseEntity<EntidadBeneficiariaDTO> createEntidad(@RequestBody EntidadBeneficiaria entidad) {
         try {
-            return ResponseEntity.ok(servicioBeneficiarias.createEntidad(entidad));
+            return ResponseEntity.ok(mapper.aEntidadDTO(servicioBeneficiarias.createEntidad(entidad)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -84,9 +78,9 @@ public class CBeneficiarias {
 
     // UPDATE - Actualizar una Entidad Beneficiaria existente
     @PutMapping("/{idEntidad}")
-    public ResponseEntity<EntidadBeneficiaria> updateEntidad(@PathVariable Long idEntidad, @RequestBody EntidadBeneficiaria updatedEntidad) {
+    public ResponseEntity<EntidadBeneficiariaDTO> updateEntidad(@PathVariable Long idEntidad, @RequestBody EntidadBeneficiaria updatedEntidad) {
         try {
-            return ResponseEntity.ok(servicioBeneficiarias.updateEntidad(idEntidad, updatedEntidad));
+            return ResponseEntity.ok(mapper.aEntidadDTO(servicioBeneficiarias.updateEntidad(idEntidad, updatedEntidad)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

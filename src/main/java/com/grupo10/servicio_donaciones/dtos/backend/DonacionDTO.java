@@ -1,6 +1,5 @@
-package com.grupo10.servicio_donaciones.donaciones.dominio.donacion;
+package com.grupo10.servicio_donaciones.dtos.backend;
 
-import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Categoria;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +16,7 @@ import java.util.List;
 public class DonacionDTO {
     private Long id;
     private Date fechaEntrada = new Date();
-    private List<Categoria> categoriasIncluidas = new ArrayList<>();
+    private List<String> categoriasIncluidas = new ArrayList<>();
     private Integer cantBienes;
     private List<Long> segmentadasIncluidas;
 
