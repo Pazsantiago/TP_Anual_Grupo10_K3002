@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="[suspicious link removed]">
+<head>
+    <meta charset="UTF-8">
+    <title>Entidades Beneficiarias</title>
+    <link rel="stylesheet" href="[suspicious link removed]">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Entidades Beneficiarias</h2>
+        <a href="/entidades/nueva" class="btn btn-primary">+ Nueva Entidad</a>
+    </div>
+
+    <table class="table table-striped bg-white shadow-sm">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Razón Social</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Representante</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="e : ${entidades}">
+            <td th:text="${e.id}">1</td>
+            <td th:text="${e.razonSocial}">Comedor Los Niños</td>
+            <td th:text="${e.direccion}">Calle Falsa 123</td>
+            <td th:text="${e.telefono}">1122334455</td>
+            <td th:text="${e.correoRepresentante}">contacto@comedor.org</td>
+            <td>
+                <a th:href="@{/entidades/editar/{id}(id=${e.id})}" class="btn btn-sm btn-warning">Editar</a>
+                <form th:action="@{/entidades/eliminar/{id}(id=${e.id})}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

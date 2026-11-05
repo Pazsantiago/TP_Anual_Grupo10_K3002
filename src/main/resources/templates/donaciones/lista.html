@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="[suspicious link removed]">
+<head>
+    <meta charset="UTF-8">
+    <title>DonaTrack - Donaciones</title>
+    <link rel="stylesheet" href="[suspicious link removed]">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container">
+    <h2>Donaciones</h2>
+
+    <!-- Filtro por Donante -->
+    <form method="get" action="/donaciones" class="row g-3 mb-4">
+        <div class="col-auto">
+            <select name="idDonante" class="form-select" onchange="this.form.submit()">
+                <option value="">-- Seleccionar Donante para ver sus donaciones --</option>
+                <option th:each="d : ${donantes}" th:value="${d.id}" th:text="${d.nombre != null ? d.nombre : d.razonSocial}"
+                        th:selected="${d.id == idDonanteSeleccionado}"></option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <a href="/donaciones/nueva" class="btn btn-primary">+ Nueva Donación</a>
+        </div>
+    </form>
+
+    <table class="table table-striped bg-white shadow-sm" th:if="${donaciones != null}">
+        <thead class="table-dark">
+        <tr>
+            <th>ID Donación</th>
+            <th>Descripción General</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="don : ${donaciones}">
+            <td th:text="${don.id}">1</td>
+            <td th:text="${don.descripcionGeneral}">Caja de ropa y alimentos</td>
+            <td>
+                <form action="/donaciones/eliminar" method="post" class="d-inline">
+                    <input type="hidden" name="idDonante" th:value="${idDonanteSeleccionado}">
+                    <input type="hidden" name="idDonacion" th:value="${don.id}">
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

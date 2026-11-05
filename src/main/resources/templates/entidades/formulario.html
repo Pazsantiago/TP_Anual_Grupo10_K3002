@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="[suspicious link removed]">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Entidad</title>
+    <link rel="stylesheet" href="[suspicious link removed]">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container col-md-6">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 th:text="${entidad.id == null ? 'Nueva Entidad Beneficiaria' : 'Editar Entidad'}">Entidad</h4>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/entidades}" th:object="${entidad}" method="post">
+                <input type="hidden" th:field="*{id}">
+
+                <div class="mb-3">
+                    <label class="form-label">Razón Social:</label>
+                    <input type="text" th:field="*{razonSocial}" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Dirección:</label>
+                    <input type="text" th:field="*{direccion}" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Teléfono:</label>
+                    <input type="text" th:field="*{telefono}" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Correo Representante:</label>
+                    <input type="email" th:field="*{correoRepresentante}" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a href="/entidades" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="[suspicious link removed]">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Donante</title>
+    <link rel="stylesheet" href="[suspicious link removed]">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container col-md-6">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 th:text="${donante.id == null ? 'Nuevo Donante' : 'Editar Donante'}">Donante</h4>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/donantes}" th:object="${donante}" method="post">
+                <input type="hidden" th:field="*{id}">
+
+                <div class="mb-3">
+                    <label class="form-label">Nombre / Razón Social:</label>
+                    <input type="text" th:field="*{nombre}" class="form-control" placeholder="Ingrese nombre o razón social" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Correo Electrónico:</label>
+                    <input type="email" th:field="*{correoElectronico}" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Teléfono:</label>
+                    <input type="text" th:field="*{telefono}" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a href="/donantes" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: donaciones-frontend
+
+server:
+  port: 8086
+
+backend:
+  servicio-donaciones:
+    url: ${SERVICIO_DONACIONES:http://localhost:8080}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="[suspicious link removed]">
+<head>
+    <meta charset="UTF-8">
+    <title>DonaTrack - Necesidades</title>
+    <link rel="stylesheet" href="[suspicious link removed]">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container">
+    <h2>Necesidades de Entidades</h2>
+
+    <!-- Filtro por Entidad -->
+    <form method="get" action="/necesidades" class="row g-3 mb-4">
+        <div class="col-auto">
+            <select name="idEntidad" class="form-select" onchange="this.form.submit()">
+                <option value="">-- Seleccionar Entidad Beneficiaria --</option>
+                <option th:each="e : ${entidades}" th:value="${e.id}" th:text="${e.razonSocial}"
+                        th:selected="${e.id == idEntidadSeleccionada}"></option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <a href="/necesidades/nueva" class="btn btn-primary">+ Nueva Necesidad</a>
+        </div>
+    </form>
+
+    <table class="table table-striped bg-white shadow-sm" th:if="${necesidades != null}">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Descripción</th>
+            <th>Cantidad Objetivo</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="n : ${necesidades}">
+            <td th:text="${n.id}">1</td>
+            <td th:text="${n.descripcion}">Harina de trigo</td>
+            <td th:text="${n.cantidadObjetivo}">50</td>
+            <td>
+                <form action="/necesidades/eliminar" method="post" class="d-inline">
+                    <input type="hidden" name="idEntidad" th:value="${idEntidadSeleccionada}">
+                    <input type="hidden" name="idNecesidad" th:value="${n.id}">
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

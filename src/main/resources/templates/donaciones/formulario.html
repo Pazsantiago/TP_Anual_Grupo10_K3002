@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="[suspicious link removed]">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Donación</title>
+    <link rel="stylesheet" href="[suspicious link removed]">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container col-md-6">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4>Registrar Donación</h4>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/donaciones}" th:object="${donacion}" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Seleccionar Donante:</label>
+                    <select th:field="*{idDonante}" class="form-select" required>
+                        <option value="">-- Donante --</option>
+                        <option th:each="d : ${donantes}" th:value="${d.id}" th:text="${d.nombre != null ? d.nombre : d.razonSocial}"></option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Descripción General:</label>
+                    <input type="text" th:field="*{descripcionGeneral}" class="form-control" placeholder="Ej: Ropa de invierno" required>
+                </div>
+
+                <button type="submit" class="btn btn-success">Guardar Donación</button>
+                <a href="/donaciones" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

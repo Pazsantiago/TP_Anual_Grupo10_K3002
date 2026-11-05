@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="[suspicious link removed]">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Necesidad</title>
+    <link rel="stylesheet" href="[suspicious link removed]">
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container col-md-6">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4>Registrar Necesidad</h4>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/necesidades}" th:object="${necesidad}" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Entidad Beneficiaria:</label>
+                    <select th:field="*{idEntidadBeneficiaria}" class="form-select" required>
+                        <option value="">-- Seleccionar Entidad --</option>
+                        <option th:each="e : ${entidades}" th:value="${e.id}" th:text="${e.razonSocial}"></option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Descripción de la Necesidad:</label>
+                    <input type="text" th:field="*{descripcion}" class="form-control" placeholder="Ej: Leche en polvo" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Cantidad Objetivo:</label>
+                    <input type="number" th:field="*{cantidadObjetivo}" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-success">Guardar Necesidad</button>
+                <a href="/necesidades" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

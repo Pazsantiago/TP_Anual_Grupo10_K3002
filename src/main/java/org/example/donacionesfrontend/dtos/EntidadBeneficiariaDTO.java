@@ -1,0 +1,12 @@
+package org.example.donacionesfrontend.dtos;
+
+import lombok.Data;
+
+@Data
+public class EntidadBeneficiariaDTO {
+    private Long id;
+    private String razonSocial;
+    private String direccion;
+    private String telefono;
+    private String correoRepresentante;
+}
