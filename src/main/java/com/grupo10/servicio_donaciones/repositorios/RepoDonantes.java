@@ -12,10 +12,10 @@ import java.util.Optional;
 public interface RepoDonantes extends JpaRepository<Donante, Long> {
     Optional<Donante> findByMediosDeContactoCorreoElectronico(String correo);
 
-    @Query("SELECT d from Donante d where d.persona.documento.tipoDocumento = :tipoD and d.persona.documento.documento = :doc")
+    @Query("SELECT d FROM Donante d JOIN d.persona p JOIN p.documento doc WHERE doc.tipoDocumento = :tipoD AND doc.documento = :doc")
     Optional<Donante> findByDoc(@Param("tipoD") String tipoD, @Param("doc") String doc);
 
 
-    @Query("SELECT d from Donante d " + "JOIN FETCH d.donaciones where d.id = :id")
+    @Query("SELECT d from Donante d LEFT JOIN FETCH d.donaciones where d.id = :id")
     Optional<Donante> findByIdWithDonaciones(@Param("id") Long id);
 }
