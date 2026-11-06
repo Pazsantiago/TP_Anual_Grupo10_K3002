@@ -1,23 +1,15 @@
 package com.Donatrack.Logistica.domain;
 
-import jakarta.persistence.Embeddable;
-
-@Embeddable
 public class Direccion {
-
-    //private Long id;
     private String calle;
     private String ciudad;
 
-    protected Direccion() {
-    }
+    protected Direccion() {}
 
     public Direccion(String calle, String ciudad) {
         this.calle = calle;
         this.ciudad = ciudad;
     }
-
-    // Getters y Setters
 
     public String getCalle() { return calle; }
     public void setCalle(String calle) { this.calle = calle; }
