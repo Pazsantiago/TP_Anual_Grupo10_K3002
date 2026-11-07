@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Asignaciones')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('asignaciones')}"></header>
+
+<main id="contenido" class="container page">
+  <div class="page-head">
+    <h1 class="page-head__title">Asignaciones</h1>
+    <form th:action="@{/asignaciones/ejecutar}" method="post">
+      <button class="btn" type="submit">Ejecutar algoritmos</button>
+    </form>
+  </div>
+
+  <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+  <th:block th:if="${rankings.error}"><p th:replace="~{fragments/layout :: aviso-error(${rankings.error})}"></p></th:block>
+
+  <section class="card" th:if="${#lists.isEmpty(rankings.datos)}">
+    <div class="empty-state">
+      <p class="empty-state__text" th:unless="${rankings.error}">Todavía no hay rankings. Ejecutá los algoritmos para generarlos.</p>
+      <p class="empty-state__text" th:if="${rankings.error}">No pudimos cargar los rankings.</p>
+    </div>
+  </section>
+
+  <div class="stack" th:unless="${#lists.isEmpty(rankings.datos)}">
+    <article class="card" th:each="s : ${rankings.datos}">
+      <h2 th:text="'Donación segmentada N.º ' + ${s.idSegmentada}">Donación segmentada N.º 1</h2>
+
+      <p th:if="${#lists.isEmpty(s.ranking)}">Ningún algoritmo propuso entidades para esta donación.</p>
+
+      <div class="table-wrap" role="region" tabindex="0"
+           th:attr="aria-label='Entidades propuestas para la donación ' + ${s.idSegmentada}"
+           th:unless="${#lists.isEmpty(s.ranking)}">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Posición</th>
+              <th scope="col">Entidad</th>
+              <th scope="col">Puntaje</th>
+              <th scope="col">Algoritmo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="r : ${s.ranking}">
+              <td th:text="${r.posicion}">1</td>
+              <td><a th:href="@{/entidades/{id}/necesidades(id=${r.idEntidad})}" th:text="'Entidad N.º ' + ${r.idEntidad}">Entidad N.º 1</a></td>
+              <td th:text="${r.puntaje != null ? #numbers.formatDecimal(r.puntaje, 1, 2) : '—'}">0,85</td>
+              <td th:text="${#strings.replace(r.algoritmoUtilizado, '_', ' ')}">COMPATIBILIDAD SEMANTICA</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </div>
+</main>
+</body>
+</html>

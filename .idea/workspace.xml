@@ -5,61 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67621db1-9369-4a54-97ba-ab1256cb9f2b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/DonatrackFrontendApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/utn/donatrack/donatrack_frontend/DonatrackFrontendApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/TP_Anual_Grupo10_K3002.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.settings/org.eclipse.core.resources.prefs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.settings/org.eclipse.m2e.core.prefs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose-demo.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/render.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/DTOs/request/DestinatarioRequestDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/DTOs/request/LoteNotificacionRequestDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/DTOs/request/NotificacionRequestDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/DTOs/response/NotificacionResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/Notificacion/ServicioNotificaciones.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/Notificacion/ServicioNotificacionesConsola.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/ServicioNotificacionesApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/controllers/ControllerInterno.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/controllers/GlobalExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/controllers/NotificacionController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/dominio/Destinatario.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/dominio/EstadoNotificacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/dominio/MedioNotificacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/dominio/Notificacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/dominio/TipoNotificacion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/repository/DestinatarioRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/repository/NotificacionRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/service/NotificacionService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/strategy/INotificador.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/strategy/NotificadorEmail.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/strategy/NotificadorSMS.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Servicio_notificaciones/strategy/NotificadorWhatsapp.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-demo.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-prod.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/NotificacionesClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/NotificacionesClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/config/RestClientConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/config/RestClientConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/NotificacionesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/NotificacionesController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/Servicio_notificaciones/service/NotificacionServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/layout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/notificaciones/form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/notificaciones/form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/notificaciones/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/notificaciones/lista.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -67,26 +33,26 @@
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="3LTZGiUv9zBJKLhH44FbvdXxYno" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.DonatrackFrontendApplication.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "rama__cliente",
-    "kotlin-language-version-configured": "true",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.DonatrackFrontendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;rama__cliente&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="DonatrackFrontendApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="utn.donatrack.donatrack_frontend.DonatrackFrontendApplication" />

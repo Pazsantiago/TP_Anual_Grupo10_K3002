@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Entidades beneficiarias')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('entidades')}"></header>
+
+<main id="contenido" class="container page">
+  <div class="page-head">
+    <h1 class="page-head__title">Entidades beneficiarias</h1>
+  </div>
+
+  <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+  <section class="card" aria-labelledby="titulo-lista">
+    <h2 id="titulo-lista" class="sr-only">Listado de entidades beneficiarias</h2>
+
+    <th:block th:if="${entidades.error}"><p th:replace="~{fragments/layout :: aviso-error(${entidades.error})}"></p></th:block>
+
+    <div class="empty-state" th:if="${#lists.isEmpty(entidades.datos)}">
+      <p class="empty-state__text" th:unless="${entidades.error}">Todavía no hay entidades beneficiarias registradas.</p>
+      <p class="empty-state__text" th:if="${entidades.error}">No pudimos cargar el listado.</p>
+    </div>
+
+    <div class="table-wrap" role="region" aria-label="Tabla de entidades beneficiarias" tabindex="0"
+         th:unless="${#lists.isEmpty(entidades.datos)}">
+      <table class="table">
+        <caption class="table__caption" th:text="${#lists.size(entidades.datos)} + ' entidades'">Entidades</caption>
+        <thead>
+          <tr>
+            <th scope="col">Razón social</th>
+            <th scope="col">Dirección</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Representante</th>
+            <th scope="col">Ver</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="e : ${entidades.datos}">
+            <td th:text="${e.razonSocial}">Escuela rural N.º 10</td>
+            <td th:text="${e.direccion != null ? e.direccion : '—'}">Av. Siempre Viva 742</td>
+            <td th:text="${e.telefono != null ? e.telefono : '—'}">+54 11 4444-4444</td>
+            <td th:text="${e.correoRepresentante != null ? e.correoRepresentante : '—'}">directora@escuela.edu.ar</td>
+            <td>
+              <a class="btn btn--secondary" th:href="@{/entidades/{id}/necesidades(id=${e.id})}">Necesidades<span class="sr-only" th:text="' de ' + ${e.razonSocial}"></span></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</body>
+</html>

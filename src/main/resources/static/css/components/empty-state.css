@@ -1,0 +1,4 @@
+/* EMPTY STATE · listas sin datos o que no se pudieron cargar; siempre con una acción. */
+
+.empty-state { padding: var(--space-5) var(--space-3); text-align: center; }
+.empty-state__text { margin: 0 0 var(--space-3); color: var(--color-muted); }

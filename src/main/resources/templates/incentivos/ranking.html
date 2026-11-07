@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Incentivos')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('incentivos')}"></header>
+
+<main id="contenido" class="container page">
+  <div class="page-head">
+    <h1 class="page-head__title">Incentivos</h1>
+  </div>
+
+  <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+  <div class="stack">
+    <section class="card" aria-labelledby="titulo-buscar">
+      <h2 id="titulo-buscar">Perfil de un donante</h2>
+      <form class="form" th:action="@{/incentivos/buscar}" method="get">
+        <div class="field">
+          <label class="field__label" for="donanteId">Número de donante <span class="field__hint">(es el mismo que en Donantes)</span></label>
+          <input class="field__control" id="donanteId" name="donanteId" type="number" min="1" inputmode="numeric" placeholder="Ej: 5" required aria-required="true">
+        </div>
+        <div class="cluster">
+          <button class="btn" type="submit">Ver perfil</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-ranking">
+      <h2 id="titulo-ranking">Ranking mensual</h2>
+
+      <th:block th:if="${ranking.error}"><p th:replace="~{fragments/layout :: aviso-error(${ranking.error})}"></p></th:block>
+
+      <div class="empty-state" th:if="${#lists.isEmpty(ranking.datos)}">
+        <p class="empty-state__text" th:unless="${ranking.error}">Todavía no hay un ranking de este mes.</p>
+        <p class="empty-state__text" th:if="${ranking.error}">No pudimos cargar el ranking.</p>
+      </div>
+
+      <div class="table-wrap" role="region" aria-label="Tabla del ranking mensual" tabindex="0"
+           th:unless="${#lists.isEmpty(ranking.datos)}">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Posición</th>
+              <th scope="col">Donante</th>
+              <th scope="col">Misiones completadas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="p, iter : ${ranking.datos}">
+              <td th:text="${iter.count}">1</td>
+              <td><a th:href="@{/incentivos/donantes/{id}(id=${p.id})}" th:text="'Donante N.º ' + ${p.id}">Donante N.º 1</a></td>
+              <td th:text="${p.puntaje}">3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>
+</body>
+</html>

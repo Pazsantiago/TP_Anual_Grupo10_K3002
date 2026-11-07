@@ -1,0 +1,4 @@
+/* METER · barra de progreso (elemento nativo <progress>: accesible sin ARIA extra).
+   Marcado: <progress class="meter" max="100" value="45" aria-label="Progreso de la misión">45 %</progress> */
+
+.meter { width: 100%; height: 1rem; accent-color: var(--color-primary); }

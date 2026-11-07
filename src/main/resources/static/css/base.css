@@ -1,0 +1,39 @@
+/* BASE · reset, tipografía y utilidades de accesibilidad. Sin componentes. */
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }   /* que `hidden` gane a cualquier display */
+
+body {
+  margin: 0;
+  font: var(--weight-regular) var(--text-md)/var(--leading-base) var(--font-base);
+  color: var(--color-ink);
+  background: var(--color-canvas);
+}
+
+h1, h2, h3 { line-height: var(--leading-tight); margin: 0 0 var(--space-3); }
+h1 { font-size: var(--text-xl); }
+h2 { font-size: var(--text-lg); }
+h3 { font-size: var(--text-md); margin-bottom: var(--space-2); }
+
+a { color: var(--color-primary-dark); }   /* subrayado por defecto: el enlace no depende solo del color */
+
+:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+
+/* Utilidades de accesibilidad */
+.skip-link { position: absolute; left: -999px; }
+.skip-link:focus {
+  left: var(--space-3); top: var(--space-2); z-index: 10;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface); color: var(--color-primary-dark);
+}
+.sr-only {                                /* visible solo para lectores de pantalla */
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Respeta la preferencia de menos movimiento (incluye pseudo-elementos) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

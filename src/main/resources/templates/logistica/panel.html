@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Logística')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('logistica')}"></header>
+
+<main id="contenido" class="container page">
+  <div class="page-head">
+    <h1 class="page-head__title">Logística</h1>
+  </div>
+
+  <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+  <div class="stack">
+
+    <!-- CAMIONES -->
+    <section class="card" aria-labelledby="titulo-camiones">
+      <h2 id="titulo-camiones">Camiones</h2>
+
+      <th:block th:if="${camiones.error}"><p th:replace="~{fragments/layout :: aviso-error(${camiones.error})}"></p></th:block>
+
+      <div class="empty-state" th:if="${#lists.isEmpty(camiones.datos)}">
+        <p class="empty-state__text" th:unless="${camiones.error}">No hay camiones registrados.</p>
+        <p class="empty-state__text" th:if="${camiones.error}">No pudimos cargar los camiones.</p>
+      </div>
+
+      <div class="table-wrap" role="region" aria-label="Tabla de camiones" tabindex="0"
+           th:unless="${#lists.isEmpty(camiones.datos)}">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Patente</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Carga (kg)</th>
+              <th scope="col">Volumen (m³)</th>
+              <th scope="col">Altura (m)</th>
+              <th scope="col">Última ubicación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="c : ${camiones.datos}">
+              <td th:text="${c.patente}">AB123CD</td>
+              <td>
+                <span class="badge" th:classappend="${c.disponible == true ? 'badge--ok' : ''}"
+                      th:text="${c.disponible == true ? 'Disponible' : 'No disponible'}">Disponible</span>
+              </td>
+              <td th:text="${#numbers.formatDecimal(c.cargaActual, 1, 1)} + ' / ' + ${#numbers.formatDecimal(c.capacidadCarga, 1, 1)}">0,0 / 3.500,0</td>
+              <td th:text="${#numbers.formatDecimal(c.volumenActual, 1, 1)} + ' / ' + ${#numbers.formatDecimal(c.capacidadVolumenM3, 1, 1)}">0,0 / 20,0</td>
+              <td th:text="${#numbers.formatDecimal(c.alturaM, 1, 1)}">2,5</td>
+              <td>
+                <th:block th:if="${c.ultimaUbicacion != null}">
+                  <div th:text="'Lat ' + ${#numbers.formatDecimal(c.ultimaUbicacion.latitud, 1, 4)} + ' · Lon ' + ${#numbers.formatDecimal(c.ultimaUbicacion.longitud, 1, 4)}">Lat -34,6037 · Lon -58,3816</div>
+                  <div th:if="${c.ultimaUbicacion.timestamp}" th:text="${#temporals.format(c.ultimaUbicacion.timestamp, 'dd/MM/yyyy HH:mm')}">01/01/2027 10:00</div>
+                </th:block>
+                <span th:if="${c.ultimaUbicacion == null}">Sin datos</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- BULTOS PENDIENTES -->
+    <section class="card" aria-labelledby="titulo-bultos">
+      <h2 id="titulo-bultos">Bultos pendientes</h2>
+
+      <th:block th:if="${bultos.error}"><p th:replace="~{fragments/layout :: aviso-error(${bultos.error})}"></p></th:block>
+
+      <div class="empty-state" th:if="${#lists.isEmpty(bultos.datos)}">
+        <p class="empty-state__text" th:unless="${bultos.error}">No hay bultos pendientes de asignar.</p>
+        <p class="empty-state__text" th:if="${bultos.error}">No pudimos cargar los bultos.</p>
+      </div>
+
+      <div class="table-wrap" role="region" aria-label="Tabla de bultos pendientes" tabindex="0"
+           th:unless="${#lists.isEmpty(bultos.datos)}">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">N.º</th>
+              <th scope="col">Peso (kg)</th>
+              <th scope="col">Volumen (m³)</th>
+              <th scope="col">Altura (m)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="b : ${bultos.datos}">
+              <td th:text="${b.id}">1</td>
+              <td th:text="${#numbers.formatDecimal(b.peso, 1, 1)}">12,5</td>
+              <td th:text="${#numbers.formatDecimal(b.volumen, 1, 2)}">0,40</td>
+              <td th:text="${#numbers.formatDecimal(b.altura, 1, 2)}">0,80</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- DONACIONES PENDIENTES -->
+    <section class="card" aria-labelledby="titulo-donaciones">
+      <h2 id="titulo-donaciones">Donaciones pendientes de entrega</h2>
+
+      <th:block th:if="${donaciones.error}"><p th:replace="~{fragments/layout :: aviso-error(${donaciones.error})}"></p></th:block>
+
+      <div class="empty-state" th:if="${#lists.isEmpty(donaciones.datos)}">
+        <p class="empty-state__text" th:unless="${donaciones.error}">No hay donaciones pendientes de entrega.</p>
+        <p class="empty-state__text" th:if="${donaciones.error}">No pudimos cargar las donaciones.</p>
+      </div>
+
+      <div class="table-wrap" role="region" aria-label="Tabla de donaciones pendientes" tabindex="0"
+           th:unless="${#lists.isEmpty(donaciones.datos)}">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">N.º</th>
+              <th scope="col">Destinatario</th>
+              <th scope="col">Dirección</th>
+              <th scope="col">Bultos</th>
+              <th scope="col">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="d : ${donaciones.datos}">
+              <td th:text="${d.idDonacion}">1</td>
+              <td th:text="${d.destinatario != null ? d.destinatario : '—'}">Escuela rural N.º 10</td>
+              <td th:text="${d.direccion != null ? d.direccion.calle + ', ' + d.direccion.ciudad : '—'}">Av. Siempre Viva 742, Buenos Aires</td>
+              <td th:text="${#lists.size(d.bultos)}">2</td>
+              <td>
+                <span class="badge"
+                      th:classappend="${d.estadoDonacion == 'ENTREGADA' ? 'badge--ok' : (d.estadoDonacion == 'NO_RECIBIDA' ? 'badge--error' : '')}"
+                      th:text="${#strings.replace(d.estadoDonacion, '_', ' ')}">PENDIENTE</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+</main>
+</body>
+</html>

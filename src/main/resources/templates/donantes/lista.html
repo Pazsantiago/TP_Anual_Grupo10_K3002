@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Donantes')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('donantes')}"></header>
+
+<main id="contenido" class="container page">
+  <div class="page-head">
+    <h1 class="page-head__title">Donantes</h1>
+  </div>
+
+  <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+  <section class="card" aria-labelledby="titulo-lista">
+    <h2 id="titulo-lista" class="sr-only">Listado de donantes</h2>
+
+    <th:block th:if="${donantes.error}"><p th:replace="~{fragments/layout :: aviso-error(${donantes.error})}"></p></th:block>
+
+    <div class="empty-state" th:if="${#lists.isEmpty(donantes.datos)}">
+      <p class="empty-state__text" th:unless="${donantes.error}">Todavía no hay donantes registrados.</p>
+      <p class="empty-state__text" th:if="${donantes.error}">No pudimos cargar el listado.</p>
+    </div>
+
+    <div class="table-wrap" role="region" aria-label="Tabla de donantes" tabindex="0"
+         th:unless="${#lists.isEmpty(donantes.datos)}">
+      <table class="table">
+        <caption class="table__caption" th:text="${#lists.size(donantes.datos)} + ' donantes'">Donantes</caption>
+        <thead>
+          <tr>
+            <th scope="col">Donante</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Documento</th>
+            <th scope="col">Contacto</th>
+            <th scope="col">Ver</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="d : ${donantes.datos}"
+              th:with="nombre=${#strings.isEmpty(d.razonSocial) ? d.nombre + ' ' + d.apellido : d.razonSocial}">
+            <td th:text="${nombre}">Ana Pérez</td>
+            <td><span class="badge" th:text="${d.tipoPersona}">HUMANA</span></td>
+            <td th:text="${d.documento != null ? d.tipoDocumento + ' ' + d.documento : '—'}">DNI 12345678</td>
+            <td>
+              <div th:if="${d.correoElectronico}" th:text="${d.correoElectronico}">ana@mail.com</div>
+              <div th:if="${d.telefono}" th:text="${d.telefono}">+54 11 5555-5555</div>
+              <span th:if="${d.correoElectronico == null and d.telefono == null}">—</span>
+            </td>
+            <td>
+              <div class="cluster">
+                <a class="btn btn--secondary" th:href="@{/donantes/{id}/donaciones(id=${d.id})}">Donaciones<span class="sr-only" th:text="' de ' + ${nombre}"></span></a>
+                <a class="btn btn--secondary" th:href="@{/incentivos/donantes/{id}(id=${d.id})}">Incentivos<span class="sr-only" th:text="' de ' + ${nombre}"></span></a>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</body>
+</html>

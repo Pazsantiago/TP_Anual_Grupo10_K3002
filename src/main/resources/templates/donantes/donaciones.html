@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Donaciones del donante')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('donantes')}"></header>
+
+<main id="contenido" class="container page">
+  <div class="page-head">
+    <h1 class="page-head__title">
+      Donaciones de
+      <span th:if="${donante}" th:text="${#strings.isEmpty(donante.razonSocial) ? donante.nombre + ' ' + donante.apellido : donante.razonSocial}">Ana Pérez</span>
+      <span th:unless="${donante}" th:text="'donante #' + ${idDonante}">donante #1</span>
+    </h1>
+    <a class="btn btn--secondary" th:href="@{/donantes}">Volver a donantes</a>
+  </div>
+
+  <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+  <section class="card" aria-labelledby="titulo-lista">
+    <h2 id="titulo-lista" class="sr-only">Listado de donaciones</h2>
+
+    <th:block th:if="${donaciones.error}"><p th:replace="~{fragments/layout :: aviso-error(${donaciones.error})}"></p></th:block>
+
+    <div class="empty-state" th:if="${#lists.isEmpty(donaciones.datos)}">
+      <p class="empty-state__text" th:unless="${donaciones.error}">Este donante todavía no registró donaciones.</p>
+      <p class="empty-state__text" th:if="${donaciones.error}">No pudimos cargar las donaciones.</p>
+    </div>
+
+    <div class="table-wrap" role="region" aria-label="Tabla de donaciones" tabindex="0"
+         th:unless="${#lists.isEmpty(donaciones.datos)}">
+      <table class="table">
+        <caption class="table__caption" th:text="${#lists.size(donaciones.datos)} + ' donaciones'">Donaciones</caption>
+        <thead>
+          <tr>
+            <th scope="col">N.º</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Bienes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="d : ${donaciones.datos}">
+            <td th:text="${d.id}">1</td>
+            <td th:text="${d.descripcionGeneral != null ? d.descripcionGeneral : '—'}">Mudanza de oficina</td>
+            <td>
+              <ul th:unless="${#lists.isEmpty(d.bienesDeEntrada)}">
+                <li th:each="b : ${d.bienesDeEntrada}" th:text="${b.descripcion} + ' · ' + ${b.cantidadOriginal} + ' ' + ${#strings.toLowerCase(b.unidad)}">Silla · 6 unidades</li>
+              </ul>
+              <span th:if="${#lists.isEmpty(d.bienesDeEntrada)}">—</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</body>
+</html>

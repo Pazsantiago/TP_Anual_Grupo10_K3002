@@ -1,0 +1,18 @@
+/* BANNER · aviso no intrusivo. Variantes: --ok, --error.
+   Marcado: <p class="banner banner--ok" role="status"> <span class="banner__icon" aria-hidden="true">✓</span> <span>Texto</span> </p>
+   El ícono y el borde izquierdo evitan depender solo del color (WCAG 1.4.1). */
+
+.banner {
+  --banner-fg: var(--color-ink);
+  --banner-bg: var(--color-surface);
+  --banner-accent: var(--color-line);
+
+  display: flex; align-items: flex-start; gap: var(--space-2);
+  margin: 0 0 var(--space-3); padding: var(--space-3);
+  color: var(--banner-fg); background: var(--banner-bg);
+  border: 1px solid var(--banner-accent); border-left-width: 6px; border-radius: var(--radius);
+}
+.banner__icon { font-weight: var(--weight-bold); }
+
+.banner--ok    { --banner-fg: var(--color-ok);    --banner-bg: var(--color-ok-bg);    --banner-accent: var(--color-ok); }
+.banner--error { --banner-fg: var(--color-error); --banner-bg: var(--color-error-bg); --banner-accent: var(--color-error); }

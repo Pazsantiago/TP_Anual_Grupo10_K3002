@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Necesidades de la entidad')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('entidades')}"></header>
+
+<main id="contenido" class="container page">
+  <div class="page-head">
+    <h1 class="page-head__title">
+      Necesidades de
+      <span th:if="${entidad}" th:text="${entidad.razonSocial}">Escuela rural N.º 10</span>
+      <span th:unless="${entidad}" th:text="'la entidad #' + ${idEntidad}">la entidad #1</span>
+    </h1>
+    <a class="btn btn--secondary" th:href="@{/entidades}">Volver a entidades</a>
+  </div>
+
+  <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+  <section class="card" aria-labelledby="titulo-lista">
+    <h2 id="titulo-lista" class="sr-only">Listado de necesidades</h2>
+
+    <th:block th:if="${necesidades.error}"><p th:replace="~{fragments/layout :: aviso-error(${necesidades.error})}"></p></th:block>
+
+    <div class="empty-state" th:if="${#lists.isEmpty(necesidades.datos)}">
+      <p class="empty-state__text" th:unless="${necesidades.error}">Esta entidad todavía no declaró necesidades.</p>
+      <p class="empty-state__text" th:if="${necesidades.error}">No pudimos cargar las necesidades.</p>
+    </div>
+
+    <div class="table-wrap" role="region" aria-label="Tabla de necesidades" tabindex="0"
+         th:unless="${#lists.isEmpty(necesidades.datos)}">
+      <table class="table">
+        <caption class="table__caption" th:text="${#lists.size(necesidades.datos)} + ' necesidades'">Necesidades</caption>
+        <thead>
+          <tr>
+            <th scope="col">Descripción</th>
+            <th scope="col">Cantidad objetivo</th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="n : ${necesidades.datos}">
+            <td th:text="${n.descripcion}">Sillas</td>
+            <td th:text="${n.cantidadObjetivo != null ? n.cantidadObjetivo : '—'}">30</td>
+            <td>
+              <span class="badge" th:classappend="${n.estaSatisfechaConDonacion == true ? 'badge--ok' : ''}"
+                    th:text="${n.estaSatisfechaConDonacion == true ? 'Satisfecha' : 'Pendiente'}">Pendiente</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</body>
+</html>

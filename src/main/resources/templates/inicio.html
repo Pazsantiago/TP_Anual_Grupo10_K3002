@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Inicio')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: header('inicio')}"></header>
+
+<main id="contenido" class="container page">
+  <div class="page-head">
+    <h1 class="page-head__title">DonaTrack</h1>
+  </div>
+
+  <div th:replace="~{fragments/layout :: mensajes}"></div>
+
+  <div class="grid">
+    <article class="card" th:each="item : ${navegacion}">
+      <h2 th:text="${item.etiqueta}">Sección</h2>
+      <p th:text="${item.descripcion}">Descripción de la sección.</p>
+      <a class="btn btn--secondary" th:href="@{${item.ruta}}">Abrir<span class="sr-only" th:text="' ' + ${item.etiqueta}"></span></a>
+    </article>
+  </div>
+</main>
+</body>
+</html>

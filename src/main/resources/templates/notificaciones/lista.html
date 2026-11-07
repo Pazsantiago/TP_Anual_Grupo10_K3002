@@ -2,27 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Notificaciones')}"></head>
 <body>
-<header th:replace="~{fragments/layout :: header}"></header>
+<header th:replace="~{fragments/layout :: header('notificaciones')}"></header>
 
-<main id="contenido">
+<main id="contenido" class="container page">
   <div class="page-head">
-    <h1>Notificaciones</h1>
+    <h1 class="page-head__title">Notificaciones</h1>
     <a class="btn" th:href="@{/notificaciones/nueva}">Enviar notificación</a>
   </div>
 
   <div th:replace="~{fragments/layout :: mensajes}"></div>
 
   <section class="card" aria-labelledby="titulo-lista">
+    <h2 id="titulo-lista" class="sr-only">Listado de notificaciones</h2>
 
-    <div class="empty" th:if="${#lists.isEmpty(notificaciones)}">
-      <p th:unless="${errorServicio}">Todavía no se envió ninguna notificación.</p>
-      <p th:if="${errorServicio}">No pudimos cargar el listado.</p>
+    <div class="empty-state" th:if="${#lists.isEmpty(notificaciones)}">
+      <p class="empty-state__text" th:unless="${errorServicio}">Todavía no se envió ninguna notificación.</p>
+      <p class="empty-state__text" th:if="${errorServicio}">No pudimos cargar el listado.</p>
       <a class="btn btn--secondary" th:href="@{/notificaciones/nueva}">Enviar la primera</a>
     </div>
 
-    <div class="table-wrap" th:unless="${#lists.isEmpty(notificaciones)}">
-      <table>
-        <caption th:text="${#lists.size(notificaciones)} + ' notificaciones'">Notificaciones</caption>
+    <div class="table-wrap" role="region" aria-label="Tabla de notificaciones" tabindex="0"
+         th:unless="${#lists.isEmpty(notificaciones)}">
+      <table class="table">
+        <caption class="table__caption" th:text="${#lists.size(notificaciones)} + ' notificaciones'">Notificaciones</caption>
         <thead>
           <tr>
             <th scope="col">Destinatario</th>
@@ -37,7 +39,11 @@
           <tr th:each="n : ${notificaciones}">
             <td th:text="${n.destinatario}">Ana Pérez</td>
             <td th:text="${n.medioNotificacion}">EMAIL</td>
-            <td><span class="badge" th:text="${n.estadoNotificacion}">ENVIADA</span></td>
+            <td>
+              <!-- Variante por estado. Ajustar los valores a los del enum del servicio. -->
+              <span class="badge" th:text="${n.estadoNotificacion}"
+                    th:classappend="${n.estadoNotificacion == 'ENVIADA' ? 'badge--ok' : (n.estadoNotificacion == 'FALLIDA' or n.estadoNotificacion == 'ERROR' ? 'badge--error' : '')}">ENVIADA</span>
+            </td>
             <td>
               <strong th:if="${n.asunto}" th:text="${n.asunto}">Asunto</strong>
               <div th:text="${n.cuerpo}">Cuerpo</div>

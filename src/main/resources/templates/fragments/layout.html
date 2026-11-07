@@ -1,28 +1,61 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 
+<!-- HEAD. Para sumar un componente: crear static/css/components/<nombre>.css y agregar UNA línea acá. -->
 <head th:fragment="head(titulo)">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title th:text="${titulo} + ' - DonaTrack'">DonaTrack</title>
-  <link rel="stylesheet" th:href="@{/css/app.css}">
+
+  <link rel="stylesheet" th:href="@{/css/tokens.css}">
+  <link rel="stylesheet" th:href="@{/css/base.css}">
+  <link rel="stylesheet" th:href="@{/css/layout.css}">
+  <link rel="stylesheet" th:href="@{/css/components/topbar.css}">
+  <link rel="stylesheet" th:href="@{/css/components/button.css}">
+  <link rel="stylesheet" th:href="@{/css/components/card.css}">
+  <link rel="stylesheet" th:href="@{/css/components/banner.css}">
+  <link rel="stylesheet" th:href="@{/css/components/form.css}">
+  <link rel="stylesheet" th:href="@{/css/components/table.css}">
+  <link rel="stylesheet" th:href="@{/css/components/badge.css}">
+  <link rel="stylesheet" th:href="@{/css/components/empty-state.css}">
+  <link rel="stylesheet" th:href="@{/css/components/stat.css}">
+  <link rel="stylesheet" th:href="@{/css/components/meter.css}">
+  <link rel="stylesheet" th:href="@{/css/components/progress.css}">
+
   <script th:src="@{/js/app.js}" defer></script>
 </head>
 
 <body>
-  <a class="skip-link" href="#contenido">Ir al contenido</a>
-
-  <header class="topbar" th:fragment="header">
-    <nav class="topbar__inner" aria-label="Principal">
-      <a class="topbar__brand" th:href="@{/notificaciones}">DonaTrack</a>
-      <a class="nav-link" th:href="@{/notificaciones}">Notificaciones</a>
+  <!-- HEADER. Parámetro `activo`: clave de la sección actual (marca su enlace con aria-current).
+       Los enlaces salen de ${navegacion} (ver NavegacionAdvice): no se editan acá. -->
+  <header class="topbar" th:fragment="header(activo)">
+    <a class="skip-link" href="#contenido">Ir al contenido</a>
+    <nav class="topbar__inner container" aria-label="Principal">
+      <a class="topbar__brand" th:href="@{/}">DonaTrack</a>
+      <a class="topbar__link" th:each="item : ${navegacion}"
+         th:href="@{${item.ruta}}" th:text="${item.etiqueta}"
+         th:attr="aria-current=${activo == item.clave} ? 'true'">Sección</a>
     </nav>
+    <div class="progress" data-progress role="progressbar" aria-label="Cargando" hidden></div>
   </header>
 
-  <!-- Avisos: éxito (flash tras redirect) y error del servicio -->
+  <!-- MENSAJES. Avisos de página: éxito (flash tras redirect) y error del servicio. -->
   <div th:fragment="mensajes">
-    <p class="banner banner--ok" role="status" th:if="${exito}" th:text="${exito}"></p>
-    <p class="banner banner--error" role="alert" th:if="${errorServicio}" th:text="${errorServicio}"></p>
+    <p class="banner banner--ok" role="status" th:if="${exito}">
+      <span class="banner__icon" aria-hidden="true">✓</span>
+      <span th:text="${exito}"></span>
+    </p>
+    <p class="banner banner--error" role="alert" th:if="${errorServicio}">
+      <span class="banner__icon" aria-hidden="true">!</span>
+      <span th:text="${errorServicio}"></span>
+    </p>
   </div>
+
+  <!-- AVISO DE ERROR de una sección (cuando una parte de la página no pudo cargarse).
+       Uso:  <th:block th:if="${seccion.error}"><p th:replace="~{fragments/layout :: aviso-error(${seccion.error})}"></p></th:block> -->
+  <p class="banner banner--error" role="alert" th:fragment="aviso-error(texto)">
+    <span class="banner__icon" aria-hidden="true">!</span>
+    <span th:text="${texto}"></span>
+  </p>
 </body>
 </html>
