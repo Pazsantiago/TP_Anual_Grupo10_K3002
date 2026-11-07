@@ -1,19 +1,11 @@
 package com.Donatrack.Logistica.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.Donatrack.Logistica.domain.*;
+import com.Donatrack.Logistica.dto.SeguimientoDTO;
+import com.Donatrack.Logistica.repository.*;
 import org.springframework.stereotype.Service;
 
-import com.Donatrack.Logistica.domain.Camion;
-import com.Donatrack.Logistica.domain.Entrega;
-import com.Donatrack.Logistica.domain.EstadoEntrega;
-import com.Donatrack.Logistica.domain.UbicacionCamion;
-import com.Donatrack.Logistica.dto.SeguimientoDTO;
-import com.Donatrack.Logistica.repository.CamionRepository;
-import com.Donatrack.Logistica.repository.EntregaRepository;
+import java.util.*;
 
 @Service
 public class SeguimientoService {
@@ -25,6 +17,7 @@ public class SeguimientoService {
         this.camionRepo = camionRepo;
     }
 
+    /** Donaciones ya no envía donantes: queda vacío salvo que se carguen. */
     public List<SeguimientoDTO> porDonante(Long idDonante) {
         return armar(entregaRepo.findByIdDonantesAndEstado(idDonante, EstadoEntrega.EN_TRASLADO));
     }

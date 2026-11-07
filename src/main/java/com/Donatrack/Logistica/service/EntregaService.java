@@ -1,16 +1,13 @@
 package com.Donatrack.Logistica.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.Donatrack.Logistica.domain.Bien;
-import com.Donatrack.Logistica.domain.Bulto;
 import com.Donatrack.Logistica.domain.Direccion;
 import com.Donatrack.Logistica.domain.Entrega;
 import com.Donatrack.Logistica.dto.DonacionAsignadaDTO;
 import com.Donatrack.Logistica.repository.EntregaRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EntregaService {
@@ -31,15 +28,9 @@ public class EntregaService {
             Entrega e = new Entrega(new Direccion(dto.direccionEntidad(), ""));
             e.setIdDonacion(dto.idAsignada());
             e.setIdEntidad(dto.idEntidad());
-            e.setIdDonantes(dto.idDonantes());
-            if (dto.bultos() != null) {
-                e.setBultos(dto.bultos().stream().map(b -> {
-                    Bulto bulto = new Bulto(b.peso(), b.volumen(), b.altura());
-                    if (b.bienes() != null)
-                        b.bienes().forEach(x -> bulto.getBienes().add(new Bien(x.nombre(), x.cantidad(), x.tipo())));
-                    return bulto;
-                }).toList());
-            }
+            if (dto.donacionesSegmentadas() != null)
+                e.setIdSegmentadas(dto.donacionesSegmentadas().stream()
+                        .map(DonacionAsignadaDTO.DonacionSegmentadaDTO::idSegmentada).toList());
             return repo.save(e);
         });
     }

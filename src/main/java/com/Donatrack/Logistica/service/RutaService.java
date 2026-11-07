@@ -1,23 +1,16 @@
 package com.Donatrack.Logistica.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-
+import com.Donatrack.Logistica.domain.*;
+import com.Donatrack.Logistica.dto.Mensajes.*;
+import com.Donatrack.Logistica.integracion.NotificadorBroker;
+import com.Donatrack.Logistica.repository.*;
 import org.springframework.stereotype.Service;
 
-import com.Donatrack.Logistica.domain.Entrega;
-import com.Donatrack.Logistica.domain.EstadoEntrega;
-import com.Donatrack.Logistica.domain.EstadoPlan;
-import com.Donatrack.Logistica.domain.PlanRuta;
-import com.Donatrack.Logistica.dto.Mensajes.*;
-import com.Donatrack.Logistica.dto.Mensajes.MensajeConfirmacionEntrega;
-import com.Donatrack.Logistica.dto.Mensajes.MensajeEntregaFallida;
-import com.Donatrack.Logistica.dto.Mensajes.MensajeInicioDeRuta;
-import com.Donatrack.Logistica.integracion.NotificadorBroker;
-import com.Donatrack.Logistica.repository.EntregaRepository;
-import com.Donatrack.Logistica.repository.PlanRutaRepository;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class RutaService {
@@ -42,10 +35,7 @@ public class RutaService {
         entregaRepo.saveAll(entregas);
         plan = planRepo.save(plan);
 
-        broker.inicioDeRuta(new MensajeInicioDeRuta(plan.getId(), plan.getPatenteCamion(),
-                entregas.stream().map(Entrega::getIdDonacion).toList(),
-                entregas.stream().map(Entrega::getIdEntidad).distinct().toList(),
-                plan.getFechaInicio()));
+        entregas.forEach(x -> broker.inicioDeRuta(new MensajeInicioDeRuta(x.getIdDonacion())));
         return plan;
     }
 
@@ -56,8 +46,9 @@ public class RutaService {
         e = entregaRepo.save(e);
         cerrarPlanSiCorresponde(e.getPlanRutaId());
 
-        broker.entregaConfirmada(new MensajeConfirmacionEntrega(e.getIdDonacion(), e.getIdDonantes(),
-                List.of(), e.getIdEntidad(), e.getPatenteCamion(), e.getFechaEntrega()));
+        Date fecha = Date.from(e.getFechaEntrega().atZone(ZoneId.systemDefault()).toInstant());
+        broker.entregaConfirmada(new MensajeConfirmacionEntrega(e.getIdDonacion(), e.getIdEntidad(),
+                e.getIdSegmentadas(), e.getNroComprobante(), fecha, null)); // idCamionAsignado: a acordar
         return e;
     }
 
@@ -74,8 +65,7 @@ public class RutaService {
         e = entregaRepo.save(e);
         cerrarPlanSiCorresponde(e.getPlanRutaId());
 
-        broker.entregaFallida(new MensajeEntregaFallida(e.getIdDonacion(), e.getIdDonantes(),
-                e.getIdEntidad(), motivo, LocalDateTime.now()));
+        broker.entregaFallida(new MensajeEntregaFallida(e.getIdDonacion(), motivo, true));
         return e;
     }
 
