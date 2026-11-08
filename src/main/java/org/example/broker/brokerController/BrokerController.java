@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class BrokerController {
     private final Comunicador comunicador;
-    @PostMapping("/donacionesAsignadas")
+    @PostMapping("/entregas/asignadas")
     public ResponseEntity<Void> enviarDonacionAsignada(@RequestBody DonacionAsignadaDTO donacionAsignada) {
         System.out.println("DonacionAsignada: " + donacionAsignada);
         comunicador.enviarDonacionAsignada(donacionAsignada);
