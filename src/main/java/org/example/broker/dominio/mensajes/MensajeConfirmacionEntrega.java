@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 public class MensajeConfirmacionEntrega {
     private Long idAsignada;
+    private Long idEntidad;
     private List<Long> idSegmentadasIncluidos;
     private Integer nroComprobante;
     private Date fecha;

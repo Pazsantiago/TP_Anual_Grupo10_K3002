@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 public class PaqueteEntregado {
     private Long idAsignada;
+    private Long idEntidad;
     private List<Long> idSegmentadasIncluidos;
 }
 
