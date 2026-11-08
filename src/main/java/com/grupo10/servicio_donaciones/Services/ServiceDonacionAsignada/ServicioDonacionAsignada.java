@@ -180,7 +180,7 @@ public class ServicioDonacionAsignada {
 
 
         Donante donante = donacionSegmentada.getDonacionInicial().getDonante();
-        comunicarAsignacionDeDonaciones(donante, entidad);
+        //comunicarAsignacionDeDonaciones(donante, entidad);
         if (donacionFinal.sePuedePlanificarEnvio()) {
             comunicador.enviarDonacionAsignada(donacionFinal, restClientBrokerLogistica);
         }
