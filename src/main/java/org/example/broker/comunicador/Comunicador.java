@@ -57,7 +57,7 @@ public class Comunicador {
     public void enviarDonacionAsignada(DonacionAsignadaDTO donacionAsignada) {
         Integer result = this.restClientLogistica
                 .post()
-                .uri("/entregas/asignadas")
+                .uri("/api/entregas/asignadas")
                 .body(donacionAsignada)
                 .retrieve()
                 .body(Integer.class);
