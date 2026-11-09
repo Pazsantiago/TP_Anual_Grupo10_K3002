@@ -10,22 +10,31 @@
             <h4>Registrar Donación</h4>
         </div>
         <div class="card-body">
-            <form th:action="@{/donaciones}" th:object="${donacion}" method="post">
-                <div class="mb-3">
-                    <label class="form-label">Seleccionar Donante:</label>
-                    <select th:field="*{idDonante}" class="form-select" required>
-                        <option value="">-- Donante --</option>
-                        <option th:each="d : ${donantes}" th:value="${d.id}" th:text="${d.nombre != null ? d.nombre : d.razonSocial}"></option>
-                    </select>
-                </div>
+            <form th:action="@{/donantes/{id}/donaciones(id=${idDonante})}" th:object="${donacion}" method="post">
+                <input type="text" th:field="*{descripcionGeneral}" placeholder="Descripción General" class="form-control mb-3">
 
-                <div class="mb-3">
-                    <label class="form-label">Descripción General:</label>
-                    <input type="text" th:field="*{descripcionGeneral}" class="form-control" placeholder="Ej: Ropa de invierno" required>
-                </div>
+                <h5>Bien a Donar</h5>
+                <select th:field="*{bienesDeEntrada[0].tipo}" class="form-select mb-2">
+                    <option value="CON_ESTADO">Con Estado</option>
+                    <option value="PERECEDERO">Perecedero</option>
+                </select>
+                <select th:field="*{bienesDeEntrada[0].estado}" class="form-select mb-2">
+                    <option value="NUEVO">Nuevo</option>
+                    <option value="USADO">Usado</option>
+                </select>
 
-                <button type="submit" class="btn btn-success">Guardar Donación</button>
-                <a href="/donaciones" class="btn btn-secondary">Cancelar</a>
+                <input type="text" th:field="*{bienesDeEntrada[0].descripcion}" placeholder="Descripción del Bien (ej: Algo1)" class="form-control mb-2">
+                <input type="text" th:field="*{bienesDeEntrada[0].subcategoria.nombre}" placeholder="Subcategoría (ej: arroz)" class="form-control mb-2">
+                <input type="number" th:field="*{bienesDeEntrada[0].subcategoria.categoria.id}" value="1" class="form-control mb-2" placeholder="ID Categoría">
+
+                <select th:field="*{bienesDeEntrada[0].unidad}" class="form-select mb-2">
+                    <option value="KILOGRAMOS">Kilogramos</option>
+                    <option value="UNIDADES">Unidades</option>
+                    <option value="LITROS">Litros</option>
+                </select>
+                <input type="number" th:field="*{bienesDeEntrada[0].cantidadOriginal}" placeholder="Cantidad" class="form-control mb-2">
+
+                <button type="submit" class="btn btn-success mt-3">Registrar Donación</button>
             </form>
         </div>
     </div>

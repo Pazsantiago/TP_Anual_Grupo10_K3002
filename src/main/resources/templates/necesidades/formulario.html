@@ -10,28 +10,88 @@
             <h4>Registrar Necesidad</h4>
         </div>
         <div class="card-body">
-            <form th:action="@{/necesidades}" th:object="${necesidad}" method="post">
+            <form th:action="@{/entidades/{id}/necesidades(id=${idEntidad})}" th:object="${necesidad}" method="post">
+
                 <div class="mb-3">
-                    <label class="form-label">Entidad Beneficiaria:</label>
-                    <select th:field="*{idEntidadBeneficiaria}" class="form-select" required>
-                        <option value="">-- Seleccionar Entidad --</option>
-                        <option th:each="e : ${entidades}" th:value="${e.id}" th:text="${e.razonSocial}"></option>
+                    <label class="form-label fw-bold">Tipo de Necesidad</label>
+                    <select id="selectTipoNecesidad" th:field="*{tipo}" class="form-select" onchange="actualizarTipoNecesidad()">
+                        <option value="EXTRAORDINARIA" selected>Extraordinaria (Puntual / Urgente)</option>
+                        <option value="RECURRENTE">Recurrente (Periódica)</option>
                     </select>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Descripción de la Necesidad:</label>
-                    <input type="text" th:field="*{descripcion}" class="form-control" placeholder="Ej: Leche en polvo" required>
+                    <label class="form-label">Descripción</label>
+                    <input type="text" th:field="*{descripcion}" placeholder="Ej: Arroz para comedor comunitario" class="form-control" required>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Subcategoría del Bien</label>
+                        <input type="text" th:field="*{subcategoria.nombre}" placeholder="Ej: arroz, fideos, leche" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">ID Categoría</label>
+                        <input type="number" th:field="*{subcategoria.categoria.id}" value="1" class="form-control" required>
+                    </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Cantidad Objetivo:</label>
-                    <input type="number" th:field="*{cantidadObjetivo}" class="form-control" required>
+                    <label class="form-label">Cantidad Objetivo</label>
+                    <input type="number" th:field="*{cantidadObjetivo}" placeholder="Cantidad requerida" class="form-control" min="1" required>
                 </div>
 
-                <button type="submit" class="btn btn-success">Guardar Necesidad</button>
-                <a href="/necesidades" class="btn btn-secondary">Cancelar</a>
+                <div id="seccionExtraordinaria" class="border p-3 rounded mb-3 bg-white">
+                    <h6 class="fw-bold text-primary mb-3">Detalles de Necesidad Extraordinaria</h6>
+                    <div class="mb-2">
+                        <label class="form-label">Fecha Límite</label>
+                        <input type="date" th:field="*{fechaLimite}" class="form-control">
+                    </div>
+                </div>
+
+                <div id="seccionRecurrente" class="border p-3 rounded mb-3 bg-white" style="display: none;">
+                    <h6 class="fw-bold text-primary mb-3">Detalles de Necesidad Recurrente</h6>
+                    <div class="mb-2">
+                        <label class="form-label">Periodicidad</label>
+                        <select th:field="*{periodicidad}" class="form-select" disabled>
+                            <option value="SEMANAL">Semanal</option>
+                            <option value="MENSUAL">Mensual</option>
+                            <option value="ANUAL">Anual</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a th:href="@{/entidades/{id}(id=${idEntidad})}" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-success">Guardar Necesidad</button>
+                </div>
             </form>
+
+            <!-- Esto lo hicimos para que dependiendo el tipo de necesidad aparezcan o no los campos que corresponden -->
+            <script>
+                function actualizarTipoNecesidad() {
+                    const tipo = document.getElementById("selectTipoNecesidad").value;
+                    const secExtra = document.getElementById("seccionExtraordinaria");
+                    const secRecu = document.getElementById("seccionRecurrente");
+
+                    const inputsExtra = secExtra.querySelectorAll("input, select");
+                    const inputsRecu = secRecu.querySelectorAll("input, select");
+
+                    if (tipo === 'EXTRAORDINARIA') {
+                        secExtra.style.display = 'block';
+                        secRecu.style.display = 'none';
+
+                        inputsExtra.forEach(el => el.disabled = false);
+                        inputsRecu.forEach(el => el.disabled = true);
+                    } else {
+                        secExtra.style.display = 'none';
+                        secRecu.style.display = 'block';
+
+                        inputsExtra.forEach(el => el.disabled = true);
+                        inputsRecu.forEach(el => el.disabled = false);
+                    }
+                }
+            </script>
         </div>
     </div>
 </div>

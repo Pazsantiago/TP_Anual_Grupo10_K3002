@@ -1,0 +1,34 @@
+package org.example.donacionesfrontend.dominio.necesidad;
+
+import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Subcategoria;
+import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
+import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@NoArgsConstructor
+public class NecesidadExtraordinaria extends Necesidad {
+
+
+    public NecesidadExtraordinaria(
+            String descripcion,
+            Subcategoria subcategoria,
+            Integer cantidadObjetivo,
+            Integer cantidadRecibida,
+            EntidadBeneficiaria entidad,
+            Boolean estaSatisfecha
+    ) {
+        super(descripcion, subcategoria, cantidadObjetivo, cantidadRecibida, entidad, estaSatisfecha);
+    }
+
+
+    @Override
+    public boolean estaSatisfecha() {
+
+        return this.getCantidadRecibida() >= this.getCantidadObjetivo() && this.estaSatisfecha();
+    }
+}

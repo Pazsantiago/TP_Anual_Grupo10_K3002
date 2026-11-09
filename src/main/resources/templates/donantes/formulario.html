@@ -11,26 +11,139 @@
         </div>
         <div class="card-body">
             <form th:action="@{/donantes}" th:object="${donante}" method="post">
-                <input type="hidden" th:field="*{id}">
+
 
                 <div class="mb-3">
-                    <label class="form-label">Nombre / Razón Social:</label>
-                    <input type="text" th:field="*{nombre}" class="form-control" placeholder="Ingrese nombre o razón social" required>
+                    <label class="form-label fw-bold">Tipo de Donante</label>
+                    <select id="selectTipoPersona" th:field="*{persona.tipo}" class="form-select" onchange="actualizarTipoPersona()">
+                        <option value="HUMANA" selected>Persona Humana</option>
+                        <option value="JURIDICA">Persona Jurídica (Empresa / ONG)</option>
+                    </select>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Correo Electrónico:</label>
-                    <input type="email" th:field="*{correoElectronico}" class="form-control" required>
+                <hr>
+
+
+                <div id="seccionHumana" class="border p-3 rounded mb-3 bg-white">
+                    <h5 class="text-primary mb-3">Datos de Persona Humana</h5>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" id="campoNombre" th:field="*{persona.nombre}" placeholder="Ej: Santiago" class="form-control" required>
+                    </div>
+
+
+                    <h6 class="fw-bold mt-3">Documento</h6>
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-4">
+                            <select id="campoTipoDoc" th:field="*{persona.documento.tipoDocumento}" class="form-select">
+                                <option value="DNI">DNI</option>
+                                <option value="PASAPORTE">Pasaporte</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" id="campoDoc" th:field="*{persona.documento.documento}" placeholder="Número de Documento" class="form-control" required>
+                        </div>
+                    </div>
+
+
+                    <h6 class="fw-bold mt-3">Dirección</h6>
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <input type="text" id="campoCalle" th:field="*{persona.direccion.calle}" placeholder="Calle" class="form-control mb-2">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="campoAltura" th:field="*{persona.direccion.altura}" placeholder="Altura" class="form-control mb-2">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="campoLocalidad" th:field="*{persona.direccion.localidad}" placeholder="Localidad" class="form-control mb-2">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="campoCP" th:field="*{persona.direccion.codigoPostal}" placeholder="Código Postal" class="form-control mb-2">
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Teléfono:</label>
-                    <input type="text" th:field="*{telefono}" class="form-control" required>
+                <div id="seccionJuridica" class="border p-3 rounded mb-3 bg-white" style="display: none;">
+                    <h5 class="text-primary mb-3">Datos de Persona Jurídica</h5>
+
+                    <div class="mb-3">
+                        <label class="form-label">Razón Social</label>
+                        <input type="text" id="campoRazonSocial" th:field="*{persona.razonSocial}" placeholder="Ej: Arcos Plateados S.A." class="form-control" disabled>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Rubro</label>
+                            <input type="text" id="campoRubro" th:field="*{persona.rubro}" placeholder="Ej: Alimentos" class="form-control" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Tipo Jurídico</label>
+                            <select id="campoTipoJuridica" th:field="*{persona.tipoJuridica}" class="form-select" disabled>
+                                <option value="EMPRESA">Empresa</option>
+                                <option value="ONG">ONG</option>
+                                <option value="INSTITUCION">Institución</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
-                <button type="submit" class="btn btn-success">Guardar</button>
-                <a href="/donantes" class="btn btn-secondary">Cancelar</a>
+                <hr>
+
+                <h5 class="text-primary mb-3">Medio de Contacto</h5>
+                <div class="row g-2 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Canal</label>
+                        <select th:field="*{mediosDeContacto.tipo}" class="form-select">
+                            <option value="EMAIL">Correo Electrónico</option>
+                            <option value="WHATSAPP">WhatsApp</option>
+                            <option value="TELEFONO">Teléfono</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Correo Electrónico</label>
+                        <input type="email" th:field="*{mediosDeContacto.correoElectronico}" placeholder="usuario@correo.com" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Teléfono</label>
+                        <input type="text" th:field="*{mediosDeContacto.telefono}" placeholder="+5491123456789" class="form-control">
+                    </div>
+                    <input type="hidden" th:field="*{mediosDeContacto.esPredeterminado}" value="true" />
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a href="/donantes" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-success">Guardar Donante</button>
+                </div>
             </form>
+
+            <!-- Esto lo hicimos para que dependiendo el tipo de necesidad aparezcan o no los campos que corresponden -->
+            <script>
+                function actualizarTipoPersona() {
+                    const tipo = document.getElementById("selectTipoPersona").value;
+                    const secHumana = document.getElementById("seccionHumana");
+                    const secJuridica = document.getElementById("seccionJuridica");
+
+                    // Inputs de Persona Humana
+                    const inputsHumana = secHumana.querySelectorAll("input, select");
+                    // Inputs de Persona Jurídica
+                    const inputsJuridica = secJuridica.querySelectorAll("input, select");
+
+                    if (tipo === 'HUMANA') {
+                        secHumana.style.display = 'block';
+                        secJuridica.style.display = 'none';
+
+                        inputsHumana.forEach(el => el.disabled = false);
+                        inputsJuridica.forEach(el => el.disabled = true);
+                    } else {
+                        secHumana.style.display = 'none';
+                        secJuridica.style.display = 'block';
+
+                        inputsHumana.forEach(el => el.disabled = true);
+                        inputsJuridica.forEach(el => el.disabled = false);
+                    }
+                }
+            </script>
         </div>
     </div>
 </div>
