@@ -90,7 +90,7 @@ public class Comunicador {
         }
     }
 
-    public void comunicarEntregaIncentivos(PaqueteEntregado mensaje) {
+    public void comunicarEntregaIncentivos(MensajeConfirmacionIncentivosDTO mensaje) {
         ResponseEntity<Void> result = this.restClientIncentivos
                 .post()
                 .uri("/entregasConfirmadas")

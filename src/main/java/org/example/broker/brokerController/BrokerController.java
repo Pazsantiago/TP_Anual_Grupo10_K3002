@@ -32,9 +32,9 @@ public class BrokerController {
     public ResponseEntity<String> avisarEntregaRealizada(@RequestBody MensajeConfirmacionEntrega mensajeConfirmacionEntrega) {
         System.out.println("Entrega: " + mensajeConfirmacionEntrega);
         comunicador.enviarEntregaRealizada(mensajeConfirmacionEntrega);
-        comunicador.comunicarEntregaIncentivos(new PaqueteEntregado(
+        comunicador.comunicarEntregaIncentivos(new MensajeConfirmacionIncentivosDTO(
                 mensajeConfirmacionEntrega.getIdAsignada(),
-                mensajeConfirmacionEntrega.getIdEntidad(), 
+                mensajeConfirmacionEntrega.getIdEntidad(),
                 mensajeConfirmacionEntrega.getIdSegmentadasIncluidos().stream().toList()
         ));
         return ResponseEntity.ok("OK");
