@@ -55,54 +55,61 @@ public class Comunicador {
     }
 
     public void enviarDonacionAsignada(DonacionAsignadaDTO donacionAsignada) {
-        Integer result = this.restClientLogistica
+        ResponseEntity<Void> result = this.restClientLogistica
                 .post()
                 .uri(this.urlLogistica + "/api/entregas/asignadas")
                 .body(donacionAsignada)
                 .retrieve()
-                .body(Integer.class);
-        if (result != 200) {
+                .toBodilessEntity();
+        if (!result.getStatusCode().is2xxSuccessful()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     public void enviarInicioDeRuta(MensajeInicioDeRuta mensaje) {
-        Integer result = this.restClientDonaciones
+        ResponseEntity<Void> result = this.restClientDonaciones
                 .post()
                 .uri("/iniciosDeRutas")
                 .body(mensaje)
                 .retrieve()
-                .body(Integer.class);
+                .toBodilessEntity();
+        if (!result.getStatusCode().is2xxSuccessful()) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
     public void enviarEntregaRealizada(MensajeConfirmacionEntrega mensaje) {
-        Integer result = this.restClientDonaciones
+        ResponseEntity<Void> result = this.restClientDonaciones
                 .post()
                 .uri("/entregasConfirmadas")
                 .body(mensaje)
                 .retrieve()
-                .body(Integer.class);
-        if (result != 200) {
+                .toBodilessEntity();
+        if (!result.getStatusCode().is2xxSuccessful()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     public void comunicarEntregaIncentivos(PaqueteEntregado mensaje) {
-        Integer result = this.restClientIncentivos
+        ResponseEntity<Void> result = this.restClientIncentivos
                 .post()
                 .uri("/entregasConfirmadas")
                 .body(mensaje)
                 .retrieve()
-                .body(Integer.class);
-        if (result != 200) {
+                .toBodilessEntity();
+        if (!result.getStatusCode().is2xxSuccessful()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     public void enviarEntregaFallida(MensajeEntregaFallida mensaje) {
-        Integer result = this.restClientDonaciones
+        ResponseEntity<Void> result = this.restClientDonaciones
                 .post()
                 .uri("/entregasFallidas")
                 .body(mensaje)
                 .retrieve()
-                .body(Integer.class);
-        if (result != 200) {
+                .toBodilessEntity();
+        if (!result.getStatusCode().is2xxSuccessful()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
