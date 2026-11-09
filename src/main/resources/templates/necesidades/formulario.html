@@ -12,11 +12,12 @@
         <div class="card-body">
             <form th:action="@{/entidades/{id}/necesidades(id=${idEntidad})}" th:object="${necesidad}" method="post">
 
+                <!-- Select para alternar tipo de necesidad -->
                 <div class="mb-3">
                     <label class="form-label fw-bold">Tipo de Necesidad</label>
-                    <select id="selectTipoNecesidad" th:field="*{tipo}" class="form-select" onchange="actualizarTipoNecesidad()">
-                        <option value="EXTRAORDINARIA" selected>Extraordinaria (Puntual / Urgente)</option>
-                        <option value="RECURRENTE">Recurrente (Periódica)</option>
+                    <select class="form-select" onchange="location.href='?tipo=' + this.value">
+                        <option value="EXTRAORDINARIA" th:selected="${necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadExtraordinaria)}">Extraordinaria</option>
+                        <option value="RECURRENTE" th:selected="${necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadRecurrente)}">Recurrente</option>
                     </select>
                 </div>
 
@@ -27,8 +28,8 @@
 
                 <div class="row g-2 mb-3">
                     <div class="col-md-6">
-                        <label class="form-label">Subcategoría del Bien</label>
-                        <input type="text" th:field="*{subcategoria.nombre}" placeholder="Ej: arroz, fideos, leche" class="form-control" required>
+                        <label class="form-label">Subcategoría</label>
+                        <input type="text" th:field="*{subcategoria.nombre}" placeholder="arroz" class="form-control" required>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">ID Categoría</label>
@@ -41,57 +42,24 @@
                     <input type="number" th:field="*{cantidadObjetivo}" placeholder="Cantidad requerida" class="form-control" min="1" required>
                 </div>
 
-                <div id="seccionExtraordinaria" class="border p-3 rounded mb-3 bg-white">
-                    <h6 class="fw-bold text-primary mb-3">Detalles de Necesidad Extraordinaria</h6>
-                    <div class="mb-2">
-                        <label class="form-label">Fecha Límite</label>
-                        <input type="date" th:field="*{fechaLimite}" class="form-control">
-                    </div>
+                <!-- SECCIÓN EXTRAORDINARIA -->
+                <div th:if="${necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadExtraordinaria)}" class="mb-3">
+                    <label class="form-label">Fecha Límite</label>
+                    <input type="date" th:field="*{fechaLimite}" class="form-control">
                 </div>
 
-                <div id="seccionRecurrente" class="border p-3 rounded mb-3 bg-white" style="display: none;">
-                    <h6 class="fw-bold text-primary mb-3">Detalles de Necesidad Recurrente</h6>
-                    <div class="mb-2">
-                        <label class="form-label">Periodicidad</label>
-                        <select th:field="*{periodicidad}" class="form-select" disabled>
-                            <option value="SEMANAL">Semanal</option>
-                            <option value="MENSUAL">Mensual</option>
-                            <option value="ANUAL">Anual</option>
-                        </select>
-                    </div>
+                <!-- SECCIÓN RECURRENTE -->
+                <div th:if="${necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadRecurrente)}" class="mb-3">
+                    <label class="form-label">Periodicidad</label>
+                    <select th:field="*{periodicidad}" class="form-select">
+                        <option value="SEMANAL">Semanal</option>
+                        <option value="MENSUAL">Mensual</option>
+                        <option value="ANUAL">Anual</option>
+                    </select>
                 </div>
 
-                <div class="d-flex justify-content-end gap-2 mt-4">
-                    <a th:href="@{/entidades/{id}(id=${idEntidad})}" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-success">Guardar Necesidad</button>
-                </div>
+                <button type="submit" class="btn btn-success mt-3">Guardar Necesidad</button>
             </form>
-
-            <!-- Esto lo hicimos para que dependiendo el tipo de necesidad aparezcan o no los campos que corresponden -->
-            <script>
-                function actualizarTipoNecesidad() {
-                    const tipo = document.getElementById("selectTipoNecesidad").value;
-                    const secExtra = document.getElementById("seccionExtraordinaria");
-                    const secRecu = document.getElementById("seccionRecurrente");
-
-                    const inputsExtra = secExtra.querySelectorAll("input, select");
-                    const inputsRecu = secRecu.querySelectorAll("input, select");
-
-                    if (tipo === 'EXTRAORDINARIA') {
-                        secExtra.style.display = 'block';
-                        secRecu.style.display = 'none';
-
-                        inputsExtra.forEach(el => el.disabled = false);
-                        inputsRecu.forEach(el => el.disabled = true);
-                    } else {
-                        secExtra.style.display = 'none';
-                        secRecu.style.display = 'block';
-
-                        inputsExtra.forEach(el => el.disabled = true);
-                        inputsRecu.forEach(el => el.disabled = false);
-                    }
-                }
-            </script>
         </div>
     </div>
 </div>

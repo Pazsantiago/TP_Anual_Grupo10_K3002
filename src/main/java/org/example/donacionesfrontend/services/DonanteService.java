@@ -1,7 +1,7 @@
 package org.example.donacionesfrontend.services;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dtos.DonanteDTO;
+import org.example.donacionesfrontend.dominio.donante.Donante;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -12,41 +12,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DonanteService {
 
-    private final RestClient restClientDonaciones;
+    private final RestClient restClient;
 
-    public List<DonanteDTO> getAll() {
-        return restClientDonaciones.get()
-                .uri("/api/donantes")
+    public List<Donante> getAll() {
+        return restClient.get()
+                .uri("/donantes")
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<DonanteDTO>>() {});
+                .body(new ParameterizedTypeReference<List<Donante>>() {});
     }
 
-    public DonanteDTO getById(Long id) {
-        return restClientDonaciones.get()
-                .uri("/api/donantes/{id}", id)
+    public Donante getById(Long id) {
+        return restClient.get()
+                .uri("/donantes/{id}", id)
                 .retrieve()
-                .body(DonanteDTO.class);
+                .body(Donante.class);
     }
 
-    public DonanteDTO create(DonanteDTO dto) {
-        return restClientDonaciones.post()
-                .uri("/api/donantes")
-                .body(dto)
+    public void create(Donante donante) {
+        restClient.post()
+                .uri("/donantes")
+                .body(donante)
                 .retrieve()
-                .body(DonanteDTO.class);
-    }
-
-    public DonanteDTO update(Long id, DonanteDTO dto) {
-        return restClientDonaciones.put()
-                .uri("/api/donantes/{id}", id)
-                .body(dto)
-                .retrieve()
-                .body(DonanteDTO.class);
+                .toBodilessEntity();
     }
 
     public void delete(Long id) {
-        restClientDonaciones.delete()
-                .uri("/api/donantes/{id}", id)
+        restClient.delete()
+                .uri("/donantes/{id}", id)
                 .retrieve()
                 .toBodilessEntity();
     }

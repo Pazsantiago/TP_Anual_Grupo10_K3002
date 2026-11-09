@@ -1,7 +1,7 @@
 package org.example.donacionesfrontend.services;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dtos.NecesidadDTO;
+import org.example.donacionesfrontend.dominio.necesidad.Necesidad;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -12,26 +12,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NecesidadService {
 
-    private final RestClient restClientDonaciones;
+    private final RestClient restClient;
 
-    public List<NecesidadDTO> getByEntidad(Long idEntidad) {
-        return restClientDonaciones.get()
-                .uri("/api/entidadesBeneficiarias/{idEntidad}/necesidades", idEntidad)
+    public List<Necesidad> getByEntidad(Long idEntidad) {
+        return restClient.get()
+                .uri("/entidadesBeneficiarias/{idEntidad}/necesidades", idEntidad)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<NecesidadDTO>>() {});
+                .body(new ParameterizedTypeReference<List<Necesidad>>() {});
     }
 
-    public NecesidadDTO create(Long idEntidad, NecesidadDTO dto) {
-        return restClientDonaciones.post()
-                .uri("/api/entidadesBeneficiarias/{idEntidad}/necesidades", idEntidad)
-                .body(dto)
+    public void create(Long idEntidad, Necesidad necesidad) {
+        restClient.post()
+                .uri("/entidadesBeneficiarias/{idEntidad}/necesidades", idEntidad)
+                .body(necesidad)
                 .retrieve()
-                .body(NecesidadDTO.class);
+                .toBodilessEntity();
     }
 
     public void delete(Long idEntidad, Long idNecesidad) {
-        restClientDonaciones.delete()
-                .uri("/api/entidadesBeneficiarias/{idEntidad}/necesidades/{idNecesidad}", idEntidad, idNecesidad)
+        restClient.delete()
+                .uri("/entidadesBeneficiarias/{idEntidad}/necesidades/{idNecesidad}", idEntidad, idNecesidad)
                 .retrieve()
                 .toBodilessEntity();
     }

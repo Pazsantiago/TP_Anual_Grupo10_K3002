@@ -1,50 +1,57 @@
 package org.example.donacionesfrontend.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dtos.EntidadBeneficiariaDTO;
+import org.example.donacionesfrontend.dominio.categoria.Categoria;
+import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
+import org.example.donacionesfrontend.dominio.donante.Direccion;
+import org.example.donacionesfrontend.dominio.entidad.EntidadBeneficiaria;
+import org.example.donacionesfrontend.dominio.necesidad.NecesidadExtraordinaria;
 import org.example.donacionesfrontend.services.EntidadService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
-@RequestMapping("/entidades")
+@RequestMapping("/entidadesBeneficiarias")
 @RequiredArgsConstructor
 public class EntidadController {
 
-    private final EntidadService entidadRestService;
+    private final EntidadService entidadService;
 
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("entidades", entidadRestService.getAll());
+        model.addAttribute("entidades", entidadService.getAll());
         return "entidades/lista";
     }
 
     @GetMapping("/nueva")
     public String formularioNuevo(Model model) {
-        model.addAttribute("entidad", new EntidadBeneficiariaDTO());
-        return "entidades/formulario";
-    }
+        EntidadBeneficiaria entidad = new EntidadBeneficiaria();
+        entidad.setDireccion("Ninguna");
 
-    @GetMapping("/editar/{id}")
-    public String formularioEditar(@PathVariable Long id, Model model) {
-        model.addAttribute("entidad", entidadRestService.getById(id));
+        NecesidadExtraordinaria necesidad = new NecesidadExtraordinaria();
+        Subcategoria subcat = new Subcategoria();
+        subcat.setCategoria(new Categoria());
+        necesidad.setSubcategoria(subcat);
+
+        entidad.setNecesidades(new ArrayList<>(List.of(necesidad)));
+
+        model.addAttribute("entidad", entidad);
         return "entidades/formulario";
     }
 
     @PostMapping
-    public String guardar(@ModelAttribute("entidad") EntidadBeneficiariaDTO dto) {
-        if (dto.getId() == null) {
-            entidadRestService.create(dto);
-        } else {
-            entidadRestService.update(dto.getId(), dto);
-        }
-        return "redirect:/entidades";
+    public String guardar(@ModelAttribute("entidad") EntidadBeneficiaria entidad) {
+        entidadService.create(entidad);
+        return "redirect:/entidadesBeneficiarias";
     }
 
-    @PostMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Long id) {
-        entidadRestService.delete(id);
-        return "redirect:/entidades";
+    @PostMapping("/eliminar")
+    public String eliminar(@RequestParam Long id) {
+        entidadService.delete(id);
+        return "redirect:/entidadesBeneficiarias";
     }
 }

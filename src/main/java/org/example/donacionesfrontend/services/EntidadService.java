@@ -1,7 +1,7 @@
 package org.example.donacionesfrontend.services;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dtos.EntidadBeneficiariaDTO;
+import org.example.donacionesfrontend.dominio.entidad.EntidadBeneficiaria;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -12,41 +12,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EntidadService {
 
-    private final RestClient restClientDonaciones;
+    private final RestClient restClient;
 
-    public List<EntidadBeneficiariaDTO> getAll() {
-        return restClientDonaciones.get()
-                .uri("/api/entidadesBeneficiarias")
+    public List<EntidadBeneficiaria> getAll() {
+        return restClient.get()
+                .uri("/entidadesBeneficiarias")
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<EntidadBeneficiariaDTO>>() {});
+                .body(new ParameterizedTypeReference<List<EntidadBeneficiaria>>() {});
     }
 
-    public EntidadBeneficiariaDTO getById(Long id) {
-        return restClientDonaciones.get()
-                .uri("/api/entidadesBeneficiarias/{id}", id)
+    public EntidadBeneficiaria getById(Long id) {
+        return restClient.get()
+                .uri("/entidadesBeneficiarias/{id}", id)
                 .retrieve()
-                .body(EntidadBeneficiariaDTO.class);
+                .body(EntidadBeneficiaria.class);
     }
 
-    public EntidadBeneficiariaDTO create(EntidadBeneficiariaDTO dto) {
-        return restClientDonaciones.post()
-                .uri("/api/entidadesBeneficiarias")
-                .body(dto)
+    public void create(EntidadBeneficiaria entidad) {
+        restClient.post()
+                .uri("/entidadesBeneficiarias")
+                .body(entidad)
                 .retrieve()
-                .body(EntidadBeneficiariaDTO.class);
-    }
-
-    public EntidadBeneficiariaDTO update(Long id, EntidadBeneficiariaDTO dto) {
-        return restClientDonaciones.put()
-                .uri("/api/entidadesBeneficiarias/{id}", id)
-                .body(dto)
-                .retrieve()
-                .body(EntidadBeneficiariaDTO.class);
+                .toBodilessEntity();
     }
 
     public void delete(Long id) {
-        restClientDonaciones.delete()
-                .uri("/api/entidadesBeneficiarias/{id}", id)
+        restClient.delete()
+                .uri("/entidadesBeneficiarias/{id}", id)
                 .retrieve()
                 .toBodilessEntity();
     }

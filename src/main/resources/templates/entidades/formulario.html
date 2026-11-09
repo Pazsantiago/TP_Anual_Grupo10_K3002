@@ -10,19 +10,54 @@
             <h4 th:text="${entidad.id == null ? 'Nueva Entidad Beneficiaria' : 'Editar Entidad'}">Entidad</h4>
         </div>
         <div class="card-body">
-            <form th:action="@{/entidades}" th:object="${entidad}" method="post">
-                <input type="text" th:field="*{razonSocial}" placeholder="Razón Social (ej: La-carbonilla)" class="form-control mb-2" required>
-                <input type="text" th:field="*{telefono}" placeholder="Teléfono" class="form-control mb-2">
-                <input type="email" th:field="*{correoRepresentante}" placeholder="Correo Representante" class="form-control mb-2">
+            <form th:action="@{/entidadesBeneficiarias}" th:object="${entidad}" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Razón Social</label>
+                    <input type="text" th:field="*{razonSocial}" placeholder="Ej: Comedor La Carbonilla" class="form-control" required>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Teléfono</label>
+                        <input type="text" th:field="*{telefono}" placeholder="+5491123456789" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Correo Representante</label>
+                        <input type="email" th:field="*{correoRepresentante}" placeholder="representante@comedor.org" class="form-control">
+                    </div>
+                </div>
+
+                <h6 class="mt-3">Dirección de la Entidad</h6>
+                <div class="row g-2 mb-3">
+                    <div class="mb-3">
+                        <label class="form-label">Dirección</label>
+                        <input type="text" th:field="*{direccion}" placeholder="Ej: Av. Medrano 951, CABA" class="form-control">
+                    </div>
+                </div>
 
                 <h5 class="mt-3">Necesidad Inicial</h5>
-                <select th:field="*{necesidades[0].tipo}" class="form-select mb-2">
-                    <option value="EXTRAORDINARIA">Extraordinaria</option>
-                    <option value="RECURRENTE">Recurrente</option>
-                </select>
-                <input type="text" th:field="*{necesidades[0].subcategoria.nombre}" placeholder="Subcategoría (ej: fideos)" class="form-control mb-2">
-                <input type="number" th:field="*{necesidades[0].subcategoria.categoria.id}" value="1" class="form-control mb-2" placeholder="ID Categoría">
-                <input type="number" th:field="*{necesidades[0].cantidadObjetivo}" placeholder="Cantidad Objetivo" class="form-control mb-2">
+                <div class="row g-2 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Tipo Necesidad</label>
+                        <select th:field="*{necesidades[0].tipo}" class="form-select">
+                            <option value="EXTRAORDINARIA">Extraordinaria</option>
+                            <option value="RECURRENTE">Recurrente</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Subcategoría</label>
+                        <input type="text" th:field="*{necesidades[0].subcategoria.nombre}" placeholder="arroz" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">ID Categoría</label>
+                        <input type="number" th:field="*{necesidades[0].subcategoria.categoria.id}" value="1" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Cantidad Objetivo</label>
+                    <input type="number" th:field="*{necesidades[0].cantidadObjetivo}" placeholder="2" class="form-control" min="1" required>
+                </div>
 
                 <button type="submit" class="btn btn-success mt-3">Guardar Entidad</button>
             </form>

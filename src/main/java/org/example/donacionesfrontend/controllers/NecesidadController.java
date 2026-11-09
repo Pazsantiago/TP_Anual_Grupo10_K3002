@@ -1,7 +1,9 @@
 package org.example.donacionesfrontend.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dtos.NecesidadDTO;
+import org.example.donacionesfrontend.dominio.categoria.Categoria;
+import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
+import org.example.donacionesfrontend.dominio.necesidad.*;
 import org.example.donacionesfrontend.services.EntidadService;
 import org.example.donacionesfrontend.services.NecesidadService;
 import org.springframework.stereotype.Controller;
@@ -13,35 +15,50 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class NecesidadController {
 
-    private final NecesidadService necesidadRestService;
-    private final EntidadService entidadRestService;
+    private final NecesidadService necesidadService;
+    private final EntidadService entidadService;
 
     @GetMapping
     public String listarPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, Model model) {
-        model.addAttribute("entidades", entidadRestService.getAll());
+        model.addAttribute("entidades", entidadService.getAll());
         if (idEntidad != null) {
-            model.addAttribute("necesidades", necesidadRestService.getByEntidad(idEntidad));
+            model.addAttribute("necesidades", necesidadService.getByEntidad(idEntidad));
             model.addAttribute("idEntidadSeleccionada", idEntidad);
         }
         return "necesidades/lista";
     }
 
     @GetMapping("/nueva")
-    public String formularioNuevo(Model model) {
-        model.addAttribute("necesidad", new NecesidadDTO());
-        model.addAttribute("entidades", entidadRestService.getAll());
+    public String formularioNuevo(
+            @RequestParam(value = "idEntidad", required = false) Long idEntidad,
+            @RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo,
+            Model model) {
+
+        Necesidad necesidad;
+        if ("RECURRENTE".equalsIgnoreCase(tipo)) {
+            necesidad = new NecesidadRecurrente();
+        } else {
+            necesidad = new NecesidadExtraordinaria();
+        }
+
+        Subcategoria subcat = new Subcategoria();
+        subcat.setCategoria(new Categoria());
+        necesidad.setSubcategoria(subcat);
+
+        model.addAttribute("necesidad", necesidad);
+        model.addAttribute("entidades", entidadService.getAll());
         return "necesidades/formulario";
     }
 
     @PostMapping
-    public String guardar(@ModelAttribute("necesidad") NecesidadDTO dto) {
-        necesidadRestService.create(dto.getIdEntidadBeneficiaria(), dto);
-        return "redirect:/necesidades?idEntidad=" + dto.getIdEntidadBeneficiaria();
+    public String guardar(@ModelAttribute("necesidad") Necesidad necesidad) {
+        necesidadService.create(necesidad.getId(), necesidad);
+        return "redirect:/necesidades?idEntidad=" + necesidad.getId();
     }
 
     @PostMapping("/eliminar")
     public String eliminar(@RequestParam Long idEntidad, @RequestParam Long idNecesidad) {
-        necesidadRestService.delete(idEntidad, idNecesidad);
+        necesidadService.delete(idEntidad, idNecesidad);
         return "redirect:/necesidades?idEntidad=" + idEntidad;
     }
 }

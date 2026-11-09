@@ -1,7 +1,7 @@
 package org.example.donacionesfrontend.services;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dtos.DonacionDTO;
+import org.example.donacionesfrontend.dominio.donacion.Donacion;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -12,26 +12,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DonacionService {
 
-    private final RestClient restClientDonaciones;
+    private final RestClient restClient;
 
-    public List<DonacionDTO> getByDonante(Long idDonante) {
-        return restClientDonaciones.get()
-                .uri("/api/donantes/{idDonante}/donaciones", idDonante)
+    public List<Donacion> getByDonante(Long idDonante) {
+        return restClient.get()
+                .uri("/donantes/{idDonante}/donaciones", idDonante)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<DonacionDTO>>() {});
+                .body(new ParameterizedTypeReference<List<Donacion>>() {});
     }
 
-    public DonacionDTO create(Long idDonante, DonacionDTO dto) {
-        return restClientDonaciones.post()
-                .uri("/api/donantes/{idDonante}/donaciones", idDonante)
-                .body(dto)
+    public void create(Long idDonante, Donacion donacion) {
+        restClient.post()
+                .uri("/donantes/{idDonante}/donaciones", idDonante)
+                .body(donacion)
                 .retrieve()
-                .body(DonacionDTO.class);
+                .toBodilessEntity();
     }
 
     public void delete(Long idDonante, Long idDonacion) {
-        restClientDonaciones.delete()
-                .uri("/api/donantes/{idDonante}/donaciones/{idDonacion}", idDonante, idDonacion)
+        restClient.delete()
+                .uri("/donante/{idDonante}/donaciones/{idDonacion}", idDonante, idDonacion)
                 .retrieve()
                 .toBodilessEntity();
     }
