@@ -1,8 +1,8 @@
 package org.example.donacionesfrontend.dominio.algoritmosAsignacion;
 
-import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.donacionesfrontend.dominio.entidad.EntidadBeneficiaria;
 
 @NoArgsConstructor
 @Data

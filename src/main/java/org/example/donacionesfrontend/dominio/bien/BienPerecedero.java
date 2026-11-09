@@ -1,17 +1,16 @@
 package org.example.donacionesfrontend.dominio.bien;
 
-import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
+
 /**
  * Bien perecedero: extiende Bien con fecha de vencimiento.
  * El sistema puede generar donaciones separadas si difieren en fecha de vencimiento.
  */
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor

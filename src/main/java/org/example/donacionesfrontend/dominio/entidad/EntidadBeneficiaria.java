@@ -1,27 +1,22 @@
 package org.example.donacionesfrontend.dominio.entidad;
 
-import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.donacionesfrontend.dominio.necesidad.Necesidad;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 public class EntidadBeneficiaria {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String razonSocial;
     private String telefono;
     private String correoRepresentante;
     private String direccion;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "entidadBeneficiaria")
     private List<Necesidad> necesidades = new ArrayList<>();
 
     public EntidadBeneficiaria(String razonSocial, String telefono, String correoRepresentante, String direccion, List<Necesidad> necesidades) {

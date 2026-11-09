@@ -1,10 +1,9 @@
 package org.example.donacionesfrontend.dominio.donante;
 
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.donacionesfrontend.dominio.donacion.Donacion;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,18 +11,11 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 public class Donante {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "donante", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Donacion> donaciones = new ArrayList<>();
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "id_persona")
     private Persona persona;
-    @OneToMany(mappedBy = "donante", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<MedioContacto> mediosDeContacto = new ArrayList<>();
     private LocalDateTime ultimaInteraccion = LocalDateTime.now();
 

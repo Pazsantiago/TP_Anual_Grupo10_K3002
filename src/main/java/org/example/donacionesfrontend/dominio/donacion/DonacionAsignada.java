@@ -1,10 +1,9 @@
 package org.example.donacionesfrontend.dominio.donacion;
 
-import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.donacionesfrontend.dominio.necesidad.Necesidad;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,19 +11,15 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity
+
 @NoArgsConstructor
 public class DonacionAsignada {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<DonacionSegmentada> donacionesSegmentadas = new ArrayList<>();
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Necesidad necesidadResuelta;
     private Date fechaHora = new Date();
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private AsignacionCompleta asignacionCompleta;
+
 
     public DonacionAsignada(List<DonacionSegmentada> donacionesSegmentadas, Necesidad necesidadResuelta) {
         this.necesidadResuelta = necesidadResuelta;

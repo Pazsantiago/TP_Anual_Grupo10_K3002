@@ -2,7 +2,6 @@ package org.example.donacionesfrontend.dominio.categoria;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,17 +14,12 @@ import java.util.List;
 @Setter
 @Getter
 @ToString(exclude = {"subcategorias"})
-@Entity
 @NoArgsConstructor
 public class Categoria {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "categoria")
     @JsonIgnore
     private List<Subcategoria> subcategorias = new ArrayList<>();
-    @Enumerated(EnumType.STRING)
     private TipoCategoria tipo;
 
     public Categoria(String nombre, TipoCategoria tipo) {

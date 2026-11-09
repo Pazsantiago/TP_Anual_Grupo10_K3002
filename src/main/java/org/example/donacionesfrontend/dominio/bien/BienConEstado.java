@@ -1,19 +1,13 @@
 package org.example.donacionesfrontend.dominio.bien;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 public class BienConEstado extends Bien {
-    @Enumerated(EnumType.STRING)
     private Estado estado;
 
 //    public BienConEstado(String descripcion, Subcategoria subcategoria, URL foto, UnidadMedida unidad, Integer cantidad, Estado estado) {

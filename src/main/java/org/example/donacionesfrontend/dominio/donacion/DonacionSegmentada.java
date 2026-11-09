@@ -1,15 +1,13 @@
 package org.example.donacionesfrontend.dominio.donacion;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.grupo10.servicio_donaciones.donaciones.dominio.bien.Bien;
-import com.grupo10.servicio_donaciones.donaciones.dominio.bien.BienPerecedero;
-import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Subcategoria;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.SQLRestriction;
+import org.example.donacionesfrontend.dominio.bien.Bien;
+import org.example.donacionesfrontend.dominio.bien.BienPerecedero;
+import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,30 +15,18 @@ import java.util.List;
 @Setter
 @Getter
 @ToString(exclude = {"donacionInicial", "donacionesAsignadas"})
-@Entity
 @NoArgsConstructor
 public class DonacionSegmentada {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne()
     @JsonIgnore
     private Donacion donacionInicial;
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Bien bien;
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private EstadoDonacion estadoActual;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacionSegmentada")
-    @SQLRestriction("es_historico = true")
     private List<EstadoDonacion> donacionEstadosHistorico = new ArrayList<>();
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Subcategoria subcategoria;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
-            mappedBy = "donacionSegmentada")
     private List<BienAsignado> bienesAsignados = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "donacionesSegmentadas", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
     private List<DonacionAsignada> donacionesAsignadas = new ArrayList<>();
 

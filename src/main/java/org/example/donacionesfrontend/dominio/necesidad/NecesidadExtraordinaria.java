@@ -1,18 +1,15 @@
 package org.example.donacionesfrontend.dominio.necesidad;
 
-import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Subcategoria;
-import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
-import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
+import org.example.donacionesfrontend.dominio.entidad.EntidadBeneficiaria;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 public class NecesidadExtraordinaria extends Necesidad {
-
 
     public NecesidadExtraordinaria(
             String descripcion,

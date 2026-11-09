@@ -1,13 +1,12 @@
 package org.example.donacionesfrontend.dominio.donacion;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.grupo10.servicio_donaciones.donaciones.dominio.bien.Bien;
-import com.grupo10.servicio_donaciones.donaciones.dominio.donante.Donante;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.example.donacionesfrontend.dominio.bien.Bien;
+import org.example.donacionesfrontend.dominio.donante.Donante;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,21 +15,14 @@ import java.util.List;
 @Setter
 @Getter
 @ToString(exclude = {"donante"})
-@Entity
 @NoArgsConstructor
 public class Donacion {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String descripcionGeneral;
-    @ManyToOne()
     @JsonIgnore
     private Donante donante;
-
     private Date fechaRegistro = new Date();
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacionInicial")
     private List<DonacionSegmentada> donacionesSegmentadas = new ArrayList<>();
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacion")
     private List<Bien> bienesDeEntrada = new ArrayList<>();
 
 

@@ -1,22 +1,17 @@
 package org.example.donacionesfrontend.dominio.necesidad;
 
-import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Subcategoria;
-import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
+import org.example.donacionesfrontend.dominio.entidad.EntidadBeneficiaria;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
 public class NecesidadRecurrente extends Necesidad {
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Periodo periodo;
     private Integer cantidadRecibidaEnPeriodo = 0;
 

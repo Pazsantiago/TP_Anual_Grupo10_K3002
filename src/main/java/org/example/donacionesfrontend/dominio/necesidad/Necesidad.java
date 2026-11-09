@@ -3,13 +3,12 @@ package org.example.donacionesfrontend.dominio.necesidad;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Subcategoria;
-import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
+import org.example.donacionesfrontend.dominio.entidad.EntidadBeneficiaria;
 
 import java.time.LocalDate;
 
@@ -31,19 +30,13 @@ import java.time.LocalDate;
                 name = "RECURRENTE"
         )
 })
-@Entity
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Necesidad {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String descripcion;
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Subcategoria subcategoria;
     private Integer cantidadObjetivo;
     private Integer cantidadRecibida = 0;
-    @ManyToOne()
     @JsonIgnore
     private EntidadBeneficiaria entidadBeneficiaria;
     private Boolean estaSatisfechaConDonacion = false;

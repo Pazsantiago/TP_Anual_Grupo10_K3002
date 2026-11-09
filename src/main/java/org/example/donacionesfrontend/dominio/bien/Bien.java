@@ -3,13 +3,12 @@ package org.example.donacionesfrontend.dominio.bien;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Subcategoria;
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
+import org.example.donacionesfrontend.dominio.donacion.Donacion;
 
 import java.net.URL;
 
@@ -22,7 +21,6 @@ import java.net.URL;
 @Setter
 @Getter
 @ToString(exclude = {"donacion"})
-@Entity
 @NoArgsConstructor
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -39,23 +37,16 @@ import java.net.URL;
                 name = "CON_ESTADO"
         )
 })
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Bien {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String descripcion;
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "id_subcategoria")
     private Subcategoria subcategoria;
     private URL foto;
     //    private final Estado estado;
-    @Enumerated(EnumType.STRING)
     private UnidadMedida unidad;
     private Integer cantidadOriginal;
     private Integer cantidadActual;
     @JsonIgnore
-    @ManyToOne()
     private Donacion donacion;
 
 //    public Bien(String descripcion, Subcategoria subcategoria,
