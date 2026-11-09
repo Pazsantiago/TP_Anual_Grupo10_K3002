@@ -16,14 +16,14 @@ public class NecesidadService {
 
     public List<Necesidad> getByEntidad(Long idEntidad) {
         return restClient.get()
-                .uri("/entidadesBeneficiarias/{idEntidad}/necesidades", idEntidad)
+                .uri("/api/entidadesBeneficiarias/{idEntidad}/necesidades", idEntidad)
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<Necesidad>>() {});
     }
 
     public void create(Long idEntidad, Necesidad necesidad) {
         restClient.post()
-                .uri("/entidadesBeneficiarias/{idEntidad}/necesidades", idEntidad)
+                .uri("/api/entidadesBeneficiarias/{idEntidad}/necesidades", idEntidad)
                 .body(necesidad)
                 .retrieve()
                 .toBodilessEntity();
@@ -31,7 +31,7 @@ public class NecesidadService {
 
     public void delete(Long idEntidad, Long idNecesidad) {
         restClient.delete()
-                .uri("/entidadesBeneficiarias/{idEntidad}/necesidades/{idNecesidad}", idEntidad, idNecesidad)
+                .uri("/api/entidadesBeneficiarias/{idEntidad}/necesidades/{idNecesidad}", idEntidad, idNecesidad)
                 .retrieve()
                 .toBodilessEntity();
     }

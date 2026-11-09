@@ -16,14 +16,14 @@ public class DonacionService {
 
     public List<Donacion> getByDonante(Long idDonante) {
         return restClient.get()
-                .uri("/donantes/{idDonante}/donaciones", idDonante)
+                .uri("/api/donantes/{idDonante}/donaciones", idDonante)
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<Donacion>>() {});
     }
 
     public void create(Long idDonante, Donacion donacion) {
         restClient.post()
-                .uri("/donantes/{idDonante}/donaciones", idDonante)
+                .uri("/api/donantes/{idDonante}/donaciones", idDonante)
                 .body(donacion)
                 .retrieve()
                 .toBodilessEntity();
@@ -31,7 +31,7 @@ public class DonacionService {
 
     public void delete(Long idDonante, Long idDonacion) {
         restClient.delete()
-                .uri("/donante/{idDonante}/donaciones/{idDonacion}", idDonante, idDonacion)
+                .uri("/api/donantes/{idDonante}/donaciones/{idDonacion}", idDonante, idDonacion)
                 .retrieve()
                 .toBodilessEntity();
     }

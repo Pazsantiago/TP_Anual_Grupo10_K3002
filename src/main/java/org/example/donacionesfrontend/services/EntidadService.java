@@ -16,21 +16,21 @@ public class EntidadService {
 
     public List<EntidadBeneficiaria> getAll() {
         return restClient.get()
-                .uri("/entidadesBeneficiarias")
+                .uri("/api/entidadesBeneficiarias")
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<EntidadBeneficiaria>>() {});
     }
 
     public EntidadBeneficiaria getById(Long id) {
         return restClient.get()
-                .uri("/entidadesBeneficiarias/{id}", id)
+                .uri("/api/entidadesBeneficiarias/{id}", id)
                 .retrieve()
                 .body(EntidadBeneficiaria.class);
     }
 
     public void create(EntidadBeneficiaria entidad) {
         restClient.post()
-                .uri("/entidadesBeneficiarias")
+                .uri("/api/entidadesBeneficiarias")
                 .body(entidad)
                 .retrieve()
                 .toBodilessEntity();
@@ -38,7 +38,7 @@ public class EntidadService {
 
     public void delete(Long id) {
         restClient.delete()
-                .uri("/entidadesBeneficiarias/{id}", id)
+                .uri("/api/entidadesBeneficiarias/{id}", id)
                 .retrieve()
                 .toBodilessEntity();
     }
