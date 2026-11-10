@@ -1,48 +1,93 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
-<body class="bg-light">
+<body class="container py-4 bg-light">
+
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="container">
-    <h2>Donaciones</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-dark"><i class="bi bi-gift-fill text-success me-2"></i>Donaciones</h2>
+    <div>
+        <a href="/home" class="btn btn-outline-secondary me-2">
+            <i class="bi bi-house-fill me-1"></i>Inicio
+        </a>
+        <a th:if="${idDonanteSeleccionado != null}"
+           th:href="@{/donaciones/nueva(idDonante=${idDonanteSeleccionado})}"
+           class="btn btn-success">
+            <i class="bi bi-plus-lg me-1"></i>+ Registrar Donación
+        </a>
+    </div>
+</div>
 
-    <!-- Filtro por Donante -->
-    <form method="get" action="/donaciones" class="row g-3 mb-4">
-        <div class="col-auto">
+<!-- SELECCIONADOR DE DONANTE -->
+<div class="card p-3 shadow-sm mb-4 border-0">
+    <form method="get" action="/donaciones" class="row align-items-center g-3">
+        <div class="col-md-3">
+            <label class="form-label fw-bold mb-0">Seleccionar Donante:</label>
+        </div>
+        <div class="col-md-7">
             <select name="idDonante" class="form-select" onchange="this.form.submit()">
-                <option value="">-- Seleccionar Donante para ver sus donaciones --</option>
-                <option th:each="d : ${donantes}" th:value="${d.id}" th:text="${d.nombre != null ? d.nombre : d.razonSocial}"
-                        th:selected="${d.id == idDonanteSeleccionado}"></option>
+                <option value="">-- Seleccionar un donante --</option>
+                <option th:each="d : ${donantes}"
+                        th:value="${d.id}"
+                        th:selected="${d.id == idDonanteSeleccionado}"
+                        th:text="${d.id + ' - ' + (d.persona.class.simpleName == 'PersonaHumana' ? d.persona.nombre + ' ' + (d.persona.apellido != null ? d.persona.apellido : '') : d.persona.razonSocial)}">
+                </option>
             </select>
         </div>
-        <div class="col-auto">
-            <a href="/donaciones/nueva" class="btn btn-primary">+ Nueva Donación</a>
-        </div>
     </form>
+</div>
 
-    <table class="table table-striped bg-white shadow-sm" th:if="${donaciones != null}">
-        <thead class="table-dark">
+<!-- TABLA DE DONACIONES -->
+<div th:if="${idDonanteSeleccionado != null}" class="table-responsive bg-white rounded shadow-sm border">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
         <tr>
-            <th>ID Donación</th>
+            <th>ID</th>
             <th>Descripción General</th>
-            <th>Acciones</th>
+            <th>Bien Aportado</th>
+            <th>Subcategoría</th>
+            <th>Cantidad</th>
+            <th class="text-end">Acciones</th>
         </tr>
         </thead>
         <tbody>
+        <tr th:if="${#lists.isEmpty(donaciones)}">
+            <td colspan="6" class="text-center text-muted py-4">Este donante no registra donaciones cargadas.</td>
+        </tr>
         <tr th:each="don : ${donaciones}">
             <td th:text="${don.id}">1</td>
-            <td th:text="${don.descripcionGeneral}">Caja de ropa y alimentos</td>
+            <td th:text="${don.descripcionGeneral}">Donación alimentos</td>
             <td>
-                <form action="/donaciones/eliminar" method="post" class="d-inline">
-                    <input type="hidden" name="idDonante" th:value="${idDonanteSeleccionado}">
-                    <input type="hidden" name="idDonacion" th:value="${don.id}">
-                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        <span th:if="${!#lists.isEmpty(don.bienesDeEntrada)}"
+                              th:text="${don.bienesDeEntrada[0].descripcion}"></span>
+            </td>
+            <td>
+                        <span th:if="${!#lists.isEmpty(don.bienesDeEntrada)}"
+                              class="badge bg-secondary"
+                              th:text="${don.bienesDeEntrada[0].subcategoria?.nombre}"></span>
+            </td>
+            <td>
+                        <span th:if="${!#lists.isEmpty(don.bienesDeEntrada)}"
+                              th:text="${don.bienesDeEntrada[0].cantidadOriginal + ' ' + don.bienesDeEntrada[0].unidad}"></span>
+            </td>
+            <td class="text-end">
+                <form th:action="@{/donaciones/eliminar}" method="post" class="d-inline" onsubmit="return confirm('¿Eliminar donación?');">
+                    <input type="hidden" name="idDonante" th:value="${idDonanteSeleccionado}" />
+                    <input type="hidden" name="idDonacion" th:value="${don.id}" />
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </form>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+
+<div th:if="${idDonanteSeleccionado == null}" class="alert alert-info shadow-sm text-center">
+    Por favor seleccioná un donante para ver e ingresar sus donaciones asociadas.
+</div>
+
 </body>
 </html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DonaTrack - Panel Principal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="bg-light">
+
+<!-- BARRA NAVEGACIÓN -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/home">
+            <i class="bi bi-box-seam-fill me-2"></i>DonaTrack
+        </a>
+        <span class="navbar-text text-white-50">
+                Sistema de Gestión de Donaciones y Asignaciones
+            </span>
+    </div>
+</nav>
+
+<div class="container pb-5">
+
+    <!-- ENCABEZADO -->
+    <div class="p-4 mb-4 bg-white rounded-3 shadow-sm border">
+        <h1 class="display-6 fw-bold text-dark">Panel de Control</h1>
+        <p class="text-muted mb-0">Bienvenido al sistema. Desde aquí puedes acceder a todas las operaciones y casos de uso de la plataforma.</p>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- SECCIÓN 1: CRUDS PRINCIPALES -->
+        <div class="col-12">
+            <h5 class="fw-bold text-secondary border-bottom pb-2 mb-3">
+                <i class="bi bi-folder-symlink me-2"></i>Gestión de Entidades (CRUDs)
+            </h5>
+        </div>
+
+        <!-- Card Donantes -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm border-0 border-top border-primary border-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-people-fill fs-2 text-primary me-3"></i>
+                        <h5 class="card-title mb-0 fw-bold">Donantes</h5>
+                    </div>
+                    <p class="card-text text-muted small">Gestión de Personas Humanas y Jurídicas.</p>
+                    <div class="d-grid gap-2">
+                        <a href="/donantes" class="btn btn-outline-primary btn-sm">Ver Listado</a>
+                        <a href="/donantes/nuevo" class="btn btn-primary btn-sm">+ Registrar Donante</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Donaciones -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm border-0 border-top border-success border-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-gift-fill fs-2 text-success me-3"></i>
+                        <h5 class="card-title mb-0 fw-bold">Donaciones</h5>
+                    </div>
+                    <p class="card-text text-muted small">Gestión de bienes de entrada e insumos.</p>
+                    <div class="d-grid gap-2">
+                        <a href="/donaciones" class="btn btn-outline-success btn-sm">Ver por Donante</a>
+                        <a href="/donaciones/nueva" class="btn btn-success btn-sm">+ Registrar Donación</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Entidades Beneficiarias -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm border-0 border-top border-warning border-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-building-fill fs-2 text-warning me-3"></i>
+                        <h5 class="card-title mb-0 fw-bold">Entidades</h5>
+                    </div>
+                    <p class="card-text text-muted small">Gestión de organizaciones y comedores.</p>
+                    <div class="d-grid gap-2">
+                        <a href="/entidadesBeneficiarias" class="btn btn-outline-warning btn-sm">Ver Listado</a>
+                        <a href="/entidadesBeneficiarias/nueva" class="btn btn-warning btn-sm text-dark">+ Registrar Entidad</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Necesidades -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 shadow-sm border-0 border-top border-danger border-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-cart-check-fill fs-2 text-danger me-3"></i>
+                        <h5 class="card-title mb-0 fw-bold">Necesidades</h5>
+                    </div>
+                    <p class="card-text text-muted small">Requerimientos recurrentes y puntuales.</p>
+                    <div class="d-grid gap-2">
+                        <a href="/necesidades" class="btn btn-outline-danger btn-sm">Ver por Entidad</a>
+                        <a href="/necesidades/nueva" class="btn btn-danger btn-sm">+ Registrar Necesidad</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- SECCIÓN 2: ASIGNACIONES E IMPORTACIÓN -->
+        <div class="col-12 mt-4">
+            <h5 class="fw-bold text-secondary border-bottom pb-2 mb-3">
+                <i class="bi bi-gear-wide-connected me-2"></i>Operaciones de Asignación e Importación
+            </h5>
+        </div>
+
+        <!-- Card Importación Masiva -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-dark mb-2">
+                        <i class="bi bi-file-earmark-arrow-up-fill text-info me-2"></i>Importación Masiva de Donantes
+                    </h5>
+                    <p class="card-text text-muted small">Carga masiva de donantes y sus aportes mediante archivos externos CSV.</p>
+                    <a href="/donantes/importar" class="btn btn-info text-white btn-sm">
+                        <i class="bi bi-upload me-1"></i> Ir a Importador
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Matchmaking / Asignaciones -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-dark mb-2">
+                        <i class="bi bi-diagram-3-fill text-purple me-2"></i>Asignación de Donaciones (Matchmaking)
+                    </h5>
+                    <p class="card-text text-muted small">Asigna donaciones segmentadas a necesidades de entidades o completa asignaciones existentes.</p>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <a href="/asignaciones/nueva" class="btn btn-dark btn-sm">
+                            <i class="bi bi-link-45deg me-1"></i> Asignar Donación a Necesidad
+                        </a>
+                        <a href="/asignaciones/agregar-segmentada" class="btn btn-outline-dark btn-sm">
+                            <i class="bi bi-plus-circle me-1"></i> Agregar a Asignación Existente
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- SECCIÓN 3: RANKINGS Y ESTADÍSTICAS -->
+        <div class="col-12 mt-4">
+            <h5 class="fw-bold text-secondary border-bottom pb-2 mb-3">
+                <i class="bi bi-graph-up-arrow me-2"></i>Rankings y Reportes de Entidades
+            </h5>
+        </div>
+
+        <!-- Card Rankings General -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="fw-bold text-dark mb-2">
+                        <i class="bi bi-trophy-fill text-warning me-2"></i>Consultar Rankings
+                    </h6>
+                    <p class="card-text text-muted small">Obtener listado de entidades ordenadas por donaciones recibidas.</p>
+                    <a href="/rankings" class="btn btn-outline-secondary btn-sm w-100">Ver Rankings</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Generar Rankings -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="fw-bold text-dark mb-2">
+                        <i class="bi bi-cpu-fill text-primary me-2"></i>Generar Nuevo Ranking
+                    </h6>
+                    <p class="card-text text-muted small">Ejecutar el proceso de cálculo para actualizar las posiciones.</p>
+                    <form th:action="@{/rankings/generar}" method="post">
+                        <button type="submit" class="btn btn-outline-primary btn-sm w-100">
+                            <i class="bi bi-play-fill me-1"></i> Generar Ahora
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Ranking Entidades Repetidas -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="fw-bold text-dark mb-2">
+                        <i class="bi bi-arrow-repeat text-success me-2"></i>Entidades Repetidas
+                    </h6>
+                    <p class="card-text text-muted small">Ranking de entidades que recibieron múltiples asignaciones por donación.</p>
+                    <a href="/rankings/repetidas" class="btn btn-outline-success btn-sm w-100">Ver Repetidas</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

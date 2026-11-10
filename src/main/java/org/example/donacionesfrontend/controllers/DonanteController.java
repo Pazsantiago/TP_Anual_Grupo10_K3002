@@ -33,6 +33,7 @@ public class DonanteController {
         if ("JURIDICA".equalsIgnoreCase(tipo)) {
             PersonaJuridica pj = new PersonaJuridica();
             pj.setDireccion(new Direccion());
+            pj.setRepresentantes(new ArrayList<>());
             donante.setPersona(pj);
         } else {
             PersonaHumana ph = new PersonaHumana();
@@ -45,7 +46,15 @@ public class DonanteController {
         contacto.setEsPredeterminado(true);
         donante.setMediosDeContacto(new ArrayList<>(List.of(contacto)));
 
+        // Traemos las Personas Humanas registradas para usarlas como representantes
+        List<Donante> donantes = donanteService.getAll();
+        List<PersonaHumana> personasHumanas = donantes.stream()
+                .filter(d -> d.getPersona() instanceof PersonaHumana)
+                .map(d -> (PersonaHumana) d.getPersona())
+                .toList();
+
         model.addAttribute("donante", donante);
+        model.addAttribute("personasHumanas", personasHumanas);
         return "donantes/formulario";
     }
 
