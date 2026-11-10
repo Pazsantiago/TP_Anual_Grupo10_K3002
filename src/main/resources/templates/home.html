@@ -23,7 +23,6 @@
 
 <div class="container pb-5">
 
-    <!-- ENCABEZADO -->
     <div class="p-4 mb-4 bg-white rounded-3 shadow-sm border">
         <h1 class="display-6 fw-bold text-dark">Panel de Control</h1>
         <p class="text-muted mb-0">Bienvenido al sistema. Desde aquí puedes acceder a todas las operaciones y casos de uso de la plataforma.</p>
@@ -31,14 +30,12 @@
 
     <div class="row g-4">
 
-        <!-- SECCIÓN 1: CRUDS PRINCIPALES -->
         <div class="col-12">
             <h5 class="fw-bold text-secondary border-bottom pb-2 mb-3">
                 <i class="bi bi-folder-symlink me-2"></i>Gestión de Entidades (CRUDs)
             </h5>
         </div>
 
-        <!-- Card Donantes -->
         <div class="col-md-6 col-lg-3">
             <div class="card h-100 shadow-sm border-0 border-top border-primary border-4">
                 <div class="card-body">
@@ -55,7 +52,6 @@
             </div>
         </div>
 
-        <!-- Card Donaciones -->
         <div class="col-md-6 col-lg-3">
             <div class="card h-100 shadow-sm border-0 border-top border-success border-4">
                 <div class="card-body">
@@ -72,7 +68,6 @@
             </div>
         </div>
 
-        <!-- Card Entidades Beneficiarias -->
         <div class="col-md-6 col-lg-3">
             <div class="card h-100 shadow-sm border-0 border-top border-warning border-4">
                 <div class="card-body">
@@ -89,7 +84,6 @@
             </div>
         </div>
 
-        <!-- Card Necesidades -->
         <div class="col-md-6 col-lg-3">
             <div class="card h-100 shadow-sm border-0 border-top border-danger border-4">
                 <div class="card-body">
@@ -107,14 +101,12 @@
         </div>
 
 
-        <!-- SECCIÓN 2: ASIGNACIONES E IMPORTACIÓN -->
         <div class="col-12 mt-4">
             <h5 class="fw-bold text-secondary border-bottom pb-2 mb-3">
                 <i class="bi bi-gear-wide-connected me-2"></i>Operaciones de Asignación e Importación
             </h5>
         </div>
 
-        <!-- Card Importación Masiva -->
         <div class="col-md-6">
             <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
@@ -129,7 +121,6 @@
             </div>
         </div>
 
-        <!-- Card Matchmaking / Asignaciones -->
         <div class="col-md-6">
             <div class="card h-100 shadow-sm border-0">
                 <div class="card-body">
@@ -150,35 +141,32 @@
         </div>
 
 
-        <!-- SECCIÓN 3: RANKINGS Y ESTADÍSTICAS -->
         <div class="col-12 mt-4">
             <h5 class="fw-bold text-secondary border-bottom pb-2 mb-3">
                 <i class="bi bi-graph-up-arrow me-2"></i>Rankings y Reportes de Entidades
             </h5>
         </div>
 
-        <!-- Card Rankings General -->
         <div class="col-md-4">
             <div class="card h-100 shadow-sm border-0">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h6 class="fw-bold text-dark mb-2">
                         <i class="bi bi-trophy-fill text-warning me-2"></i>Consultar Rankings
                     </h6>
                     <p class="card-text text-muted small">Obtener listado de entidades ordenadas por donaciones recibidas.</p>
-                    <a href="/rankings" class="btn btn-outline-secondary btn-sm w-100">Ver Rankings</a>
+                    <a href="/rankings" class="btn btn-outline-secondary btn-sm w-100 mt-auto">Ver Rankings</a>
                 </div>
             </div>
         </div>
 
-        <!-- Card Generar Rankings -->
         <div class="col-md-4">
             <div class="card h-100 shadow-sm border-0">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h6 class="fw-bold text-dark mb-2">
                         <i class="bi bi-cpu-fill text-primary me-2"></i>Generar Nuevo Ranking
                     </h6>
                     <p class="card-text text-muted small">Ejecutar el proceso de cálculo para actualizar las posiciones.</p>
-                    <form th:action="@{/rankings/generar}" method="post">
+                    <form th:action="@{/rankings/generar}" method="post" class="mt-auto mb-0">
                         <button type="submit" class="btn btn-outline-primary btn-sm w-100">
                             <i class="bi bi-play-fill me-1"></i> Generar Ahora
                         </button>
@@ -187,15 +175,14 @@
             </div>
         </div>
 
-        <!-- Card Ranking Entidades Repetidas -->
         <div class="col-md-4">
             <div class="card h-100 shadow-sm border-0">
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h6 class="fw-bold text-dark mb-2">
                         <i class="bi bi-arrow-repeat text-success me-2"></i>Entidades Repetidas
                     </h6>
                     <p class="card-text text-muted small">Ranking de entidades que recibieron múltiples asignaciones por donación.</p>
-                    <a href="/rankings/repetidas" class="btn btn-outline-success btn-sm w-100">Ver Repetidas</a>
+                    <a href="/rankings/repetidas" class="btn btn-outline-success btn-sm w-100 mt-auto">Ver Repetidas</a>
                 </div>
             </div>
         </div>
