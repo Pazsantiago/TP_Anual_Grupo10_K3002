@@ -19,7 +19,6 @@
     </div>
 </div>
 
-<!-- SELECCIONADOR DE DONANTE -->
 <div class="card p-3 shadow-sm mb-4 border-0">
     <form method="get" action="/donaciones" class="row align-items-center g-3">
         <div class="col-md-3">
@@ -38,7 +37,6 @@
     </form>
 </div>
 
-<!-- TABLA DE DONACIONES -->
 <div th:if="${idDonanteSeleccionado != null}" class="table-responsive bg-white rounded shadow-sm border">
     <table class="table table-hover align-middle mb-0">
         <thead class="table-light">
@@ -59,16 +57,16 @@
             <td th:text="${don.id}">1</td>
             <td th:text="${don.descripcionGeneral}">Donación alimentos</td>
             <td>
-                        <span th:if="${!#lists.isEmpty(don.bienesDeEntrada)}"
+                <span th:if="${!#lists.isEmpty(don.bienesDeEntrada)}"
                               th:text="${don.bienesDeEntrada[0].descripcion}"></span>
             </td>
             <td>
-                        <span th:if="${!#lists.isEmpty(don.bienesDeEntrada)}"
+                <span th:if="${!#lists.isEmpty(don.bienesDeEntrada)}"
                               class="badge bg-secondary"
                               th:text="${don.bienesDeEntrada[0].subcategoria?.nombre}"></span>
             </td>
             <td>
-                        <span th:if="${!#lists.isEmpty(don.bienesDeEntrada)}"
+                <span th:if="${!#lists.isEmpty(don.bienesDeEntrada)}"
                               th:text="${don.bienesDeEntrada[0].cantidadOriginal + ' ' + don.bienesDeEntrada[0].unidad}"></span>
             </td>
             <td class="text-end">

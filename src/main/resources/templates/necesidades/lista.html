@@ -19,7 +19,6 @@
     </div>
 </div>
 
-<!-- SELECCIONADOR DE ENTIDAD -->
 <div class="card p-3 shadow-sm mb-4 border-0">
     <form method="get" th:action="@{/necesidades}" class="row align-items-center g-3">
         <div class="col-md-3">
@@ -38,7 +37,6 @@
     </form>
 </div>
 
-<!-- TABLA DE NECESIDADES -->
 <div th:if="${idEntidadSeleccionada != null}" class="table-responsive bg-white rounded shadow-sm border">
     <table class="table table-hover align-middle mb-0">
         <thead class="table-light">
