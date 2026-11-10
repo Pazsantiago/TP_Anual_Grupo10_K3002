@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="container py-4 bg-light">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0"><i class="bi bi-file-earmark-arrow-up-fill me-2"></i>Importación Masiva de Donantes</h4>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted">Cargá un archivo en formato CSV con los registros de donantes humanos o jurídicos y sus medios de contacto para darlos de alta en forma masiva.</p>
+                <div th:if="${exito != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i><span th:text="${exito}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i><span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <form th:action="@{/donantes/importar}" method="post">
+                    <div class="mb-3">
+                        <label for="rutaArchivo" class="form-label fw-bold">Ruta o Nombre del Archivo CSV</label>
+                        <input type="text" class="form-control" id="rutaArchivo" name="rutaArchivo"
+                               placeholder="Ej: donantes.csv o /workspace/fuente/donantes.csv" required>
+                        <small class="form-text text-muted">Asegurate de que el archivo esté ubicado en la ruta accesible por el servicio backend.</small>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <a href="/home" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-info text-white">
+                            <i class="bi bi-play-fill me-1"></i> Ejecutar Importación
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

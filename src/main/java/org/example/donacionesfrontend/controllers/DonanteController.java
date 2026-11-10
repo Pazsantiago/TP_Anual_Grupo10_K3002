@@ -6,6 +6,7 @@ import org.example.donacionesfrontend.services.DonanteService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,5 +69,25 @@ public class DonanteController {
     public String eliminar(@RequestParam Long id) {
         donanteService.delete(id);
         return "redirect:/donantes";
+    }
+
+    @GetMapping("/importar")
+    public String vistaImportar() {
+        return "donantes/importar";
+    }
+
+    @PostMapping("/importar")
+    public String importarCsv(@RequestParam("rutaArchivo") String rutaArchivo, RedirectAttributes redirectAttributes) {
+        if (rutaArchivo == null || rutaArchivo.isBlank()) {
+            redirectAttributes.addFlashAttribute("error", "Por favor ingresá la ruta o nombre del archivo CSV.");
+            return "redirect:/donantes/importar";
+        }
+        try {
+            donanteService.importarMasivoCsv(rutaArchivo);
+            redirectAttributes.addFlashAttribute("exito", "Importación iniciada correctamente para: " + rutaArchivo + "");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al procesar la importación: " + e.getMessage());
+        }
+        return "redirect:/donantes/importar";
     }
 }

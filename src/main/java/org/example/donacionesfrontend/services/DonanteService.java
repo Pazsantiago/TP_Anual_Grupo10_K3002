@@ -42,4 +42,15 @@ public class DonanteService {
                 .retrieve()
                 .toBodilessEntity();
     }
+
+    public void importarMasivoCsv(String rutaArchivo) {
+        restClient.post()
+                .uri(uriBuilder -> uriBuilder
+                .path("/api/donantes/importador")
+                .queryParam("rutaArchivo", rutaArchivo)
+                .build())
+            .retrieve()
+                .toBodilessEntity();
+    }
+
 }

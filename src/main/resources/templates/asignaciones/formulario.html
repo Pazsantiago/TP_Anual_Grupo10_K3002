@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="container py-4 bg-light">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0"><i class="bi bi-link-45deg me-2"></i>Asignar Donación a Necesidad</h4>
+            </div>
+            <div class="card-body p-4">
+
+                <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i><span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <form th:action="@{/asignaciones/nueva}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">1. ID Entidad Beneficiaria</label>
+                        <input type="number" name="idEntidad" class="form-control" placeholder="Ej: 1" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">2. ID Necesidad de la Entidad</label>
+                        <input type="number" name="idNecesidad" class="form-control" placeholder="Ej: 2" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">3. ID Donación Segmentada en Depósito</label>
+                        <input type="number" name="idDonacionSegmentada" class="form-control" placeholder="Ej: 5" required>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <a href="/home" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-dark">
+                            <i class="bi bi-check-circle me-1"></i> Confirmar Asignación
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
