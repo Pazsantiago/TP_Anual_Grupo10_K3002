@@ -21,9 +21,9 @@ public class NecesidadController {
     @GetMapping
     public String listarPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, Model model) {
         model.addAttribute("entidades", entidadService.getAll());
+        model.addAttribute("idEntidadSeleccionada", idEntidad); // Asegura que no sea indefinido
         if (idEntidad != null) {
             model.addAttribute("necesidades", necesidadService.getByEntidad(idEntidad));
-            model.addAttribute("idEntidadSeleccionada", idEntidad);
         }
         return "necesidades/lista";
     }

@@ -16,7 +16,7 @@
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Tipo de Necesidad</label>
-                    <select class="form-select" onchange="location.href='?idEntidad=' + [[${idEntidadSeleccionada}]] + '&tipo=' + this.value">
+                    <select name="tipo" class="form-select">
                         <option value="EXTRAORDINARIA" th:selected="${necesidad.class.simpleName == 'NecesidadExtraordinaria'}">Extraordinaria</option>
                         <option value="RECURRENTE" th:selected="${necesidad.class.simpleName == 'NecesidadRecurrente'}">Recurrente</option>
                     </select>
@@ -41,20 +41,6 @@
                 <div class="mb-3">
                     <label class="form-label">Cantidad Objetivo</label>
                     <input type="number" th:field="*{cantidadObjetivo}" placeholder="Cantidad requerida" class="form-control" min="1" required>
-                </div>
-
-                <div th:if="${necesidad.class.simpleName == 'NecesidadExtraordinaria'}" class="mb-3 border p-3 rounded bg-light">
-                    <label class="form-label">Fecha Límite</label>
-                    <input type="date" name="fechaLimite" th:value="${necesidad.fechaLimite}" class="form-control">
-                </div>
-
-                <div th:if="${necesidad.class.simpleName == 'NecesidadRecurrente'}" class="mb-3 border p-3 rounded bg-light">
-                    <label class="form-label">Periodicidad</label>
-                    <select name="periodicidad" class="form-select">
-                        <option value="SEMANAL" th:selected="${necesidad.periodicidad == 'SEMANAL'}">Semanal</option>
-                        <option value="MENSUAL" th:selected="${necesidad.periodicidad == 'MENSUAL'}">Mensual</option>
-                        <option value="ANUAL" th:selected="${necesidad.periodicidad == 'ANUAL'}">Anual</option>
-                    </select>
                 </div>
 
                 <button type="submit" class="btn btn-success mt-3">Guardar Necesidad</button>
