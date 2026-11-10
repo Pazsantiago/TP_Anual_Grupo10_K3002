@@ -10,20 +10,21 @@
             <h4>Registrar Necesidad</h4>
         </div>
         <div class="card-body">
-            <form th:action="@{/entidades/{id}/necesidades(id=${idEntidad})}" th:object="${necesidad}" method="post">
+            <form th:action="@{/necesidades}" th:object="${necesidad}" method="post">
 
-                <!-- Select para alternar tipo de necesidad -->
+                <input type="hidden" name="idEntidad" th:value="${idEntidadSeleccionada}" />
+
                 <div class="mb-3">
                     <label class="form-label fw-bold">Tipo de Necesidad</label>
-                    <select class="form-select" onchange="location.href='?tipo=' + this.value">
-                        <option value="EXTRAORDINARIA" th:selected="${necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadExtraordinaria)}">Extraordinaria</option>
-                        <option value="RECURRENTE" th:selected="${necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadRecurrente)}">Recurrente</option>
+                    <select class="form-select" onchange="location.href='?idEntidad=' + [[${idEntidadSeleccionada}]] + '&tipo=' + this.value">
+                        <option value="EXTRAORDINARIA" th:selected="${necesidad.class.simpleName == 'NecesidadExtraordinaria'}">Extraordinaria</option>
+                        <option value="RECURRENTE" th:selected="${necesidad.class.simpleName == 'NecesidadRecurrente'}">Recurrente</option>
                     </select>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Descripción</label>
-                    <input type="text" th:field="*{descripcion}" placeholder="Ej: Arroz para comedor comunitario" class="form-control" required>
+                    <input type="text" th:field="*{descripcion}" placeholder="Ej: Arroz para comedor" class="form-control" required>
                 </div>
 
                 <div class="row g-2 mb-3">
@@ -42,23 +43,22 @@
                     <input type="number" th:field="*{cantidadObjetivo}" placeholder="Cantidad requerida" class="form-control" min="1" required>
                 </div>
 
-                <!-- SECCIÓN EXTRAORDINARIA -->
-                <div th:if="${necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadExtraordinaria)}" class="mb-3">
+                <div th:if="${necesidad.class.simpleName == 'NecesidadExtraordinaria'}" class="mb-3 border p-3 rounded bg-light">
                     <label class="form-label">Fecha Límite</label>
-                    <input type="date" th:field="*{fechaLimite}" class="form-control">
+                    <input type="date" name="fechaLimite" th:value="${necesidad.fechaLimite}" class="form-control">
                 </div>
 
-                <!-- SECCIÓN RECURRENTE -->
-                <div th:if="${necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadRecurrente)}" class="mb-3">
+                <div th:if="${necesidad.class.simpleName == 'NecesidadRecurrente'}" class="mb-3 border p-3 rounded bg-light">
                     <label class="form-label">Periodicidad</label>
-                    <select th:field="*{periodicidad}" class="form-select">
-                        <option value="SEMANAL">Semanal</option>
-                        <option value="MENSUAL">Mensual</option>
-                        <option value="ANUAL">Anual</option>
+                    <select name="periodicidad" class="form-select">
+                        <option value="SEMANAL" th:selected="${necesidad.periodicidad == 'SEMANAL'}">Semanal</option>
+                        <option value="MENSUAL" th:selected="${necesidad.periodicidad == 'MENSUAL'}">Mensual</option>
+                        <option value="ANUAL" th:selected="${necesidad.periodicidad == 'ANUAL'}">Anual</option>
                     </select>
                 </div>
 
                 <button type="submit" class="btn btn-success mt-3">Guardar Necesidad</button>
+                <a th:href="@{/necesidades(idEntidad=${idEntidadSeleccionada})}" class="btn btn-secondary mt-3">Cancelar</a>
             </form>
         </div>
     </div>
