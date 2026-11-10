@@ -28,15 +28,11 @@ public class Donacion {
     private Donante donante;
 
     private Date fechaRegistro = new Date();
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacionInicial")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "donacionInicial")
     private List<DonacionSegmentada> donacionesSegmentadas = new ArrayList<>();
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "donacion")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true, mappedBy = "donacion")
     private List<Bien> bienesDeEntrada = new ArrayList<>();
 
-
-    public void eliminarSegmentadas() {
-        this.donacionesSegmentadas.clear();
-    }
 
     public List<String> conocerCategorias() {
         return this.getBienesDeEntrada().stream().map(b -> b.getSubcategoria().getCategoria().toString()).toList();
@@ -62,13 +58,10 @@ public class Donacion {
         return cantidad;
     }
 
-    public void setDonacionesSegmentadas(List<DonacionSegmentada> donacionesSegmentadas) {
-        this.donacionesSegmentadas = donacionesSegmentadas;
-        setearDonacionesSegmentadas();
-    }
 
     public void setBienesDeEntrada(List<Bien> bienesDeEntrada) {
-        this.bienesDeEntrada = bienesDeEntrada;
+        this.bienesDeEntrada.clear();
+        this.bienesDeEntrada.addAll(bienesDeEntrada);
         setearBienesDeEntrada();
     }
 
@@ -92,14 +85,12 @@ public class Donacion {
     }
 
     public void segmentarse() {
-        this.donacionesSegmentadas = new ArrayList<>();
+        this.donacionesSegmentadas.clear();
         for (Integer i = 0; i < bienesDeEntrada.size(); i++) {
             DonacionSegmentada segmentada = new DonacionSegmentada();
             segmentada.setBien(bienesDeEntrada.get(i));
             segmentada.setEstadoActual(new EstadoDonacion(TipoEstadoDonacion.EN_DEPOSITO, null, segmentada));
-            segmentada.setDonacionEstadosHistorico(new ArrayList<>());
             segmentada.setSubcategoria(bienesDeEntrada.get(i).getSubcategoria());
-            segmentada.setBienesAsignados(new ArrayList<>());
             segmentada.setDonacionInicial(this);
             donacionesSegmentadas.add(segmentada);
         }

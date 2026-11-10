@@ -80,13 +80,11 @@ public class ServicioDonacion {
     public Donacion updateDonacion(Long idDonacion, Donacion updateDonacion) {
         Donacion donacion = repoDonaciones.findById(idDonacion).orElse(null);
         Donante donante = repoDonantes.findById(donacion.getDonante().getId()).orElse(null);
-        donacion.eliminarSegmentadas();
         donacion.setDescripcionGeneral(updateDonacion.getDescripcionGeneral());
         donacion.setFechaRegistro(updateDonacion.getFechaRegistro());
         donacion.setBienesDeEntrada(updateDonacion.getBienesDeEntrada());
-        donante.actualizarDonacion(donacion);
-        donante.setUltimaInteraccion(LocalDateTime.now());
         donacion.setearRelaciones();
+        donante.setUltimaInteraccion(LocalDateTime.now());
         servicioDonantes.setearCategorias(donante);
         //comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return donacion;

@@ -33,7 +33,7 @@ public class ServicioBeneficiarias {
     public void setearCategorias(EntidadBeneficiaria entidad) {
         if (entidad != null) {
             entidad.getNecesidades().forEach(n -> {
-                Categoria categoria = repoCategorias.findById(n.getSubcategoria().getCategoria().getId()).orElse(null);
+                Categoria categoria = repoCategorias.getReferenceById(n.getSubcategoria().getCategoria().getId());
                 n.getSubcategoria().setCategoria(categoria);
             });
         }
@@ -52,8 +52,6 @@ public class ServicioBeneficiarias {
 
     @Transactional
     public EntidadBeneficiaria createEntidad(EntidadBeneficiaria entidad) {
-
-        setearCategorias(entidad);
         repoBeneficiarias.save(entidad);
         return entidad;
 
@@ -62,11 +60,6 @@ public class ServicioBeneficiarias {
     @Transactional
     public EntidadBeneficiaria updateEntidad(Long idEntidad, EntidadBeneficiaria updatedEntidad) {
         EntidadBeneficiaria entidad = repoBeneficiarias.findById(idEntidad).orElse(null);
-        entidad.eliminarNecesidades();
-        entidad.getNecesidades().addAll(
-                updatedEntidad.getNecesidades()
-        );
-        entidad.setearNecesidadesActuales();
         entidad.setDireccion(updatedEntidad.getDireccion());
         entidad.setTelefono(updatedEntidad.getTelefono());
         entidad.setRazonSocial(updatedEntidad.getRazonSocial());

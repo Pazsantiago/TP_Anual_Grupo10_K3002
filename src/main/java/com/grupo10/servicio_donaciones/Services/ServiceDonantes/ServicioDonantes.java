@@ -52,7 +52,7 @@ public class ServicioDonantes {
     public void setearCategorias(Donante persona) {
         persona.getDonaciones().forEach(d -> {
             d.getBienesDeEntrada().forEach(bien -> {
-                Categoria categoria = repoCategorias.findById(bien.getSubcategoria().getCategoria().getId()).orElse(null);
+                Categoria categoria = repoCategorias.getReferenceById(bien.getSubcategoria().getCategoria().getId());
                 bien.getSubcategoria().setCategoria(categoria);
             });
         });
@@ -78,15 +78,7 @@ public class ServicioDonantes {
 
     @Transactional
     public Donante createPersona(Donante persona) {
-        if (persona.getDonaciones() != null) {
-            persona.setearRelaciones();
-            persona.getDonaciones().forEach(d -> {
-                d.setearRelaciones();
-                repoDonaciones.save(d);
-            });
-        }
         persona.setUltimaInteraccion(LocalDateTime.now());
-        setearCategorias(persona);
         repoDonantes.save(persona);
         //comunicador.enviarDonante(persona, restClientIncentivos);
         return persona;
@@ -113,16 +105,6 @@ public class ServicioDonantes {
         donante.setPersona(updateDonante.getPersona());
         donante.setUltimaInteraccion(LocalDateTime.now());
         donante.setMediosDeContacto(updateDonante.getMediosDeContacto());
-        donante.getDonaciones().forEach(d -> {
-            repoDonaciones.deleteById(d.getId());
-        });
-        donante.borrarDonaciones();
-        donante.setDonaciones(updateDonante.getDonaciones());
-        donante.setearRelaciones();
-        donante.getDonaciones().forEach(d -> {
-            d.setearRelaciones();
-            repoDonaciones.save(d);
-        });
         setearCategorias(donante);
         //comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return donante;

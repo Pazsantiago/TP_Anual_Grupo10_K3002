@@ -30,6 +30,7 @@ public class ServicioNecesidades {
     @Transactional
     public Necesidad createNecesidad(Long idEntidad, Necesidad necesidad) {
         EntidadBeneficiaria entidad = servicioBeneficiarias.getEntidadById(idEntidad);
+        servicioBeneficiarias.setearCategorias(entidad);
         entidad.agregarNecesidadActual(necesidad);
         return necesidad;
     }
@@ -38,8 +39,8 @@ public class ServicioNecesidades {
     public Necesidad updateNecesidad(Long idNecesidad, Necesidad updatedNecesidad) {
         Necesidad necesidad = servicioBeneficiarias.buscarNecesidadDeEntidad(idNecesidad);
         EntidadBeneficiaria entidadBeneficiaria = servicioBeneficiarias.getEntidadById(necesidad.getEntidadBeneficiaria().getId());
+        servicioBeneficiarias.setearCategorias(entidadBeneficiaria);
         necesidad.aplicarActualizacion(updatedNecesidad);
-        entidadBeneficiaria.actualizarNecesidad(necesidad);
         return necesidad;
     }
 

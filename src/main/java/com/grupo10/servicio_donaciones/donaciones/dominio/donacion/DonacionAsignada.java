@@ -41,7 +41,8 @@ public class DonacionAsignada {
     }
 
     public void setDonacionesSegmentadas(List<DonacionSegmentada> donacionesSegmentadas) {
-        this.donacionesSegmentadas = donacionesSegmentadas;
+        this.donacionesSegmentadas.clear();
+        this.donacionesSegmentadas.addAll(donacionesSegmentadas);
         setearDonacionesSegmentadas();
     }
 
@@ -63,6 +64,7 @@ public class DonacionAsignada {
 
     public void desvincularSegmentadas() {
         if (!donacionesSegmentadas.isEmpty()) this.donacionesSegmentadas.forEach(s -> s.eliminarAsignada(this.getId()));
+        this.donacionesSegmentadas.clear();
     }
 
 

@@ -57,9 +57,7 @@ public class ServicioAsignacion {
                                 )
                         ).toList())
                 .filter(rankings -> !rankings.isEmpty())
-                .orElseGet(() -> {
-                    return segmentadaRankings.get().getRankings();
-                });
+                .orElseGet(() -> segmentadaRankings.get().getRankings());
     }
 
 //    public List<RankingEntidadBeneficiaria> mostrarInformacion(DonacionSegmentada donacion) {

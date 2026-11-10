@@ -60,16 +60,6 @@ public class DonacionSegmentada {
         this.bienesAsignados.removeIf(bien -> bien.getIdNecesidadAsignada().equals(idNecesidad));
     }
 
-    public void setDonacionEstadosHistorico(List<EstadoDonacion> donacionEstadosHistorico) {
-        this.donacionEstadosHistorico = donacionEstadosHistorico;
-        setearEstadosHistoricos();
-    }
-
-    public void setBienesAsignados(List<BienAsignado> bienesAsignados) {
-        this.bienesAsignados = bienesAsignados;
-        setearBienesAsignados();
-    }
-
     public void agregarDonacionAsignada(DonacionAsignada donacionAsignada) {
         this.donacionesAsignadas.add(donacionAsignada);
     }

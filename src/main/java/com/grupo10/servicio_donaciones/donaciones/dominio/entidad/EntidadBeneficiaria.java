@@ -50,14 +50,7 @@ public class EntidadBeneficiaria {
         necesidades.add(necesidad);
         necesidad.setEntidadBeneficiaria(this);
     }
-
-    public void actualizarNecesidad(Necesidad necesidadActualizada) {
-        necesidades.forEach(n -> {
-            if (n.getId().equals(necesidadActualizada.getId())) {
-                necesidades.set(getNecesidades().indexOf(n), necesidadActualizada);
-            }
-        });
-    }
+    
 
     public void eliminarNecesidadActual(Long idNecesidad) {
         necesidades.removeIf(n -> n.getId().equals(idNecesidad));

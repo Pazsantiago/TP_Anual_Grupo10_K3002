@@ -41,14 +41,7 @@ public class Donante {
         this.donaciones = donaciones;
         setearDonaciones();
     }
-
-    public void actualizarDonacion(Donacion donacion) {
-        donaciones.forEach(d -> {
-            if (d.getId().equals(donacion.getId())) {
-                donaciones.set(donaciones.indexOf(d), donacion);
-            }
-        });
-    }
+    
 
     public void setMediosDeContacto(List<MedioContacto> mediosDeContacto) {
         this.mediosDeContacto = mediosDeContacto;
@@ -64,11 +57,6 @@ public class Donante {
         return mediosDeContacto.stream().filter(p -> p.isEsPredeterminado()).findFirst().orElse(null);
     }
 
-    public void setearRelaciones() {
-        this.ultimaInteraccion = LocalDateTime.now();
-        setearDonaciones();
-        setearMediosContactos();
-    }
 
     public void setearDonaciones() {
         getDonaciones().forEach(d -> {
