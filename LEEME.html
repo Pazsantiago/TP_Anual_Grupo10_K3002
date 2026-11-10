@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Bases para los dem&aacute;s servicios &lpar;Donaciones&comma; Incentivos&comma; Log&iacute;stica&rpar;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <span id="markdown-mermaid" aria-hidden="true" data-config="{&quot;darkModeTheme&quot;:&quot;vscode&quot;,&quot;lightModeTheme&quot;:&quot;vscode&quot;,&quot;maxTextSize&quot;:50000,&quot;clickDrag&quot;:&quot;alt&quot;,&quot;showControls&quot;:&quot;onHoverOrFocus&quot;,&quot;resizable&quot;:true,&quot;maxHeight&quot;:&quot;&quot;}"></span>
+				<h1 id="bases-para-los-demás-servicios-donaciones-incentivos-logística">Bases para los demás servicios (Donaciones, Incentivos, Logística)</h1>
+<p>Copiar el contenido de <code>src/</code> encima del proyecto del frontend.
+Reemplaza <code>NotificacionesClient</code>, <code>RestClientConfig</code>, <code>layout.html</code>, <code>layout.css</code>, <code>base.css</code> y <code>table.css</code>; el resto es nuevo.</p>
+<h2 id="qué-agrega">Qué agrega</h2>
+<table>
+<thead>
+<tr>
+<th>Sección</th>
+<th>Ruta</th>
+<th>Servicio</th>
+<th>Qué muestra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inicio</td>
+<td><code>/</code></td>
+<td>–</td>
+<td>Tarjetas hacia cada sección</td>
+</tr>
+<tr>
+<td>Donantes</td>
+<td><code>/donantes</code>, <code>/donantes/{id}/donaciones</code></td>
+<td>Donaciones</td>
+<td>Listado y donaciones de cada donante</td>
+</tr>
+<tr>
+<td>Entidades</td>
+<td><code>/entidades</code>, <code>/entidades/{id}/necesidades</code></td>
+<td>Donaciones</td>
+<td>Entidades beneficiarias y necesidades</td>
+</tr>
+<tr>
+<td>Asignaciones</td>
+<td><code>/asignaciones</code> (+ botón &quot;Ejecutar algoritmos&quot;)</td>
+<td>Donaciones</td>
+<td>Rankings de los algoritmos de asignación</td>
+</tr>
+<tr>
+<td>Incentivos</td>
+<td><code>/incentivos</code>, <code>/incentivos/donantes/{id}</code></td>
+<td>Incentivos</td>
+<td>Ranking mensual, métricas, misión, insignias, crear perfil</td>
+</tr>
+<tr>
+<td>Logística</td>
+<td><code>/logistica</code></td>
+<td>Logística</td>
+<td>Camiones, bultos y donaciones pendientes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="dónde-corre-cada-servicio">Dónde corre cada servicio</h2>
+<p>El frontend usa por defecto estas URLs (cambiables con variables de entorno o <code>application.properties</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Servicio</th>
+<th>Variable</th>
+<th>Por defecto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Donaciones</td>
+<td><code>DONACIONES_URL</code></td>
+<td><code>http://localhost:8090</code></td>
+</tr>
+<tr>
+<td>Incentivos</td>
+<td><code>INCENTIVOS_URL</code></td>
+<td><code>http://localhost:8091</code></td>
+</tr>
+<tr>
+<td>Logística</td>
+<td><code>LOGISTICA_URL</code></td>
+<td><code>http://localhost:8092</code></td>
+</tr>
+</tbody>
+</table>
+<p>Los tres servicios traen puertos que chocan entre sí y con el frontend (8080). Para correrlos juntos:</p>
+<ul>
+<li>Donaciones: <code>SERVER_PORT=8090</code> y <code>SERVICIO_INCENTIVOS_URL=http://localhost:8091/incentivos</code></li>
+<li>Incentivos: <code>--server.port=8091</code></li>
+<li>Logística: <code>--server.port=8092</code> (su <code>application.properties</code> fija 8081)</li>
+</ul>
+<p><code>application.properties</code> (opcional, solo si querés dejarlo explícito):</p>
+<pre><code>donatrack.services.donaciones.base-url=${DONACIONES_URL:http://localhost:8090}
+donatrack.services.incentivos.base-url=${INCENTIVOS_URL:http://localhost:8091}
+donatrack.services.logistica.base-url=${LOGISTICA_URL:http://localhost:8092}
+</code></pre>
+<h2 id="cómo-extender">Cómo extender</h2>
+<ul>
+<li><strong>Nueva sección:</strong> una línea en <code>NavegacionAdvice</code> (aparece en la barra y en el inicio) + controller + vista.</li>
+<li><strong>Nuevo endpoint:</strong> un método en el cliente del servicio (usa <code>call(...)</code> / <code>listaDe(...)</code>).</li>
+<li><strong>Nuevo servicio:</strong> <code>Endpoint</code> en <code>ServiciosProperties</code>, <code>@Bean</code> en <code>RestClientConfig</code>, y un cliente que extienda <code>ClienteServicio</code>.</li>
+<li><strong>Página que carga datos:</strong> <code>Seccion.cargar(client::metodo)</code>; si el servicio falla, la página igual se muestra.</li>
+</ul>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>
