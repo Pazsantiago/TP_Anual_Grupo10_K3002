@@ -86,7 +86,7 @@
                         <input type="text" name="persona.direccion.localidad" th:value="${donante.persona.direccion?.localidad}" class="form-control" placeholder="CABA">
                     </div>
                 </div>
-                
+
                 <h5 class="mt-2">Medio de Contacto</h5>
                 <div class="row g-2 mb-3" th:each="m, iter : ${donante.mediosDeContacto}">
                     <input type="hidden" th:name="'mediosDeContacto[' + ${iter.index} + '].esPredeterminado'" value="true" />

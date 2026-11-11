@@ -9,6 +9,7 @@ import org.example.donacionesfrontend.services.NecesidadService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/necesidades")
@@ -18,47 +19,71 @@ public class NecesidadController {
     private final NecesidadService necesidadService;
     private final EntidadService entidadService;
 
+
+    @ModelAttribute("necesidad")
+    public Necesidad prepararNecesidad(@RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo) {
+        Necesidad necesidad;
+
+        if ("RECURRENTE".equalsIgnoreCase(tipo)) {
+            NecesidadRecurrente nr = new NecesidadRecurrente();
+            Periodo periodo = new Periodo();
+            nr.setPeriodo(periodo);
+            necesidad = nr;
+        } else {
+            necesidad = new NecesidadExtraordinaria();
+        }
+
+        Subcategoria subcategoria = new Subcategoria();
+        subcategoria.setCategoria(new Categoria());
+        necesidad.setSubcategoria(subcategoria);
+
+        return necesidad;
+    }
+
+    // 2. Muestra el listado de necesidades de una entidad
     @GetMapping
     public String listarPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, Model model) {
         model.addAttribute("entidades", entidadService.getAll());
-        model.addAttribute("idEntidadSeleccionada", idEntidad); // Asegura que no sea indefinido
+        model.addAttribute("idEntidadSeleccionada", idEntidad);
         if (idEntidad != null) {
             model.addAttribute("necesidades", necesidadService.getByEntidad(idEntidad));
         }
         return "necesidades/lista";
     }
 
+    // 3. Renderiza el formulario para crear una necesidad
     @GetMapping("/nueva")
-    public String formularioNuevo(
-            @RequestParam(value = "idEntidad", required = false) Long idEntidad,
+    public String formularioNueva(
+            @RequestParam("idEntidad") Long idEntidad,
             @RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo,
             Model model) {
 
-        Necesidad necesidad;
-        if ("RECURRENTE".equalsIgnoreCase(tipo)) {
-            necesidad = new NecesidadRecurrente();
-        } else {
-            necesidad = new NecesidadExtraordinaria();
-        }
-
-        Subcategoria subcat = new Subcategoria();
-        subcat.setCategoria(new Categoria());
-        necesidad.setSubcategoria(subcat);
-
-        model.addAttribute("necesidad", necesidad);
-        model.addAttribute("entidades", entidadService.getAll());
+        model.addAttribute("idEntidadSeleccionada", idEntidad);
         return "necesidades/formulario";
     }
 
+    // 4. Recibe la necesidad instanciada y bindeada correctamente
     @PostMapping
-    public String guardar(@ModelAttribute("necesidad") Necesidad necesidad) {
-        necesidadService.create(necesidad.getId(), necesidad);
-        return "redirect:/necesidades?idEntidad=" + necesidad.getId();
-    }
+    public String guardarNecesidad(
+            @RequestParam("idEntidad") Long idEntidad,
+            @ModelAttribute("necesidad") Necesidad necesidad,
+            RedirectAttributes redirectAttributes) {
 
-    @PostMapping("/eliminar")
-    public String eliminar(@RequestParam Long idEntidad, @RequestParam Long idNecesidad) {
-        necesidadService.delete(idEntidad, idNecesidad);
+        necesidadService.create(idEntidad, necesidad);
+        redirectAttributes.addFlashAttribute("exito", "Necesidad registrada correctamente.");
         return "redirect:/necesidades?idEntidad=" + idEntidad;
     }
+
+    // 5. Eliminar una necesidad
+    @PostMapping("/eliminar")
+    public String eliminarNecesidad(
+            @RequestParam("idEntidad") Long idEntidad,
+            @RequestParam("idNecesidad") Long idNecesidad,
+            RedirectAttributes redirectAttributes) {
+
+        necesidadService.delete(idEntidad, idNecesidad);
+        redirectAttributes.addFlashAttribute("exito", "Necesidad eliminada correctamente.");
+        return "redirect:/necesidades?idEntidad=" + idEntidad;
+    }
+
 }

@@ -1,53 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
-<body class="bg-light">
+<body class="container py-4">
+
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="container col-md-6">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h4>Registrar Necesidad</h4>
+<h2 class="mb-4">Registrar Necesidad</h2>
+
+<form th:action="@{/necesidades}" th:object="${necesidad}" method="post" class="card p-4 shadow-sm">
+
+    <!-- ID de la Entidad a la que pertenece la necesidad -->
+    <input type="hidden" name="idEntidad" th:value="${idEntidadSeleccionada}" />
+
+    <!-- Campo oculto para mantener el tipo en el POST -->
+    <input type="hidden" name="tipo" th:value="${necesidad.class.simpleName == 'NecesidadRecurrente' ? 'RECURRENTE' : 'EXTRAORDINARIA'}" />
+
+    <!-- Selector de Tipo de Necesidad -->
+    <div class="mb-3">
+        <label class="form-label fw-bold">Tipo de Necesidad</label>
+        <select class="form-select" th:onchange="|location.href='/necesidades/nueva?idEntidad=${idEntidadSeleccionada}&tipo=' + this.value|">
+            <option value="EXTRAORDINARIA" th:selected="${necesidad.class.simpleName == 'NecesidadExtraordinaria'}">Extraordinaria</option>
+            <option value="RECURRENTE" th:selected="${necesidad.class.simpleName == 'NecesidadRecurrente'}">Recurrente</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Descripción</label>
+        <input type="text" name="descripcion" th:value="${necesidad.descripcion}" placeholder="Ej: Paquetes de arroz 1kg para el comedor" class="form-control" required>
+    </div>
+
+    <div class="row g-2 mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Subcategoría</label>
+            <input type="text" name="subcategoria.nombre" th:value="${necesidad.subcategoria?.nombre}" placeholder="arroz" class="form-control" required>
         </div>
-        <div class="card-body">
-            <form th:action="@{/necesidades}" th:object="${necesidad}" method="post">
-
-                <input type="hidden" name="idEntidad" th:value="${idEntidadSeleccionada}" />
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Tipo de Necesidad</label>
-                    <select name="tipo" class="form-select">
-                        <option value="EXTRAORDINARIA" th:selected="${necesidad.class.simpleName == 'NecesidadExtraordinaria'}">Extraordinaria</option>
-                        <option value="RECURRENTE" th:selected="${necesidad.class.simpleName == 'NecesidadRecurrente'}">Recurrente</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Descripción</label>
-                    <input type="text" th:field="*{descripcion}" placeholder="Ej: Arroz para comedor" class="form-control" required>
-                </div>
-
-                <div class="row g-2 mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Subcategoría</label>
-                        <input type="text" th:field="*{subcategoria.nombre}" placeholder="arroz" class="form-control" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">ID Categoría</label>
-                        <input type="number" th:field="*{subcategoria.categoria.id}" value="1" class="form-control" required>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Cantidad Objetivo</label>
-                    <input type="number" th:field="*{cantidadObjetivo}" placeholder="Cantidad requerida" class="form-control" min="1" required>
-                </div>
-
-                <button type="submit" class="btn btn-success mt-3">Guardar Necesidad</button>
-                <a th:href="@{/necesidades(idEntidad=${idEntidadSeleccionada})}" class="btn btn-secondary mt-3">Cancelar</a>
-            </form>
+        <div class="col-md-6">
+            <label class="form-label">ID Categoría</label>
+            <input type="number" name="subcategoria.categoria.id" th:value="${necesidad.subcategoria?.categoria?.id != null ? necesidad.subcategoria.categoria.id : 1}" class="form-control" required>
         </div>
     </div>
-</div>
+
+    <div class="mb-3">
+        <label class="form-label">Cantidad Objetivo</label>
+        <input type="number" name="cantidadObjetivo" th:value="${necesidad.cantidadObjetivo}" placeholder="Cantidad requerida" class="form-control" min="1" required>
+    </div>
+
+    <!-- Campos adicionales específicos para Necesidad Recurrente -->
+    <div th:if="${necesidad.class.simpleName == 'NecesidadRecurrente'}" class="border p-3 rounded mb-3 bg-light">
+        <h5 class="text-primary mb-3">Parámetros de Recurrencia</h5>
+        <div class="row g-2">
+            <div class="col-md-6">
+                <label class="form-label">Días del Período</label>
+                <input type="number" name="periodo.periodoDias" placeholder="Ej: 30" class="form-control">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Fecha Inicio Período</label>
+                <input type="date" name="periodo.inicioPeriodo" class="form-control">
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-3">
+        <a th:href="@{/necesidades(idEntidad=${idEntidadSeleccionada})}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success">Guardar Necesidad</button>
+    </div>
+</form>
 </body>
 </html>
