@@ -7,14 +7,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold text-dark"><i class="bi bi-building-fill text-warning me-2"></i>Entidades Beneficiarias</h2>
-    <div>
-        <a href="/home" class="btn btn-outline-secondary me-2">
-            <i class="bi bi-house-fill me-1"></i>Inicio
-        </a>
-        <a href="/entidadesBeneficiarias/nueva" class="btn btn-warning text-dark">
-            <i class="bi bi-plus-lg me-1"></i>+ Nueva Entidad
-        </a>
-    </div>
+    <a href="/entidades/nueva" class="btn btn-warning text-dark"><i class="bi bi-plus-circle-fill me-1"></i>+ Nueva Entidad</a>
 </div>
 
 <div class="table-responsive bg-white rounded shadow-sm border">
@@ -33,27 +26,26 @@
         <tr th:if="${#lists.isEmpty(entidades)}">
             <td colspan="6" class="text-center text-muted py-4">No hay entidades beneficiarias registradas.</td>
         </tr>
-        <tr th:each="e : ${entidades}">
-            <td th:text="${e.id}">1</td>
-            <td><strong th:text="${e.razonSocial}">Comedor La Carbonilla</strong></td>
-            <td th:text="${e.telefono}">+5491123456789</td>
-            <td th:text="${e.correoRepresentante}">contacto@comedor.org</td>
-            <td th:text="${e.direccion}">Av. Medrano 951</td>
+        <tr th:each="ent : ${entidades}">
+            <td th:text="${ent.id}">1</td>
+            <td th:text="${ent.razonSocial}">Comedor Los Niños</td>
+            <td th:text="${ent.telefono}">+54911000000</td>
+            <td th:text="${ent.correoRepresentante}">representante@comedor.org</td>
+            <td th:text="${ent.direccion != null ? ent.direccion.calle + ' ' + ent.direccion.altura : 'Sin Dirección'}">Medrano 951</td>
             <td class="text-end">
-                <a th:href="@{/necesidades(idEntidad=${e.id})}" class="btn btn-sm btn-outline-danger me-1" title="Ver Necesidades">
-                    <i class="bi bi-cart-check-fill me-1"></i>Necesidades
-                </a>
-                <form th:action="@{/entidadesBeneficiarias/eliminar}" method="post" class="d-inline" onsubmit="return confirm('¿Eliminar entidad beneficiaria?');">
-                    <input type="hidden" name="id" th:value="${e.id}" />
-                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </form>
+                <div class="btn-group btn-group-sm">
+                    <a th:href="@{/necesidades(idEntidad=${ent.id})}" class="btn btn-outline-warning text-dark" title="Ver Necesidades">
+                        <i class="bi bi-list-task me-1"></i>Necesidades
+                    </a>
+                    <form th:action="@{/entidades/eliminar}" method="post" class="d-inline" onsubmit="return confirm('¿Eliminar entidad?');">
+                        <input type="hidden" name="id" th:value="${ent.id}" />
+                        <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
+                    </form>
+                </div>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-
 </body>
 </html>
