@@ -1,5 +1,6 @@
 package org.example.donacionesfrontend.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.dominio.bien.Bien;
 import org.example.donacionesfrontend.dominio.categoria.Categoria;
@@ -23,7 +24,8 @@ public class DonacionController {
     private final DonanteService donanteService;
 
     @GetMapping
-    public String listarPorDonante(@RequestParam(value = "idDonante", required = false) Long idDonante, Model model) {
+    public String listarPorDonante(@RequestParam(value = "idDonante", required = false) Long idDonante, HttpSession session, Model model) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         model.addAttribute("donantes", donanteService.getAll());
         if (idDonante != null) {
             model.addAttribute("donaciones", donacionService.getByDonante(idDonante));
@@ -33,9 +35,9 @@ public class DonacionController {
     }
 
     @GetMapping("/nueva")
-    public String formularioNuevo(@RequestParam(value = "idDonante", required = false) Long idDonante, Model model) {
+    public String formularioNuevo(@RequestParam(value = "idDonante", required = false) Long idDonante, HttpSession session, Model model) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         Donacion donacion = new Donacion();
-
         Bien bien = new Bien();
         Subcategoria subcat = new Subcategoria();
         subcat.setCategoria(new Categoria());
@@ -48,13 +50,15 @@ public class DonacionController {
     }
 
     @PostMapping
-    public String guardar(@ModelAttribute("donacion") Donacion donacion) {
+    public String guardar(@ModelAttribute("donacion") Donacion donacion, HttpSession session) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         donacionService.create(donacion.getId(), donacion);
         return "redirect:/donaciones?idDonante=" + donacion.getId();
     }
 
     @PostMapping("/eliminar")
-    public String eliminar(@RequestParam Long idDonante, @RequestParam Long idDonacion) {
+    public String eliminar(@RequestParam Long idDonante, @RequestParam Long idDonacion, HttpSession session) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         donacionService.delete(idDonante, idDonacion);
         return "redirect:/donaciones?idDonante=" + idDonante;
     }

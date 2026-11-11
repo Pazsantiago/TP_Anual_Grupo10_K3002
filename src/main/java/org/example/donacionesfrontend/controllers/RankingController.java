@@ -1,5 +1,6 @@
 package org.example.donacionesfrontend.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.donacionesfrontend.services.RankingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +18,15 @@ public class RankingController {
     }
 
     @GetMapping
-    public String listarRankings(Model model) {
+    public String listarRankings(HttpSession session, Model model) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         model.addAttribute("rankings", rankingService.obtenerRankings());
         return "rankings/lista";
     }
 
     @PostMapping("/generar")
-    public String generarRankings(RedirectAttributes redirectAttributes) {
+    public String generarRankings(HttpSession session, RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         try {
             rankingService.generarRankings();
             redirectAttributes.addFlashAttribute("exito", "Ranking generado y actualizado correctamente.");
@@ -34,7 +37,8 @@ public class RankingController {
     }
 
     @GetMapping("/repetidas")
-    public String entidadesRepetidas(@RequestParam(value = "idDonacion", required = false) Long idDonacion, Model model) {
+    public String entidadesRepetidas(@RequestParam(value = "idDonacion", required = false) Long idDonacion, HttpSession session, Model model) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         model.addAttribute("idDonacionSeleccionada", idDonacion);
         if (idDonacion != null) {
             model.addAttribute("repetidas", rankingService.obtenerEntidadesRepetidas(idDonacion));

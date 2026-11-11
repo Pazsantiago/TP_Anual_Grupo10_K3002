@@ -2,6 +2,7 @@ package org.example.donacionesfrontend.services;
 
 import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.dominio.entidad.EntidadBeneficiaria;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -9,11 +10,13 @@ import org.springframework.web.client.RestClient;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class EntidadService {
 
     private final RestClient restClient;
 
+    public EntidadService(@Qualifier("restClientDonaciones") RestClient restClient) {
+        this.restClient = restClient;
+    }
     public List<EntidadBeneficiaria> getAll() {
         return restClient.get()
                 .uri("/api/entidadesBeneficiarias")

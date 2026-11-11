@@ -1,5 +1,6 @@
 package org.example.donacionesfrontend.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.dominio.donante.*;
 import org.example.donacionesfrontend.services.DonanteService;
@@ -19,7 +20,7 @@ public class DonanteController {
     private final DonanteService donanteService;
 
     @GetMapping
-    public String listar(Model model) {
+    public String listar(HttpSession session, Model model) {
         model.addAttribute("donantes", donanteService.getAll());
         return "donantes/lista";
     }
@@ -51,8 +52,8 @@ public class DonanteController {
     @GetMapping("/nuevo")
     public String formularioNuevo(
             @RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo,
-            Model model) {
-
+            HttpSession session, Model model) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         List<Donante> donantes = donanteService.getAll();
         List<PersonaHumana> personasHumanas = donantes.stream()
                 .filter(d -> d.getPersona() instanceof PersonaHumana)
@@ -68,26 +69,29 @@ public class DonanteController {
     @PostMapping("/nuevo")
     public String guardarDonante(
             @ModelAttribute("donante") Donante donante,
-            RedirectAttributes redirectAttributes) {
-
+            HttpSession session, RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         donanteService.create(donante);
         redirectAttributes.addFlashAttribute("exito", "Donante registrado correctamente.");
         return "redirect:/donantes";
     }
 
     @PostMapping("/eliminar")
-    public String eliminar(@RequestParam Long id) {
+    public String eliminar(@RequestParam Long id, HttpSession session) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         donanteService.delete(id);
         return "redirect:/donantes";
     }
 
     @GetMapping("/importar")
-    public String vistaImportar() {
+    public String vistaImportar(HttpSession session) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         return "donantes/importar";
     }
 
     @PostMapping("/importar")
-    public String importarCsv(@RequestParam("rutaArchivo") String rutaArchivo, RedirectAttributes redirectAttributes) {
+    public String importarCsv(@RequestParam("rutaArchivo") String rutaArchivo, HttpSession session, RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         if (rutaArchivo == null || rutaArchivo.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Por favor ingresá la ruta o nombre del archivo CSV.");
             return "redirect:/donantes/importar";

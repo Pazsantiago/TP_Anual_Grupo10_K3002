@@ -1,5 +1,6 @@
 package org.example.donacionesfrontend.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.dominio.categoria.Categoria;
 import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
@@ -40,9 +41,9 @@ public class NecesidadController {
         return necesidad;
     }
 
-    // 2. Muestra el listado de necesidades de una entidad
     @GetMapping
-    public String listarPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, Model model) {
+    public String listarPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, HttpSession session, Model model) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         model.addAttribute("entidades", entidadService.getAll());
         model.addAttribute("idEntidadSeleccionada", idEntidad);
         if (idEntidad != null) {
@@ -51,36 +52,33 @@ public class NecesidadController {
         return "necesidades/lista";
     }
 
-    // 3. Renderiza el formulario para crear una necesidad
     @GetMapping("/nueva")
     public String formularioNueva(
             @RequestParam("idEntidad") Long idEntidad,
             @RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo,
-            Model model) {
-
+            HttpSession session, Model model) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         model.addAttribute("idEntidadSeleccionada", idEntidad);
         return "necesidades/formulario";
     }
 
-    // 4. Recibe la necesidad instanciada y bindeada correctamente
     @PostMapping
     public String guardarNecesidad(
             @RequestParam("idEntidad") Long idEntidad,
             @ModelAttribute("necesidad") Necesidad necesidad,
-            RedirectAttributes redirectAttributes) {
-
+            HttpSession session, RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         necesidadService.create(idEntidad, necesidad);
         redirectAttributes.addFlashAttribute("exito", "Necesidad registrada correctamente.");
         return "redirect:/necesidades?idEntidad=" + idEntidad;
     }
 
-    // 5. Eliminar una necesidad
     @PostMapping("/eliminar")
     public String eliminarNecesidad(
             @RequestParam("idEntidad") Long idEntidad,
             @RequestParam("idNecesidad") Long idNecesidad,
-            RedirectAttributes redirectAttributes) {
-
+            HttpSession session, RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         necesidadService.delete(idEntidad, idNecesidad);
         redirectAttributes.addFlashAttribute("exito", "Necesidad eliminada correctamente.");
         return "redirect:/necesidades?idEntidad=" + idEntidad;

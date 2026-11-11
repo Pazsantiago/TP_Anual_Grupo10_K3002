@@ -1,5 +1,6 @@
 package org.example.donacionesfrontend.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.donacionesfrontend.services.AsignacionService;
 import org.example.donacionesfrontend.services.EntidadService;
 import org.example.donacionesfrontend.services.DonanteService;
@@ -21,7 +22,8 @@ public class AsignacionController {
     }
 
     @GetMapping("/nueva")
-    public String vistaNuevaAsignacion(Model model) {
+    public String vistaNuevaAsignacion(HttpSession session, Model model) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         model.addAttribute("entidades", entidadService.getAll());
         return "asignaciones/formulario";
     }
@@ -30,7 +32,10 @@ public class AsignacionController {
     public String crearAsignacion(@RequestParam("idEntidad") Long idEntidad,
                                   @RequestParam("idNecesidad") Long idNecesidad,
                                   @RequestParam("idDonacionSegmentada") Long idDonacionSegmentada,
+                                  HttpSession session,
                                   RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+
         try {
             asignacionService.asignarDonacionANecesidad(idEntidad, idNecesidad, idDonacionSegmentada);
             redirectAttributes.addFlashAttribute("exito", "¡Donación asignada con éxito a la necesidad!");
@@ -42,14 +47,18 @@ public class AsignacionController {
     }
 
     @GetMapping("/agregar-segmentada")
-    public String vistaAgregarSegmentada() {
+    public String vistaAgregarSegmentada(HttpSession session)
+    {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         return "asignaciones/agregar-segmentada";
     }
 
     @PostMapping("/agregar-segmentada")
     public String agregarSegmentada(@RequestParam("idDonacionAsignada") Long idDonacionAsignada,
                                     @RequestParam("idDonacionSegmentada") Long idDonacionSegmentada,
+                                    HttpSession session,
                                     RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         try {
             asignacionService.agregarSegmentadaAAsignada(idDonacionAsignada, idDonacionSegmentada);
             redirectAttributes.addFlashAttribute("exito", "¡Donación segmentada agregada correctamente a la asignación existente!");

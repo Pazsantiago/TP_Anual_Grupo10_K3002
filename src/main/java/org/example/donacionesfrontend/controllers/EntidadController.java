@@ -1,5 +1,6 @@
 package org.example.donacionesfrontend.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.dominio.categoria.Categoria;
 import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
@@ -22,13 +23,15 @@ public class EntidadController {
     private final EntidadService entidadService;
 
     @GetMapping
-    public String listar(Model model) {
+    public String listar(HttpSession session, Model model) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         model.addAttribute("entidades", entidadService.getAll());
         return "entidades/lista";
     }
 
     @GetMapping("/nueva")
-    public String formularioNuevo(Model model) {
+    public String formularioNuevo(HttpSession session, Model model) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         EntidadBeneficiaria entidad = new EntidadBeneficiaria();
         entidad.setDireccion("Ninguna");
 
@@ -44,13 +47,15 @@ public class EntidadController {
     }
 
     @PostMapping
-    public String guardar(@ModelAttribute("entidad") EntidadBeneficiaria entidad) {
+    public String guardar(@ModelAttribute("entidad") EntidadBeneficiaria entidad, HttpSession session) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         entidadService.create(entidad);
         return "redirect:/entidadesBeneficiarias";
     }
 
     @PostMapping("/eliminar")
-    public String eliminar(@RequestParam Long id) {
+    public String eliminar(@RequestParam Long id, HttpSession session) {
+        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         entidadService.delete(id);
         return "redirect:/entidadesBeneficiarias";
     }
