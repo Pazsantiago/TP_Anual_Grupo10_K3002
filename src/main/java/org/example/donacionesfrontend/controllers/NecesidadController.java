@@ -24,7 +24,6 @@ public class NecesidadController {
     @ModelAttribute("necesidad")
     public Necesidad prepararNecesidad(@RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo) {
         Necesidad necesidad;
-
         if ("RECURRENTE".equalsIgnoreCase(tipo)) {
             NecesidadRecurrente nr = new NecesidadRecurrente();
             Periodo periodo = new Periodo();
@@ -42,8 +41,7 @@ public class NecesidadController {
     }
 
     @GetMapping
-    public String listarPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, HttpSession session, Model model) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+    public String listarPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, Model model) {
         model.addAttribute("entidades", entidadService.getAll());
         model.addAttribute("idEntidadSeleccionada", idEntidad);
         if (idEntidad != null) {
@@ -56,8 +54,7 @@ public class NecesidadController {
     public String formularioNueva(
             @RequestParam("idEntidad") Long idEntidad,
             @RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo,
-            HttpSession session, Model model) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+            Model model) {
         model.addAttribute("idEntidadSeleccionada", idEntidad);
         return "necesidades/formulario";
     }
@@ -66,8 +63,7 @@ public class NecesidadController {
     public String guardarNecesidad(
             @RequestParam("idEntidad") Long idEntidad,
             @ModelAttribute("necesidad") Necesidad necesidad,
-            HttpSession session, RedirectAttributes redirectAttributes) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+            RedirectAttributes redirectAttributes) {
         necesidadService.create(idEntidad, necesidad);
         redirectAttributes.addFlashAttribute("exito", "Necesidad registrada correctamente.");
         return "redirect:/necesidades?idEntidad=" + idEntidad;
@@ -77,8 +73,7 @@ public class NecesidadController {
     public String eliminarNecesidad(
             @RequestParam("idEntidad") Long idEntidad,
             @RequestParam("idNecesidad") Long idNecesidad,
-            HttpSession session, RedirectAttributes redirectAttributes) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+            RedirectAttributes redirectAttributes) {
         necesidadService.delete(idEntidad, idNecesidad);
         redirectAttributes.addFlashAttribute("exito", "Necesidad eliminada correctamente.");
         return "redirect:/necesidades?idEntidad=" + idEntidad;

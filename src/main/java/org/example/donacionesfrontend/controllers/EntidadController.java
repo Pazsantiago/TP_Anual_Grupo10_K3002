@@ -23,15 +23,13 @@ public class EntidadController {
     private final EntidadService entidadService;
 
     @GetMapping
-    public String listar(HttpSession session, Model model) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+    public String listar(Model model) {
         model.addAttribute("entidades", entidadService.getAll());
         return "entidades/lista";
     }
 
     @GetMapping("/nueva")
-    public String formularioNuevo(HttpSession session, Model model) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+    public String formularioNuevo(Model model) {
         EntidadBeneficiaria entidad = new EntidadBeneficiaria();
         entidad.setDireccion("Ninguna");
 
@@ -48,14 +46,12 @@ public class EntidadController {
 
     @PostMapping
     public String guardar(@ModelAttribute("entidad") EntidadBeneficiaria entidad, HttpSession session) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         entidadService.create(entidad);
         return "redirect:/entidadesBeneficiarias";
     }
 
     @PostMapping("/eliminar")
     public String eliminar(@RequestParam Long id, HttpSession session) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         entidadService.delete(id);
         return "redirect:/entidadesBeneficiarias";
     }

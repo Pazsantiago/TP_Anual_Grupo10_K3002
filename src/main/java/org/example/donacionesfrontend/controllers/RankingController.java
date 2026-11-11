@@ -18,15 +18,13 @@ public class RankingController {
     }
 
     @GetMapping
-    public String listarRankings(HttpSession session, Model model) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+    public String listarRankings(Model model) {
         model.addAttribute("rankings", rankingService.obtenerRankings());
         return "rankings/lista";
     }
 
     @PostMapping("/generar")
-    public String generarRankings(HttpSession session, RedirectAttributes redirectAttributes) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+    public String generarRankings(RedirectAttributes redirectAttributes) {
         try {
             rankingService.generarRankings();
             redirectAttributes.addFlashAttribute("exito", "Ranking generado y actualizado correctamente.");
@@ -37,8 +35,7 @@ public class RankingController {
     }
 
     @GetMapping("/repetidas")
-    public String entidadesRepetidas(@RequestParam(value = "idDonacion", required = false) Long idDonacion, HttpSession session, Model model) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+    public String entidadesRepetidas(@RequestParam(value = "idDonacion", required = false) Long idDonacion, Model model) {
         model.addAttribute("idDonacionSeleccionada", idDonacion);
         if (idDonacion != null) {
             model.addAttribute("repetidas", rankingService.obtenerEntidadesRepetidas(idDonacion));

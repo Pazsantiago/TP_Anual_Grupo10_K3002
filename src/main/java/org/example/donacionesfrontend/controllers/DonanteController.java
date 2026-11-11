@@ -20,7 +20,7 @@ public class DonanteController {
     private final DonanteService donanteService;
 
     @GetMapping
-    public String listar(HttpSession session, Model model) {
+    public String listar(Model model) {
         model.addAttribute("donantes", donanteService.getAll());
         return "donantes/lista";
     }
@@ -28,7 +28,6 @@ public class DonanteController {
     @ModelAttribute("donante")
     public Donante prepararDonante(@RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo) {
         Donante donante = new Donante();
-
         if ("JURIDICA".equalsIgnoreCase(tipo)) {
             PersonaJuridica pj = new PersonaJuridica();
             pj.setDireccion(new Direccion());
@@ -48,12 +47,10 @@ public class DonanteController {
         return donante;
     }
 
-    // 2. El GET solo agrega la lista de personas humanas para los representantes si hiciera falta
     @GetMapping("/nuevo")
     public String formularioNuevo(
             @RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo,
-            HttpSession session, Model model) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+            Model model) {
         List<Donante> donantes = donanteService.getAll();
         List<PersonaHumana> personasHumanas = donantes.stream()
                 .filter(d -> d.getPersona() instanceof PersonaHumana)
@@ -65,33 +62,28 @@ public class DonanteController {
         return "donantes/formulario";
     }
 
-    // 3. El POST recibe el objeto 'donante' ya instanciado y bindeado con todos sus datos
     @PostMapping("/nuevo")
     public String guardarDonante(
             @ModelAttribute("donante") Donante donante,
-            HttpSession session, RedirectAttributes redirectAttributes) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+            RedirectAttributes redirectAttributes) {
         donanteService.create(donante);
         redirectAttributes.addFlashAttribute("exito", "Donante registrado correctamente.");
         return "redirect:/donantes";
     }
 
     @PostMapping("/eliminar")
-    public String eliminar(@RequestParam Long id, HttpSession session) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+    public String eliminar(@RequestParam Long id) {
         donanteService.delete(id);
         return "redirect:/donantes";
     }
 
     @GetMapping("/importar")
-    public String vistaImportar(HttpSession session) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+    public String vistaImportar() {
         return "donantes/importar";
     }
 
     @PostMapping("/importar")
-    public String importarCsv(@RequestParam("rutaArchivo") String rutaArchivo, HttpSession session, RedirectAttributes redirectAttributes) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+    public String importarCsv(@RequestParam("rutaArchivo") String rutaArchivo, RedirectAttributes redirectAttributes) {
         if (rutaArchivo == null || rutaArchivo.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Por favor ingresá la ruta o nombre del archivo CSV.");
             return "redirect:/donantes/importar";

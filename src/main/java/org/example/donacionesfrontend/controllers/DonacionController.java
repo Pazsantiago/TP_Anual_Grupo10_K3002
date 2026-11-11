@@ -24,8 +24,7 @@ public class DonacionController {
     private final DonanteService donanteService;
 
     @GetMapping
-    public String listarPorDonante(@RequestParam(value = "idDonante", required = false) Long idDonante, HttpSession session, Model model) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+    public String listarPorDonante(@RequestParam(value = "idDonante", required = false) Long idDonante, Model model) {
         model.addAttribute("donantes", donanteService.getAll());
         if (idDonante != null) {
             model.addAttribute("donaciones", donacionService.getByDonante(idDonante));
@@ -35,8 +34,7 @@ public class DonacionController {
     }
 
     @GetMapping("/nueva")
-    public String formularioNuevo(@RequestParam(value = "idDonante", required = false) Long idDonante, HttpSession session, Model model) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
+    public String formularioNuevo(@RequestParam(value = "idDonante", required = false) Long idDonante, Model model) {
         Donacion donacion = new Donacion();
         Bien bien = new Bien();
         Subcategoria subcat = new Subcategoria();
@@ -51,14 +49,12 @@ public class DonacionController {
 
     @PostMapping
     public String guardar(@ModelAttribute("donacion") Donacion donacion, HttpSession session) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         donacionService.create(donacion.getId(), donacion);
         return "redirect:/donaciones?idDonante=" + donacion.getId();
     }
 
     @PostMapping("/eliminar")
     public String eliminar(@RequestParam Long idDonante, @RequestParam Long idDonacion, HttpSession session) {
-        if (session.getAttribute("jwtToken") == null) { return "redirect:/login"; }
         donacionService.delete(idDonante, idDonacion);
         return "redirect:/donaciones?idDonante=" + idDonante;
     }
