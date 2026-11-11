@@ -24,11 +24,8 @@ public class DonanteController {
         return "donantes/lista";
     }
 
-    @GetMapping("/nuevo")
-    public String formularioNuevo(
-            @RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo,
-            Model model) {
-
+    @ModelAttribute("donante")
+    public Donante prepararDonante(@RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo) {
         Donante donante = new Donante();
 
         if ("JURIDICA".equalsIgnoreCase(tipo)) {
@@ -47,21 +44,34 @@ public class DonanteController {
         contacto.setEsPredeterminado(true);
         donante.setMediosDeContacto(new ArrayList<>(List.of(contacto)));
 
-        // Traemos las Personas Humanas registradas para usarlas como representantes
+        return donante;
+    }
+
+    // 2. El GET solo agrega la lista de personas humanas para los representantes si hiciera falta
+    @GetMapping("/nuevo")
+    public String formularioNuevo(
+            @RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo,
+            Model model) {
+
         List<Donante> donantes = donanteService.getAll();
         List<PersonaHumana> personasHumanas = donantes.stream()
                 .filter(d -> d.getPersona() instanceof PersonaHumana)
                 .map(d -> (PersonaHumana) d.getPersona())
                 .toList();
 
-        model.addAttribute("donante", donante);
         model.addAttribute("personasHumanas", personasHumanas);
+        model.addAttribute("tipoActual", tipo);
         return "donantes/formulario";
     }
 
-    @PostMapping
-    public String guardar(@ModelAttribute("donante") Donante donante) {
+    // 3. El POST recibe el objeto 'donante' ya instanciado y bindeado con todos sus datos
+    @PostMapping("/nuevo")
+    public String guardarDonante(
+            @ModelAttribute("donante") Donante donante,
+            RedirectAttributes redirectAttributes) {
+
         donanteService.create(donante);
+        redirectAttributes.addFlashAttribute("exito", "Donante registrado correctamente.");
         return "redirect:/donantes";
     }
 

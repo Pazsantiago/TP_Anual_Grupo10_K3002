@@ -12,6 +12,16 @@
         <div class="card-body">
             <form th:action="@{/donantes}" th:object="${donante}" method="post">
 
+                <input type="hidden" name="tipo" th:value="${param.tipo != null ? param.tipo : 'HUMANA'}" />
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Tipo de Persona</label>
+                    <select class="form-select" onchange="location.href='/donantes/nuevo?tipo=' + this.value">
+                        <option value="HUMANA" th:selected="${param.tipo == null or param.tipo[0] == 'HUMANA'}">Persona Humana</option>
+                        <option value="JURIDICA" th:selected="${param.tipo != null and param.tipo[0] == 'JURIDICA'}">Persona Jurídica</option>
+                    </select>
+                </div>
+
                 <div class="mb-3">
                     <label class="form-label fw-bold">Tipo de Donante</label>
                     <select class="form-select" onchange="location.href='?tipo=' + this.value">
