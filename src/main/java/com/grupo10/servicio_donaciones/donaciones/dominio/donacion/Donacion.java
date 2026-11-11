@@ -45,20 +45,7 @@ public class Donacion {
         }
         return cantidad;
     }
-
-    public Integer conocerCantSegmentadasEntregadas() {
-        Integer cantidad = 0;
-        for (DonacionSegmentada donacionesSegmentada : donacionesSegmentadas) {
-            for (DonacionAsignada donacionAsignada : donacionesSegmentada.getDonacionesAsignadas()) {
-                if (donacionAsignada.getAsignacionCompleta() != null) {
-                    cantidad++;
-                }
-            }
-        }
-        return cantidad;
-    }
-
-
+    
     public void setBienesDeEntrada(List<Bien> bienesDeEntrada) {
         this.bienesDeEntrada.clear();
         this.bienesDeEntrada.addAll(bienesDeEntrada);

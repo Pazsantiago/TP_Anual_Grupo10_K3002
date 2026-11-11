@@ -28,11 +28,10 @@ public class CBeneficiarias {
     private final ServicioDonacionAsignada servicioDonacionAsignada;
 
     public Map<String, Object> aDonacionAsignadaREST(DonacionAsignada donacionAsignada) {
-
         Map<String, Object> dto = new HashMap<>();
         dto.put("id", donacionAsignada.getId());
         dto.put("id_necesidad", donacionAsignada.getNecesidadResuelta().getId());
-        dto.put("id_segmentadas", donacionAsignada.getDonacionesSegmentadas().stream().map(DonacionSegmentada::getId));
+        dto.put("id_segmentadas", donacionAsignada.getDonacionesSegmentadas().stream().map(DonacionSegmentada::getId).toList());
         dto.put("fecha", donacionAsignada.getFechaHora());
         dto.put("asignacionCompleta", donacionAsignada.getAsignacionCompleta());
         return dto;

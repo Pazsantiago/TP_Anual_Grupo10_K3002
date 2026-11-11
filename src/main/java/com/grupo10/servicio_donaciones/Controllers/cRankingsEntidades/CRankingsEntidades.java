@@ -3,44 +3,23 @@ package com.grupo10.servicio_donaciones.Controllers.cRankingsEntidades;
 import com.grupo10.servicio_donaciones.Services.ServiceAsignacion.ServicioAsignacion;
 import com.grupo10.servicio_donaciones.donaciones.dominio.algoritmosAsignacion.RankingEntidadBeneficiaria;
 import com.grupo10.servicio_donaciones.donaciones.dominio.algoritmosAsignacion.SegmentadaRankings;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/rankings")
 public class CRankingsEntidades {
     private final ServicioAsignacion servicioAsignacion;
 
-    public CRankingsEntidades(ServicioAsignacion servicioAsignacion) {
-        this.servicioAsignacion = servicioAsignacion;
-    }
-
-    public Map<String, Object> aRankingEntidadREST(RankingEntidadBeneficiaria ranking) {
-        Map<String, Object> dto = new HashMap<>();
-        dto.put("idEntidad", ranking.getEntidadBeneficiaria().getId());
-        dto.put("posicion", ranking.getPosicion());
-        dto.put("puntaje", ranking.getPuntaje());
-        dto.put("algoritmoUtilizado", ranking.getAlgoritmoUsado());
-        return dto;
-    }
-
-    public Map<String, Object> aSegmentadaRankingsREST(SegmentadaRankings segmentadaRankings) {
-        Map<String, Object> dto = new HashMap<>();
-        dto.put("idSegmentada", segmentadaRankings.getSegmentada().getId());
-        dto.put("ranking", segmentadaRankings.getRankings().stream().map(this::aRankingEntidadREST));
-        return dto;
-    }
-
     @GetMapping("")
-    public ResponseEntity<Stream<Map<String, Object>>> obtenerRankings() {
+    public ResponseEntity<List<SegmentadaRankings>> obtenerRankings() {
         try {
-            return ResponseEntity.ok(servicioAsignacion.obtenerRankings().stream().map(this::aSegmentadaRankingsREST));
+            return ResponseEntity.ok(servicioAsignacion.obtenerRankings());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

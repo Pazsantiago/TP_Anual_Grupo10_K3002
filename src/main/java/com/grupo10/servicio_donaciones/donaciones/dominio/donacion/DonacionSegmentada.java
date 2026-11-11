@@ -95,7 +95,10 @@ public class DonacionSegmentada {
     }
 
     public Integer getCantidadBienAsignadoPorId(Long idNecesidad) {
-        return bienesAsignados.stream().filter(b -> b.getIdNecesidadAsignada().equals(idNecesidad)).findFirst().orElse(null).getCantidadEntregada();
+        return bienesAsignados.stream().filter(b -> b.getIdNecesidadAsignada().equals(idNecesidad))
+                .map(BienAsignado::getCantidadEntregada)
+                .findFirst()
+                .orElse(0);
     }
 
     public void restarBienesAsignados(Integer cantidad) {

@@ -112,8 +112,11 @@ public class ServicioDonantes {
 
     @Transactional
     public String deletePersona(Long id) {
-        repoDonantes.findByIdWithDonaciones(id).orElse(null).desvincularRelaciones();
-        repoDonantes.deleteById(id);
+        Donante donante = repoDonantes.findByIdWithDonaciones(id).orElse(null);
+        if (donante != null) {
+            donante.desvincularRelaciones();
+            repoDonantes.delete(donante);
+        }
         //comunicador.avisarDonanteEliminado(id, restClientIncentivos);
         return "Donante borrado";
     }

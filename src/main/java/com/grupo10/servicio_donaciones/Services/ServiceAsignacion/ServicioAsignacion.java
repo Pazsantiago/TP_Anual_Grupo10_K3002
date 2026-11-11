@@ -49,6 +49,9 @@ public class ServicioAsignacion {
     public List<RankingEntidadBeneficiaria> filtrarEntidades(Long idDonacion) {
         Optional<SegmentadaRankings> segmentadaRankings = rankings.stream().filter(r -> r.getSegmentada().getId().equals(idDonacion))
                 .findFirst();
+        if (segmentadaRankings.isEmpty()) {
+            return List.of();
+        }
         return Optional.of(segmentadaRankings.get().getRankings()
                         .stream().filter(ranking ->
                                 segmentadaRankings.get().getRankings().stream().anyMatch(otroRanking ->
