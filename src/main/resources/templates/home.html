@@ -62,7 +62,7 @@
                     <p class="card-text text-muted small">Gestión de bienes de entrada e insumos.</p>
                     <div class="d-grid gap-2">
                         <a th:if="${session.rolUsuario == 'DONANTE'}" href="/donaciones" class="btn btn-outline-success btn-sm">Ver por Donante</a>
-                        <a th:if="${session.rolUsuario == 'ADMIN '}" href="/donaciones/nueva" class="btn btn-success btn-sm">+ Registrar Donación</a>
+                        <a th:if="${session.rolUsuario == 'ADMIN'}" href="/donaciones/nueva" class="btn btn-success btn-sm">+ Registrar Donación</a>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                     </div>
                     <p class="card-text text-muted small">Gestión de organizaciones y comedores.</p>
                     <div class="d-grid gap-2">
-                        <a th:if="${session.rolUsuario == 'DONANTE or session.rolUsuario == 'ENTIDAD'}" href="/entidadesBeneficiarias" class="btn btn-outline-warning btn-sm">Ver Listado</a>
+                        <a th:if="${session.rolUsuario == 'DONANTE' or session.rolUsuario == 'ENTIDAD'}" href="/entidadesBeneficiarias" class="btn btn-outline-warning btn-sm">Ver Listado</a>
                         <a th:if="${session.rolUsuario == 'ADMIN'}" href="/entidadesBeneficiarias/nueva" class="btn btn-warning btn-sm text-dark">+ Registrar Entidad</a>
                     </div>
                 </div>
@@ -93,8 +93,8 @@
                     </div>
                     <p class="card-text text-muted small">Requerimientos recurrentes y puntuales.</p>
                     <div class="d-grid gap-2">
-                        <a th:if="${session.rolUsuario == 'ADMIN or session.rolUsuario == 'ENTIDAD'}" href="/necesidades" class="btn btn-outline-danger btn-sm">Ver por Entidad</a>
-                        <a th:if="${session.rolUsuario == 'ADMIN or session.rolUsuario == 'ENTIDAD'}" href="/necesidades/nueva" class="btn btn-danger btn-sm">+ Registrar Necesidad</a>
+                        <a th:if="${session.rolUsuario == 'ADMIN' or session.rolUsuario == 'ENTIDAD'}" href="/necesidades" class="btn btn-outline-danger btn-sm">Ver por Entidad</a>
+                        <a th:if="${session.rolUsuario == 'ADMIN' or session.rolUsuario == 'ENTIDAD'}" href="/necesidades/nueva" class="btn btn-danger btn-sm">+ Registrar Necesidad</a>
                     </div>
                 </div>
             </div>
