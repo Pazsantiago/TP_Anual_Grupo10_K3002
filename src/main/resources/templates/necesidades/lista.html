@@ -34,37 +34,34 @@
 </div>
 
 <div th:if="${idEntidadSeleccionada != null}" class="table-responsive bg-white rounded shadow-sm border">
-    <table class="table table-hover align-middle mb-0">
-        <thead class="table-light">
+    <table class="table table-hover table-striped mb-0">
+        <thead class="table-dark">
         <tr>
             <th>ID</th>
             <th>Tipo</th>
             <th>Descripción</th>
             <th>Subcategoría</th>
             <th>Progreso (Recibido / Objetivo)</th>
-            <th class="text-end">Acciones</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
         <tr th:if="${#lists.isEmpty(necesidades)}">
-            <td colspan="6" class="text-center text-muted py-4">Esta entidad no registra necesidades cargadas.</td>
+            <td colspan="6" class="text-center py-4 text-muted">Esta entidad no registra necesidades cargadas.</td>
         </tr>
-        <tr th:each="nec : ${necesidades}">
-            <td th:text="${nec.id}">1</td>
+        <tr th:each="n : ${necesidades}">
+            <td th:text="${n.id}">1</td>
             <td>
-                <span th:if="${nec.class.simpleName == 'NecesidadRecurrente'}" class="badge bg-primary">Recurrente</span>
-                <span th:if="${nec.class.simpleName == 'NecesidadExtraordinaria'}" class="badge bg-danger">Extraordinaria</span>
+                <span th:text="${n.class.simpleName == 'NecesidadRecurrente' ? 'Recurrente' : 'Extraordinaria'}" class="badge bg-secondary"></span>
             </td>
-            <td th:text="${nec.descripcion}">Harina de trigo</td>
-            <td th:text="${nec.subcategoria != null ? nec.subcategoria.nombre : '-'}">harina</td>
+            <td th:text="${n.descripcion}">Harina de trigo</td>
+            <td th:text="${n.subcategoria != null ? n.subcategoria.nombre : '-'}">harina</td>
+            <td th:text="${(n.recibido != null ? n.recibido : 0) + ' / ' + (n.objetivo != null ? n.objetivo : 0)}">0 / 100</td>
             <td>
-                <span th:text="${nec.cantidadRecibida + ' / ' + nec.cantidadObjetivo}">0 / 100</span>
-            </td>
-            <td class="text-end">
-                <form th:action="@{/necesidades/eliminar}" method="post" class="d-inline" onsubmit="return confirm('¿Eliminar necesidad?');">
-                    <input type="hidden" name="idEntidad" th:value="${idEntidadSeleccionada}" />
-                    <input type="hidden" name="idNecesidad" th:value="${nec.id}" />
-                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                <form th:action="@{/necesidades/eliminar}" method="post" class="d-inline">
+                    <input type="hidden" name="idEntidad" th:value="${idEntidadSeleccionada}"/>
+                    <input type="hidden" name="idNecesidad" th:value="${n.id}"/>
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
                 </form>
             </td>
         </tr>

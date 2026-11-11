@@ -2,6 +2,7 @@ package org.example.donacionesfrontend.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,12 +14,14 @@ import java.util.Map;
 
 @Controller
 public class LoginController {
-
+    private String authUrl;
     private final RestClient restClientAuth;
 
 
-    public LoginController(@Qualifier("restClientAuth") RestClient restClientAuth) {
+    public LoginController(@Qualifier("restClientAuth") RestClient restClientAuth,
+                           @Value("${backend.auth.url}") String authUrl) {
         this.restClientAuth = restClientAuth;
+        this.authUrl = authUrl + "/login";
     }
 
     @GetMapping("/dev-login")
@@ -31,39 +34,23 @@ public class LoginController {
 
     @GetMapping("/login")
     public String vistaLogin() {
-        return "login";
+        return "redirect:" + authUrl;
     }
 
     @PostMapping("/login")
     public String procesarLogin(
-            @RequestParam("username") String username,
-            @RequestParam("password") String password,
+            @RequestParam("token") String token,
+            @RequestParam("rolUsuario") String rol,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
-        try {
-            Map respuesta = restClientAuth.post()
-                    .uri("/api/auth/login")
-                    .body(Map.of("username", username, "password", password))
-                    .retrieve()
-                    .body(Map.class);
-
-            String token = (String) respuesta.get("token");
-            String rol = (String) respuesta.get("rol");
-
             session.setAttribute("jwtToken", token);
             session.setAttribute("rolUsuario", rol);
-
             return "redirect:/home";
-
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Usuario o contraseña incorrectos.");
-            return "redirect:/login";
-        }
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/login";
+        return "redirect:" + authUrl;
     }
 }

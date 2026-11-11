@@ -15,7 +15,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         // Si no hay un token guardado en la sesión lo redirigimos al login
         if (session.getAttribute("jwtToken") == null) {
-            response.sendRedirect("/login");
+            response.sendRedirect("/login") ;
             return false;
         }
 

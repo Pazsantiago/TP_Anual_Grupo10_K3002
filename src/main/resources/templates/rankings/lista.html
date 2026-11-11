@@ -21,8 +21,8 @@
 </div>
 
 <div class="table-responsive bg-white rounded shadow-sm border">
-    <table class="table table-hover align-middle mb-0">
-        <thead class="table-light">
+    <table class="table table-hover table-striped mb-0">
+        <thead class="table-dark">
         <tr>
             <th>ID Donación Segmentada</th>
             <th>ID Entidad</th>
@@ -33,14 +33,14 @@
         </thead>
         <tbody>
         <tr th:if="${#lists.isEmpty(rankings)}">
-            <td colspan="5" class="text-center text-muted py-4">No hay rankings calculados actualmente.</td>
+            <td colspan="5" class="text-center py-4 text-muted">No hay rankings calculados actualmente.</td>
         </tr>
         <tr th:each="r : ${rankings}">
-            <td th:text="${r['idSegmentada']}">1</td>
-            <td th:text="${r['idEntidad'] != null ? r['idEntidad'] : 'N/A'}">10</td>
-            <td><span class="badge bg-warning text-dark" th:text="${'#' + (r['posicion'] != null ? r['posicion'] : '-')}">#1</span></td>
-            <td th:text="${r['puntaje']}">100.0</td>
-            <td th:text="${r['algoritmoUtilizado'] != null ? r['algoritmoUtilizado'] : 'General'}">Por Necesidad</td>
+            <td th:text="${r.idDonacionSegmentada}">1</td>
+            <td th:text="${r.idEntidad}">10</td>
+            <td th:text="${'#' + r.posicion}">#1</td>
+            <td th:text="${r.puntaje}">100.0</td>
+            <td th:text="${r.algoritmo}">Por Necesidad</td>
         </tr>
         </tbody>
     </table>
