@@ -37,37 +37,47 @@
 
         <tr th:each="d : ${donantes}">
             <td th:text="${d.id}">1</td>
+
             <td>
-                <span th:if="${d.persona.class.simpleName == 'PersonaHumana'}" class="badge bg-info text-dark">Humana</span>
-                <span th:if="${d.persona.class.simpleName == 'PersonaJuridica'}" class="badge bg-warning text-dark">Jurídica</span>
+                <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaHumana'}" class="badge bg-info text-dark">Humana</span>
+                <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaJuridica'}" class="badge bg-warning text-dark">Jurídica</span>
+                <span th:if="${d.persona == null}" class="badge bg-secondary">Sin Persona</span>
             </td>
+
             <td>
-                <strong th:if="${d.persona.class.simpleName == 'PersonaHumana'}"
-                        th:text="${d.persona.nombre + (d.persona.apellido != null ? ' ' + d.persona.apellido : '')}"></strong>
-                <strong th:if="${d.persona.class.simpleName == 'PersonaJuridica'}"
-                        th:text="${d.persona.razonSocial}"></strong>
+        <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaHumana'}"
+              th:text="${d.persona.nombre + (d.persona.apellido != null ? ' ' + d.persona.apellido : '')}"></span>
+                <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaJuridica'}"
+                      th:text="${d.persona.razonSocial}"></span>
+                <span th:if="${d.persona == null}" class="text-muted small">Sin información</span>
             </td>
+
             <td>
-                        <span th:if="${d.persona.class.simpleName == 'PersonaHumana'}"
-                              th:text="${d.persona.documento?.tipoDocumento + ': ' + d.persona.documento?.documento}"></span>
-                <span th:if="${d.persona.class.simpleName == 'PersonaJuridica'}"
+        <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaHumana'}"
+              th:text="${d.persona.documento != null ? d.persona.documento.tipoDocumento + ': ' + d.persona.documento.documento : 'Sin documento'}"></span>
+                <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaJuridica'}"
                       th:text="${d.persona.rubro}"></span>
+                <span th:if="${d.persona == null}" class="text-muted small">-</span>
             </td>
+
             <td>
-                        <span th:if="${!#lists.isEmpty(d.mediosDeContacto)}"
-                              th:text="${d.mediosDeContacto[0].correoElectronico != null ? d.mediosDeContacto[0].correoElectronico : d.mediosDeContacto[0].telefono}"></span>
-                <span th:if="${#lists.isEmpty(d.mediosDeContacto)}" class="text-muted small">Sin contacto</span>
+        <span th:if="${!#lists.isEmpty(d.mediosDeContacto)}"
+              th:text="${d.mediosDeContacto[0].correoElectronico != null ? d.mediosDeContacto[0].correoElectronico : d.mediosDeContacto[0].telefono}"></span>
+                <span th:if="${#lists.isEmpty(d.mediosDeContacto)}" class="text-muted small">Sin datos</span>
             </td>
+
             <td class="text-end">
-                <a th:href="@{/donaciones(idDonante=${d.id})}" class="btn btn-sm btn-outline-success me-1" title="Ver Donaciones">
-                    <i class="bi bi-gift-fill me-1"></i>Donaciones
-                </a>
-                <form th:action="@{/donantes/eliminar}" method="post" class="d-inline" onsubmit="return confirm('¿Eliminar donante?');">
-                    <input type="hidden" name="id" th:value="${d.id}" />
-                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </form>
+                <div class="btn-group btn-group-sm">
+                    <a th:href="@{/donaciones(idDonante=${d.id})}" class="btn btn-outline-success" title="Ver Donaciones">
+                        <i class="bi bi-gift-fill me-1"></i>Donaciones
+                    </a>
+                    <form th:action="@{/donantes/eliminar}" method="post" class="d-inline" onsubmit="return confirm('¿Eliminar donante?');">
+                        <input type="hidden" name="id" th:value="${d.id}" />
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </div>
             </td>
         </tr>
         </tbody>
