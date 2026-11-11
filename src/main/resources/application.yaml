@@ -8,3 +8,5 @@ server:
 backend:
   servicio-donaciones:
     url: ${SERVICIO_DONACIONES:http://localhost:8080}
+  auth:
+    url: ${AUTH_URL:http://localhost:8081}

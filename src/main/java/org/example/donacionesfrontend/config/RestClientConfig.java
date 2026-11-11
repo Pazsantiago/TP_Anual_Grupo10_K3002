@@ -8,11 +8,11 @@ import org.springframework.web.client.RestClient;
 
 @Configuration
 public class RestClientConfig {
-    @Value("${auth.backend.url}")
-    private String authUrl;
-
-    @Value("${donaciones.backend.url}")
+    @Value("${backend.servicio-donaciones.url}")
     private String donacionesUrl;
+
+    @Value("${backend.auth.url}")
+    private String authUrl;
 
     // RestClient para el servicio de Autenticación
     @Bean
