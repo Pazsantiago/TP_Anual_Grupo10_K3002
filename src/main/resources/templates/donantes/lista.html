@@ -46,7 +46,7 @@
 
             <td>
         <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaHumana'}"
-              th:text="${d.persona.nombre + (d.persona.apellido != null ? ' ' + d.persona.apellido : '')}"></span>
+              th:text="${d.persona.nombre}"></span>
                 <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaJuridica'}"
                       th:text="${d.persona.razonSocial}"></span>
                 <span th:if="${d.persona == null}" class="text-muted small">Sin información</span>

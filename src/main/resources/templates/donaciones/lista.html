@@ -30,7 +30,7 @@
                 <option th:each="d : ${donantes}"
                         th:value="${d.id}"
                         th:selected="${d.id == idDonanteSeleccionado}"
-                        th:text="${d.id + ' - ' + (d.persona.class.simpleName == 'PersonaHumana' ? d.persona.nombre + ' ' + (d.persona.apellido != null ? d.persona.apellido : '') : d.persona.razonSocial)}">
+                        th:text="${d.id + ' - ' + (d.persona.class.simpleName == 'PersonaHumana' ? d.persona.nombre : d.persona.razonSocial)}">
                 </option>
             </select>
         </div>
