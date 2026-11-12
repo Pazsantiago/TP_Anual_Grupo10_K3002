@@ -50,9 +50,9 @@ public class LoginController {
 //            return "redirect:/home";
 //    }
 
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/oauth2/authorization/keycloak";
-    }
+//    @GetMapping("/logout")
+//    public String logout(HttpSession session) {
+//        session.invalidate();
+//        return "redirect:/oauth2/authorization/keycloak";
+//    }
 }
