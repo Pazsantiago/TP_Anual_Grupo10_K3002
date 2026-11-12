@@ -13,7 +13,7 @@ spring:
 #            redirect-uri: "{baseUrl}/login/callback"
 #        provider:
 #          keycloak:
-#            issuer-uri: ${backend.auth.urk}/realms/donatrack
+#            issuer-uri: ${backend.auth.url}/realms/donatrack
 
 
 server:
