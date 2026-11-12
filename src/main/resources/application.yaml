@@ -1,19 +1,19 @@
 spring:
   application:
     name: donaciones-frontend
-  security:
-    oauth2:
-      client:
-        registration:
-          keycloak:
-            client-id: donatrack-frontend
-            client-secret: ${KEYCLOAK_CLIENT_SECRET:codigo-secreto}
-            scope: openid, profile, email
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/callback"
-        provider:
-          keycloak:
-            issuer-uri: ${backend.auth.url}/realms/donatrack
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          keycloak:
+#            client-id: donatrack-frontend
+#            client-secret: ${KEYCLOAK_CLIENT_SECRET:codigo-secreto}
+#            scope: openid, profile, email
+#            authorization-grant-type: authorization_code
+#            redirect-uri: "{baseUrl}/login/callback"
+#        provider:
+#          keycloak:
+#            issuer-uri: ${backend.auth.urk}/realms/donatrack
 
 
 server:
