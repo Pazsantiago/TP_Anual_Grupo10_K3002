@@ -7,6 +7,7 @@
        fragments/molecules.html   átomos agrupados      (migas de pan, mensajes, aviso de error, estado vacío)
        fragments/organisms.html   bloques completos     (encabezado, encabezado público, pie, recursos de mapa)
        fragments/formularios.html organismos de formulario (datos de donante, datos de entidad)
+       fragments/incentivos.html  organismos del módulo de incentivos (métricas, misión actual, insignias, ranking)
      Estructura de toda página:
        <header>  encabezado   →  <main id="contenido">  migas · cabecera de página (h1) · mensajes · <section>s  →  <footer>  pie
      Para sumar un componente: crear static/css/<capa>/<nombre>.css y agregar UNA línea de <link> acá. -->
@@ -31,6 +32,7 @@
   <link rel="stylesheet" th:href="@{/css/molecules/empty-state.css}">
   <link rel="stylesheet" th:href="@{/css/molecules/media.css}">
   <link rel="stylesheet" th:href="@{/css/molecules/timeline.css}">
+  <link rel="stylesheet" th:href="@{/css/molecules/insignia.css}">
   <link rel="stylesheet" th:href="@{/css/molecules/breadcrumb.css}">
   <link rel="stylesheet" th:href="@{/css/organisms/topbar.css}">
   <link rel="stylesheet" th:href="@{/css/organisms/footer.css}">

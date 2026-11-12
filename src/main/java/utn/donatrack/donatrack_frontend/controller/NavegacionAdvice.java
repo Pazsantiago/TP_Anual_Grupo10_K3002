@@ -59,7 +59,7 @@ public class NavegacionAdvice {
         Map.entry("panel", "Panel"), Map.entry("donantes", "Donantes"), Map.entry("donaciones", "Donaciones"),
         Map.entry("entidades", "Entidades"), Map.entry("necesidades", "Necesidades"),
         Map.entry("asignaciones", "Asignaciones"), Map.entry("incentivos", "Incentivos"),
-        Map.entry("misiones", "Categorías y misiones"), Map.entry("logistica", "Logística"),
+        Map.entry("misiones", "Categorías y misiones"), Map.entry("gestion", "Gestión de perfiles"), Map.entry("logistica", "Logística"),
         Map.entry("camiones", "Camiones"), Map.entry("seguimiento", "Seguimiento"), Map.entry("ruta", "Mi ruta"),
         Map.entry("entregas-fallidas", "Entregas no recibidas"), Map.entry("recepcion", "Confirmar recepción"),
         Map.entry("notificaciones", "Notificaciones"), Map.entry("galeria", "Galería"), Map.entry("mapa", "Mapa"),
@@ -76,7 +76,7 @@ public class NavegacionAdvice {
     /** Rutas que existen como pagina (GET). Un tramo intermedio que no coincide se muestra sin enlace, para no llevar a un 404. */
     private static final Pattern RUTA_NAVEGABLE = Pattern.compile(
         "^/(panel|donantes|donaciones|entidades|asignaciones|incentivos|logistica|notificaciones|galeria|mapa|legal|login)$"
-            + "|^/logistica/(camiones|seguimiento|ruta|entregas-fallidas)$|^/incentivos/misiones$"
+            + "|^/logistica/(camiones|seguimiento|ruta|entregas-fallidas)$|^/incentivos/(misiones|gestion)$"
             + "|^/donantes/\\d+/donaciones$|^/entidades/\\d+/(necesidades|donaciones)$"
             + "|^/asignaciones/\\d+$|^/incentivos/donantes/\\d+$");
 

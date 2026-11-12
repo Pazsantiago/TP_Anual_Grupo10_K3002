@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Gestión de perfiles de incentivos')}"></head>
+<body>
+<header th:replace="~{fragments/organisms :: encabezado('incentivos')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Gestión de perfiles de incentivos</h1>
+    <a class="btn btn--secondary" th:href="@{/incentivos}">Volver a incentivos</a>
+  </header>
+
+  <!-- Confirmaciones (role="status") y errores (role="alert") tras cada acción -->
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <div class="stack">
+    <section class="card" aria-labelledby="titulo-crear">
+      <h2 id="titulo-crear">Crear perfil de incentivos</h2>
+      <p>Da de alta el perfil de un donante para que empiece a recibir misiones e insignias.</p>
+      <form class="form" th:action="@{/incentivos/gestion/crear}" method="post">
+        <div class="field">
+          <label class="field__label" for="donanteIdCrear">Número de donante <span th:replace="~{fragments/atoms :: requerido}"></span> <span class="field__hint">(es el mismo que en Donantes)</span></label>
+          <input class="field__control" id="donanteIdCrear" name="donanteId" type="number" min="1" inputmode="numeric" placeholder="Ej: 2" required aria-required="true">
+        </div>
+        <div class="cluster">
+          <button class="btn" type="submit">Crear perfil</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-eliminar">
+      <h2 id="titulo-eliminar">Eliminar perfil existente</h2>
+      <p>Se pierden las misiones y las insignias del donante. Esta acción no se puede deshacer.</p>
+      <form class="form" th:action="@{/incentivos/gestion/eliminar}" method="post">
+        <div class="field">
+          <label class="field__label" for="donanteIdEliminar">Número de donante a eliminar <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+          <input class="field__control" id="donanteIdEliminar" name="donanteId" type="number" min="1" inputmode="numeric" placeholder="Ej: 2" required aria-required="true">
+        </div>
+        <div class="cluster">
+          <button class="btn btn--danger" type="submit"
+                  data-confirmar="¿Eliminar el perfil de incentivos? Esta acción no se puede deshacer.">Eliminar perfil</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
+</body>
+</html>

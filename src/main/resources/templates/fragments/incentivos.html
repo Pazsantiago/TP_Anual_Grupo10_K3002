@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+
+<!-- ORGANISMOS · WIDGETS DE INCENTIVOS. Bloques acoplables: cada uno es una <section> con su propio título (h2) y se arma con
+     átomos y moléculas del sistema (card, stat, meter, badge, table, empty-state). Se usan en incentivos/perfil y incentivos/ranking,
+     y se pueden acoplar a cualquier otra página (ej. el panel de un donante) con:
+       <section th:replace="~{fragments/incentivos :: widget-metricas(${metricas})}"></section>
+     Los parámetros de lista (`mision`, `insignias`, `ranking`) son Seccion<T>: si el servicio falla, solo ese widget muestra el aviso. -->
+
+<!-- WIDGET 1 · MÉTRICAS. Parámetro: PerfilMetricasResponse -->
+<section th:fragment="widget-metricas(metricas)" aria-labelledby="titulo-metricas">
+  <h2 id="titulo-metricas" class="sr-only">Resumen de impacto</h2>
+  <dl class="stats">
+    <div class="stat">
+      <dt class="stat__label">Categoría actual</dt>
+      <dd class="stat__value" th:text="${metricas.categoriaActual != null ? metricas.categoriaActual : '—'}">Colaborador</dd>
+    </div>
+    <div class="stat">
+      <dt class="stat__label">Misiones completadas</dt>
+      <dd class="stat__value" th:text="${metricas.misionesCompletadas != null ? metricas.misionesCompletadas : 0}">3</dd>
+    </div>
+    <div class="stat">
+      <dt class="stat__label">Insignias obtenidas</dt>
+      <dd class="stat__value" th:text="${metricas.cantidadInsignias != null ? metricas.cantidadInsignias : 0}">2</dd>
+    </div>
+  </dl>
+</section>
+
+<!-- WIDGET 2 · MISIÓN ACTUAL. Parámetros: Seccion<MisionResponse>, id del donante (para la acción de refuerzo; null la oculta) -->
+<section class="card" th:fragment="widget-mision(mision, idDonante)" aria-labelledby="titulo-mision">
+  <h2 id="titulo-mision">Misión en curso</h2>
+
+  <th:block th:if="${mision.error}"><p th:replace="~{fragments/molecules :: aviso-error(${mision.error})}"></p></th:block>
+
+  <p th:if="${#lists.isEmpty(mision.datos) and mision.error == null}">Este donante no tiene una misión activa.</p>
+
+  <div th:each="m : ${mision.datos}">
+    <h3 th:text="${m.nombre}">Racha</h3>
+    <p th:if="${m.descripcion}" th:text="${m.descripcion}">Realizar una donación durante 10 meses consecutivos.</p>
+    <p>
+      <span class="badge" th:if="${m.categoria}" th:text="'Categoría: ' + ${m.categoria}">Categoría: Colaborador</span>
+      <span th:if="${m.insigniaNombre}">Recompensa: <strong th:text="${m.insigniaNombre}">Constante</strong></span>
+    </p>
+    <progress class="meter" max="100" th:value="${m.progreso}"
+              th:attr="aria-label='Progreso de la misión ' + ${m.nombre}"><span th:text="${#numbers.formatDecimal(m.progreso, 1, 0)} + ' %'">40 %</span></progress>
+    <p th:text="${#numbers.formatDecimal(m.progreso, 1, 0)} + ' % completado'">40 % completado</p>
+  </div>
+
+  <form th:if="${idDonante != null}" th:action="@{/incentivos/donantes/{id}/nueva-mision(id=${idDonante})}" method="post">
+    <p class="form__note">Si el donante necesita un empujón, podés asignarle una misión de refuerzo.</p>
+    <div class="cluster">
+      <button class="btn btn--secondary" type="submit"
+              data-confirmar="¿Asignar una nueva misión de refuerzo a este donante?">Asignar misión de refuerzo</button>
+    </div>
+  </form>
+</section>
+
+<!-- WIDGET 3 · INSIGNIAS. Parámetro: Seccion<InsigniaResponse> -->
+<section class="card" th:fragment="widget-insignias(insignias)" aria-labelledby="titulo-insignias">
+  <h2 id="titulo-insignias">Insignias</h2>
+
+  <th:block th:if="${insignias.error}"><p th:replace="~{fragments/molecules :: aviso-error(${insignias.error})}"></p></th:block>
+
+  <p th:if="${#lists.isEmpty(insignias.datos) and insignias.error == null}">Todavía no obtuvo insignias.</p>
+
+  <ul class="insignias" th:unless="${#lists.isEmpty(insignias.datos)}">
+    <li class="insignia" th:each="i : ${insignias.datos}">
+      <strong class="insignia__nombre" th:text="${i.nombre}">Constante</strong>
+      <p class="insignia__desc" th:text="${i.descripcion != null ? i.descripcion : 'Sin descripción.'}">Donó 3 meses seguidos.</p>
+    </li>
+  </ul>
+</section>
+
+<!-- WIDGET 4 · RANKING MENSUAL. Parámetro: Seccion<PosicionRankingResponse> -->
+<section class="card" th:fragment="widget-ranking(ranking)" aria-labelledby="titulo-ranking">
+  <h2 id="titulo-ranking">Ranking mensual de donantes</h2>
+
+  <th:block th:if="${ranking.error}"><p th:replace="~{fragments/molecules :: aviso-error(${ranking.error})}"></p></th:block>
+
+  <div class="empty-state" th:if="${#lists.isEmpty(ranking.datos)}">
+    <p class="empty-state__text" th:unless="${ranking.error}">Todavía no hay un ranking de este mes.</p>
+    <p class="empty-state__text" th:if="${ranking.error}">No pudimos cargar el ranking.</p>
+  </div>
+
+  <div class="stats" th:unless="${#lists.isEmpty(ranking.datos)}" aria-label="Los tres primeros del mes">
+    <div class="stat" th:each="p, iter : ${ranking.datos}" th:if="${iter.index < 3}">
+      <p class="stat__label" th:text="${iter.count} + '.º puesto'">1.º puesto</p>
+      <p class="stat__value" th:text="'Donante N.º ' + ${p.id}">Donante N.º 1</p>
+      <p th:text="${p.puntaje} + ' misiones completadas'">3 misiones completadas</p>
+    </div>
+  </div>
+
+  <div class="table-wrap" role="region" aria-label="Tabla del ranking mensual" tabindex="0"
+       th:unless="${#lists.isEmpty(ranking.datos)}">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Posición</th>
+          <th scope="col">Donante</th>
+          <th scope="col">Misiones completadas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="p, iter : ${ranking.datos}">
+          <td th:text="${iter.count}">1</td>
+          <td><a th:href="@{/incentivos/donantes/{id}(id=${p.id})}" th:text="'Donante N.º ' + ${p.id}">Donante N.º 1</a></td>
+          <td th:text="${p.puntaje}">3</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</body>
+</html>

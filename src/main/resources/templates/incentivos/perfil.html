@@ -28,69 +28,9 @@
   </section>
 
   <div class="stack" th:if="${metricas}">
-    <section aria-labelledby="titulo-metricas">
-      <h2 id="titulo-metricas" class="sr-only">Métricas</h2>
-      <dl class="stats">
-        <div class="stat">
-          <dt class="stat__label">Categoría</dt>
-          <dd class="stat__value" th:text="${metricas.categoriaActual != null ? metricas.categoriaActual : '—'}">Colaborador</dd>
-        </div>
-        <div class="stat">
-          <dt class="stat__label">Misiones completadas</dt>
-          <dd class="stat__value" th:text="${metricas.misionesCompletadas}">3</dd>
-        </div>
-        <div class="stat">
-          <dt class="stat__label">Insignias</dt>
-          <dd class="stat__value" th:text="${metricas.cantidadInsignias}">2</dd>
-        </div>
-      </dl>
-    </section>
-
-    <section class="card" aria-labelledby="titulo-mision">
-      <h2 id="titulo-mision">Misión actual</h2>
-
-      <th:block th:if="${mision.error}"><p th:replace="~{fragments/molecules :: aviso-error(${mision.error})}"></p></th:block>
-
-      <p th:if="${#lists.isEmpty(mision.datos) and mision.error == null}">Este donante no tiene una misión activa.</p>
-
-      <div th:each="m : ${mision.datos}">
-        <h3 th:text="${m.nombre}">Racha</h3>
-        <p th:if="${m.descripcion}" th:text="${m.descripcion}">Realizar una donación durante 10 meses consecutivos.</p>
-        <p>
-          <span th:if="${m.categoria}" th:text="'Categoría: ' + ${m.categoria}">Categoría: Colaborador</span>
-          <span th:if="${m.insigniaNombre}" th:text="' · Insignia que otorga: ' + ${m.insigniaNombre}"> · Insignia que otorga: Constante</span>
-        </p>
-        <progress class="meter" max="100" th:value="${m.progreso}"
-                  th:attr="aria-label='Progreso de la misión ' + ${m.nombre}"><span th:text="${#numbers.formatDecimal(m.progreso, 1, 0)} + ' %'">40 %</span></progress>
-        <p th:text="${#numbers.formatDecimal(m.progreso, 1, 0)} + ' % completado'">40 % completado</p>
-      </div>
-    </section>
-
-    <section class="card" aria-labelledby="titulo-insignias">
-      <h2 id="titulo-insignias">Insignias</h2>
-
-      <th:block th:if="${insignias.error}"><p th:replace="~{fragments/molecules :: aviso-error(${insignias.error})}"></p></th:block>
-
-      <p th:if="${#lists.isEmpty(insignias.datos) and insignias.error == null}">Todavía no obtuvo insignias.</p>
-
-      <div class="table-wrap" role="region" aria-label="Tabla de insignias" tabindex="0"
-           th:unless="${#lists.isEmpty(insignias.datos)}">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Insignia</th>
-              <th scope="col">Descripción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="i : ${insignias.datos}">
-              <td th:text="${i.nombre}">Constante</td>
-              <td th:text="${i.descripcion != null ? i.descripcion : '—'}">Donó 3 meses seguidos.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+    <section th:replace="~{fragments/incentivos :: widget-metricas(${metricas})}"></section>
+    <section th:replace="~{fragments/incentivos :: widget-mision(${mision}, ${idDonante})}"></section>
+    <section th:replace="~{fragments/incentivos :: widget-insignias(${insignias})}"></section>
   </div>
 </main>
 

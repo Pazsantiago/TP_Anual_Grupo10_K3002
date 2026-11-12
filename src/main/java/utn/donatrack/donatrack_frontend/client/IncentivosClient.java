@@ -67,4 +67,20 @@ public class IncentivosClient extends ClienteServicio {
             .retrieve()
             .body(String.class));
     }
+
+    /** POST /incentivos/{donanteId}/nueva-mision: asigna una mision de refuerzo (404 si no hay perfil) */
+    public void asignarMisionRefuerzo(long donanteId) {
+        ejecutar(() -> http().post()
+            .uri(BASE + "/{id}/nueva-mision", donanteId)
+            .retrieve()
+            .toBodilessEntity());
+    }
+
+    /** DELETE /incentivos/perfiles/{donanteId} (404 si el donante no tiene perfil) */
+    public void eliminarPerfil(long donanteId) {
+        ejecutar(() -> http().delete()
+            .uri(BASE + "/perfiles/{id}", donanteId)
+            .retrieve()
+            .toBodilessEntity());
+    }
 }

@@ -9,7 +9,10 @@
 
   <header class="page-head">
     <h1 class="page-head__title">Incentivos</h1>
-    <a class="btn btn--secondary" th:href="@{/incentivos/misiones}">Categorías y misiones</a>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/incentivos/misiones}">Categorías y misiones</a>
+      <a class="btn btn--secondary" th:href="@{/incentivos/gestion}">Gestión de perfiles</a>
+    </div>
   </header>
 
   <div th:replace="~{fragments/molecules :: mensajes}"></div>
@@ -28,44 +31,7 @@
       </form>
     </section>
 
-    <section class="card" aria-labelledby="titulo-ranking">
-      <h2 id="titulo-ranking">Ranking mensual</h2>
-
-      <th:block th:if="${ranking.error}"><p th:replace="~{fragments/molecules :: aviso-error(${ranking.error})}"></p></th:block>
-
-      <div class="empty-state" th:if="${#lists.isEmpty(ranking.datos)}">
-        <p class="empty-state__text" th:unless="${ranking.error}">Todavía no hay un ranking de este mes.</p>
-        <p class="empty-state__text" th:if="${ranking.error}">No pudimos cargar el ranking.</p>
-      </div>
-
-      <div class="stats" th:unless="${#lists.isEmpty(ranking.datos)}" aria-label="Los tres primeros del mes">
-        <div class="stat" th:each="p, iter : ${ranking.datos}" th:if="${iter.index < 3}">
-          <p class="stat__label" th:text="${iter.count} + '.º puesto'">1.º puesto</p>
-          <p class="stat__value" th:text="'Donante N.º ' + ${p.id}">Donante N.º 1</p>
-          <p th:text="${p.puntaje} + ' misiones completadas'">3 misiones completadas</p>
-        </div>
-      </div>
-
-      <div class="table-wrap" role="region" aria-label="Tabla del ranking mensual" tabindex="0"
-           th:unless="${#lists.isEmpty(ranking.datos)}">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Posición</th>
-              <th scope="col">Donante</th>
-              <th scope="col">Misiones completadas</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="p, iter : ${ranking.datos}">
-              <td th:text="${iter.count}">1</td>
-              <td><a th:href="@{/incentivos/donantes/{id}(id=${p.id})}" th:text="'Donante N.º ' + ${p.id}">Donante N.º 1</a></td>
-              <td th:text="${p.puntaje}">3</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+    <section th:replace="~{fragments/incentivos :: widget-ranking(${ranking})}"></section>
   </div>
 </main>
 
