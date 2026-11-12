@@ -89,7 +89,7 @@ public class DonanteController {
         }
         try {
             donanteService.importarMasivoCsv(rutaArchivo);
-            redirectAttributes.addFlashAttribute("exito", "Importación iniciada correctamente para: " + rutaArchivo + "");
+            redirectAttributes.addFlashAttribute("exito", "Importación iniciada correctamente para: " + rutaArchivo);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar la importación: " + e.getMessage());
         }

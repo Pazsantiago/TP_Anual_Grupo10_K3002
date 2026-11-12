@@ -1,84 +1,140 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
-<body class="bg-light">
+<body class="container py-4">
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <h2 class="mb-4">Registrar Donante</h2>
 
+<div class="card mb-4">
+    <div class="card-body">
+        <label class="form-label fw-bold">Tipo de Persona</label>
+        <div>
+            <a th:href="@{/donantes/nuevo(tipo='HUMANA')}"
+               class="btn"
+               th:classappend="${tipoActual == 'HUMANA' ? 'btn-primary' : 'btn-outline-primary'}">
+                Persona Humana
+            </a>
+            <a th:href="@{/donantes/nuevo(tipo='JURIDICA')}"
+               class="btn ms-2"
+               th:classappend="${tipoActual == 'JURIDICA' ? 'btn-primary' : 'btn-outline-primary'}">
+                Persona Jurídica
+            </a>
+        </div>
+    </div>
+</div>
+
 <form th:action="@{/donantes/nuevo}" th:object="${donante}" method="post">
 
-    <div class="mb-3">
-        <label class="form-label fw-bold">Tipo de Persona</label>
-        <select class="form-select" id="comboTipoPersona" onchange="location = this.value;">
-            <option th:value="@{/donantes/nuevo(tipo='HUMANA')}" th:selected="${tipoActual == 'HUMANA'}">Persona Humana</option>
-            <option th:value="@{/donantes/nuevo(tipo='JURIDICA')}" th:selected="${tipoActual == 'JURIDICA'}">Persona Jurídica</option>
-        </select>
-    </div>
-
-
-    <div th:if="${tipoActual == 'HUMANA'}" class="border p-3 mb-3 rounded bg-white">
-        <h5>Datos de Persona Humana</h5>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Nombre</label>
-                <input type="text" class="form-control" name="persona.nombre" required />
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Tipo Documento</label>
-                <select class="form-select" name="persona.documento.tipoDoc">
-                    <option value="DNI">DNI</option>
-                    <option value="PASAPORTE">Pasaporte</option>
-                    <option value="CUIL">CUIL</option>
-                </select>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Número Documento</label>
-                <input type="text" class="form-control" name="persona.documento.numeroDoc" required />
-            </div>
-        </div>
-    </div>
-
-    <div th:if="${tipoActual == 'JURIDICA'}" class="border p-3 mb-3 rounded bg-white">
-        <h5>Datos de Persona Jurídica</h5>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Razón Social</label>
-                <input type="text" class="form-control" name="persona.razonSocial" required />
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Rubro</label>
-                <input type="text" class="form-control" name="persona.rubro" required />
+    <div th:if="${tipoActual == 'HUMANA'}" class="card mb-4">
+        <div class="card-header bg-light fw-bold">Datos de Persona Humana</div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Nombre Completo</label>
+                    <input type="text" th:field="*{persona.nombre}" class="form-control" required/>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Edad</label>
+                    <input type="number" th:field="*{persona.edad}" class="form-control" required/>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Género</label>
+                    <select th:field="*{persona.genero}" class="form-select">
+                        <option value="MASCULINO">Masculino</option>
+                        <option value="FEMENINO">Femenino</option>
+                        <option value="NO_BINARIO">No Binario</option>
+                        <option value="PREFIERO_NO_DECIR">Prefiero no decir</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Tipo Documento</label>
+                    <select th:field="*{persona.documento.tipoDocumento}" class="form-select">
+                        <option value="DNI">DNI</option>
+                        <option value="PASAPORTE">Pasaporte</option>
+                        <option value="CUIL">CUIL</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Número Documento</label>
+                    <input type="text" th:field="*{persona.documento.documento}" class="form-control" required/>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="border p-3 mb-3 rounded bg-white">
-        <h5>Dirección</h5>
-        <div class="row">
-            <div class="col-md-6 mb-2">
-                <label class="form-label">Calle</label>
-                <input type="text" class="form-control" name="persona.direccion.calle" />
+    <div th:if="${tipoActual == 'JURIDICA'}" class="card mb-4">
+        <div class="card-header bg-light fw-bold">Datos de Persona Jurídica</div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Razón Social</label>
+                    <input type="text" th:field="*{persona.razonSocial}" class="form-control" required/>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Rubro</label>
+                    <input type="text" th:field="*{persona.rubro}" class="form-control" required/>
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Representantes Legales (Personas Humanas)</label>
+                    <select th:field="*{persona.representantes}" class="form-select" multiple size="4">
+                        <option th:each="ph : ${personasHumanas}"
+                                th:value="${ph.id}"
+                                th:text="${ph.nombre}">
+                        </option>
+                    </select>
+                    <div class="form-text">Mantené presionado Ctrl para seleccionar múltiples representantes.</div>
+                </div>
             </div>
-            <div class="col-md-3 mb-2">
-                <label class="form-label">Altura</label>
-                <input type="number" class="form-control" name="persona.direccion.altura" />
-            </div>
-            <div class="col-md-3 mb-2">
-                <label class="form-label">Localidad</label>
-                <input type="text" class="form-control" name="persona.direccion.localidad" />
-            </div>
-        </div>
-    </div>
-    <div class="border p-3 mb-3 rounded bg-white">
-        <h5>Medio de Contacto Predeterminado</h5>
-        <div class="mb-3">
-            <label class="form-label">Contacto (Email / Teléfono)</label>
-            <input type="text" class="form-control" name="mediosDeContacto[0].valorContacto" placeholder="ejemplo@correo.com o +54911..." required />
         </div>
     </div>
 
-    <div class="d-flex justify-content-between">
+    <div class="card mb-4">
+        <div class="card-header bg-light fw-bold">Dirección</div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Calle</label>
+                    <input type="text" th:field="*{persona.direccion.calle}" class="form-control" required/>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Altura</label>
+                    <input type="text" th:field="*{persona.direccion.altura}" class="form-control" required/>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Localidad</label>
+                    <input type="text" th:field="*{persona.direccion.localidad}" class="form-control" required/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light fw-bold">Medio de Contacto Predeterminado</div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Tipo Contacto</label>
+                    <select th:field="*{mediosDeContacto.tipo}" class="form-select">
+                        <option value="EMAIL">Email</option>
+                        <option value="WHATSAPP">WhatsApp</option>
+                        <option value="TELEFONO">Teléfono</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Correo Electrónico</label>
+                    <input type="email" th:field="*{mediosDeContacto.correoElectronico}" class="form-control" required/>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Teléfono</label>
+                    <input type="text" th:field="*{mediosDeContacto.telefono}" class="form-control"/>
+                </div>
+                <input type="hidden" th:field="*{mediosDeContacto.esPredeterminado}" value="true"/>
+            </div>
+        </div>
+    </div>
+    
+    <div class="d-flex gap-2">
         <a th:href="@{/donantes}" class="btn btn-secondary">Cancelar</a>
         <button type="submit" class="btn btn-success">Guardar Donante</button>
     </div>
