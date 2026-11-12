@@ -5,8 +5,25 @@ spring:
 server:
   port: 8086
 
+app:
+  frontend:
+    url: ${FRONTEND_URL:http://localhost:8080}
 backend:
   servicio-donaciones:
     url: ${SERVICIO_DONACIONES:http://localhost:8080}
   auth:
     url: ${AUTH_URL:http://localhost:8081}
+
+security:
+  oauth2:
+    client:
+      registration:
+        keycloak:
+          client-id: donatrack-frontend
+          client-secret: ${KEYCLOAK_CLIENT_SECRET:secreto-que-te-da-tu-companero}
+          scope: openid, profile, email
+          authorization-grant-type: authorization_code
+          redirect-uri: "{baseUrl}/login/callback"
+      provider:
+        keycloak:
+          issuer-uri: ${backend.auth.url}/realms/donatrack

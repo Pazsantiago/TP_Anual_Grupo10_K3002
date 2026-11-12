@@ -3,6 +3,8 @@ package org.example.donacionesfrontend.controllers;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +16,8 @@ import java.util.Map;
 
 @Controller
 public class LoginController {
+    @Value("${app.frontend.url}")
+    private String baseFrontUrl;
     private String authUrl;
     private final RestClient restClientAuth;
 
@@ -21,7 +25,7 @@ public class LoginController {
     public LoginController(@Qualifier("restClientAuth") RestClient restClientAuth,
                            @Value("${backend.auth.url}") String authUrl) {
         this.restClientAuth = restClientAuth;
-        this.authUrl = authUrl + "/login";
+        this.authUrl = authUrl;
     }
 
     @GetMapping("/dev-login")
@@ -34,17 +38,17 @@ public class LoginController {
 
     @GetMapping("/login")
     public String vistaLogin() {
-        return "redirect:" + authUrl;
+        return "redirect:" + authUrl + "?redirect_uri=" + baseFrontUrl + "/login/callback";
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login/callback")
     public String procesarLogin(
-            @RequestParam("token") String token,
-            @RequestParam("rolUsuario") String rol,
-            HttpSession session,
-            RedirectAttributes redirectAttributes) {
-            session.setAttribute("jwtToken", token);
-            session.setAttribute("rolUsuario", rol);
+            @AuthenticationPrincipal OidcUser usuarioLogueado,
+            HttpSession session) {
+            if (usuarioLogueado != null) {
+                String token = usuarioLogueado.getIdToken().getTokenValue();
+                session.setAttribute("jwtToken", token);
+            }
             return "redirect:/home";
     }
 
