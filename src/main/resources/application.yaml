@@ -6,7 +6,7 @@ spring:
 #      client:
 #        registration:
 #          keycloak:
-#            client-id: donatrack-frontend
+#            client-id: cliente-liviano
 #            client-secret: ${KEYCLOAK_CLIENT_SECRET:codigo-secreto}
 #            scope: openid, profile, email
 #            authorization-grant-type: authorization_code

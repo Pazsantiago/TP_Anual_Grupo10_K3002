@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
-<body class="container py-4">
 <div th:replace="~{fragments/navbar :: navbar}"></div>
+<body class="container py-4">
 
 <h2 class="mb-4">Registrar Necesidad</h2>
 
-
+<!-- Selector de Tipo de Necesidad -->
 <div class="card mb-4">
     <div class="card-body">
         <label class="form-label fw-bold">Tipo de Necesidad</label>
@@ -33,31 +33,42 @@
             <div class="row g-3">
                 <div class="col-md-12">
                     <label class="form-label">Descripción</label>
-                    <input type="text" th:field="*{descripcion}" class="form-control" required/>
+                    <input type="text" th:field="*{descripcion}" class="form-control" placeholder="Ej: Harina de trigo 000" required/>
                 </div>
+
+                <!-- Desplegable de Categoría Padre dinámico -->
+                <div class="col-md-6">
+                    <label class="form-label">Categoría Padre</label>
+                    <select th:field="*{subcategoria.categoria.id}" class="form-select" required>
+                        <option value="">-- Seleccionar Categoría --</option>
+                        <option th:each="cat : ${categorias}"
+                                th:value="${cat.id}"
+                                th:text="${cat.nombre}">
+                        </option>
+                    </select>
+                </div>
+
                 <div class="col-md-6">
                     <label class="form-label">Subcategoría</label>
-                    <input type="text" th:field="*{subcategoria.nombre}" class="form-control" required/>
+                    <input type="text" th:field="*{subcategoria.nombre}" class="form-control" placeholder="Ej: Alimentos Secos" required/>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">ID Categoría Padre</label>
-                    <input type="number" th:field="*{subcategoria.categoria.id}" class="form-control" required/>
-                </div>
+
                 <div class="col-md-12">
                     <label class="form-label">Cantidad Objetivo</label>
-                    <input type="number" th:field="*{cantidadObjetivo}" class="form-control" required/>
+                    <input type="number" th:field="*{cantidadObjetivo}" class="form-control" placeholder="Ej: 100" required/>
                 </div>
             </div>
         </div>
     </div>
 
-    <div th:if="${necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadRecurrente)}" class="card mb-4">
+    <!-- Parámetros de Recurrencia (se muestra si la necesidad es Recurrente) -->
+    <div th:if="${tipoActual == 'RECURRENTE' or necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadRecurrente)}" class="card mb-4">
         <div class="card-header bg-light fw-bold">Parámetros de Recurrencia</div>
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Días del Período</label>
-                    <input type="number" th:field="*{periodo.diasPeriodo}" class="form-control"/>
+                    <input type="number" th:field="*{periodo.diasPeriodo}" class="form-control" placeholder="Ej: 30"/>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Fecha Inicio Período</label>

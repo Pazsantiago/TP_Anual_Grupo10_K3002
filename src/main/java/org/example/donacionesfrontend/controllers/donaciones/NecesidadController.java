@@ -1,9 +1,10 @@
-package org.example.donacionesfrontend.controllers.donaciones;
+package org.example.donacionesfrontend.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.dominio.categoria.Categoria;
 import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
 import org.example.donacionesfrontend.dominio.necesidad.*;
+import org.example.donacionesfrontend.services.CategoriaService;
 import org.example.donacionesfrontend.services.EntidadService;
 import org.example.donacionesfrontend.services.NecesidadService;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ public class NecesidadController {
 
     private final NecesidadService necesidadService;
     private final EntidadService entidadService;
-
+    private final CategoriaService categoriaService; // Inyectamos CategoriaService igual que en Donaciones
 
     @ModelAttribute("necesidad")
     public Necesidad prepararNecesidad(@RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo) {
@@ -55,6 +56,8 @@ public class NecesidadController {
             @RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo,
             Model model) {
         model.addAttribute("idEntidadSeleccionada", idEntidad);
+        model.addAttribute("tipoActual", tipo);
+        model.addAttribute("categorias", categoriaService.getAll()); // Cargamos las categorías para el select
         return "necesidades/formulario";
     }
 
@@ -77,5 +80,4 @@ public class NecesidadController {
         redirectAttributes.addFlashAttribute("exito", "Necesidad eliminada correctamente.");
         return "redirect:/necesidades?idEntidad=" + idEntidad;
     }
-
 }
