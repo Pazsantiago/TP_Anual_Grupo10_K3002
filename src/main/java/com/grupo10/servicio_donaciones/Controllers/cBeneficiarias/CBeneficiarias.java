@@ -6,7 +6,6 @@ import com.grupo10.servicio_donaciones.Services.ServiceDonacionAsignada.Servicio
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
-import com.grupo10.servicio_donaciones.dtos.frontend.EntidadBeneficiariaDTO;
 import com.grupo10.servicio_donaciones.excepciones.DonacionVencidaException;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
@@ -46,9 +45,9 @@ public class CBeneficiarias {
 
     // READ - Obtener todas las Entidades Beneficiaria
     @GetMapping("")
-    public ResponseEntity<List<EntidadBeneficiariaDTO>> getAllEntidades() {
+    public ResponseEntity<List<EntidadBeneficiaria>> getAllEntidades() {
         try {
-            return ResponseEntity.ok(servicioBeneficiarias.getAllEntidades().stream().map(mapper::aEntidadDTO).toList());
+            return ResponseEntity.ok(servicioBeneficiarias.getAllEntidades());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -57,9 +56,9 @@ public class CBeneficiarias {
 
     // READ - Obtener una Entidad Beneficiaria por id
     @GetMapping("/{idEntidad}")
-    public ResponseEntity<EntidadBeneficiariaDTO> getEntidadById(@PathVariable Long idEntidad) {
+    public ResponseEntity<EntidadBeneficiaria> getEntidadById(@PathVariable Long idEntidad) {
         try {
-            return ResponseEntity.ok(mapper.aEntidadDTO(servicioBeneficiarias.getEntidadById(idEntidad)));
+            return ResponseEntity.ok(servicioBeneficiarias.getEntidadById(idEntidad));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -67,9 +66,9 @@ public class CBeneficiarias {
 
     // CREATE - Agregar una nueva Entidad Beneficiaria
     @PostMapping("")
-    public ResponseEntity<EntidadBeneficiariaDTO> createEntidad(@RequestBody EntidadBeneficiaria entidad) {
+    public ResponseEntity<EntidadBeneficiaria> createEntidad(@RequestBody EntidadBeneficiaria entidad) {
         try {
-            return ResponseEntity.ok(mapper.aEntidadDTO(servicioBeneficiarias.createEntidad(entidad)));
+            return ResponseEntity.ok(servicioBeneficiarias.createEntidad(entidad));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -77,9 +76,9 @@ public class CBeneficiarias {
 
     // UPDATE - Actualizar una Entidad Beneficiaria existente
     @PutMapping("/{idEntidad}")
-    public ResponseEntity<EntidadBeneficiariaDTO> updateEntidad(@PathVariable Long idEntidad, @RequestBody EntidadBeneficiaria updatedEntidad) {
+    public ResponseEntity<EntidadBeneficiaria> updateEntidad(@PathVariable Long idEntidad, @RequestBody EntidadBeneficiaria updatedEntidad) {
         try {
-            return ResponseEntity.ok(mapper.aEntidadDTO(servicioBeneficiarias.updateEntidad(idEntidad, updatedEntidad)));
+            return ResponseEntity.ok(servicioBeneficiarias.updateEntidad(idEntidad, updatedEntidad));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

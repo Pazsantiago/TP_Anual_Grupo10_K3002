@@ -2,7 +2,6 @@ package com.grupo10.servicio_donaciones.Controllers.cDonantes;
 
 import com.grupo10.servicio_donaciones.Services.ServiceDonantes.ServicioDonantes;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donante.Donante;
-import com.grupo10.servicio_donaciones.dtos.frontend.DonanteDTO;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,21 +20,21 @@ public class CDonantes {
 
     // READ - Obtener todas las Personas
     @GetMapping("")
-    public ResponseEntity<List<DonanteDTO>> getAllPersonas(@RequestParam(value = "tipoD", required = false) String tipoD, @RequestParam(value = "doc", required = false) String doc) {
+    public ResponseEntity<List<Donante>> getAllPersonas(@RequestParam(value = "tipoD", required = false) String tipoD, @RequestParam(value = "doc", required = false) String doc) {
         try {
             if (tipoD != null && doc != null) {
-                return ResponseEntity.ok(List.of(mapper.aDonanteDTO(servicioDonantes.obtenerPersonaPorDocumento(tipoD, doc))));
+                return ResponseEntity.ok(List.of(servicioDonantes.obtenerPersonaPorDocumento(tipoD, doc)));
             }
-            return ResponseEntity.ok(servicioDonantes.getAllPersonas().stream().map(mapper::aDonanteDTO).toList());
+            return ResponseEntity.ok(servicioDonantes.getAllPersonas());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DonanteDTO> getPersonaById(@PathVariable Long id) {
+    public ResponseEntity<Donante> getPersonaById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(mapper.aDonanteDTO(servicioDonantes.obtenerPorId(id)));
+            return ResponseEntity.ok(servicioDonantes.obtenerPorId(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -43,9 +42,9 @@ public class CDonantes {
 
     // CREATE - Agregar un nueva persona
     @PostMapping("")
-    public ResponseEntity<DonanteDTO> createPersona(@RequestBody Donante persona) {
+    public ResponseEntity<Donante> createPersona(@RequestBody Donante persona) {
         try {
-            return ResponseEntity.ok(mapper.aDonanteDTO(servicioDonantes.createPersona(persona)));
+            return ResponseEntity.ok(servicioDonantes.createPersona(persona));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -67,9 +66,9 @@ public class CDonantes {
     //persona donante en el sistema. En caso
     //contrario, se le debe crear un usuario --> Una vez creado el usuario/donante en el sistema
     @PutMapping("/{id}")
-    public ResponseEntity<DonanteDTO> updateDonante(@PathVariable Long id, @RequestBody Donante updateDonante) {
+    public ResponseEntity<Donante> updateDonante(@PathVariable Long id, @RequestBody Donante updateDonante) {
         try {
-            return ResponseEntity.ok(mapper.aDonanteDTO(servicioDonantes.updateDonante(id, updateDonante)));
+            return ResponseEntity.ok(servicioDonantes.updateDonante(id, updateDonante));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
