@@ -11,7 +11,7 @@
         <select class="form-select" name="id" required>
             <option value="">-- Seleccionar un donante --</option>
             <option th:each="d : ${donantes}" th:value="${d.id}"
-                    th:text="${d.persona != null ? (d.persona.class.simpleName == 'PersonaHumana' ? (d.persona.nombre + ' ' + d.persona.apellido) : d.persona.razonSocial) : 'Donante #' + d.id}"></option>
+                    th:text="${d.persona != null ? (d.persona.class.simpleName == 'PersonaHumana' ? (d.persona.nombre) : d.persona.razonSocial) : 'Donante #' + d.id}"></option>
         </select>
     </div>
 
