@@ -45,8 +45,8 @@
                     </div>
                     <p class="card-text text-muted small">Gestión de Personas Humanas y Jurídicas.</p>
                     <div class="d-grid gap-2">
-                        <a th:if="${session.rolUsuario == 'ADMIN'}" href="/donantes" class="btn btn-outline-primary btn-sm">Ver Listado</a>
-                        <a th:if="${session.rolUsuario == 'ADMIN'}" href="/donantes/nuevo" class="btn btn-primary btn-sm">+ Registrar Donante</a>
+                        <a href="/donantes" class="btn btn-outline-primary btn-sm">Ver Listado</a>
+                        <a href="/donantes/nuevo" class="btn btn-primary btn-sm">+ Registrar Donante</a>
                     </div>
                 </div>
             </div>
@@ -61,8 +61,8 @@
                     </div>
                     <p class="card-text text-muted small">Gestión de bienes de entrada e insumos.</p>
                     <div class="d-grid gap-2">
-                        <a th:if="${session.rolUsuario == 'DONANTE'}" href="/donaciones" class="btn btn-outline-success btn-sm">Ver por Donante</a>
-                        <a th:if="${session.rolUsuario == 'ADMIN'}" href="/donaciones/nueva" class="btn btn-success btn-sm">+ Registrar Donación</a>
+                        <a href="/donaciones" class="btn btn-outline-success btn-sm">Ver por Donante</a>
+                        <a href="/donaciones/nueva" class="btn btn-success btn-sm">+ Registrar Donación</a>
                     </div>
                 </div>
             </div>
@@ -77,8 +77,8 @@
                     </div>
                     <p class="card-text text-muted small">Gestión de organizaciones y comedores.</p>
                     <div class="d-grid gap-2">
-                        <a th:if="${session.rolUsuario == 'DONANTE' or session.rolUsuario == 'ENTIDAD'}" href="/entidadesBeneficiarias" class="btn btn-outline-warning btn-sm">Ver Listado</a>
-                        <a th:if="${session.rolUsuario == 'ADMIN'}" href="/entidadesBeneficiarias/nueva" class="btn btn-warning btn-sm text-dark">+ Registrar Entidad</a>
+                        <a href="/entidadesBeneficiarias" class="btn btn-outline-warning btn-sm">Ver Listado</a>
+                        <a href="/entidadesBeneficiarias/nueva" class="btn btn-warning btn-sm text-dark">+ Registrar Entidad</a>
                     </div>
                 </div>
             </div>
@@ -93,8 +93,8 @@
                     </div>
                     <p class="card-text text-muted small">Requerimientos recurrentes y puntuales.</p>
                     <div class="d-grid gap-2">
-                        <a th:if="${session.rolUsuario == 'ADMIN' or session.rolUsuario == 'ENTIDAD'}" href="/necesidades" class="btn btn-outline-danger btn-sm">Ver por Entidad</a>
-                        <a th:if="${session.rolUsuario == 'ADMIN' or session.rolUsuario == 'ENTIDAD'}" href="/necesidades/nueva" class="btn btn-danger btn-sm">+ Registrar Necesidad</a>
+                        <a href="/necesidades" class="btn btn-outline-danger btn-sm">Ver por Entidad</a>
+                        <a href="/necesidades/nueva" class="btn btn-danger btn-sm">+ Registrar Necesidad</a>
                     </div>
                 </div>
             </div>
@@ -114,7 +114,7 @@
                         <i class="bi bi-file-earmark-arrow-up-fill text-info me-2"></i>Importación Masiva de Donantes
                     </h5>
                     <p class="card-text text-muted small">Carga masiva de donantes y sus aportes mediante archivos externos CSV.</p>
-                    <a th:if="${session.rolUsuario == 'ADMIN'}" href="/donantes/importar" class="btn btn-info text-white btn-sm">
+                    <a href="/donantes/importar" class="btn btn-info text-white btn-sm">
                         <i class="bi bi-upload me-1"></i> Ir a Importador
                     </a>
                 </div>
@@ -129,10 +129,10 @@
                     </h5>
                     <p class="card-text text-muted small">Asigna donaciones segmentadas a necesidades de entidades o completa asignaciones existentes.</p>
                     <div class="d-flex gap-2 flex-wrap">
-                        <a th:if="${session.rolUsuario == 'ADMIN'}" href="/asignaciones/nueva" class="btn btn-dark btn-sm">
+                        <a href="/asignaciones/nueva" class="btn btn-dark btn-sm">
                             <i class="bi bi-link-45deg me-1"></i> Asignar Donación a Necesidad
                         </a>
-                        <a th:if="${session.rolUsuario == 'ADMIN'}" href="/asignaciones/agregar-segmentada" class="btn btn-outline-dark btn-sm">
+                        <a href="/asignaciones/agregar-segmentada" class="btn btn-outline-dark btn-sm">
                             <i class="bi bi-plus-circle me-1"></i> Agregar a Asignación Existente
                         </a>
                     </div>
@@ -154,7 +154,7 @@
                         <i class="bi bi-trophy-fill text-warning me-2"></i>Consultar Rankings
                     </h6>
                     <p class="card-text text-muted small">Obtener listado de entidades ordenadas por donaciones recibidas.</p>
-                    <a th:if="${session.rolUsuario == 'ADMIN'}" href="/rankings" class="btn btn-outline-secondary btn-sm w-100 mt-auto">Ver Rankings</a>
+                    <a href="/rankings" class="btn btn-outline-secondary btn-sm w-100 mt-auto">Ver Rankings</a>
                 </div>
             </div>
         </div>
@@ -182,7 +182,7 @@
                         <i class="bi bi-arrow-repeat text-success me-2"></i>Entidades Repetidas
                     </h6>
                     <p class="card-text text-muted small">Ranking de entidades que recibieron múltiples asignaciones por donación.</p>
-                    <a th:if="${session.rolUsuario == 'ADMIN'}" href="/rankings/repetidas" class="btn btn-outline-success btn-sm w-100 mt-auto">Ver Repetidas</a>
+                    <a href="/rankings/repetidas" class="btn btn-outline-success btn-sm w-100 mt-auto">Ver Repetidas</a>
                 </div>
             </div>
         </div>
