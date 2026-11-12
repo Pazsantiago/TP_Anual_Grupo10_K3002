@@ -32,6 +32,12 @@ public class IncentivosController {
         return "incentivos/ranking";
     }
 
+    /** Guia de categorias y misiones (contenido informativo). */
+    @GetMapping("/misiones")
+    public String guiaDeMisiones() {
+        return "incentivos/misiones";
+    }
+
     /** Destino del buscador: valida el id y lleva al perfil. */
     @GetMapping("/buscar")
     public String buscar(@RequestParam(name = "donanteId", required = false) String texto, RedirectAttributes flash) {

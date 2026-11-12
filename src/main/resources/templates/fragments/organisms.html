@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+
+<!-- ORGANISMO · ENCABEZADO de gestión. Parámetro `activo`: clave de la sección actual (marca su enlace con aria-current).
+     Los enlaces salen de ${navegacion} (ver NavegacionAdvice): no se editan acá. -->
+<header class="topbar" th:fragment="encabezado(activo)">
+  <a class="skip-link" href="#contenido">Ir al contenido</a>
+  <nav class="topbar__inner container" aria-label="Principal">
+    <a class="topbar__brand" th:href="@{/panel}">DonaTrack</a>
+    <ul class="topbar__list">
+      <li th:each="item : ${navegacion}">
+        <a class="topbar__link" th:href="@{${item.ruta}}" th:text="${item.etiqueta}"
+           th:attr="aria-current=${activo == item.clave} ? 'true'">Sección</a>
+      </li>
+    </ul>
+    <ul class="topbar__list topbar__list--end">
+      <li><a class="topbar__link" th:href="@{/}">Sitio público</a></li>
+    </ul>
+  </nav>
+  <div class="progress" data-progress role="progressbar" aria-label="Cargando" hidden></div>
+</header>
+
+<!-- ORGANISMO · ENCABEZADO PÚBLICO. Para visitantes: landing, galería, mapa, legal, login y registro. -->
+<header class="topbar" th:fragment="encabezado-publico(activo)">
+  <a class="skip-link" href="#contenido">Ir al contenido</a>
+  <nav class="topbar__inner container" aria-label="Principal">
+    <a class="topbar__brand" th:href="@{/}">DonaTrack</a>
+    <ul class="topbar__list">
+      <li><a class="topbar__link" th:href="@{/galeria}" th:attr="aria-current=${activo == 'galeria'} ? 'true'">Galería</a></li>
+      <li><a class="topbar__link" th:href="@{/mapa}" th:attr="aria-current=${activo == 'mapa'} ? 'true'">Mapa</a></li>
+    </ul>
+    <ul class="topbar__list topbar__list--end">
+      <li><a class="topbar__link" th:href="@{/login}" th:attr="aria-current=${activo == 'login'} ? 'true'">Iniciar sesión</a></li>
+      <li><a class="topbar__link" th:href="@{/registro/donante}" th:attr="aria-current=${activo == 'registro'} ? 'true'">Registrarme</a></li>
+    </ul>
+  </nav>
+  <div class="progress" data-progress role="progressbar" aria-label="Cargando" hidden></div>
+</header>
+
+<!-- ORGANISMO · PIE. Enlaces siempre disponibles: exploración pública e información legal y de privacidad. -->
+<footer class="footer" th:fragment="pie">
+  <div class="footer__inner container">
+    <p class="footer__text">DonaTrack · UTN Solidaria · UTN.BA</p>
+    <nav aria-label="Información y accesos públicos">
+      <ul class="footer__links">
+        <li><a th:href="@{/galeria}">Galería de entregas</a></li>
+        <li><a th:href="@{/mapa}">Mapa de donaciones</a></li>
+        <li><a th:href="@{/legal}">Información legal y de privacidad</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<!-- ORGANISMO · RECURSOS DEL MAPA. Incluir al final de <main> en las páginas con mapa (Leaflet + js/mapa.js). -->
+<th:block th:fragment="recursos-mapa">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script th:src="@{/js/mapa.js}" defer></script>
+</th:block>
+
+</body>
+</html>

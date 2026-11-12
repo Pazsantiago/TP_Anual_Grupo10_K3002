@@ -2,22 +2,78 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Inicio')}"></head>
 <body>
-<header th:replace="~{fragments/layout :: header('inicio')}"></header>
+<header th:replace="~{fragments/organisms :: encabezado-publico('')}"></header>
 
 <main id="contenido" class="container page">
-  <div class="page-head">
-    <h1 class="page-head__title">DonaTrack</h1>
-  </div>
+  <!-- La landing no usa page-head: el título está en el hero. -->
 
-  <div th:replace="~{fragments/layout :: mensajes}"></div>
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
 
-  <div class="grid">
-    <article class="card" th:each="item : ${navegacion}">
-      <h2 th:text="${item.etiqueta}">Sección</h2>
-      <p th:text="${item.descripcion}">Descripción de la sección.</p>
-      <a class="btn btn--secondary" th:href="@{${item.ruta}}">Abrir<span class="sr-only" th:text="' ' + ${item.etiqueta}"></span></a>
-    </article>
+  <div class="stack">
+    <section class="hero" aria-labelledby="titulo-hero">
+      <h1 id="titulo-hero" class="hero__title">DonaTrack</h1>
+      <p class="hero__lead">Seguí tu donación desde que llega al depósito hasta que la recibe quien la necesita. Una plataforma de UTN Solidaria para organizar, registrar y monitorear donaciones con total trazabilidad.</p>
+      <div class="cluster">
+        <a class="btn" th:href="@{/registro/donante}">Quiero donar</a>
+        <a class="btn btn--outline-light" th:href="@{/registro/entidad}">Registrar mi entidad</a>
+        <a class="btn btn--outline-light" th:href="@{/login}">Iniciar sesión</a>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-proposito">
+      <h2 id="titulo-proposito">Nuestro propósito</h2>
+      <p>Las organizaciones que reciben donaciones de bienes materiales suelen tener registros duplicados y poca claridad sobre el destino de lo recibido. DonaTrack resuelve eso con tres objetivos:</p>
+      <ul>
+        <li><strong>Organizar</strong> las donaciones desde su recepción en el depósito.</li>
+        <li><strong>Dar trazabilidad</strong> a cada donación hasta su entrega a una entidad beneficiaria.</li>
+        <li><strong>Fortalecer la confianza</strong> de quienes donan y de quienes reciben.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="titulo-pasos">
+      <h2 id="titulo-pasos">Cómo funciona</h2>
+      <div class="grid">
+        <article class="card"><h3>1. Donás en el depósito</h3><p>Una persona administradora registra tu donación y la separa por tipo de bien.</p></article>
+        <article class="card"><h3>2. La asignamos</h3><p>Buscamos la entidad beneficiaria que mejor encaja con lo que necesita.</p></article>
+        <article class="card"><h3>3. La entregamos</h3><p>Un camión la lleva a destino y la entidad confirma la recepción con fotos.</p></article>
+        <article class="card"><h3>4. Te avisamos</h3><p>Recibís notificaciones en cada paso y podés seguir el camión en un mapa.</p></article>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-destacadas">
+      <h2 id="titulo-destacadas">Donaciones destacadas del último mes</h2>
+      <div class="empty-state" th:if="${destacadas == null or #lists.isEmpty(destacadas.datos)}">
+        <p class="empty-state__text">Todavía no hay donaciones destacadas este mes.</p>
+        <a class="btn btn--secondary" th:href="@{/galeria}">Ver fotos de entregas</a>
+      </div>
+      <div class="grid" th:unless="${destacadas == null or #lists.isEmpty(destacadas.datos)}">
+        <article class="card" th:each="d : ${destacadas.datos}">
+          <h3 th:text="${d.descripcion}">Sillas para la escuela N.º 10</h3>
+          <p th:text="${d.entidad}">Escuela rural N.º 10</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-top">
+      <h2 id="titulo-top">Donantes más activos del mes</h2>
+      <th:block th:if="${topRanking?.error}"><p th:replace="~{fragments/molecules :: aviso-error(${topRanking.error})}"></p></th:block>
+      <p th:if="${topRanking == null or (#lists.isEmpty(topRanking.datos) and topRanking.error == null)}">Todavía no hay un ranking de este mes.</p>
+      <ol th:unless="${topRanking == null or #lists.isEmpty(topRanking.datos)}">
+        <li th:each="p : ${topRanking.datos}"><span th:text="'Donante N.º ' + ${p.id}">Donante N.º 1</span> · <span th:text="${p.puntaje} + ' misiones'">3 misiones</span></li>
+      </ol>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-explorar">
+      <h2 id="titulo-explorar">Explorá sin iniciar sesión</h2>
+      <div class="cluster">
+        <a class="btn btn--secondary" th:href="@{/galeria}">Fotos de donaciones entregadas</a>
+        <a class="btn btn--secondary" th:href="@{/mapa}">Mapa de donaciones entregadas</a>
+        <a class="btn btn--secondary" th:href="@{/legal}">Información legal y de privacidad</a>
+      </div>
+    </section>
   </div>
 </main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

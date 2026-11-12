@@ -1,14 +1,49 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Alta / edición de camión - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Camión')}"></head>
 <body>
-    <main>
-        <h1>Alta / edición de camión</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('logistica')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title" th:text="${camion != null ? 'Editar camión ' + camion.patente : 'Nuevo camión'}">Nuevo camión</h1>
+    <a class="btn btn--secondary" th:href="@{/logistica/camiones}">Volver a camiones</a>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <section class="card">
+    <form class="form" th:action="${camion != null} ? @{/logistica/camiones/{id}/editar(id=${camion.id})} : @{/logistica/camiones/nuevo}" method="post">
+      <p class="form__note">Todos los camiones pueden transportar cualquier tipo de bien y salen siempre desde el depósito. Los campos marcados con <span class="field__required" aria-hidden="true">*</span> son obligatorios.</p>
+      <div class="field">
+        <label class="field__label" for="patente">Patente <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="patente" name="patente" type="text" required aria-required="true" maxlength="9" autocapitalize="characters" placeholder="AB123CD" th:value="${camion?.patente}">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field__label" for="capacidadCarga">Capacidad de carga (kg) <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+          <input class="field__control" id="capacidadCarga" name="capacidadCarga" type="number" min="0" step="any" inputmode="decimal" required aria-required="true" th:value="${camion?.capacidadCarga}">
+        </div>
+        <div class="field">
+          <label class="field__label" for="capacidadVolumenM3">Capacidad de volumen (m³) <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+          <input class="field__control" id="capacidadVolumenM3" name="capacidadVolumenM3" type="number" min="0" step="any" inputmode="decimal" required aria-required="true" th:value="${camion?.capacidadVolumenM3}">
+        </div>
+        <div class="field">
+          <label class="field__label" for="alturaM">Altura (m) <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+          <input class="field__control" id="alturaM" name="alturaM" type="number" min="0" step="any" inputmode="decimal" required aria-required="true" th:value="${camion?.alturaM}">
+        </div>
+      </div>
+      <div class="choice"><input type="checkbox" id="disponible" name="disponible" value="true" th:checked="${camion == null or camion.disponible == true}"><label for="disponible">Disponible para el reparto</label></div>
+      <div class="cluster">
+        <button class="btn" type="submit">Guardar camión</button>
+        <a class="btn btn--secondary" th:href="@{/logistica/camiones}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

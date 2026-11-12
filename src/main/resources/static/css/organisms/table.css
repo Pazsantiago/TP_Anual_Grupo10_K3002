@@ -1,0 +1,11 @@
+/* ORGANISMO · TABLE · tabla de datos con scroll horizontal contenido (la página nunca scrollea de costado).
+   Marcado: <div class="table-wrap" role="region" aria-label="…" tabindex="0"> <table class="table"> … */
+
+.table-wrap { overflow-x: auto; }
+.table-wrap:focus-visible { outline-offset: -3px; }
+
+.table { width: 100%; min-width: var(--table-min); border-collapse: collapse; }
+.table__caption { padding-bottom: var(--space-2); color: var(--color-muted); text-align: left; }
+.table th, .table td { padding: var(--space-2) var(--space-3); text-align: left; vertical-align: top; border-bottom: 1px solid var(--color-line); }
+.table th { font-weight: var(--weight-semibold); }
+.table ul { margin: 0; padding-left: var(--space-4); }   /* listas dentro de celdas (ej. bienes de una donación) */

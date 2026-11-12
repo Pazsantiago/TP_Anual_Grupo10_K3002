@@ -1,14 +1,34 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registrar / editar persona donante - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Registrar donante')}"></head>
 <body>
-    <main>
-        <h1>Registrar / editar persona donante</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('donantes')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Registrar donante</h1>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/donantes}">Volver a donantes</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <section class="card">
+    <p>Cargá los datos de la persona que llegó al depósito. Antes de registrarla, <a th:href="@{/donantes}">buscá si ya tiene usuario</a>. Al guardar, recibirá un correo de bienvenida para acceder por primera vez.</p>
+    <form class="form" th:action="@{/donantes/nuevo}" method="post">
+      <p class="form__note">Los campos marcados con <span class="field__required" aria-hidden="true">*</span> son obligatorios.</p>
+      <th:block th:replace="~{fragments/formularios :: datos-donante(false)}"></th:block>
+      <div class="cluster">
+        <button class="btn" type="submit">Registrar donante</button>
+        <a class="btn btn--secondary" th:href="@{/donantes}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

@@ -1,14 +1,62 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registrar necesidad material - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Registrar necesidad')}"></head>
 <body>
-    <main>
-        <h1>Registrar necesidad material</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('entidades')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Registrar necesidad material</h1>
+    <a class="btn btn--secondary" th:href="@{/entidades/{id}/necesidades(id=${idEntidad})}">Volver a las necesidades</a>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <section class="card">
+    <form class="form" th:action="@{/entidades/{id}/necesidades/nueva(id=${idEntidad})}" method="post">
+      <p class="form__note">Los campos marcados con <span class="field__required" aria-hidden="true">*</span> son obligatorios.</p>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">Tipo de necesidad</legend>
+        <div class="choice"><input type="radio" id="tipo-recurrente" name="tipo" value="RECURRENTE" checked><label for="tipo-recurrente">Recurrente: consumo habitual (ej. 100 paquetes de fideos por semana)</label></div>
+        <div class="choice"><input type="radio" id="tipo-extraordinaria" name="tipo" value="EXTRAORDINARIA"><label for="tipo-extraordinaria">Extraordinaria: situación puntual o emergencia (ej. inundación, mudanza)</label></div>
+      </fieldset>
+
+      <div class="field">
+        <label class="field__label" for="subcategoria">Subcategoría <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="subcategoria" name="subcategoria" type="text" list="lista-subcategorias" required aria-required="true" placeholder="Sillas, arroz, ropa de abrigo…">
+        <datalist id="lista-subcategorias"><th:block th:each="c : ${categorias}"><option th:each="sc : ${c.subcategorias}" th:value="${sc}"></option></th:block></datalist>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="descripcion">Descripción breve <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <textarea class="field__control" id="descripcion" name="descripcion" required aria-required="true" placeholder="Bancos y sillas para reponer el aula"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="cantidadObjetivo">Cantidad requerida <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="cantidadObjetivo" name="cantidadObjetivo" type="number" min="1" inputmode="numeric" required aria-required="true">
+        <p class="field__hint">Se considera satisfecha cuando recibas esa cantidad o más, aunque llegue en varias donaciones.</p>
+      </div>
+
+      <div class="field" data-mostrar-si="tipo:RECURRENTE">
+        <label class="field__label" for="periodo">Período <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <select class="field__control" id="periodo" name="periodo" required aria-required="true">
+          <option value="SEMANAL">Semanal</option><option value="MENSUAL">Mensual</option>
+        </select>
+        <p class="field__hint">La cantidad se debe cubrir dentro de cada período.</p>
+      </div>
+
+      <div class="cluster">
+        <button class="btn" type="submit">Registrar necesidad</button>
+        <a class="btn btn--secondary" th:href="@{/entidades/{id}/necesidades(id=${idEntidad})}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

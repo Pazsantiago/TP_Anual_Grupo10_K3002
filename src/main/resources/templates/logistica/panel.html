@@ -2,14 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Logística')}"></head>
 <body>
-<header th:replace="~{fragments/layout :: header('logistica')}"></header>
+<header th:replace="~{fragments/organisms :: encabezado('logistica')}"></header>
 
 <main id="contenido" class="container page">
-  <div class="page-head">
-    <h1 class="page-head__title">Logística</h1>
-  </div>
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
 
-  <div th:replace="~{fragments/layout :: mensajes}"></div>
+  <header class="page-head">
+    <h1 class="page-head__title">Logística</h1>
+    <div class="cluster">
+      <a class="btn" th:href="@{/logistica/camiones}">Administrar camiones</a>
+      <a class="btn btn--secondary" th:href="@{/logistica/seguimiento}">Seguimiento en mapa</a>
+      <a class="btn btn--secondary" th:href="@{/logistica/entregas-fallidas}">Entregas no recibidas</a>
+      <a class="btn btn--secondary" th:href="@{/logistica/ruta}">Ruta del chofer</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
 
   <div class="stack">
 
@@ -17,7 +25,7 @@
     <section class="card" aria-labelledby="titulo-camiones">
       <h2 id="titulo-camiones">Camiones</h2>
 
-      <th:block th:if="${camiones.error}"><p th:replace="~{fragments/layout :: aviso-error(${camiones.error})}"></p></th:block>
+      <th:block th:if="${camiones.error}"><p th:replace="~{fragments/molecules :: aviso-error(${camiones.error})}"></p></th:block>
 
       <div class="empty-state" th:if="${#lists.isEmpty(camiones.datos)}">
         <p class="empty-state__text" th:unless="${camiones.error}">No hay camiones registrados.</p>
@@ -64,7 +72,7 @@
     <section class="card" aria-labelledby="titulo-bultos">
       <h2 id="titulo-bultos">Bultos pendientes</h2>
 
-      <th:block th:if="${bultos.error}"><p th:replace="~{fragments/layout :: aviso-error(${bultos.error})}"></p></th:block>
+      <th:block th:if="${bultos.error}"><p th:replace="~{fragments/molecules :: aviso-error(${bultos.error})}"></p></th:block>
 
       <div class="empty-state" th:if="${#lists.isEmpty(bultos.datos)}">
         <p class="empty-state__text" th:unless="${bultos.error}">No hay bultos pendientes de asignar.</p>
@@ -98,7 +106,7 @@
     <section class="card" aria-labelledby="titulo-donaciones">
       <h2 id="titulo-donaciones">Donaciones pendientes de entrega</h2>
 
-      <th:block th:if="${donaciones.error}"><p th:replace="~{fragments/layout :: aviso-error(${donaciones.error})}"></p></th:block>
+      <th:block th:if="${donaciones.error}"><p th:replace="~{fragments/molecules :: aviso-error(${donaciones.error})}"></p></th:block>
 
       <div class="empty-state" th:if="${#lists.isEmpty(donaciones.datos)}">
         <p class="empty-state__text" th:unless="${donaciones.error}">No hay donaciones pendientes de entrega.</p>
@@ -136,5 +144,7 @@
 
   </div>
 </main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

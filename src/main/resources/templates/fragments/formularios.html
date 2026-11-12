@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+
+<!-- DATOS DE DONANTE. Los usa el registro propio (auth/registro-donante, conClave=true) y el alta en depósito por una
+     persona administradora (donantes/form, conClave=false: la persona recibe un correo de bienvenida para su primer acceso).
+     Campos según el TP: humana → nombre, apellido, edad, documento, género, dirección; jurídica → razón social, tipo, rubro,
+     representante; ambas → al menos un medio de contacto (correo obligatorio) y el predeterminado para notificaciones. -->
+<th:block th:fragment="datos-donante(conClave)">
+    <fieldset class="fieldset">
+      <legend class="fieldset__legend">Tipo de donante</legend>
+      <div class="choice"><input type="radio" id="tipo-humana" name="tipoPersona" value="HUMANA" checked><label for="tipo-humana">Persona humana</label></div>
+      <div class="choice"><input type="radio" id="tipo-juridica" name="tipoPersona" value="JURIDICA"><label for="tipo-juridica">Persona jurídica (empresa, ONG, institución u organismo)</label></div>
+    </fieldset>
+
+    <fieldset class="fieldset" data-mostrar-si="tipoPersona:HUMANA">
+      <legend class="fieldset__legend">Datos personales</legend>
+      <div class="field-row">
+      <div class="field">
+        <label class="field__label" for="nombre">Nombre <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="nombre" name="nombre" type="text" required aria-required="true" autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label class="field__label" for="apellido">Apellido <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="apellido" name="apellido" type="text" required aria-required="true" autocomplete="family-name">
+      </div>
+      </div>
+      <div class="field-row">
+      <div class="field">
+        <label class="field__label" for="edad">Edad <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="edad" name="edad" type="number" required aria-required="true" min="0" max="120" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label class="field__label" for="genero">Género <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <select class="field__control" id="genero" name="genero" required aria-required="true">
+          <option value="">Elegí una opción</option>
+          <option value="FEMENINO">Femenino</option>
+          <option value="MASCULINO">Masculino</option>
+          <option value="NO_BINARIO">No binario</option>
+          <option value="OTRO">Otro</option>
+          <option value="NO_INFORMA">Prefiero no informarlo</option>
+        </select>
+      </div>
+      </div>
+      <div class="field-row">
+      <div class="field">
+        <label class="field__label" for="tipoDocumento">Tipo de documento <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <select class="field__control" id="tipoDocumento" name="tipoDocumento" required aria-required="true">
+          <option value="">Elegí una opción</option>
+          <option value="DNI">DNI</option>
+          <option value="LE">LE</option>
+          <option value="LC">LC</option>
+          <option value="PASAPORTE">Pasaporte</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field__label" for="documento">Número de documento <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="documento" name="documento" type="text" required aria-required="true" placeholder="12345678" inputmode="numeric">
+      </div>
+      </div>
+      <div class="field">
+        <label class="field__label" for="direccion">Dirección <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span> <span class="field__hint">(calle, número y localidad)</span></label>
+        <input class="field__control" id="direccion" name="direccion" type="text" required aria-required="true" autocomplete="street-address">
+      </div>
+    </fieldset>
+
+    <fieldset class="fieldset" data-mostrar-si="tipoPersona:JURIDICA">
+      <legend class="fieldset__legend">Datos de la organización</legend>
+      <div class="field">
+        <label class="field__label" for="razonSocial">Razón social <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="razonSocial" name="razonSocial" type="text" required aria-required="true" autocomplete="organization">
+      </div>
+      <div class="field-row">
+      <div class="field">
+        <label class="field__label" for="tipoOrganizacion">Tipo <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <select class="field__control" id="tipoOrganizacion" name="tipoOrganizacion" required aria-required="true">
+          <option value="">Elegí una opción</option>
+          <option value="GUBERNAMENTAL">Gubernamental</option>
+          <option value="ONG">ONG</option>
+          <option value="EMPRESA">Empresa</option>
+          <option value="INSTITUCION">Institución</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field__label" for="rubro">Rubro <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="rubro" name="rubro" type="text" required aria-required="true">
+      </div>
+      </div>
+      <div class="field">
+        <label class="field__label" for="cuit">CUIT <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="cuit" name="cuit" type="text" required aria-required="true" placeholder="30-12345678-9" inputmode="numeric">
+      </div>
+      <p class="form__note">Persona representante habilitada a operar en nombre de la organización. Podrás sumar más luego.</p>
+      <div class="field-row">
+      <div class="field">
+        <label class="field__label" for="representanteNombre">Nombre del representante <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="representanteNombre" name="representanteNombre" type="text" required aria-required="true">
+      </div>
+      <div class="field">
+        <label class="field__label" for="representanteCorreo">Correo del representante <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="representanteCorreo" name="representanteCorreo" type="email" required aria-required="true">
+      </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset__legend">Medios de contacto</legend>
+      <div class="field">
+        <label class="field__label" for="correoElectronico">Correo electrónico <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="correoElectronico" name="correoElectronico" type="email" required aria-required="true" placeholder="ana@mail.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label class="field__label" for="telefono">Teléfono <span class="field__hint">(opcional)</span></label>
+        <input class="field__control" id="telefono" name="telefono" type="tel" placeholder="+54 11 5555-5555" autocomplete="tel">
+      </div>
+      <div class="field">
+        <label class="field__label" for="whatsapp">WhatsApp <span class="field__hint">(opcional)</span></label>
+        <input class="field__control" id="whatsapp" name="whatsapp" type="tel" placeholder="+54 11 5555-5555">
+      </div>
+      <div class="field">
+        <label class="field__label" for="medioPredeterminado">Medio predeterminado para notificaciones <span class="field__hint">(si no elegís, usamos el correo)</span></label>
+        <select class="field__control" id="medioPredeterminado" name="medioPredeterminado">
+          <option value="">Elegí una opción</option>
+          <option value="EMAIL">Correo electrónico</option>
+          <option value="SMS">SMS</option>
+          <option value="WHATSAPP">WhatsApp</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset class="fieldset" th:if="${conClave}">
+      <legend class="fieldset__legend">Acceso</legend>
+      <div class="field">
+        <label class="field__label" for="clave">Contraseña <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span> <span class="field__hint">(mínimo 8 caracteres)</span></label>
+        <input class="field__control" id="clave" name="clave" type="password" required aria-required="true" minlength="8" autocomplete="new-password">
+      </div>
+      <div class="field">
+        <label class="field__label" for="clave2">Repetir contraseña <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="clave2" name="claveRepetida" type="password" required aria-required="true" minlength="8" autocomplete="new-password">
+      </div>
+    </fieldset>
+</th:block>
+
+<!-- DATOS DE ENTIDAD BENEFICIARIA. Los usa el registro propio (auth/registro-entidad) y el alta/edición por administración (entidades/form). -->
+<th:block th:fragment="datos-entidad(conClave)">
+    <fieldset class="fieldset">
+      <legend class="fieldset__legend">Datos de la entidad</legend>
+      <div class="field">
+        <label class="field__label" for="razonSocial">Razón social <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="razonSocial" name="razonSocial" type="text" required aria-required="true" placeholder="Escuela rural N.º 10" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label class="field__label" for="tipoEntidad">Tipo de entidad <span class="field__hint">(opcional)</span></label>
+        <select class="field__control" id="tipoEntidad" name="tipoEntidad">
+          <option value="">Elegí una opción</option>
+          <option value="ESCUELA">Escuela</option>
+          <option value="COMEDOR">Comedor</option>
+          <option value="TUTORIA">Espacio de tutoría</option>
+          <option value="OTRA">Otra organización sin fines de lucro</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field__label" for="telefono">Teléfono <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="telefono" name="telefono" type="tel" required aria-required="true" placeholder="+54 11 4444-4444" autocomplete="tel">
+      </div>
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset__legend">Dirección completa</legend>
+      <div class="field-row">
+      <div class="field">
+        <label class="field__label" for="calle">Calle <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="calle" name="calle" type="text" required aria-required="true" autocomplete="address-line1">
+      </div>
+      <div class="field">
+        <label class="field__label" for="numero">Número <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="numero" name="numero" type="text" required aria-required="true">
+      </div>
+      </div>
+      <div class="field-row">
+      <div class="field">
+        <label class="field__label" for="ciudad">Ciudad o localidad <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="ciudad" name="ciudad" type="text" required aria-required="true">
+      </div>
+      <div class="field">
+        <label class="field__label" for="provincia">Provincia <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="provincia" name="provincia" type="text" required aria-required="true">
+      </div>
+      <div class="field">
+        <label class="field__label" for="codigoPostal">Código postal <span class="field__hint">(opcional)</span></label>
+        <input class="field__control" id="codigoPostal" name="codigoPostal" type="text">
+      </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset__legend">Persona representante</legend>
+      <p class="form__note">Recibirá las notificaciones de asignación y entrega. Podrás designar más representantes luego.</p>
+      <div class="field">
+        <label class="field__label" for="representanteNombre">Nombre y apellido <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="representanteNombre" name="representanteNombre" type="text" required aria-required="true">
+      </div>
+      <div class="field">
+        <label class="field__label" for="correoRepresentante">Correo electrónico <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="correoRepresentante" name="correoRepresentante" type="email" required aria-required="true" autocomplete="email">
+      </div>
+    </fieldset>
+
+    <fieldset class="fieldset" th:if="${conClave}">
+      <legend class="fieldset__legend">Acceso</legend>
+      <div class="field">
+        <label class="field__label" for="clave">Contraseña <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span> <span class="field__hint">(mínimo 8 caracteres)</span></label>
+        <input class="field__control" id="clave" name="clave" type="password" required aria-required="true" minlength="8" autocomplete="new-password">
+      </div>
+      <div class="field">
+        <label class="field__label" for="clave2">Repetir contraseña <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="clave2" name="claveRepetida" type="password" required aria-required="true" minlength="8" autocomplete="new-password">
+      </div>
+    </fieldset>
+</th:block>
+
+</body>
+</html>

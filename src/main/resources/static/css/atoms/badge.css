@@ -1,0 +1,14 @@
+/* ÁTOMO · BADGE · etiqueta de estado. Siempre lleva texto (no solo color). Variantes: --ok, --error. */
+
+.badge {
+  --badge-bg: var(--color-canvas);
+  --badge-fg: var(--color-ink);
+  --badge-border: var(--color-line);
+
+  display: inline-block; padding: 0 var(--space-2);
+  color: var(--badge-fg); background: var(--badge-bg);
+  border: 1px solid var(--badge-border); border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+}
+.badge--ok    { --badge-bg: var(--color-ok-bg);    --badge-fg: var(--color-ok);    --badge-border: var(--color-ok); }
+.badge--error { --badge-bg: var(--color-error-bg); --badge-fg: var(--color-error); --badge-border: var(--color-error); }

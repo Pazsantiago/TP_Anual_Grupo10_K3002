@@ -1,0 +1,7 @@
+/* MOLÉCULA · STAT · indicadores numéricos (métricas). Marcado:
+   <dl class="stats"> <div class="stat"> <dt class="stat__label">Etiqueta</dt> <dd class="stat__value">42</dd> </div> … </dl> */
+
+.stats { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); margin: 0; }
+.stat { padding: var(--space-3); background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius); }
+.stat__label { color: var(--color-muted); font-size: var(--text-sm); }
+.stat__value { margin: 0; font-size: var(--text-xl); font-weight: var(--weight-bold); line-height: var(--leading-tight); }

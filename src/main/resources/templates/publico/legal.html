@@ -1,14 +1,36 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Información legal y de privacidad - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Información legal y de privacidad')}"></head>
 <body>
-    <main>
-        <h1>Información legal y de privacidad</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado-publico('legal')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Información legal y de privacidad</h1>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <div class="stack">
+    <section class="card" aria-labelledby="titulo-datos">
+      <h2 id="titulo-datos">Qué datos recolectamos y para qué</h2>
+      <p>DonaTrack registra los datos que necesitás para donar o recibir donaciones: nombre o razón social, documento, dirección y medios de contacto. Los usamos únicamente para gestionar las donaciones, asignarlas, coordinar su entrega y enviarte notificaciones sobre su estado.</p>
+      <p>Las fotos de donaciones entregadas pueden mostrarse públicamente. No incluyas datos personales de terceros en ellas.</p>
+    </section>
+    <section class="card" aria-labelledby="titulo-derechos">
+      <h2 id="titulo-derechos">Tus derechos</h2>
+      <p>Según la <a href="https://www.argentina.gob.ar/justicia/derechofacil/leysimple/datos-personales" rel="noopener">Ley 25.326 de Protección de los Datos Personales</a>, podés acceder a tus datos, rectificarlos o pedir su supresión. La Agencia de Acceso a la Información Pública es el órgano de control de esta ley.</p>
+    </section>
+    <section class="card" aria-labelledby="titulo-acc">
+      <h2 id="titulo-acc">Accesibilidad</h2>
+      <p>Este sitio busca cumplir las pautas WCAG nivel AA, en línea con la Ley 26.653 de Accesibilidad de la Información en las Páginas Web. Si encontrás una barrera, avisanos por los medios de contacto de UTN Solidaria.</p>
+    </section>
+    <p class="form__note">Texto orientativo del trabajo práctico: debe revisarlo el equipo antes de cualquier uso real.</p>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

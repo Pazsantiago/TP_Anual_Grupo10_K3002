@@ -1,14 +1,56 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Camiones - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Camiones')}"></head>
 <body>
-    <main>
-        <h1>Camiones</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('logistica')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Camiones</h1>
+    <div class="cluster">
+      <a class="btn" th:href="@{/logistica/camiones/nuevo}">Nuevo camión</a>
+      <a class="btn btn--secondary" th:href="@{/logistica}">Volver a logística</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <section class="card" aria-labelledby="titulo-lista">
+    <h2 id="titulo-lista" class="sr-only">Listado de camiones</h2>
+    <th:block th:if="${camiones?.error}"><p th:replace="~{fragments/molecules :: aviso-error(${camiones.error})}"></p></th:block>
+    <div class="empty-state" th:if="${camiones == null or #lists.isEmpty(camiones.datos)}">
+      <p class="empty-state__text" th:unless="${camiones?.error}">Todavía no hay camiones registrados.</p>
+      <p class="empty-state__text" th:if="${camiones?.error}">No pudimos cargar los camiones.</p>
+    </div>
+
+    <div class="table-wrap" role="region" aria-label="Tabla de camiones" tabindex="0" th:unless="${camiones == null or #lists.isEmpty(camiones.datos)}">
+      <table class="table">
+        <caption class="table__caption" th:text="${#lists.size(camiones.datos)} + ' camiones'">Camiones</caption>
+        <thead><tr><th scope="col">Patente</th><th scope="col">Estado</th><th scope="col">Capacidad de carga (kg)</th><th scope="col">Volumen (m³)</th><th scope="col">Altura (m)</th><th scope="col">Acciones</th></tr></thead>
+        <tbody>
+          <tr th:each="c : ${camiones.datos}">
+            <td th:text="${c.patente}">AB123CD</td>
+            <td><span th:replace="~{fragments/atoms :: badge-camion(${c.disponible}, 'No disponible')}"></span></td>
+            <td th:text="${#numbers.formatDecimal(c.capacidadCarga, 1, 1)}">3.500,0</td>
+            <td th:text="${#numbers.formatDecimal(c.capacidadVolumenM3, 1, 1)}">20,0</td>
+            <td th:text="${#numbers.formatDecimal(c.alturaM, 1, 1)}">2,5</td>
+            <td>
+              <div class="cluster">
+                <a class="btn btn--secondary" th:href="@{/logistica/camiones/{id}/editar(id=${c.id})}">Editar<span class="sr-only" th:text="' el camión ' + ${c.patente}"></span></a>
+                <form th:action="@{/logistica/camiones/{id}/baja(id=${c.id})}" method="post">
+                  <button class="btn btn--danger" type="submit" data-confirmar="¿Dar de baja este camión?">Dar de baja<span class="sr-only" th:text="' el camión ' + ${c.patente}"></span></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

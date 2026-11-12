@@ -1,0 +1,7 @@
+/* FOOTER · pie de página con enlaces legales y de exploración pública. */
+
+.footer { margin-top: var(--space-5); padding-block: var(--space-3); border-top: 1px solid var(--color-line); color: var(--color-muted); font-size: var(--text-sm); }
+.footer__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.footer__text { margin: 0; }
+.footer__links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+.footer__links a { display: inline-flex; align-items: center; min-height: var(--hit); }

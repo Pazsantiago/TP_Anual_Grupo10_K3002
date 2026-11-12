@@ -1,14 +1,54 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Entregas no recibidas / fallidas - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Entregas no recibidas')}"></head>
 <body>
-    <main>
-        <h1>Entregas no recibidas / fallidas</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('logistica')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Entregas no recibidas</h1>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/logistica}">Volver a logística</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <section class="card" aria-labelledby="titulo-lista">
+    <h2 id="titulo-lista">Casos para revisar</h2>
+    <p>Entregas que la entidad informó como no recibidas. Si la donación vuelve al depósito, la entrega queda "Pendiente" y puede replanificarse. Registrá el motivo.</p>
+    <th:block th:if="${fallidas?.error}"><p th:replace="~{fragments/molecules :: aviso-error(${fallidas.error})}"></p></th:block>
+    <div class="empty-state" th:if="${fallidas == null or #lists.isEmpty(fallidas.datos)}">
+      <p class="empty-state__text" th:unless="${fallidas?.error}">No hay entregas por revisar.</p>
+      <p class="empty-state__text" th:if="${fallidas?.error}">No pudimos cargar las entregas.</p>
+    </div>
+
+    <div class="table-wrap" role="region" aria-label="Tabla de entregas no recibidas" tabindex="0" th:unless="${fallidas == null or #lists.isEmpty(fallidas.datos)}">
+      <table class="table">
+        <thead><tr><th scope="col">N.º</th><th scope="col">Destinatario</th><th scope="col">Dirección</th><th scope="col">Resolución</th></tr></thead>
+        <tbody>
+          <tr th:each="d : ${fallidas.datos}">
+            <td th:text="${d.idDonacion}">1</td>
+            <td th:text="${d.destinatario != null ? d.destinatario : '—'}">Escuela rural N.º 10</td>
+            <td th:text="${d.direccion != null ? d.direccion.calle + ', ' + d.direccion.ciudad : '—'}">Av. Siempre Viva 742, Buenos Aires</td>
+            <td>
+              <form class="form form--wide" th:action="@{/logistica/entregas-fallidas/{id}/devolver(id=${d.idDonacion})}" method="post">
+                <div class="field">
+                  <label class="field__label" th:for="'motivo-' + ${d.idDonacion}">Motivo <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+                  <input class="field__control" th:id="'motivo-' + ${d.idDonacion}" name="justificacion" type="text" required aria-required="true" placeholder="Tocamos timbre pero nadie respondió">
+                </div>
+                <div class="cluster"><button class="btn" type="submit">Devolver al depósito<span class="sr-only" th:text="' la donación ' + ${d.idDonacion}"></span></button></div>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

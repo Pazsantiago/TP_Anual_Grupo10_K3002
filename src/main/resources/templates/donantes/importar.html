@@ -1,14 +1,66 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Importar donantes por CSV - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Importar donantes')}"></head>
 <body>
-    <main>
-        <h1>Importar donantes por CSV</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('donantes')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Importar donantes desde CSV</h1>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/donantes}">Volver a donantes</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <div class="stack">
+    <section class="card" aria-labelledby="titulo-subir">
+      <h2 id="titulo-subir">Subir archivo</h2>
+      <p>Cada línea es una persona donante. Si el correo ya está registrado se actualizan sus datos; si no, se crea su usuario y se le envían las credenciales de acceso. Los archivos con más de 10.000 filas pueden demorar: no cierres la página mientras se procesa.</p>
+      <form class="form" th:action="@{/donantes/importar}" method="post" enctype="multipart/form-data">
+        <div class="field">
+          <label class="field__label" for="archivo">Archivo .csv <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+          <input class="field__control" id="archivo" name="archivo" type="file" accept=".csv,text/csv" required aria-required="true">
+        </div>
+        <div class="cluster"><button class="btn" type="submit">Importar donantes</button></div>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-formato">
+      <h2 id="titulo-formato">Formato esperado</h2>
+      <div class="table-wrap" role="region" aria-label="Formato del archivo CSV" tabindex="0">
+        <table class="table">
+          <caption class="table__caption">Primera fila: encabezados. Ejemplos de líneas válidas.</caption>
+          <thead><tr><th scope="col">TipoPersona</th><th scope="col">TipoDoc</th><th scope="col">Documento</th><th scope="col">Nombre/Razón Social</th><th scope="col">Email</th><th scope="col">Teléfono</th></tr></thead>
+          <tbody>
+            <tr><td>HUMANA</td><td>DNI</td><td>12345678</td><td>Ana Pérez</td><td>ana@mail.com</td><td>+54 11 5555-5555</td></tr>
+            <tr><td>JURIDICA</td><td>CUIT</td><td>30-12345678-9</td><td>Arcos Plateados S.A.</td><td>contacto@empresa.com</td><td>+54 11 4444-4444</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-resultado" th:if="${resultado}">
+      <h2 id="titulo-resultado">Resultado de la importación</h2>
+      <dl class="stats">
+        <div class="stat"><dt class="stat__label">Filas leídas</dt><dd class="stat__value" th:text="${resultado.total}">20000</dd></div>
+        <div class="stat"><dt class="stat__label">Usuarios creados</dt><dd class="stat__value" th:text="${resultado.creados}">150</dd></div>
+        <div class="stat"><dt class="stat__label">Actualizados</dt><dd class="stat__value" th:text="${resultado.actualizados}">19800</dd></div>
+        <div class="stat"><dt class="stat__label">Con error</dt><dd class="stat__value" th:text="${resultado.errores}">50</dd></div>
+      </dl>
+      <div class="table-wrap" role="region" aria-label="Filas con error" tabindex="0" th:unless="${#lists.isEmpty(resultado.detalleErrores)}">
+        <table class="table">
+          <thead><tr><th scope="col">Línea</th><th scope="col">Motivo</th></tr></thead>
+          <tbody><tr th:each="e : ${resultado.detalleErrores}"><td th:text="${e.linea}">12</td><td th:text="${e.motivo}">Correo inválido</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

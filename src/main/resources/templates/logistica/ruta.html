@@ -1,14 +1,57 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mi ruta del día (chofer) - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Mi ruta')}"></head>
 <body>
-    <main>
-        <h1>Mi ruta del día (chofer)</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('logistica')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Mi ruta del día</h1>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/logistica}">Volver a logística</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <div class="stack">
+    <section class="card" aria-labelledby="titulo-iniciar">
+      <h2 id="titulo-iniciar">Iniciar ruta</h2>
+      <p>Al iniciar, las entregas de tu ruta pasan a "En traslado" y se avisa a las entidades y a las personas donantes, con un enlace para seguir el camión.</p>
+      <form class="form" th:action="@{/logistica/ruta/iniciar}" method="post">
+        <div class="field">
+          <label class="field__label" for="camion">Camión <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+          <select class="field__control" id="camion" name="idCamion" required aria-required="true">
+            <option value="">Elegí tu camión</option>
+            <option th:each="c : ${camiones?.datos}" th:value="${c.id}" th:text="${c.patente}">AB123CD</option>
+          </select>
+        </div>
+        <div class="cluster"><button class="btn" type="submit" data-confirmar="¿Iniciar el recorrido ahora?">Iniciar ruta</button></div>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-paradas">
+      <h2 id="titulo-paradas">Entregas del día</h2>
+    <th:block th:if="${paradas?.error}"><p th:replace="~{fragments/molecules :: aviso-error(${paradas.error})}"></p></th:block>
+    <div class="empty-state" th:if="${paradas == null or #lists.isEmpty(paradas.datos)}">
+      <p class="empty-state__text" th:unless="${paradas?.error}">No tenés entregas asignadas para hoy.</p>
+      <p class="empty-state__text" th:if="${paradas?.error}">No pudimos cargar tu ruta.</p>
+    </div>
+
+      <ol th:unless="${paradas == null or #lists.isEmpty(paradas.datos)}">
+        <li th:each="p : ${paradas.datos}">
+          <strong th:text="${p.destinatario != null ? p.destinatario : 'Destino sin nombre'}">Escuela rural N.º 10</strong>
+          <span th:if="${p.direccion}" th:text="' · ' + ${p.direccion.calle} + ', ' + ${p.direccion.ciudad}">Av. Siempre Viva 742, Buenos Aires</span>
+          <span th:text="' · ' + ${#lists.size(p.bultos)} + ' bultos'">2 bultos</span>
+          <span class="badge" th:text="${#strings.replace(p.estadoDonacion, '_', ' ')}">PENDIENTE</span>
+        </li>
+      </ol>
+    </section>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

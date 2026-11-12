@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+
+<!-- MOLÉCULA · MIGAS DE PAN. Muestran dónde está la persona y permiten volver. Se arman solas desde la URL (ver NavegacionAdvice);
+     no se muestran en el inicio. Lista ordenada: la última miga es la página actual. -->
+<nav class="breadcrumb" aria-label="Migas de pan" th:fragment="migas" th:if="${migas != null and #lists.size(migas) > 1}">
+  <ol class="breadcrumb__list">
+    <li class="breadcrumb__item" th:each="m, it : ${migas}" th:attr="aria-current=${it.last} ? 'page'">
+      <a th:if="${!it.last and m.ruta != null}" th:href="@{${m.ruta}}" th:text="${m.etiqueta}">Inicio</a>
+      <span th:if="${it.last or m.ruta == null}" th:text="${m.etiqueta}">Página actual</span>
+    </li>
+  </ol>
+</nav>
+
+<!-- MOLÉCULA · MENSAJES. Confirmaciones (flash tras un redirect) y errores del servicio o de validación. -->
+<div th:fragment="mensajes">
+  <p class="banner banner--ok" role="status" th:if="${exito}">
+    <span class="banner__icon" aria-hidden="true">✓</span>
+    <span th:text="${exito}"></span>
+  </p>
+  <p class="banner banner--error" role="alert" th:if="${errorServicio}">
+    <span class="banner__icon" aria-hidden="true">!</span>
+    <span th:text="${errorServicio}"></span>
+  </p>
+</div>
+
+<!-- MOLÉCULA · AVISO DE ERROR de una sección (una parte de la página no pudo cargarse).
+     Uso:  <th:block th:if="${seccion.error}"><p th:replace="~{fragments/molecules :: aviso-error(${seccion.error})}"></p></th:block> -->
+<p class="banner banner--error" role="alert" th:fragment="aviso-error(texto)">
+  <span class="banner__icon" aria-hidden="true">!</span>
+  <span th:text="${texto}"></span>
+</p>
+
+<!-- MOLÉCULA · ESTADO VACÍO. Cuando no hay datos que mostrar: explica por qué y (opcional) qué hacer.
+     Uso: <div th:replace="~{fragments/molecules :: estado-vacio('No hay donaciones todavía.')}"></div> -->
+<div class="empty-state" th:fragment="estado-vacio(texto)">
+  <p class="empty-state__text" th:text="${texto}">No hay datos para mostrar.</p>
+</div>
+
+</body>
+</html>

@@ -2,19 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Entidades beneficiarias')}"></head>
 <body>
-<header th:replace="~{fragments/layout :: header('entidades')}"></header>
+<header th:replace="~{fragments/organisms :: encabezado('entidades')}"></header>
 
 <main id="contenido" class="container page">
-  <div class="page-head">
-    <h1 class="page-head__title">Entidades beneficiarias</h1>
-  </div>
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
 
-  <div th:replace="~{fragments/layout :: mensajes}"></div>
+  <header class="page-head">
+    <h1 class="page-head__title">Entidades beneficiarias</h1>
+    <a class="btn" th:href="@{/entidades/nueva}">Registrar entidad</a>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
 
   <section class="card" aria-labelledby="titulo-lista">
     <h2 id="titulo-lista" class="sr-only">Listado de entidades beneficiarias</h2>
 
-    <th:block th:if="${entidades.error}"><p th:replace="~{fragments/layout :: aviso-error(${entidades.error})}"></p></th:block>
+    <th:block th:if="${entidades.error}"><p th:replace="~{fragments/molecules :: aviso-error(${entidades.error})}"></p></th:block>
 
     <div class="empty-state" th:if="${#lists.isEmpty(entidades.datos)}">
       <p class="empty-state__text" th:unless="${entidades.error}">Todavía no hay entidades beneficiarias registradas.</p>
@@ -41,7 +44,10 @@
             <td th:text="${e.telefono != null ? e.telefono : '—'}">+54 11 4444-4444</td>
             <td th:text="${e.correoRepresentante != null ? e.correoRepresentante : '—'}">directora@escuela.edu.ar</td>
             <td>
-              <a class="btn btn--secondary" th:href="@{/entidades/{id}/necesidades(id=${e.id})}">Necesidades<span class="sr-only" th:text="' de ' + ${e.razonSocial}"></span></a>
+              <div class="cluster">
+                <a class="btn btn--secondary" th:href="@{/entidades/{id}/necesidades(id=${e.id})}">Necesidades<span class="sr-only" th:text="' de ' + ${e.razonSocial}"></span></a>
+                <a class="btn btn--secondary" th:href="@{/entidades/{id}/donaciones(id=${e.id})}">Donaciones<span class="sr-only" th:text="' asignadas a ' + ${e.razonSocial}"></span></a>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -49,5 +55,7 @@
     </div>
   </section>
 </main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

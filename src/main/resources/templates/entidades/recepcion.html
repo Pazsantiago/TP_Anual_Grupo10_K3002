@@ -1,14 +1,48 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Confirmar recepción de donación - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Confirmar recepción')}"></head>
 <body>
-    <main>
-        <h1>Confirmar recepción de donación</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('entidades')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title" th:text="'Recepción de la donación N.º ' + ${idDonacion}">Recepción de la donación N.º 1</h1>
+    <a class="btn btn--secondary" th:href="@{/entidades/{id}/donaciones(id=${idEntidad})}">Volver a las donaciones</a>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <section class="card">
+    <form class="form" th:action="@{/entidades/{id}/donaciones/{idDonacion}/recepcion(id=${idEntidad},idDonacion=${idDonacion})}" method="post" enctype="multipart/form-data">
+      <p class="form__note">Los campos marcados con <span class="field__required" aria-hidden="true">*</span> son obligatorios.</p>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">¿Recibiste la donación?</legend>
+        <div class="choice"><input type="radio" id="res-recibida" name="resultado" value="RECIBIDA" checked><label for="res-recibida">Sí, la recibimos</label></div>
+        <div class="choice"><input type="radio" id="res-no" name="resultado" value="NO_RECIBIDA"><label for="res-no">No, hoy no llegó</label></div>
+      </fieldset>
+
+      <div class="field" data-mostrar-si="resultado:RECIBIDA">
+        <label class="field__label" for="fotos">Fotos de lo recibido <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="fotos" name="fotos" type="file" accept="image/*" multiple required aria-required="true">
+        <p class="field__hint">Se muestran en la galería pública de donaciones entregadas.</p>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="observaciones">Observaciones <span class="field__hint">(opcional)</span></label>
+        <textarea class="field__control" id="observaciones" name="observaciones" placeholder="Llegó todo en buen estado"></textarea>
+      </div>
+
+      <div class="cluster">
+        <button class="btn" type="submit">Confirmar</button>
+        <a class="btn btn--secondary" th:href="@{/entidades/{id}/donaciones(id=${idEntidad})}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

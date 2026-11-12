@@ -1,0 +1,11 @@
+/* MOLÉCULA · BREADCRUMB (migas de pan). Dónde estoy y cómo volver: lista ordenada, el último ítem es la página actual.
+   Marcado: <nav class="breadcrumb" aria-label="Migas de pan"><ol class="breadcrumb__list">
+              <li class="breadcrumb__item"><a href>Inicio</a></li> … <li class="breadcrumb__item" aria-current="page">Actual</li></ol></nav>
+   El separador es decorativo (CSS): los lectores de pantalla anuncian la lista con su cantidad de ítems. */
+
+.breadcrumb { margin-bottom: var(--space-3); font-size: var(--text-sm); }
+.breadcrumb__list { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--space-2); margin: 0; padding: 0; list-style: none; }
+.breadcrumb__item { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--hit); max-width: none; }
+.breadcrumb__item + .breadcrumb__item::before { content: "›"; color: var(--color-muted); }
+.breadcrumb__item a { display: inline-flex; align-items: center; min-height: var(--hit); }
+.breadcrumb__item[aria-current="page"] { font-weight: var(--weight-semibold); }

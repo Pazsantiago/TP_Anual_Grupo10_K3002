@@ -3,18 +3,25 @@
    -----------------------------------------------------------------------------
    · Para cambiar la marca (colores, tipografía, espaciado, bordes) se edita
      SOLO este archivo. El resto del CSS no tiene valores "sueltos".
-   · Orden de carga (ver templates/fragments/layout.html):
-       tokens → base → layout → components/*
+   · Regla 60-30-10: 60% neutros (fondos), 30% estructura (cabecera, pie, hero,
+     bordes y encabezados), 10% acento (la acción principal de cada pantalla).
+   · Orden de carga (ver templates/fragments/layout.html), de lo simple a lo complejo:
+       tokens → base → templates/ → atoms/ → molecules/ → organisms/
    · Breakpoint único del sitio: 40rem (las media queries no aceptan var()).
    · Contrastes verificados contra WCAG AA (texto 4.5:1, componentes 3:1).
    ============================================================================= */
 :root {
-  /* Color · marca */
+  /* Color · 30% ESTRUCTURA (complementario): barras, pie, hero, bordes de componentes, enlaces */
   --color-primary: #1f6f5c;
   --color-primary-dark: #17564a;
-  --color-on-primary: #ffffff;        /* texto/íconos sobre fondos de marca */
+  --color-on-primary: #ffffff;        /* texto/íconos sobre fondos de estructura */
 
-  /* Color · neutros */
+  /* Color · 10% ACENTO: solo la acción principal (botón principal, llamada a la acción) */
+  --color-accent: #f2b134;
+  --color-accent-hover: #e0a020;
+  --color-on-accent: #1d2b36;         /* texto sobre el acento (contraste 7,7:1) */
+
+  /* Color · 60% NEUTROS: fondos de página y superficies */
   --color-ink: #1d2b36;               /* texto principal */
   --color-muted: #50606d;             /* texto secundario y bordes de campos */
   --color-canvas: #eef3f1;            /* fondo de página */
@@ -38,6 +45,7 @@
   --text-md: 1rem;
   --text-lg: 1.25rem;
   --text-xl: 1.6rem;
+  --text-2xl: 2rem;
   --leading-tight: 1.2;
   --leading-base: 1.5;
   --weight-regular: 400;
@@ -57,6 +65,7 @@
 
   /* Layout */
   --container-max: 60rem;
+  --measure: 70ch;                    /* ancho de línea de lectura (50–75 caracteres) */
   --form-max: 36rem;
   --table-min: 36rem;
   --hit: 48px;                        /* área mínima clickeable (táctil) */

@@ -2,6 +2,11 @@ package utn.donatrack.donatrack_frontend.client;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
+import utn.donatrack.donatrack_frontend.client.dto.donaciones.*;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -13,8 +18,8 @@ import utn.donatrack.donatrack_frontend.client.dto.donaciones.RankingSegmentadaR
 
 /**
  * Servicio de Donaciones: donantes, donaciones, entidades beneficiarias, necesidades y rankings de asignacion.
- * Hoy solo expone lecturas (y ejecutar los algoritmos). Las altas/modificaciones piden en el servicio el JSON
- * completo del dominio (Donante, Donacion, EntidadBeneficiaria, Necesidad): se suman cuando haya formularios.
+ * Lecturas, altas, cambios de estado y asignacion final. Los cuerpos de las altas son los *Request de client.dto.donaciones:
+ * si el servicio usa otros nombres de campo, se ajustan ahi (un solo lugar).
  */
 @Component
 public class DonacionesClient extends ClienteServicio {
@@ -89,5 +94,49 @@ public class DonacionesClient extends ClienteServicio {
             .uri(RANKINGS)
             .retrieve()
             .body(String.class));
+    }
+
+    /** POST /api/donantes */
+    public void crearDonante(DonanteRequest request) {
+        ejecutar(() -> http().post().uri(DONANTES)
+            .contentType(MediaType.APPLICATION_JSON).body(request).retrieve().toBodilessEntity());
+    }
+
+    /** POST /api/donantes/importar (multipart, parte "archivo"): alta/actualizacion masiva desde CSV. */
+    public ImportacionResponse importarDonantes(MultipartFile archivo) {
+        MultiValueMap<String, Object> partes = new LinkedMultiValueMap<>();
+        partes.add("archivo", parteMultipart(archivo));
+        return call(() -> http().post().uri(DONANTES + "/importar")
+            .contentType(MediaType.MULTIPART_FORM_DATA).body(partes).retrieve().body(ImportacionResponse.class));
+    }
+
+    /** POST /api/donaciones: carga unica de bienes (el servicio genera las donaciones segmentadas). */
+    public void crearDonacion(DonacionRequest request) {
+        ejecutar(() -> http().post().uri("/api/donaciones")
+            .contentType(MediaType.APPLICATION_JSON).body(request).retrieve().toBodilessEntity());
+    }
+
+    /** PATCH /api/donaciones/{id}/estado */
+    public void cambiarEstadoDonacion(long idDonacion, EstadoDonacionRequest request) {
+        ejecutar(() -> http().patch().uri("/api/donaciones/{id}/estado", idDonacion)
+            .contentType(MediaType.APPLICATION_JSON).body(request).retrieve().toBodilessEntity());
+    }
+
+    /** POST /api/entidadesBeneficiarias */
+    public void crearEntidad(EntidadRequest request) {
+        ejecutar(() -> http().post().uri(ENTIDADES)
+            .contentType(MediaType.APPLICATION_JSON).body(request).retrieve().toBodilessEntity());
+    }
+
+    /** POST /api/entidadesBeneficiarias/{id}/necesidades */
+    public void crearNecesidad(long idEntidad, NecesidadRequest request) {
+        ejecutar(() -> http().post().uri(ENTIDADES + "/{id}/necesidades", idEntidad)
+            .contentType(MediaType.APPLICATION_JSON).body(request).retrieve().toBodilessEntity());
+    }
+
+    /** POST /api/rankings/{idSegmentada}/asignacion: confirma la entidad final de una donacion segmentada. */
+    public void confirmarAsignacion(long idSegmentada, long idEntidad) {
+        ejecutar(() -> http().post().uri(RANKINGS + "/{id}/asignacion", idSegmentada)
+            .contentType(MediaType.APPLICATION_JSON).body(new AsignacionRequest(idEntidad)).retrieve().toBodilessEntity());
     }
 }

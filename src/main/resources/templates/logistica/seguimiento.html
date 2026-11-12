@@ -1,14 +1,54 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Seguimiento de entregas en mapa - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Seguimiento de entregas')}"></head>
 <body>
-    <main>
-        <h1>Seguimiento de entregas en mapa</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('logistica')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Seguimiento de entregas</h1>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/logistica}">Volver</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <div class="stack">
+    <p>Ubicación de los camiones con entregas activas. El mapa se actualiza solo cada 15 segundos. Última consulta: <span data-ultima-actualizacion>—</span>.</p>
+
+    <div id="mapa" class="map" data-mapa th:attr="data-url=@{/logistica/seguimiento/ubicaciones}" role="region" aria-label="Mapa con la ubicación de los camiones" tabindex="0"></div>
+
+    <section class="card" aria-labelledby="titulo-camiones">
+      <h2 id="titulo-camiones">Camiones</h2>
+    <th:block th:if="${camiones?.error}"><p th:replace="~{fragments/molecules :: aviso-error(${camiones.error})}"></p></th:block>
+    <div class="empty-state" th:if="${camiones == null or #lists.isEmpty(camiones.datos)}">
+      <p class="empty-state__text" th:unless="${camiones?.error}">No hay camiones para seguir.</p>
+      <p class="empty-state__text" th:if="${camiones?.error}">No pudimos cargar los camiones.</p>
+    </div>
+
+      <div class="table-wrap" role="region" aria-label="Tabla de ubicación de camiones" tabindex="0" th:unless="${camiones == null or #lists.isEmpty(camiones.datos)}">
+        <table class="table">
+          <thead><tr><th scope="col">Camión</th><th scope="col">Estado</th><th scope="col">Última ubicación</th><th scope="col">Última actualización</th></tr></thead>
+          <tbody>
+            <tr th:each="c : ${camiones.datos}" data-marcador
+                th:attr="data-clave=${c.patente},data-titulo='Camión ' + ${c.patente},data-lat=${c.ultimaUbicacion?.latitud},data-lng=${c.ultimaUbicacion?.longitud},data-detalle=${c.ultimaUbicacion?.timestamp != null ? 'Última actualización: ' + #temporals.format(c.ultimaUbicacion.timestamp, 'dd/MM/yyyy HH:mm') : ''}">
+              <td th:text="${c.patente}">AB123CD</td>
+              <td><span th:replace="~{fragments/atoms :: badge-camion(${c.disponible}, 'En reparto')}"></span></td>
+              <td th:text="${c.ultimaUbicacion != null ? 'Lat ' + #numbers.formatDecimal(c.ultimaUbicacion.latitud, 1, 4) + ' · Lon ' + #numbers.formatDecimal(c.ultimaUbicacion.longitud, 1, 4) : 'Sin datos'}">Lat -34,6037 · Lon -58,3816</td>
+              <td th:text="${c.ultimaUbicacion?.timestamp != null ? #temporals.format(c.ultimaUbicacion.timestamp, 'dd/MM/yyyy HH:mm') : '—'}">01/01/2027 10:00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <th:block th:replace="~{fragments/organisms :: recursos-mapa}"></th:block>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

@@ -1,0 +1,8 @@
+/* ORGANISMO · HERO · bloque de presentación de la landing. Fondo oscuro → botones claros (btn--light / btn--outline-light) y foco claro. */
+
+.hero { padding: var(--space-5) var(--space-4); color: var(--color-on-primary); background: var(--color-primary-dark); border-radius: var(--radius); }
+.hero__title { margin: 0 0 var(--space-2); font-size: 2rem; }
+.hero__lead { max-width: 40rem; margin: 0 0 var(--space-4); font-size: var(--text-lg); }
+.hero :focus-visible { outline: var(--focus-ring-on-dark); }
+
+@media (max-width: 40rem) { .hero { padding: var(--space-4) var(--space-3); } }

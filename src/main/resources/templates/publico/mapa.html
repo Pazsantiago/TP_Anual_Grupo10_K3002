@@ -1,14 +1,46 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mapa de donaciones entregadas - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Mapa de donaciones')}"></head>
 <body>
-    <main>
-        <h1>Mapa de donaciones entregadas</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado-publico('mapa')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Donaciones entregadas</h1>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <p>Cada marcador es una entidad beneficiaria que ya recibió una donación. Hacé clic para ver el detalle.</p>
+
+  <div class="stack">
+    <div id="mapa" class="map" data-mapa role="region" aria-label="Mapa interactivo de donaciones entregadas" tabindex="0"></div>
+
+    <section class="card" aria-labelledby="titulo-entregas">
+      <h2 id="titulo-entregas">Detalle de las entregas</h2>
+      <th:block th:if="${entregas == null or #lists.isEmpty(entregas)}">
+        <div th:replace="~{fragments/molecules :: estado-vacio('Todavía no hay donaciones entregadas para mostrar en el mapa.')}"></div>
+      </th:block>
+      <div class="table-wrap" role="region" aria-label="Tabla de donaciones entregadas" tabindex="0" th:unless="${entregas == null or #lists.isEmpty(entregas)}">
+        <table class="table">
+          <thead><tr><th scope="col">Entidad</th><th scope="col">Donación</th><th scope="col">Fecha de entrega</th></tr></thead>
+          <tbody>
+            <tr data-marcador th:each="e : ${entregas}" th:attr="data-lat=${e.latitud},data-lng=${e.longitud},data-titulo=${e.entidad},data-detalle=${e.descripcion}">
+              <td th:text="${e.entidad}">Escuela rural N.º 10</td>
+              <td th:text="${e.descripcion}">30 sillas</td>
+              <td th:text="${e.fecha != null ? #temporals.format(e.fecha, 'dd/MM/yyyy') : '—'}">01/01/2027</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <th:block th:replace="~{fragments/organisms :: recursos-mapa}"></th:block>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

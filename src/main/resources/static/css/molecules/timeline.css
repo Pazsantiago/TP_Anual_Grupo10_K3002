@@ -1,0 +1,13 @@
+/* MOLÉCULA · TIMELINE · historial de estados de una donación (trazabilidad y auditoría).
+   Marcado: <ol class="timeline"> <li class="timeline__item"> <strong>Estado</strong> <span class="timeline__date">fecha</span> </li> … </ol>
+   Variante --actual en el último estado. */
+
+.timeline { display: grid; gap: var(--space-3); margin: 0; padding: 0 0 0 var(--space-4); list-style: none; border-left: 3px solid var(--color-line); }
+.timeline__item { position: relative; }
+.timeline__item::before {
+  content: ""; position: absolute; top: .4rem; left: calc(-1 * var(--space-4) - 7px);
+  width: 11px; height: 11px; border-radius: 50%; background: var(--color-muted);
+}
+.timeline__item--actual::before { background: var(--color-primary); box-shadow: 0 0 0 3px var(--color-ok-bg); }
+.timeline__date { display: block; color: var(--color-muted); font-size: var(--text-sm); }
+.timeline__note { margin: var(--space-1) 0 0; }

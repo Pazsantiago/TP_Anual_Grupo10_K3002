@@ -2,22 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Donantes')}"></head>
 <body>
-<header th:replace="~{fragments/layout :: header('donantes')}"></header>
+<header th:replace="~{fragments/organisms :: encabezado('donantes')}"></header>
 
 <main id="contenido" class="container page">
-  <div class="page-head">
-    <h1 class="page-head__title">Donantes</h1>
-  </div>
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
 
-  <div th:replace="~{fragments/layout :: mensajes}"></div>
+  <header class="page-head">
+    <h1 class="page-head__title">Donantes</h1>
+    <div class="cluster">
+      <a class="btn" th:href="@{/donantes/nuevo}">Registrar donante</a>
+      <a class="btn btn--secondary" th:href="@{/donantes/importar}">Importar desde CSV</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <form class="form form--wide card" th:action="@{/donantes}" method="get" role="search" aria-label="Buscar donante">
+    <div class="field">
+      <label class="field__label" for="q">Buscar por nombre, documento o correo <span class="field__hint">(sirve para confirmar si ya tiene usuario)</span></label>
+      <input class="field__control" id="q" name="q" type="search" th:value="${q}" placeholder="Ej: Ana, 12345678 o ana@mail.com">
+    </div>
+    <div class="cluster"><button class="btn" type="submit">Buscar</button><a class="btn btn--secondary" th:if="${q}" th:href="@{/donantes}">Ver todos</a></div>
+  </form>
 
   <section class="card" aria-labelledby="titulo-lista">
     <h2 id="titulo-lista" class="sr-only">Listado de donantes</h2>
 
-    <th:block th:if="${donantes.error}"><p th:replace="~{fragments/layout :: aviso-error(${donantes.error})}"></p></th:block>
+    <th:block th:if="${donantes.error}"><p th:replace="~{fragments/molecules :: aviso-error(${donantes.error})}"></p></th:block>
 
     <div class="empty-state" th:if="${#lists.isEmpty(donantes.datos)}">
-      <p class="empty-state__text" th:unless="${donantes.error}">Todavía no hay donantes registrados.</p>
+      <p class="empty-state__text" th:unless="${donantes.error}"><th:block th:if="${q}">No encontramos donantes para esa búsqueda.</th:block><th:block th:unless="${q}">Todavía no hay donantes registrados.</th:block></p>
       <p class="empty-state__text" th:if="${donantes.error}">No pudimos cargar el listado.</p>
     </div>
 
@@ -48,6 +62,7 @@
             <td>
               <div class="cluster">
                 <a class="btn btn--secondary" th:href="@{/donantes/{id}/donaciones(id=${d.id})}">Donaciones<span class="sr-only" th:text="' de ' + ${nombre}"></span></a>
+                <a class="btn btn--secondary" th:href="@{/donaciones/nueva(donante=${d.id})}">Cargar donación<span class="sr-only" th:text="' de ' + ${nombre}"></span></a>
                 <a class="btn btn--secondary" th:href="@{/incentivos/donantes/{id}(id=${d.id})}">Incentivos<span class="sr-only" th:text="' de ' + ${nombre}"></span></a>
               </div>
             </td>
@@ -57,5 +72,7 @@
     </div>
   </section>
 </main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

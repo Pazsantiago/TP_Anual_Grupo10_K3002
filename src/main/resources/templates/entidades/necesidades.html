@@ -2,24 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Necesidades de la entidad')}"></head>
 <body>
-<header th:replace="~{fragments/layout :: header('entidades')}"></header>
+<header th:replace="~{fragments/organisms :: encabezado('entidades')}"></header>
 
 <main id="contenido" class="container page">
-  <div class="page-head">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
     <h1 class="page-head__title">
       Necesidades de
       <span th:if="${entidad}" th:text="${entidad.razonSocial}">Escuela rural N.º 10</span>
       <span th:unless="${entidad}" th:text="'la entidad #' + ${idEntidad}">la entidad #1</span>
     </h1>
-    <a class="btn btn--secondary" th:href="@{/entidades}">Volver a entidades</a>
-  </div>
+    <div class="cluster">
+      <a class="btn" th:href="@{/entidades/{id}/necesidades/nueva(id=${idEntidad})}">Registrar necesidad</a>
+      <a class="btn btn--secondary" th:href="@{/entidades}">Volver a entidades</a>
+    </div>
+  </header>
 
-  <div th:replace="~{fragments/layout :: mensajes}"></div>
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
 
   <section class="card" aria-labelledby="titulo-lista">
     <h2 id="titulo-lista" class="sr-only">Listado de necesidades</h2>
 
-    <th:block th:if="${necesidades.error}"><p th:replace="~{fragments/layout :: aviso-error(${necesidades.error})}"></p></th:block>
+    <th:block th:if="${necesidades.error}"><p th:replace="~{fragments/molecules :: aviso-error(${necesidades.error})}"></p></th:block>
 
     <div class="empty-state" th:if="${#lists.isEmpty(necesidades.datos)}">
       <p class="empty-state__text" th:unless="${necesidades.error}">Esta entidad todavía no declaró necesidades.</p>
@@ -51,5 +56,7 @@
     </div>
   </section>
 </main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

@@ -2,27 +2,53 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Donaciones del donante')}"></head>
 <body>
-<header th:replace="~{fragments/layout :: header('donantes')}"></header>
+<header th:replace="~{fragments/organisms :: encabezado('donantes')}"></header>
 
 <main id="contenido" class="container page">
-  <div class="page-head">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
     <h1 class="page-head__title">
       Donaciones de
       <span th:if="${donante}" th:text="${#strings.isEmpty(donante.razonSocial) ? donante.nombre + ' ' + donante.apellido : donante.razonSocial}">Ana Pérez</span>
       <span th:unless="${donante}" th:text="'donante #' + ${idDonante}">donante #1</span>
     </h1>
-    <a class="btn btn--secondary" th:href="@{/donantes}">Volver a donantes</a>
-  </div>
+    <div class="cluster">
+      <a class="btn" th:href="@{/donaciones/nueva(donante=${idDonante})}">Cargar donación</a>
+      <a class="btn btn--secondary" th:href="@{/donantes}">Volver a donantes</a>
+    </div>
+  </header>
 
-  <div th:replace="~{fragments/layout :: mensajes}"></div>
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <form class="form form--wide card" method="get" aria-label="Filtrar donaciones">
+    <div class="field-row">
+      <div class="field">
+        <label class="field__label" for="f-estado">Estado</label>
+        <select class="field__control" id="f-estado" name="estado">
+          <option value="">Todos</option>
+          <option value="EN_DEPOSITO">En depósito</option><option value="ASIGNACION_REALIZADA">Asignación realizada</option><option value="LISTA_PARA_ENTREGAR">Lista para entregar</option><option value="EN_TRASLADO">En traslado</option><option value="ENTREGADA">Entregada</option><option value="ENTREGA_FALLIDA">Entrega fallida</option><option value="VENCIDA">Vencida</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field__label" for="f-categoria">Categoría o subcategoría</label>
+        <input class="field__control" id="f-categoria" name="categoria" type="text" th:value="${categoriaElegida}" placeholder="Ej: Alimentos, arroz">
+      </div>
+    </div>
+    <div class="cluster"><button class="btn" type="submit">Filtrar</button><a class="btn btn--secondary" th:href="@{/donantes/{id}/donaciones(id=${idDonante})}">Limpiar</a></div>
+  </form>
+
+  <p class="banner banner--error" role="status" th:if="${estadoNoDisponible}">
+    <span class="banner__icon" aria-hidden="true">!</span><span>El servicio todavía no informa el estado de cada donación: el filtro por estado no se aplicó.</span>
+  </p>
 
   <section class="card" aria-labelledby="titulo-lista">
     <h2 id="titulo-lista" class="sr-only">Listado de donaciones</h2>
 
-    <th:block th:if="${donaciones.error}"><p th:replace="~{fragments/layout :: aviso-error(${donaciones.error})}"></p></th:block>
+    <th:block th:if="${donaciones.error}"><p th:replace="~{fragments/molecules :: aviso-error(${donaciones.error})}"></p></th:block>
 
     <div class="empty-state" th:if="${#lists.isEmpty(donaciones.datos)}">
-      <p class="empty-state__text" th:unless="${donaciones.error}">Este donante todavía no registró donaciones.</p>
+      <p class="empty-state__text" th:unless="${donaciones.error}" th:text="${hayFiltros} ? 'Ninguna donación coincide con los filtros.' : 'Este donante todavía no registró donaciones.'">Este donante todavía no registró donaciones.</p>
       <p class="empty-state__text" th:if="${donaciones.error}">No pudimos cargar las donaciones.</p>
     </div>
 
@@ -35,6 +61,8 @@
             <th scope="col">N.º</th>
             <th scope="col">Descripción</th>
             <th scope="col">Bienes</th>
+            <th scope="col" th:if="${mostrarEstado}">Estado</th>
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -47,11 +75,22 @@
               </ul>
               <span th:if="${#lists.isEmpty(d.bienesDeEntrada)}">—</span>
             </td>
+            <td th:if="${mostrarEstado}"><th:block th:if="${d.estado}"><span th:replace="~{fragments/atoms :: badge-estado(${d.estado})}"></span></th:block></td>
+            <td>
+              <div class="cluster">
+                <a class="btn btn--secondary" th:href="@{/donantes/{idDonante}/donaciones/{id}(idDonante=${idDonante},id=${d.id})}">Detalle<span class="sr-only" th:text="' de la donación ' + ${d.id}"></span></a>
+                <form th:action="@{/donaciones/{id}/vencida(id=${d.id},idDonante=${idDonante})}" method="post">
+                  <button class="btn btn--danger" type="submit" data-confirmar="¿Marcar la donación como vencida? No podrá asignarse.">Marcar vencida<span class="sr-only" th:text="' la donación ' + ${d.id}"></span></button>
+                </form>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   </section>
 </main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

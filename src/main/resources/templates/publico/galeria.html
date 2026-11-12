@@ -1,14 +1,40 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Galería de donaciones entregadas - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Galería de entregas')}"></head>
 <body>
-    <main>
-        <h1>Galería de donaciones entregadas</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado-publico('galeria')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Donaciones entregadas</h1>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/mapa}">Ver en el mapa</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <p>Fotos que cargaron las entidades beneficiarias al confirmar la recepción. No hace falta iniciar sesión.</p>
+
+  <div class="empty-state card" th:if="${fotos == null or #lists.isEmpty(fotos)}">
+    <p class="empty-state__text">Todavía no hay fotos de donaciones entregadas.</p>
+    <a class="btn btn--secondary" th:href="@{/}">Volver al inicio</a>
+  </div>
+
+  <div class="grid" th:unless="${fotos == null or #lists.isEmpty(fotos)}">
+    <figure class="media" th:each="f : ${fotos}">
+      <img class="media__img" th:src="${f.url}" th:alt="${f.descripcion != null ? 'Donación entregada: ' + f.descripcion : 'Donación entregada'}" loading="lazy">
+      <figcaption class="media__caption">
+        <span class="media__title" th:text="${f.entidad}">Escuela rural N.º 10</span>
+        <span th:text="${f.descripcion}">30 sillas y 30 bancos</span>
+        <span th:if="${f.fecha}" th:text="${#temporals.format(f.fecha, 'dd/MM/yyyy')}">01/01/2027</span>
+      </figcaption>
+    </figure>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

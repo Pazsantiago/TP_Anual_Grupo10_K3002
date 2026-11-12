@@ -10,10 +10,15 @@ body {
   background: var(--color-canvas);
 }
 
-h1, h2, h3 { line-height: var(--leading-tight); margin: 0 0 var(--space-3); }
+/* Jerarquía de títulos: un h1 por página y sin saltar niveles (h1 → h2 → h3 …). El tamaño sigue al nivel. */
+h1, h2, h3, h4, h5, h6 { line-height: var(--leading-tight); margin: 0 0 var(--space-3); }
 h1 { font-size: var(--text-xl); }
 h2 { font-size: var(--text-lg); }
-h3 { font-size: var(--text-md); margin-bottom: var(--space-2); }
+h3, h4, h5, h6 { font-size: var(--text-md); margin-bottom: var(--space-2); }
+
+/* Legibilidad: el texto corrido no pasa de ~70 caracteres por línea. Tablas y controles no se limitan. */
+p, li, dd { max-width: var(--measure); }
+td p, td li, th p { max-width: none; }
 
 a { color: var(--color-primary-dark); }   /* subrayado por defecto: el enlace no depende solo del color */
 

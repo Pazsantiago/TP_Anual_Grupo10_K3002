@@ -1,14 +1,154 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cargar donación - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Cargar donación')}"></head>
 <body>
-    <main>
-        <h1>Cargar donación</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('donaciones')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Cargar donación</h1>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/donaciones}">Volver</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <section class="card">
+    <p>Cargá todos los bienes en una única carga. El sistema los separa solo en donaciones independientes por subcategoría (y por fecha de vencimiento en los perecederos).</p>
+    <p class="form__note">Ejemplos: seis sillas usadas y una mesa rectangular usada → se generan donaciones de "Sillas" y de "Mesas". 100 paquetes de fideos y 50 tetra-packs de tomate que vencen el 01/01/2027 → una donación de cada uno.</p>
+
+    <form class="form" th:action="@{/donaciones/nueva}" method="post" enctype="multipart/form-data">
+      <p class="form__note">Los campos marcados con <span class="field__required" aria-hidden="true">*</span> son obligatorios.</p>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">Donación</legend>
+        <div class="field">
+          <label class="field__label" for="idDonante">Persona donante <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+          <select class="field__control" id="idDonante" name="idDonante" required aria-required="true">
+            <option value="">Elegí un donante</option>
+            <option th:each="d : ${donantes?.datos}" th:value="${d.id}" th:selected="${d.id == donanteElegido}"
+                    th:text="${(#strings.isEmpty(d.razonSocial) ? d.nombre + ' ' + d.apellido : d.razonSocial) + ' · ' + (d.documento != null ? d.documento : 'sin documento')}">Ana Pérez · 12345678</option>
+          </select>
+          <p class="field__hint">¿No está en la lista? <a th:href="@{/donantes/nuevo}">Registrá al donante</a> primero.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="descripcionGeneral">Descripción general <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+          <textarea class="field__control" id="descripcionGeneral" name="descripcionGeneral" required aria-required="true" placeholder="Mudanza de oficina"></textarea>
+        </div>
+      </fieldset>
+
+      <div id="lista-bienes" class="stack">
+        <fieldset class="fieldset" data-fila data-indice="0">
+          <legend class="fieldset__legend">Bien <span data-numero>1</span></legend>
+          <div class="field">
+            <label class="field__label" for="bien-0-descripcion">Descripción <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+            <input class="field__control" id="bien-0-descripcion" name="bienes[0].descripcion" type="text" required aria-required="true" placeholder="Silla de oficina">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="bien-0-categoria">Categoría <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+              <input class="field__control" id="bien-0-categoria" name="bienes[0].categoria" type="text" list="lista-categorias" required aria-required="true" placeholder="Mobiliario">
+            </div>
+            <div class="field">
+              <label class="field__label" for="bien-0-subcategoria">Subcategoría <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+              <input class="field__control" id="bien-0-subcategoria" name="bienes[0].subcategoria" type="text" list="lista-subcategorias" required aria-required="true" placeholder="Sillas">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="bien-0-cantidad">Cantidad <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+              <input class="field__control" id="bien-0-cantidad" name="bienes[0].cantidad" type="number" min="1" inputmode="numeric" required aria-required="true">
+            </div>
+            <div class="field">
+              <label class="field__label" for="bien-0-unidad">Unidad <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+              <select class="field__control" id="bien-0-unidad" name="bienes[0].unidad" required aria-required="true">
+                <option value="UNIDADES">Unidades</option><option value="KILOGRAMOS">Kilogramos</option><option value="LITROS">Litros</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="bien-0-estado">Estado del bien <span class="field__hint">(obligatorio en mobiliario y vestimenta)</span></label>
+            <select class="field__control" id="bien-0-estado" name="bienes[0].estado">
+              <option value="">No aplica</option><option value="NUEVO">Nuevo</option><option value="USADO">Usado</option>
+            </select>
+          </div>
+          <div class="choice"><input type="checkbox" id="bien-0-perecedero" name="bienes[0].perecedero" value="true"><label for="bien-0-perecedero">Es perecedero</label></div>
+          <div class="field" data-mostrar-si="bienes[0].perecedero:true">
+            <label class="field__label" for="bien-0-vencimiento">Fecha de vencimiento <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+            <input class="field__control" id="bien-0-vencimiento" name="bienes[0].vencimiento" type="date" required aria-required="true">
+          </div>
+          <div class="field">
+            <label class="field__label" for="bien-0-foto">Foto <span class="field__hint">(opcional)</span></label>
+            <input class="field__control" id="bien-0-foto" name="bienes[0].foto" type="file" accept="image/*">
+          </div>
+          <div class="cluster"><button class="btn btn--secondary" type="button" data-quitar>Quitar este bien</button></div>
+        </fieldset>
+      </div>
+
+      <div class="cluster"><button class="btn btn--secondary" type="button" data-agregar="plantilla-bien" data-destino="lista-bienes">Agregar otro bien</button></div>
+
+      <datalist id="lista-categorias"><option th:each="c : ${categorias}" th:value="${c.nombre}"></option></datalist>
+      <datalist id="lista-subcategorias"><th:block th:each="c : ${categorias}"><option th:each="sc : ${c.subcategorias}" th:value="${sc}"></option></th:block></datalist>
+
+      <div class="cluster">
+        <button class="btn" type="submit">Registrar donación</button>
+        <a class="btn btn--secondary" th:href="@{/donaciones}">Cancelar</a>
+      </div>
+    </form>
+
+    <template id="plantilla-bien">
+        <fieldset class="fieldset" data-fila data-indice="__N__">
+          <legend class="fieldset__legend">Bien <span data-numero>1</span></legend>
+          <div class="field">
+            <label class="field__label" for="bien-__N__-descripcion">Descripción <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+            <input class="field__control" id="bien-__N__-descripcion" name="bienes[__N__].descripcion" type="text" required aria-required="true" placeholder="Silla de oficina">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="bien-__N__-categoria">Categoría <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+              <input class="field__control" id="bien-__N__-categoria" name="bienes[__N__].categoria" type="text" list="lista-categorias" required aria-required="true" placeholder="Mobiliario">
+            </div>
+            <div class="field">
+              <label class="field__label" for="bien-__N__-subcategoria">Subcategoría <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+              <input class="field__control" id="bien-__N__-subcategoria" name="bienes[__N__].subcategoria" type="text" list="lista-subcategorias" required aria-required="true" placeholder="Sillas">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="bien-__N__-cantidad">Cantidad <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+              <input class="field__control" id="bien-__N__-cantidad" name="bienes[__N__].cantidad" type="number" min="1" inputmode="numeric" required aria-required="true">
+            </div>
+            <div class="field">
+              <label class="field__label" for="bien-__N__-unidad">Unidad <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+              <select class="field__control" id="bien-__N__-unidad" name="bienes[__N__].unidad" required aria-required="true">
+                <option value="UNIDADES">Unidades</option><option value="KILOGRAMOS">Kilogramos</option><option value="LITROS">Litros</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="bien-__N__-estado">Estado del bien <span class="field__hint">(obligatorio en mobiliario y vestimenta)</span></label>
+            <select class="field__control" id="bien-__N__-estado" name="bienes[__N__].estado">
+              <option value="">No aplica</option><option value="NUEVO">Nuevo</option><option value="USADO">Usado</option>
+            </select>
+          </div>
+          <div class="choice"><input type="checkbox" id="bien-__N__-perecedero" name="bienes[__N__].perecedero" value="true"><label for="bien-__N__-perecedero">Es perecedero</label></div>
+          <div class="field" data-mostrar-si="bienes[__N__].perecedero:true">
+            <label class="field__label" for="bien-__N__-vencimiento">Fecha de vencimiento <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+            <input class="field__control" id="bien-__N__-vencimiento" name="bienes[__N__].vencimiento" type="date" required aria-required="true">
+          </div>
+          <div class="field">
+            <label class="field__label" for="bien-__N__-foto">Foto <span class="field__hint">(opcional)</span></label>
+            <input class="field__control" id="bien-__N__-foto" name="bienes[__N__].foto" type="file" accept="image/*">
+          </div>
+          <div class="cluster"><button class="btn btn--secondary" type="button" data-quitar>Quitar este bien</button></div>
+        </fieldset>
+    </template>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

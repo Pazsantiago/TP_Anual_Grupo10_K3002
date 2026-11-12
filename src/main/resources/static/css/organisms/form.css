@@ -1,0 +1,10 @@
+/* ORGANISMO · FORM. Formulario completo: grupos (fieldset) de campos + nota + acciones.
+   Marcado: <form class="form"> <fieldset class="fieldset"><legend class="fieldset__legend">…</legend> …campos… </fieldset> <div class="cluster">botones</div> </form>
+   Variante --wide: ocupa todo el ancho (barras de filtros). */
+
+.form { display: grid; gap: var(--space-3); max-width: var(--form-max); }
+.form--wide { max-width: none; }
+.form__note { margin: 0; color: var(--color-muted); font-size: var(--text-sm); }
+
+.fieldset { display: grid; gap: var(--space-3); min-width: 0; margin: 0; padding: var(--space-3); border: 1px solid var(--color-line); border-radius: var(--radius); }
+.fieldset__legend { padding: 0 var(--space-2); font-weight: var(--weight-semibold); }

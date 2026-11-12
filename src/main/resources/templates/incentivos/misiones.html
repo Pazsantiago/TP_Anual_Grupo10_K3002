@@ -1,14 +1,52 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Misiones e insignias - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Categorías y misiones')}"></head>
 <body>
-    <main>
-        <h1>Misiones e insignias</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('incentivos')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Categorías y misiones</h1>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/incentivos}">Volver a incentivos</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <div class="stack">
+    <section class="card" aria-labelledby="titulo-categorias">
+      <h2 id="titulo-categorias">Cómo se sube de categoría</h2>
+      <p>Hay tres categorías de donante, visibles públicamente junto al nombre de usuario: <strong>Colaborador</strong>, <strong>Sostenedor</strong> y <strong>Transformador</strong>. Para subir hay que completar una serie de misiones <strong>en orden</strong>: al completar una se desbloquea la siguiente. Cada misión completada otorga una insignia, que se muestra en tu perfil si la configurás como visible.</p>
+      <p>Esta sección es para personas donantes humanas.</p>
+    </section>
+
+    <section aria-labelledby="titulo-tipos">
+      <h2 id="titulo-tipos">Tipos de misión</h2>
+      <div class="grid">
+        <article class="card"><h3>Racha</h3><p>Realizar una donación durante X meses consecutivos. Si pasa un mes completo sin donar, se pierde el progreso acumulado.</p></article>
+        <article class="card"><h3>Completitud</h3><p>Realizar donaciones de X categorías distintas.</p></article>
+        <article class="card"><h3>Hábil Donador</h3><p>Hacer una donación que supere X cantidad de bienes.</p></article>
+        <article class="card"><h3>Donaciones Exitosas</h3><p>Lograr X donaciones recibidas exitosamente por una entidad beneficiaria.</p></article>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-mi-progreso">
+      <h2 id="titulo-mi-progreso">Tu progreso</h2>
+      <p>Buscá el perfil de un donante para ver su misión actual, cuánto le falta y sus insignias.</p>
+      <form class="form" th:action="@{/incentivos/buscar}" method="get">
+        <div class="field">
+          <label class="field__label" for="donanteId">Número de donante</label>
+          <input class="field__control" id="donanteId" name="donanteId" type="number" min="1" inputmode="numeric" required aria-required="true" placeholder="Ej: 5">
+        </div>
+        <div class="cluster"><button class="btn" type="submit">Ver progreso</button></div>
+      </form>
+    </section>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

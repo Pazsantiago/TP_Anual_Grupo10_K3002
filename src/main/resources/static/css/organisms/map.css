@@ -1,0 +1,6 @@
+/* ORGANISMO · MAP · contenedor de mapa Leaflet. Necesita altura explícita. Los datos salen de una tabla con filas [data-marcador] (alternativa textual accesible). */
+
+.map { height: 28rem; background: var(--color-canvas); border: 1px solid var(--color-line); border-radius: var(--radius); }
+.map:focus-visible { outline-offset: 2px; }
+
+@media (max-width: 40rem) { .map { height: 20rem; } }

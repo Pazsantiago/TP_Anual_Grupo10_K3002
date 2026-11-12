@@ -1,14 +1,33 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registro de entidad beneficiaria - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Registro de entidad')}"></head>
 <body>
-    <main>
-        <h1>Registro de entidad beneficiaria</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado-publico('registro')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Registrar mi entidad beneficiaria</h1>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/registro/donante}">Quiero donar</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <section class="card">
+    <form class="form" th:action="@{/registro/entidad}" method="post">
+      <p class="form__note">Para organizaciones sin fines de lucro (escuelas rurales, comedores, espacios de tutoría, entre otras). Los campos marcados con <span class="field__required" aria-hidden="true">*</span> son obligatorios.</p>
+      <th:block th:replace="~{fragments/formularios :: datos-entidad(true)}"></th:block>
+      <div class="cluster">
+        <button class="btn" type="submit">Crear la cuenta de mi entidad</button>
+        <a class="btn btn--secondary" th:href="@{/login}">Ya tengo cuenta</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

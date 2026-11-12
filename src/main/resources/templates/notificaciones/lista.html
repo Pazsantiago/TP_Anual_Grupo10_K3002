@@ -2,15 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Notificaciones')}"></head>
 <body>
-<header th:replace="~{fragments/layout :: header('notificaciones')}"></header>
+<header th:replace="~{fragments/organisms :: encabezado('notificaciones')}"></header>
 
 <main id="contenido" class="container page">
-  <div class="page-head">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
     <h1 class="page-head__title">Notificaciones</h1>
     <a class="btn" th:href="@{/notificaciones/nueva}">Enviar notificación</a>
-  </div>
+  </header>
 
-  <div th:replace="~{fragments/layout :: mensajes}"></div>
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
 
   <section class="card" aria-labelledby="titulo-lista">
     <h2 id="titulo-lista" class="sr-only">Listado de notificaciones</h2>
@@ -59,5 +61,7 @@
     </div>
   </section>
 </main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

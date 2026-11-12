@@ -1,8 +1,10 @@
 package utn.donatrack.donatrack_frontend.client;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.function.Supplier;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestClientResponseException;
@@ -40,6 +42,28 @@ public abstract class ClienteServicio {
     protected <T> List<T> listaDe(Supplier<List<T>> operacion) {
         List<T> res = call(operacion);
         return res == null ? List.of() : res;
+    }
+
+    /** Ejecuta una llamada que no devuelve nada util (altas, cambios de estado, bajas) con el mismo manejo de errores. */
+    protected void ejecutar(Runnable operacion) {
+        call(() -> {
+            operacion.run();
+            return null;
+        });
+    }
+
+    /** Convierte un archivo subido en una parte multipart, conservando su nombre original. */
+    protected static ByteArrayResource parteMultipart(org.springframework.web.multipart.MultipartFile archivo) {
+        try {
+            return new ByteArrayResource(archivo.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return archivo.getOriginalFilename();
+                }
+            };
+        } catch (IOException e) {
+            throw new PeticionInvalidaException("No pudimos leer el archivo " + archivo.getOriginalFilename() + ".", e);
+        }
     }
 
     /** Ejecuta la llamada HTTP y traduce los errores. */

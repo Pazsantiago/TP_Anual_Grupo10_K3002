@@ -1,14 +1,50 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Donaciones asignadas a mi entidad - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Donaciones de la entidad')}"></head>
 <body>
-    <main>
-        <h1>Donaciones asignadas a mi entidad</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('entidades')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Donaciones asignadas a <span th:text="${entidad != null ? entidad.razonSocial : 'la entidad #' + idEntidad}">Escuela rural N.º 10</span></h1>
+    <div class="cluster">
+      <a class="btn" th:href="@{/logistica/seguimiento}">Seguir entregas en el mapa</a>
+      <a class="btn btn--secondary" th:href="@{/entidades}">Volver a entidades</a>
+    </div>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <section class="card" aria-labelledby="titulo-lista">
+    <h2 id="titulo-lista" class="sr-only">Donaciones asignadas</h2>
+    <th:block th:if="${donaciones?.error}"><p th:replace="~{fragments/molecules :: aviso-error(${donaciones.error})}"></p></th:block>
+    <div class="empty-state" th:if="${donaciones == null or #lists.isEmpty(donaciones.datos)}">
+      <p class="empty-state__text" th:unless="${donaciones?.error}">Todavía no tenés donaciones asignadas.</p>
+      <p class="empty-state__text" th:if="${donaciones?.error}">No pudimos cargar las donaciones.</p>
+    </div>
+
+    <div class="table-wrap" role="region" aria-label="Tabla de donaciones asignadas" tabindex="0" th:unless="${donaciones == null or #lists.isEmpty(donaciones.datos)}">
+      <table class="table">
+        <caption class="table__caption" th:text="${#lists.size(donaciones.datos)} + ' donaciones'">Donaciones</caption>
+        <thead><tr><th scope="col">N.º</th><th scope="col">Bultos</th><th scope="col">Estado</th><th scope="col">Acción</th></tr></thead>
+        <tbody>
+          <tr th:each="d : ${donaciones.datos}">
+            <td th:text="${d.idDonacion}">1</td>
+            <td th:text="${#lists.size(d.bultos)}">2</td>
+            <td><span th:replace="~{fragments/atoms :: badge-estado(${d.estadoDonacion})}"></span></td>
+            <td>
+              <a class="btn" th:if="${d.estadoDonacion == 'EN_TRASLADO'}" th:href="@{/entidades/{id}/donaciones/{idDonacion}/recepcion(id=${idEntidad},idDonacion=${d.idDonacion})}">Confirmar recepción<span class="sr-only" th:text="' de la donación ' + ${d.idDonacion}"></span></a>
+              <span th:unless="${d.estadoDonacion == 'EN_TRASLADO'}">—</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

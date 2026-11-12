@@ -1,14 +1,85 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ranking de algoritmos y selección de entidad - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Elegir destino')}"></head>
 <body>
-    <main>
-        <h1>Ranking de algoritmos y selección de entidad</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('asignaciones')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title" th:text="'Destino de la donación segmentada N.º ' + ${idSegmentada}">Destino de la donación segmentada N.º 1</h1>
+    <a class="btn btn--secondary" th:href="@{/asignaciones}">Volver a asignaciones</a>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <div class="stack">
+    <section class="card" aria-labelledby="titulo-coincidencias" th:if="${!#lists.isEmpty(coincidencias)}">
+      <h2 id="titulo-coincidencias">Entidades propuestas por ambos algoritmos</h2>
+      <p>Aparecieron en Compatibilidad Semántica y en Prioridad a sub-atendidos. Confirmá una como destino final.</p>
+      <div class="table-wrap" role="region" aria-label="Entidades que coinciden" tabindex="0">
+        <table class="table">
+          <thead><tr><th scope="col">Entidad</th><th scope="col">Pos. semántica</th><th scope="col">Pos. sub-atendidos</th><th scope="col">Acción</th></tr></thead>
+          <tbody>
+            <tr th:each="c : ${coincidencias}" th:with="nombre=${nombres != null and nombres.get(c.idEntidad) != null ? nombres.get(c.idEntidad) : 'Entidad N.º ' + c.idEntidad}">
+              <td th:text="${nombre}">Escuela rural N.º 10</td>
+              <td th:text="${c.posicionSemantica}">1</td>
+              <td th:text="${c.posicionPrioridad}">3</td>
+              <td>
+                <form th:action="@{/asignaciones/{id}/confirmar(id=${idSegmentada})}" method="post">
+                  <input type="hidden" name="idEntidad" th:value="${c.idEntidad}">
+                  <button class="btn" type="submit" data-confirmar="¿Asignar la donación a esta entidad?">Asignar<span class="sr-only" th:text="' a ' + ${nombre}"></span></button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <p class="banner banner--error" role="status" th:if="${#lists.isEmpty(coincidencias) and (!#lists.isEmpty(semantica) or !#lists.isEmpty(prioridad))}">
+      <span class="banner__icon" aria-hidden="true">!</span><span>Ninguna entidad coincide en ambos algoritmos. Revisá las dos propuestas y elegí una.</span>
+    </p>
+
+    <section class="card" aria-labelledby="titulo-semantica">
+      <h2 id="titulo-semantica">Compatibilidad Semántica</h2>
+      <p class="form__note">Entidades cuyas necesidades coinciden con mayor precisión con los bienes donados.</p>
+      <p th:if="${#lists.isEmpty(semantica)}">Este algoritmo no propuso entidades.</p>
+      <div class="table-wrap" role="region" aria-label="Propuestas de compatibilidad semántica" tabindex="0" th:unless="${#lists.isEmpty(semantica)}">
+        <table class="table">
+          <thead><tr><th scope="col">Posición</th><th scope="col">Entidad</th><th scope="col">Puntaje</th><th scope="col">Acción</th></tr></thead>
+          <tbody>
+            <tr th:each="r : ${semantica}" th:with="nombre=${nombres != null and nombres.get(r.idEntidad) != null ? nombres.get(r.idEntidad) : 'Entidad N.º ' + r.idEntidad}">
+              <td th:text="${r.posicion}">1</td><td th:text="${nombre}">Escuela</td>
+              <td th:text="${r.puntaje != null ? #numbers.formatDecimal(r.puntaje, 1, 2) : '—'}">0,85</td>
+              <td><form th:action="@{/asignaciones/{id}/confirmar(id=${idSegmentada})}" method="post"><input type="hidden" name="idEntidad" th:value="${r.idEntidad}"><button class="btn btn--secondary" type="submit" data-confirmar="¿Asignar la donación a esta entidad?">Asignar<span class="sr-only" th:text="' a ' + ${nombre}"></span></button></form></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-prioridad">
+      <h2 id="titulo-prioridad">Prioridad a sub-atendidos</h2>
+      <p class="form__note">Entidades que recibieron menos donaciones en el último trimestre.</p>
+      <p th:if="${#lists.isEmpty(prioridad)}">Este algoritmo no propuso entidades.</p>
+      <div class="table-wrap" role="region" aria-label="Propuestas de prioridad a sub-atendidos" tabindex="0" th:unless="${#lists.isEmpty(prioridad)}">
+        <table class="table">
+          <thead><tr><th scope="col">Posición</th><th scope="col">Entidad</th><th scope="col">Puntaje</th><th scope="col">Acción</th></tr></thead>
+          <tbody>
+            <tr th:each="r : ${prioridad}" th:with="nombre=${nombres != null and nombres.get(r.idEntidad) != null ? nombres.get(r.idEntidad) : 'Entidad N.º ' + r.idEntidad}">
+              <td th:text="${r.posicion}">1</td><td th:text="${nombre}">Escuela</td>
+              <td th:text="${r.puntaje != null ? #numbers.formatDecimal(r.puntaje, 1, 2) : '—'}">0,85</td>
+              <td><form th:action="@{/asignaciones/{id}/confirmar(id=${idSegmentada})}" method="post"><input type="hidden" name="idEntidad" th:value="${r.idEntidad}"><button class="btn btn--secondary" type="submit" data-confirmar="¿Asignar la donación a esta entidad?">Asignar<span class="sr-only" th:text="' a ' + ${nombre}"></span></button></form></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

@@ -1,14 +1,44 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Donaciones en depósito - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Donaciones')}"></head>
 <body>
-    <main>
-        <h1>Donaciones en depósito</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('donaciones')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Donaciones</h1>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <div class="grid">
+    <section class="card" aria-labelledby="titulo-cargar">
+      <h2 id="titulo-cargar">Cargar una donación</h2>
+      <p>Cuando alguien llega al depósito con bienes, registrá todo en una única carga. El sistema la separa solo en donaciones por subcategoría.</p>
+      <a class="btn" th:href="@{/donaciones/nueva}">Cargar donación</a>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-buscar">
+      <h2 id="titulo-buscar">Ver las donaciones de una persona</h2>
+      <p>Desde ahí podés filtrarlas, ver su trazabilidad y marcar como vencidas las que ya no sirven.</p>
+      <form class="form" th:action="@{/donaciones/buscar}" method="get">
+        <div class="field">
+          <label class="field__label" for="donante">Persona donante <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+          <select class="field__control" id="donante" name="donante" required aria-required="true">
+            <option value="">Elegí un donante</option>
+            <option th:each="d : ${donantes?.datos}" th:value="${d.id}" th:text="${#strings.isEmpty(d.razonSocial) ? d.nombre + ' ' + d.apellido : d.razonSocial}">Ana Pérez</option>
+          </select>
+        </div>
+        <div class="cluster"><button class="btn btn--secondary" type="submit">Ver donaciones</button></div>
+      </form>
+    </section>
+  </div>
+
+  <th:block th:if="${donantes?.error}"><p th:replace="~{fragments/molecules :: aviso-error(${donantes.error})}"></p></th:block>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

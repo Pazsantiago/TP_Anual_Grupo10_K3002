@@ -2,14 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Enviar notificación')}"></head>
 <body>
-<header th:replace="~{fragments/layout :: header('notificaciones')}"></header>
+<header th:replace="~{fragments/organisms :: encabezado('notificaciones')}"></header>
 
 <main id="contenido" class="container page">
-  <div class="page-head">
-    <h1 class="page-head__title">Enviar notificación</h1>
-  </div>
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
 
-  <div th:replace="~{fragments/layout :: mensajes}"></div>
+  <header class="page-head">
+    <h1 class="page-head__title">Enviar notificación</h1>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
 
   <section class="card">
     <form class="form" th:action="@{/notificaciones/nueva}" th:object="${form}" method="post" novalidate>
@@ -20,7 +22,7 @@
         <legend class="fieldset__legend">Destinatario</legend>
 
         <div class="field">
-          <label class="field__label" for="nombre">Nombre <span class="field__required" aria-hidden="true">*</span></label>
+          <label class="field__label" for="nombre">Nombre <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
           <input class="field__control" id="nombre" type="text" th:field="*{nombre}" placeholder="Ana Pérez" autocomplete="name" aria-required="true"
                  th:attr="aria-describedby=${#fields.hasErrors('nombre')} ? 'nombre-error', aria-invalid=${#fields.hasErrors('nombre')} ? 'true'">
           <p class="field__error" id="nombre-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
@@ -43,7 +45,7 @@
       </fieldset>
 
       <div class="field">
-        <label class="field__label" for="medio">Medio de envío <span class="field__required" aria-hidden="true">*</span></label>
+        <label class="field__label" for="medio">Medio de envío <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
         <select class="field__control" id="medio" th:field="*{medio}" aria-required="true"
                 th:attr="aria-describedby=${#fields.hasErrors('medio')} ? 'medio-error', aria-invalid=${#fields.hasErrors('medio')} ? 'true'">
           <option value="">Elegí un medio</option>
@@ -58,7 +60,7 @@
       </div>
 
       <div class="field">
-        <label class="field__label" for="cuerpo">Mensaje <span class="field__required" aria-hidden="true">*</span></label>
+        <label class="field__label" for="cuerpo">Mensaje <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
         <textarea class="field__control" id="cuerpo" th:field="*{cuerpo}" placeholder="Escribí el texto que va a recibir la persona" aria-required="true"
                   th:attr="aria-describedby=${#fields.hasErrors('cuerpo')} ? 'cuerpo-error', aria-invalid=${#fields.hasErrors('cuerpo')} ? 'true'"></textarea>
         <p class="field__error" id="cuerpo-error" th:if="${#fields.hasErrors('cuerpo')}" th:errors="*{cuerpo}"></p>
@@ -71,5 +73,7 @@
     </form>
   </section>
 </main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

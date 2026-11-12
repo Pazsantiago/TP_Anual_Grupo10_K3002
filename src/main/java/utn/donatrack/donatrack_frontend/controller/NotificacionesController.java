@@ -47,12 +47,6 @@ public class NotificacionesController {
         return "notificaciones/form";
     }
 
-    @GetMapping("/")
-    public String home(Model model) {
-        model.addAttribute("form", new NotificacionForm());
-        return "notificaciones/home";
-    }
-
     @PostMapping("/nueva")
     public String enviar(@Valid @ModelAttribute("form") NotificacionForm form,
                          BindingResult errores,

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<body>
+
+<!-- ÁTOMO · BADGE DE ESTADO. Siempre con texto (no solo color). Uso: <span th:replace="~{fragments/atoms :: badge-estado(${d.estado})}"></span>
+     Verde: entregada. Rojo: fallida, no recibida o vencida. Neutro: el resto de los estados. -->
+<span class="badge" th:fragment="badge-estado(estado)"
+      th:classappend="${estado == 'ENTREGADA' ? 'badge--ok' : (estado == 'ENTREGA_FALLIDA' or estado == 'NO_RECIBIDA' or estado == 'VENCIDA' ? 'badge--error' : '')}"
+      th:text="${#strings.replace(estado, '_', ' ')}">EN DEPOSITO</span>
+
+<!-- ÁTOMO · BADGE DE DISPONIBILIDAD de un camión. Uso: badge-camion(${c.disponible}, 'No disponible') -->
+<span class="badge" th:fragment="badge-camion(disponible, textoNo)"
+      th:classappend="${disponible == true ? 'badge--ok' : ''}"
+      th:text="${disponible == true ? 'Disponible' : textoNo}">Disponible</span>
+
+<!-- ÁTOMO · MARCA DE CAMPO OBLIGATORIO. El asterisco es visual; el texto oculto lo anuncia a lectores de pantalla. -->
+<span th:fragment="requerido"><span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></span>
+
+</body>
+</html>

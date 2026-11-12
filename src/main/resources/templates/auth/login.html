@@ -1,14 +1,54 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Iniciar sesión - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Iniciar sesión')}"></head>
 <body>
-    <main>
-        <h1>Iniciar sesión</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado-publico('login')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title">Iniciar sesión</h1>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <section class="card" aria-labelledby="titulo-login">
+    <h2 id="titulo-login" class="sr-only">Formulario de acceso</h2>
+
+    <p class="banner banner--error" role="alert" th:if="${param.error}"><span class="banner__icon" aria-hidden="true">!</span><span>Correo o contraseña incorrectos.</span></p>
+    <p class="banner banner--ok" role="status" th:if="${param.logout}"><span class="banner__icon" aria-hidden="true">✓</span><span>Cerraste sesión.</span></p>
+
+    <form class="form" th:action="@{/login}" method="post">
+      <p class="form__note">Los campos marcados con <span class="field__required" aria-hidden="true">*</span> son obligatorios.</p>
+      <div class="field">
+        <label class="field__label" for="username">Correo electrónico <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="username" name="username" type="email" required aria-required="true" autocomplete="username" placeholder="ana@mail.com">
+      </div>
+      <div class="field">
+        <label class="field__label" for="password">Contraseña <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+        <input class="field__control" id="password" name="password" type="password" required aria-required="true" autocomplete="current-password">
+      </div>
+      <div class="cluster">
+        <button class="btn" type="submit">Iniciar sesión</button>
+      </div>
+    </form>
+
+    <hr>
+    <h3>O ingresá con tu cuenta de</h3>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/oauth2/authorization/google}">Google</a>
+    </div>
+
+    <hr>
+    <p>¿Todavía no tenés cuenta?</p>
+    <div class="cluster">
+      <a class="btn btn--secondary" th:href="@{/registro/donante}">Registrarme como donante</a>
+      <a class="btn btn--secondary" th:href="@{/registro/entidad}">Registrar mi entidad</a>
+    </div>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

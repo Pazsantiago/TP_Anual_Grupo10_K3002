@@ -1,14 +1,68 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Detalle de donación y trazabilidad - DonaTrack</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{fragments/layout :: head('Detalle de donación')}"></head>
 <body>
-    <main>
-        <h1>Detalle de donación y trazabilidad</h1>
-        <!-- TODO -->
-    </main>
+<header th:replace="~{fragments/organisms :: encabezado('donaciones')}"></header>
+
+<main id="contenido" class="container page">
+  <nav th:replace="~{fragments/molecules :: migas}"></nav>
+
+  <header class="page-head">
+    <h1 class="page-head__title" th:text="'Donación N.º ' + ${donacion != null ? donacion.id : idDonacion}">Donación N.º 1</h1>
+    <a class="btn btn--secondary" th:href="@{/donantes/{id}/donaciones(id=${idDonante})}">Volver a las donaciones del donante</a>
+  </header>
+
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+  <div class="stack" th:if="${donacion}">
+    <section class="card" aria-labelledby="titulo-resumen">
+      <h2 id="titulo-resumen">Resumen</h2>
+      <p th:text="${donacion.descripcionGeneral != null ? donacion.descripcionGeneral : 'Sin descripción general'}">Mudanza de oficina</p>
+      <form th:action="@{/donaciones/{id}/vencida(id=${donacion.id},idDonante=${idDonante})}" method="post">
+        <button class="btn btn--danger" type="submit" data-confirmar="¿Marcar la donación como vencida? No podrá asignarse.">Marcar como vencida</button>
+      </form>
+      <p th:if="${estadoActual}">Estado actual: <span th:replace="~{fragments/atoms :: badge-estado(${estadoActual})}"></span></p>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-bienes">
+      <h2 id="titulo-bienes">Bienes cargados</h2>
+      <p th:if="${#lists.isEmpty(donacion.bienesDeEntrada)}">Esta donación no tiene bienes registrados.</p>
+      <div class="table-wrap" role="region" aria-label="Tabla de bienes" tabindex="0" th:unless="${#lists.isEmpty(donacion.bienesDeEntrada)}">
+        <table class="table">
+          <thead><tr><th scope="col">Descripción</th><th scope="col">Cantidad</th><th scope="col">Unidad</th></tr></thead>
+          <tbody><tr th:each="b : ${donacion.bienesDeEntrada}"><td th:text="${b.descripcion}">Silla</td><td th:text="${b.cantidadOriginal}">6</td><td th:text="${#strings.toLowerCase(b.unidad)}">unidades</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-segmentadas" th:if="${segmentadas != null and !#lists.isEmpty(segmentadas)}">
+      <h2 id="titulo-segmentadas">Donaciones resultantes de la segmentación</h2>
+      <div class="table-wrap" role="region" aria-label="Tabla de donaciones segmentadas" tabindex="0">
+        <table class="table">
+          <thead><tr><th scope="col">N.º</th><th scope="col">Subcategoría</th><th scope="col">Estado</th><th scope="col">Entidad destino</th></tr></thead>
+          <tbody><tr th:each="s : ${segmentadas}"><td th:text="${s.id}">1</td><td th:text="${s.subcategoria}">Sillas</td><td><span th:replace="~{fragments/atoms :: badge-estado(${s.estado})}"></span></td><td th:text="${s.entidad != null ? s.entidad : 'Sin asignar'}">Sin asignar</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="titulo-historial">
+      <h2 id="titulo-historial">Trazabilidad de estados</h2>
+      <p th:if="${historial == null or #lists.isEmpty(historial)}">Todavía no hay movimientos registrados.</p>
+      <ol class="timeline" th:unless="${historial == null or #lists.isEmpty(historial)}">
+        <li class="timeline__item" th:each="h, it : ${historial}" th:classappend="${it.last} ? 'timeline__item--actual'">
+          <strong th:text="${#strings.replace(h.estado, '_', ' ')}">EN DEPOSITO</strong>
+          <span class="timeline__date" th:text="${h.fecha != null ? #temporals.format(h.fecha, 'dd/MM/yyyy HH:mm') : ''}">01/01/2027 10:00</span>
+          <p class="timeline__note" th:if="${h.justificacion}" th:text="'Motivo: ' + ${h.justificacion}">Motivo: tocamos timbre pero nadie respondió.</p>
+        </li>
+      </ol>
+    </section>
+  </div>
+
+  <section class="card" th:unless="${donacion}">
+    <div class="empty-state"><p class="empty-state__text">No encontramos esa donación.</p></div>
+  </section>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

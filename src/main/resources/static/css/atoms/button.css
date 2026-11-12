@@ -1,0 +1,31 @@
+/* ÁTOMO · BUTTON. El botón por defecto es la acción principal y lleva el acento (10%).
+   --secondary: acción alternativa (contorno de estructura). --danger: acción destructiva.
+   Para otra variante, redefinir las 5 variables --btn-*. */
+
+.btn {
+  --btn-bg: var(--color-accent);
+  --btn-fg: var(--color-on-accent);
+  --btn-border: var(--color-accent);
+  --btn-bg-hover: var(--color-accent-hover);
+
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: var(--hit); min-width: var(--hit); padding: 0 var(--space-4);
+  border: 2px solid var(--btn-border); border-radius: var(--radius);
+  background: var(--btn-bg); color: var(--btn-fg);
+  font: inherit; font-weight: var(--weight-semibold); text-decoration: none; cursor: pointer;
+  transition: background-color var(--duration);
+}
+.btn:hover { background: var(--btn-bg-hover); }
+
+.btn--secondary { --btn-bg: transparent; --btn-fg: var(--color-primary-dark); --btn-border: var(--color-primary-dark); --btn-bg-hover: var(--color-canvas); }
+.btn--light     { --btn-bg: var(--color-surface); --btn-fg: var(--color-primary-dark); --btn-border: var(--color-surface); --btn-bg-hover: var(--color-canvas); }   /* sobre fondos oscuros (hero) */
+.btn--outline-light { --btn-bg: transparent; --btn-fg: var(--color-on-primary); --btn-border: var(--color-on-primary); --btn-bg-hover: var(--color-primary); }
+.btn--danger    { --btn-bg: var(--color-error); --btn-fg: var(--color-on-primary); --btn-border: var(--color-error); --btn-bg-hover: var(--color-error-dark); }
+
+/* Estados: deshabilitado y "trabajando" (con spinner; ver @keyframes spin en base.css) */
+.btn:disabled, .btn[aria-busy="true"] { opacity: .7; cursor: progress; }
+.btn[aria-busy="true"]::before {
+  content: ""; width: 1em; height: 1em;
+  border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
