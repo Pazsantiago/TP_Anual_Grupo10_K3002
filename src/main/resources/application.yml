@@ -15,11 +15,11 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${conexiones.auth-url}/realms/donatrack
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: ${conexiones.auth-url}/realms/donatrack
 
 
 diasTolerablesDeVencimiento: ${DIASTOLERABLESDEVENCIMIENTO:14}
