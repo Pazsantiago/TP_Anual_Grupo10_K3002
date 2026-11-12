@@ -1,4 +1,4 @@
-package org.example.donacionesfrontend.controllers;
+package org.example.donacionesfrontend.controllers.donaciones;
 
 import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.dominio.categoria.Categoria;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 @Controller
 @RequestMapping("/necesidades")
 @RequiredArgsConstructor
@@ -19,7 +18,7 @@ public class NecesidadController {
 
     private final NecesidadService necesidadService;
     private final EntidadService entidadService;
-    private final CategoriaService categoriaService; // Inyectamos CategoriaService igual que en Donaciones
+    private final CategoriaService categoriaService;
 
     @ModelAttribute("necesidad")
     public Necesidad prepararNecesidad(@RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo) {
@@ -52,12 +51,13 @@ public class NecesidadController {
 
     @GetMapping("/nueva")
     public String formularioNueva(
-            @RequestParam("idEntidad") Long idEntidad,
+            @RequestParam(value = "idEntidad", required = false) Long idEntidad, // CORREGIDO: ahora es opcional
             @RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo,
             Model model) {
         model.addAttribute("idEntidadSeleccionada", idEntidad);
         model.addAttribute("tipoActual", tipo);
-        model.addAttribute("categorias", categoriaService.getAll()); // Cargamos las categorías para el select
+        model.addAttribute("entidades", entidadService.getAll()); // Se cargan todas las entidades
+        model.addAttribute("categorias", categoriaService.getAll());
         return "necesidades/formulario";
     }
 
