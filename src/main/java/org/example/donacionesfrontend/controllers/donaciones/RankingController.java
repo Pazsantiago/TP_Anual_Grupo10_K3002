@@ -1,6 +1,5 @@
-package org.example.donacionesfrontend.controllers;
+package org.example.donacionesfrontend.controllers.donaciones;
 
-import jakarta.servlet.http.HttpSession;
 import org.example.donacionesfrontend.services.RankingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

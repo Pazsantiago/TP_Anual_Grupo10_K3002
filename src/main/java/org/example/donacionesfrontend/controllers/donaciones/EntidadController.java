@@ -1,10 +1,9 @@
-package org.example.donacionesfrontend.controllers;
+package org.example.donacionesfrontend.controllers.donaciones;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.dominio.categoria.Categoria;
 import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
-import org.example.donacionesfrontend.dominio.donante.Direccion;
 import org.example.donacionesfrontend.dominio.entidad.EntidadBeneficiaria;
 import org.example.donacionesfrontend.dominio.necesidad.NecesidadExtraordinaria;
 import org.example.donacionesfrontend.services.EntidadService;

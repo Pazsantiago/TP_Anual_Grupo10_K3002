@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,29 +17,17 @@ import java.util.Map;
 
 @Controller
 public class LoginController {
-    @Value("${app.frontend.url}")
-    private String baseFrontUrl;
-    private String authUrl;
-    private final RestClient restClientAuth;
-
-
-    public LoginController(@Qualifier("restClientAuth") RestClient restClientAuth,
-                           @Value("${backend.auth.url}") String authUrl) {
-        this.restClientAuth = restClientAuth;
-        this.authUrl = authUrl;
-    }
 
     @GetMapping("/dev-login")
     public String devLogin(HttpSession session) {
-        // Seteamos datos falsos en la sesión para saltear los 'if'
         session.setAttribute("jwtToken", "token-falso-de-prueba");
         session.setAttribute("rolUsuario", "ADMIN");
-        return "redirect:/donantes"; // Te manda directo a la lista
+        return "redirect:/donaciones/home";
     }
 
     @GetMapping("/login")
     public String vistaLogin() {
-        return "redirect:" + authUrl + "?redirect_uri=" + baseFrontUrl + "/login/callback";
+        return "redirect:/oauth2/authorization/keycloak";
     }
 
     @GetMapping("/login/callback")
@@ -48,6 +37,15 @@ public class LoginController {
             if (usuarioLogueado != null) {
                 String token = usuarioLogueado.getIdToken().getTokenValue();
                 session.setAttribute("jwtToken", token);
+            }else{
+                return "redirect:/login";
+            }
+
+            SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+            if (savedRequest != null) {
+                String targetUrl = savedRequest.getRedirectUrl();
+                session.removeAttribute("SPRING_SECURITY_SAVED_REQUEST");
+                return "redirect:" + targetUrl;
             }
             return "redirect:/home";
     }
@@ -55,6 +53,6 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:" + authUrl;
+        return "redirect:/oauth2/authorization/keycloak";
     }
 }

@@ -1,4 +1,4 @@
-package org.example.donacionesfrontend.controllers;
+package org.example.donacionesfrontend.controllers.donaciones;
 
 import org.example.donacionesfrontend.services.AsignacionService;
 import org.example.donacionesfrontend.services.EntidadService;

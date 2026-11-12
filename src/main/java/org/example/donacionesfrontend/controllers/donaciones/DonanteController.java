@@ -1,6 +1,5 @@
-package org.example.donacionesfrontend.controllers;
+package org.example.donacionesfrontend.controllers.donaciones;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.dominio.donante.*;
 import org.example.donacionesfrontend.services.DonanteService;
