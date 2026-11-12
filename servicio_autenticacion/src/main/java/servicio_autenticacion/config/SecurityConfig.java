@@ -3,8 +3,10 @@ package servicio_autenticacion.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -37,32 +39,45 @@ public class SecurityConfig {
     http
         .authorizeHttpRequests(auth -> auth
 
-            // Endpoint publico
+            // Rutas públicas
             .requestMatchers(
+                "/",
+                "/nosotros",
+                "/campanas",
+                "/css/**",
+                "/js/**",
+                "/images/**",
                 "/error",
                 "/auth/logged-out"
             ).permitAll()
 
-            // Solo administradores
+            // Endpoints propios de autenticación
             .requestMatchers("/auth/admin/**")
             .hasRole("ADMIN")
 
-            // Donantes y administradores
             .requestMatchers("/auth/donante/**")
             .hasAnyRole("DONANTE", "ADMIN")
 
-            // Cualquier usuario autenticado
             .requestMatchers("/auth/me")
             .authenticated()
 
-            .anyRequest().authenticated()
+            // Cliente Liviano
+            .requestMatchers("/app/**")
+            .authenticated()
+
+            // Resto de las rutas
+            .anyRequest()
+            .authenticated()
         )
 
         .oauth2Login(oauth2 -> oauth2
             .userInfoEndpoint(userInfo -> userInfo
                 .userAuthoritiesMapper(authoritiesMapper)
             )
-            .defaultSuccessUrl("/auth/me", true)
+
+            // Recuperar la página solicitada
+            // o utilizar /auth/me por defecto
+            .defaultSuccessUrl("/auth/me", false)
         )
 
         .logout(logout -> logout
