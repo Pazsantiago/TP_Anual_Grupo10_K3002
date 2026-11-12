@@ -25,5 +25,9 @@ app:
 backend:
   servicio-donaciones:
     url: ${SERVICIO_DONACIONES:http://localhost:8080}
+  servicio-incentivos:
+    url: ${SERVICIO_INCENTIVOS:http://localhost:8081}
+  servicio-logistica:
+    url: ${SERVICIO_LOGISTICA:http://localhost:8082}
   auth:
-    url: ${AUTH_URL:http://localhost:8081}
+    url: ${AUTH_URL:http://localhost:8083}
