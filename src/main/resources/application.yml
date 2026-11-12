@@ -9,6 +9,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+      default_schema: public
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
