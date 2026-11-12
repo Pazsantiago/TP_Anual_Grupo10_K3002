@@ -6,6 +6,7 @@
 
 <h2 class="mb-4">Registrar Donante</h2>
 
+<!-- Selector de Tipo de Persona -->
 <div class="card mb-4">
     <div class="card-body">
         <label class="form-label fw-bold">Tipo de Persona</label>
@@ -26,6 +27,7 @@
 
 <form th:action="@{/donantes/nuevo}" th:object="${donante}" method="post">
 
+    <!-- Campos Persona Humana -->
     <div th:if="${tipoActual == 'HUMANA'}" class="card mb-4">
         <div class="card-header bg-light fw-bold">Datos de Persona Humana</div>
         <div class="card-body">
@@ -63,6 +65,7 @@
         </div>
     </div>
 
+    <!-- Campos Persona Jurídica -->
     <div th:if="${tipoActual == 'JURIDICA'}" class="card mb-4">
         <div class="card-header bg-light fw-bold">Datos de Persona Jurídica</div>
         <div class="card-body">
@@ -79,6 +82,7 @@
         </div>
     </div>
 
+    <!-- Dirección -->
     <div class="card mb-4">
         <div class="card-header bg-light fw-bold">Dirección</div>
         <div class="card-body">
@@ -99,7 +103,7 @@
         </div>
     </div>
 
-
+    <!-- Medio de Contacto Predeterminado -->
     <div class="card mb-4">
         <div class="card-header bg-light fw-bold">Medio de Contacto Predeterminado</div>
         <div class="card-body">

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
-<div th:replace="~{fragments/navbar :: navbar}"></div>
 <body class="container py-4">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Donantes Registrados</h2>
     <a th:href="@{/donantes/nuevo}" class="btn btn-primary">+ Nuevo Donante</a>
@@ -12,17 +12,22 @@
     <thead class="table-dark">
     <tr>
         <th>ID</th>
+        <th>Tipo</th>
         <th>Nombre / Razón Social</th>
-        <th>Contacto</th>
+        <th>Contacto Predeterminado</th>
         <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
     <tr th:if="${#lists.isEmpty(donantes)}">
-        <td colspan="4" class="text-center text-muted">No hay donantes registrados.</td>
+        <td colspan="5" class="text-center text-muted">No hay donantes registrados.</td>
     </tr>
     <tr th:each="d : ${donantes}">
         <td th:text="${d.id}">1</td>
+        <td>
+            <span th:if="${d.persona != null}" th:text="${d.persona.class.simpleName == 'PersonaHumana' ? 'Humana' : 'Jurídica'}">Humana</span>
+            <span th:if="${d.persona == null}" class="text-muted">-</span>
+        </td>
         <td>
             <span th:if="${d.persona != null}" th:text="${d.persona.nombre != null ? d.persona.nombre : d.persona.razonSocial}">Juan Pérez</span>
             <span th:if="${d.persona == null}" class="text-muted">Sin datos</span>
@@ -42,5 +47,4 @@
     </tbody>
 </table>
 </body>
-
 </html>
