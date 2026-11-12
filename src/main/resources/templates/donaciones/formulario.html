@@ -8,6 +8,7 @@
 
 <form th:action="@{/donaciones(idDonante=${idDonanteSeleccionado})}" th:object="${donacion}" method="post">
 
+    <!-- Datos Generales -->
     <div class="card mb-4">
         <div class="card-header bg-primary text-white fw-bold">1. Datos Generales de la Donación</div>
         <div class="card-body row g-3">
@@ -17,24 +18,28 @@
                     <option value="">-- Seleccionar Donante --</option>
                     <option th:each="d : ${donantes}"
                             th:value="${d.id}"
-                            th:text="${d.persona != null ? (d.persona.nombre != null ? d.persona.nombre : d.persona.razonSocial) : 'Donante #' + d.id}"
+                            th:text="${d.persona != null ? (d.persona instanceof T(org.example.donacionesfrontend.dominio.donante.PersonaHumana) ? d.persona.nombre : d.persona.razonSocial) : 'Donante #' + d.id}"
                             th:selected="${d.id == idDonanteSeleccionado}">
                     </option>
                 </select>
             </div>
             <div class="col-md-6">
                 <label class="form-label">Descripción General</label>
-                <input type="text" th:field="*{descripcion}" class="form-control" placeholder="Ej: Donación mensual de insumos" required/>
+                <!-- CORREGIDO: descripcionGeneral en lugar de descripcion -->
+                <input type="text" th:field="*{descripcionGeneral}" class="form-control" placeholder="Ej: Donación mensual de insumos" required/>
             </div>
         </div>
     </div>
 
+    <!-- Contenedor Dinámico de Bienes (Lista Ilimitada) -->
     <div class="card mb-4">
         <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
             <span class="fw-bold">2. Detalle de los Bienes Donados</span>
             <button type="button" class="btn btn-sm btn-light fw-bold" onclick="agregarBien()">+ Agregar otro bien</button>
         </div>
         <div class="card-body" id="contenedorBienes">
+
+            <!-- Plantilla del Bien #1 (Índice 0) -->
             <div class="item-bien border p-3 mb-3 rounded bg-light" data-index="0">
                 <h5 class="text-secondary mb-3">Bien #1</h5>
                 <div class="row g-3">
@@ -89,7 +94,6 @@
         const contenedor = document.getElementById('contenedorBienes');
         const primerBien = document.querySelector('.item-bien');
 
-        // Clonar el primer bloque
         const nuevoBien = primerBien.cloneNode(true);
         nuevoBien.setAttribute('data-index', bienIndex);
         nuevoBien.querySelector('h5').innerText = 'Bien #' + (bienIndex + 1);

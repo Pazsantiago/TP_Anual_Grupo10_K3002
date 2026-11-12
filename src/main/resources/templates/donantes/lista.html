@@ -25,16 +25,18 @@
     <tr th:each="d : ${donantes}">
         <td th:text="${d.id}">1</td>
         <td>
-            <span th:if="${d.persona != null}" th:text="${d.persona.class.simpleName == 'PersonaHumana' ? 'Humana' : 'Jurídica'}">Humana</span>
+            <span th:if="${d.persona != null and d.persona instanceof T(org.example.donacionesfrontend.dominio.donante.PersonaHumana)}">Humana</span>
+            <span th:if="${d.persona != null and d.persona instanceof T(org.example.donacionesfrontend.dominio.donante.PersonaJuridica)}">Jurídica</span>
             <span th:if="${d.persona == null}" class="text-muted">-</span>
         </td>
         <td>
-            <span th:if="${d.persona != null}" th:text="${d.persona.nombre != null ? d.persona.nombre : d.persona.razonSocial}">Juan Pérez</span>
+            <span th:if="${d.persona != null and d.persona instanceof T(org.example.donacionesfrontend.dominio.donante.PersonaHumana)}" th:text="${d.persona.nombre}">Juan Pérez</span>
+            <span th:if="${d.persona != null and d.persona instanceof T(org.example.donacionesfrontend.dominio.donante.PersonaJuridica)}" th:text="${d.persona.razonSocial}">Empresa S.A.</span>
             <span th:if="${d.persona == null}" class="text-muted">Sin datos</span>
         </td>
         <td>
-            <span th:if="${!#lists.isEmpty(d.mediosDeContacto)}" th:text="${d.mediosDeContacto[0].correoElectronico}">contacto@mail.com</span>
-            <span th:if="${#lists.isEmpty(d.mediosDeContacto)}" class="text-muted">Sin contacto</span>
+            <span th:if="${d.mediosDeContacto != null and !#lists.isEmpty(d.mediosDeContacto)}" th:text="${d.mediosDeContacto[0].correoElectronico}">contacto@mail.com</span>
+            <span th:if="${d.mediosDeContacto == null or #lists.isEmpty(d.mediosDeContacto)}" class="text-muted">Sin contacto</span>
         </td>
         <td class="d-flex gap-2">
             <a th:href="@{/donaciones(idDonante=${d.id})}" class="btn btn-sm btn-info text-white">Donaciones</a>

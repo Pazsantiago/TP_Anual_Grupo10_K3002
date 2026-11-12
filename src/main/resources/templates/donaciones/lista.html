@@ -11,7 +11,7 @@
     </div>
 </div>
 
-
+<!-- Selector de Donante -->
 <div class="card mb-4">
     <div class="card-body">
         <form th:action="@{/donaciones}" method="get" class="row align-items-center">
@@ -23,7 +23,7 @@
                     <option value="">-- Seleccionar un donante --</option>
                     <option th:each="d : ${donantes}"
                             th:value="${d.id}"
-                            th:text="${d.persona != null ? (d.persona.nombre != null ? d.persona.nombre : d.persona.razonSocial) : 'Donante #' + d.id}"
+                            th:text="${d.persona != null ? (d.persona instanceof T(org.example.donacionesfrontend.dominio.donante.PersonaHumana) ? d.persona.nombre : d.persona.razonSocial) : 'Donante #' + d.id}"
                             th:selected="${d.id == idDonanteSeleccionado}">
                     </option>
                 </select>
@@ -32,29 +32,34 @@
     </div>
 </div>
 
+<!-- Tabla de Donaciones -->
 <table th:if="${idDonanteSeleccionado != null}" class="table table-striped table-bordered align-middle">
     <thead class="table-dark">
     <tr>
         <th>ID</th>
         <th>Descripción General</th>
-        <th>Bien Aportado</th>
-        <th>Cantidad</th>
+        <th>Bienes Aportados</th>
         <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
     <tr th:if="${#lists.isEmpty(donaciones)}">
-        <td colspan="5" class="text-center text-muted">Este donante no registra donaciones cargadas.</td>
+        <td colspan="4" class="text-center text-muted">Este donante no registra donaciones cargadas.</td>
     </tr>
     <tr th:each="don : ${donaciones}">
         <td th:text="${don.id}">1</td>
-        <td th:text="${don.descripcion}">Donación alimentos</td>
+        <!-- CORREGIDO: descripcionGeneral -->
+        <td th:text="${don.descripcionGeneral}">Donación alimentos</td>
         <td>
-            <span th:if="${!#lists.isEmpty(don.bienesDeEntrada)}" th:text="${don.bienesDeEntrada[0].descripcion}">Arroz</span>
-            <span th:if="${#lists.isEmpty(don.bienesDeEntrada)}" class="text-muted">Sin bienes</span>
-        </td>
-        <td>
-            <span th:if="${!#lists.isEmpty(don.bienesDeEntrada)}" th:text="${don.bienesDeEntrada[0].cantidad}">50</span>
+            <ul th:if="${!#lists.isEmpty(don.bienesDeEntrada)}" class="mb-0 ps-3">
+                <li th:each="b : ${don.bienesDeEntrada}">
+                    <strong th:text="${b.descripcion}">Arroz</strong>
+                    (<span th:text="${b.cantidadOriginal != null ? b.cantidadOriginal : b.cantidadActual}">50</span>
+                    <span th:text="${b.unidad}">KILOGRAMOS</span>)
+                    <span class="badge bg-secondary ms-1" th:if="${b.subcategoria != null}" th:text="${b.subcategoria.nombre}">Alimentos</span>
+                </li>
+            </ul>
+            <span th:if="${#lists.isEmpty(don.bienesDeEntrada)}" class="text-muted">Sin bienes registrados</span>
         </td>
         <td>
             <form th:action="@{/donaciones/eliminar}" method="post" onsubmit="return confirm('¿Eliminar donación?');">
