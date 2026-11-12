@@ -2,37 +2,72 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
 <body class="container py-4">
-
 <div th:replace="~{fragments/navbar :: navbar}"></div>
+
 <h2 class="mb-4">Registrar Necesidad</h2>
 
-<form th:action="@{/necesidades}" method="post">
-    <input type="hidden" name="idEntidad" th:value="${idEntidadSeleccionada}" />
 
-    <div class="mb-3">
-        <label class="form-label">Tipo de Necesidad</label>
-        <select class="form-select" name="tipo">
-            <option value="EXTRAORDINARIA">Extraordinaria</option>
-            <option value="RECURRENTE">Recurrente</option>
-        </select>
+<div class="card mb-4">
+    <div class="card-body">
+        <label class="form-label fw-bold">Tipo de Necesidad</label>
+        <div>
+            <a th:href="@{/necesidades/nueva(idEntidad=${idEntidadSeleccionada}, tipo='EXTRAORDINARIA')}"
+               class="btn"
+               th:classappend="${tipoActual == 'RECURRENTE' ? 'btn-outline-primary' : 'btn-primary'}">
+                Extraordinaria
+            </a>
+            <a th:href="@{/necesidades/nueva(idEntidad=${idEntidadSeleccionada}, tipo='RECURRENTE')}"
+               class="btn ms-2"
+               th:classappend="${tipoActual == 'RECURRENTE' ? 'btn-primary' : 'btn-outline-primary'}">
+                Recurrente
+            </a>
+        </div>
+    </div>
+</div>
+
+<form th:action="@{/necesidades(idEntidad=${idEntidadSeleccionada})}" th:object="${necesidad}" method="post">
+
+    <div class="card mb-4">
+        <div class="card-header bg-light fw-bold">Detalle de la Necesidad</div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <label class="form-label">Descripción</label>
+                    <input type="text" th:field="*{descripcion}" class="form-control" required/>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Subcategoría</label>
+                    <input type="text" th:field="*{subcategoria.nombre}" class="form-control" required/>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">ID Categoría Padre</label>
+                    <input type="number" th:field="*{subcategoria.categoria.id}" class="form-control" required/>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Cantidad Objetivo</label>
+                    <input type="number" th:field="*{cantidadObjetivo}" class="form-control" required/>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Descripción</label>
-        <input type="text" class="form-control" name="descripcion" required />
+    <div th:if="${necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadRecurrente)}" class="card mb-4">
+        <div class="card-header bg-light fw-bold">Parámetros de Recurrencia</div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Días del Período</label>
+                    <input type="number" th:field="*{periodo.diasPeriodo}" class="form-control"/>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Fecha Inicio Período</label>
+                    <input type="date" th:field="*{periodo.fechaInicioPeriodo}" class="form-control"/>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Subcategoría</label>
-        <input type="text" class="form-control" name="subcategoria.nombre" required placeholder="Ej: Harina, Leche..." />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Cantidad Objetivo</label>
-        <input type="number" class="form-control" name="objetivo" required />
-    </div>
-
-    <div class="d-flex justify-content-between mt-4">
+    <div class="d-flex gap-2">
         <a th:href="@{/necesidades(idEntidad=${idEntidadSeleccionada})}" class="btn btn-secondary">Cancelar</a>
         <button type="submit" class="btn btn-success">Guardar Necesidad</button>
     </div>

@@ -75,16 +75,6 @@
                     <label class="form-label">Rubro</label>
                     <input type="text" th:field="*{persona.rubro}" class="form-control" required/>
                 </div>
-                <div class="col-12">
-                    <label class="form-label">Representantes Legales (Personas Humanas)</label>
-                    <select th:field="*{persona.representantes}" class="form-select" multiple size="4">
-                        <option th:each="ph : ${personasHumanas}"
-                                th:value="${ph.id}"
-                                th:text="${ph.nombre}">
-                        </option>
-                    </select>
-                    <div class="form-text">Mantené presionado Ctrl para seleccionar múltiples representantes.</div>
-                </div>
             </div>
         </div>
     </div>
@@ -109,13 +99,14 @@
         </div>
     </div>
 
+
     <div class="card mb-4">
         <div class="card-header bg-light fw-bold">Medio de Contacto Predeterminado</div>
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">Tipo Contacto</label>
-                    <select th:field="*{mediosDeContacto.tipo}" class="form-select">
+                    <select th:field="*{mediosDeContacto[0].tipo}" class="form-select">
                         <option value="EMAIL">Email</option>
                         <option value="WHATSAPP">WhatsApp</option>
                         <option value="TELEFONO">Teléfono</option>
@@ -123,17 +114,17 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Correo Electrónico</label>
-                    <input type="email" th:field="*{mediosDeContacto.correoElectronico}" class="form-control" required/>
+                    <input type="email" th:field="*{mediosDeContacto[0].correoElectronico}" class="form-control" required/>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Teléfono</label>
-                    <input type="text" th:field="*{mediosDeContacto.telefono}" class="form-control"/>
+                    <input type="text" th:field="*{mediosDeContacto[0].telefono}" class="form-control"/>
                 </div>
-                <input type="hidden" th:field="*{mediosDeContacto.esPredeterminado}" value="true"/>
+                <input type="hidden" th:field="*{mediosDeContacto[0].esPredeterminado}" value="true"/>
             </div>
         </div>
     </div>
-    
+
     <div class="d-flex gap-2">
         <a th:href="@{/donantes}" class="btn btn-secondary">Cancelar</a>
         <button type="submit" class="btn btn-success">Guardar Donante</button>

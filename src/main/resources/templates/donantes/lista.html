@@ -1,66 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}"></head>
-<body class="container py-4 bg-light">
-
 <div th:replace="~{fragments/navbar :: navbar}"></div>
+<body class="container py-4">
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-dark"><i class="bi bi-people-fill text-primary me-2"></i>Donantes</h2>
-    <a href="/donantes/nuevo" class="btn btn-primary"><i class="bi bi-person-plus-fill me-1"></i>+ Nuevo Donante</a>
+    <h2>Donantes Registrados</h2>
+    <a th:href="@{/donantes/nuevo}" class="btn btn-primary">+ Nuevo Donante</a>
 </div>
 
-<div class="table-responsive bg-white rounded shadow-sm border">
-    <table class="table table-hover table-striped mb-0">
-        <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Tipo Persona</th>
-            <th>Nombre / Razón Social</th>
-            <th>Documento / Rubro</th>
-            <th>Contacto Predeterminado</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:if="${#lists.isEmpty(donantes)}">
-            <td colspan="6" class="text-center py-4 text-muted">No hay donantes registrados.</td>
-        </tr>
-        <tr th:each="d : ${donantes}">
-            <td th:text="${d.id}">1</td>
-            <td>
-                <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaHumana'}" class="badge bg-info text-dark">Humana</span>
-                <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaJuridica'}" class="badge bg-primary">Jurídica</span>
-                <span th:if="${d.persona == null}" class="badge bg-secondary">Sin Persona</span>
-            </td>
-            <td>
-            <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaHumana'}"
-                  <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaJuridica'}"
-                      th:text="${d.persona.razonSocial}"></span>
-                <span th:if="${d.persona == null}">Sin datos</span>
-            </td>
-            <td>
-            <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaHumana'}"
-                  th:text="${d.persona.documento != null ? (d.persona.documento.tipoDoc + ': ' + d.persona.documento.numeroDoc) : 'Sin doc.'}"></span>
-                <span th:if="${d.persona != null and d.persona.class.simpleName == 'PersonaJuridica'}"
-                      th:text="${'Rubro: ' + d.persona.rubro}"></span>
-                <span th:if="${d.persona == null}">-</span>
-            </td>
-            <td>
-            <span th:if="${d.mediosDeContacto != null and !d.mediosDeContacto.isEmpty()}"
-                  th:text="${d.mediosDeContacto[0].valorContacto}"></span>
-                <span th:if="${d.mediosDeContacto == null or d.mediosDeContacto.isEmpty()}">Sin datos</span>
-            </td>
-            <td>
-                <a th:href="@{/donaciones(idDonante=${d.id})}" class="btn btn-sm btn-outline-primary">Donaciones</a>
-                <form th:action="@{/donantes/eliminar}" method="post" class="d-inline">
-                    <input type="hidden" name="id" th:value="${d.id}"/>
-                    <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<table class="table table-striped table-bordered align-middle">
+    <thead class="table-dark">
+    <tr>
+        <th>ID</th>
+        <th>Nombre / Razón Social</th>
+        <th>Contacto</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${#lists.isEmpty(donantes)}">
+        <td colspan="4" class="text-center text-muted">No hay donantes registrados.</td>
+    </tr>
+    <tr th:each="d : ${donantes}">
+        <td th:text="${d.id}">1</td>
+        <td>
+            <span th:if="${d.persona != null}" th:text="${d.persona.nombre != null ? d.persona.nombre : d.persona.razonSocial}">Juan Pérez</span>
+            <span th:if="${d.persona == null}" class="text-muted">Sin datos</span>
+        </td>
+        <td>
+            <span th:if="${!#lists.isEmpty(d.mediosDeContacto)}" th:text="${d.mediosDeContacto[0].correoElectronico}">contacto@mail.com</span>
+            <span th:if="${#lists.isEmpty(d.mediosDeContacto)}" class="text-muted">Sin contacto</span>
+        </td>
+        <td class="d-flex gap-2">
+            <a th:href="@{/donaciones(idDonante=${d.id})}" class="btn btn-sm btn-info text-white">Donaciones</a>
+            <form th:action="@{/donantes/eliminar}" method="post" onsubmit="return confirm('¿Eliminar donante?');">
+                <input type="hidden" name="id" th:value="${d.id}"/>
+                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 
 </html>
