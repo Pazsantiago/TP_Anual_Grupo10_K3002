@@ -150,4 +150,17 @@ public class LogisticaController {
 
     @GetMapping("/seguimiento/entidades/{id}")
     public List<SeguimientoDTO> porEntidad(@PathVariable Long id) { return seguimiento.porEntidad(id); }
+
+    public record DisponibleRequest(boolean disponible) {}
+
+    @PutMapping("/camiones/{patente}/disponible")
+    public Camion disponible(@PathVariable String patente, @RequestBody DisponibleRequest r) {
+        return camionService.setDisponible(patente, r.disponible());
+    }
+
+    // ---- entregas en traslado de una entidad (para el front) ----
+    @GetMapping("/entidades/{id}/entregas")
+    public List<Entrega> entregasDeEntidad(@PathVariable Long id) {
+        return entregaRepo.findByIdEntidadAndEstado(id, EstadoEntrega.EN_TRASLADO);
+    }
 }
