@@ -7,13 +7,16 @@ spring:
         registration:
           keycloak:
             client-id: cliente-liviano
-            client-secret: ${KEYCLOAK_CLIENT_SECRET:codigo-secreto}
-            scope: openid, profile, email
+            client-secret: ${KEYCLOAK_CLIENT_SECRET:secreto}
+            scope:
+              - openid
+              - profile
+              - email
             authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/callback"
+            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
         provider:
           keycloak:
-            issuer-uri: ${backend.auth.url}/realms/donatrack
+            issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8180/realms/donatrack}
 
 
 server:
