@@ -24,7 +24,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/home", true) // Al loguearse con éxito va a /home
+                        .defaultSuccessUrl("/login/callback", true) // ✅ Ahora sí ejecuta tu procesarLogin
                 );
 
         return http.build();
