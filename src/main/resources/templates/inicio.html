@@ -16,7 +16,11 @@
       <div class="cluster">
         <a class="btn" th:href="@{/donantes/nuevo}">Quiero donar</a>
         <a class="btn btn--outline-light" th:href="@{/entidades/nueva}">Registrar mi entidad</a>
-        <a class="btn btn--outline-light" th:href="@{/login}">Iniciar sesión</a>
+          <a class="btn btn--outline-light" th:href="@{/login}"
+             th:if="${session.jwtToken == null}"
+             class="btn btn-primary">
+              Iniciar Sesión
+          </a>
       </div>
     </section>
 
