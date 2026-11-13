@@ -9,7 +9,6 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 @Configuration
 public class SecurityConfig {
 
-    // Lee el protocolo HTTPS de Render para evitar bucles de redirección
     @Bean
     public ForwardedHeaderFilter forwardedHeaderFilter() {
         return new ForwardedHeaderFilter();
@@ -20,11 +19,13 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/error", "/dev-login").permitAll()
+                        // Permitimos rutas estáticas, login, dev-login y el callback
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/error", "/login", "/login/callback", "/dev-login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/login/callback", true) // ✅ Ahora sí ejecuta tu procesarLogin
+                        // Al volver de Keycloak, Spring ejecuta procesarLogin en LoginController
+                        .defaultSuccessUrl("/login/callback", true)
                 );
 
         return http.build();
