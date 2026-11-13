@@ -18,6 +18,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/error", "/actuator/health", "/api/healthCheck").permitAll()
                         .requestMatchers("/api/planificacion/callback", "/api/entregas/asignadas/**").permitAll()
+                        // TEMPORAL: rutas que usa rama_cliente, que todavía no envía token
+                        .requestMatchers("/api/camiones/**", "/api/bultos/**", "/api/donaciones/**",
+                                "/api/rutas/**", "/api/seguimiento/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
