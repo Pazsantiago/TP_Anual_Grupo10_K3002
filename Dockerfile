@@ -7,6 +7,13 @@ COPY pom.xml .
 RUN mvn -B -q dependency:go-offline
 
 COPY src ./src
+
+# Algunos archivos (ej. application.properties) estan guardados en Windows-1252 y Maven
+# espera UTF-8. Convierte solo los que no sean UTF-8 valido.
+RUN find src -type f \( -name "*.properties" -o -name "*.java" -o -name "*.html" -o -name "*.css" -o -name "*.js" \) | while read -r f; do \
+      iconv -f UTF-8 -t UTF-8 "$f" >/dev/null 2>&1 || { iconv -f WINDOWS-1252 -t UTF-8 "$f" > "$f.utf8" && mv "$f.utf8" "$f"; }; \
+    done
+
 # Tests afuera: el contextLoads necesita Keycloak y los otros servicios levantados
 RUN mvn -B -q clean package -DskipTests
 
