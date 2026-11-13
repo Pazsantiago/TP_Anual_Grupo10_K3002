@@ -132,9 +132,9 @@ public class ServicioDonacionAsignada {
         }
         donacionAsignada.agregarDonacionSegmentada(donacionSegmentada);
         servicioBeneficiarias.asignarDonacionANecesidad(donacionAsignada.getNecesidadResuelta(), donacionSegmentada);
-        //comunicarAsignacionDeDonaciones(donacionSegmentada.getDonacionInicial().getDonante(), donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria());
+        comunicarAsignacionDeDonaciones(donacionSegmentada.getDonacionInicial().getDonante(), donacionAsignada.getNecesidadResuelta().getEntidadBeneficiaria());
         if (donacionAsignada.sePuedePlanificarEnvio()) {
-            //comunicador.enviarDonacionAsignada(donacionAsignada, restClientBrokerLogistica);
+            comunicador.enviarDonacionAsignada(donacionAsignada, restClientBrokerLogistica);
         }
         return donacionAsignada;
     }
@@ -180,9 +180,9 @@ public class ServicioDonacionAsignada {
 
 
         Donante donante = donacionSegmentada.getDonacionInicial().getDonante();
-        //comunicarAsignacionDeDonaciones(donante, entidad);
+        comunicarAsignacionDeDonaciones(donante, entidad);
         if (donacionFinal.sePuedePlanificarEnvio()) {
-            //comunicador.enviarDonacionAsignada(donacionFinal, restClientBrokerLogistica);
+            comunicador.enviarDonacionAsignada(donacionFinal, restClientBrokerLogistica);
         }
         return donacionFinal;
     }

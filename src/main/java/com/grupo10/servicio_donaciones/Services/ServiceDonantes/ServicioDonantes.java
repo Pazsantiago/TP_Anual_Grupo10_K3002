@@ -80,7 +80,7 @@ public class ServicioDonantes {
     public Donante createPersona(Donante persona) {
         persona.setUltimaInteraccion(LocalDateTime.now());
         repoDonantes.save(persona);
-        //comunicador.enviarDonante(persona, restClientIncentivos);
+        comunicador.enviarDonante(persona, restClientIncentivos);
         return persona;
 
     }
@@ -106,7 +106,7 @@ public class ServicioDonantes {
         donante.setUltimaInteraccion(LocalDateTime.now());
         donante.setMediosDeContacto(updateDonante.getMediosDeContacto());
         setearCategorias(donante);
-        //comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
+        comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return donante;
     }
 
@@ -117,7 +117,7 @@ public class ServicioDonantes {
             donante.desvincularRelaciones();
             repoDonantes.delete(donante);
         }
-        //comunicador.avisarDonanteEliminado(id, restClientIncentivos);
+        comunicador.avisarDonanteEliminado(id, restClientIncentivos);
         return "Donante borrado";
     }
 }

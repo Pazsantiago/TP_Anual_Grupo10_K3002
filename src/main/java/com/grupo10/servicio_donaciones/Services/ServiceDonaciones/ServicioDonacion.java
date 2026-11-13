@@ -71,7 +71,7 @@ public class ServicioDonacion {
         donacion.setearRelaciones();
         repoDonaciones.save(donacion);
         servicioDonantes.setearCategorias(donante);
-        //comunicador.enviarDonante(donante, restClientIncentivos);
+        comunicador.enviarDonante(donante, restClientIncentivos);
         return donacion;
 
     }
@@ -86,7 +86,7 @@ public class ServicioDonacion {
         donacion.setearRelaciones();
         donante.setUltimaInteraccion(LocalDateTime.now());
         servicioDonantes.setearCategorias(donante);
-        //comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
+        comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return donacion;
     }
 
@@ -97,7 +97,7 @@ public class ServicioDonacion {
         donante.eliminarDonacion(donacion.getId());
         donacion.getDonacionesSegmentadas().forEach(DonacionSegmentada::desvincularAsignadas);
         repoDonaciones.delete(donacion);
-        //comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
+        comunicador.enviarDonanteActualizado(donante, restClientIncentivos);
         return "Donacion borrada";
     }
 
