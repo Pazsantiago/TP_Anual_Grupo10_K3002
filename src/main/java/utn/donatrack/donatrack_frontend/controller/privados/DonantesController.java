@@ -1,4 +1,4 @@
-package utn.donatrack.donatrack_frontend.controller;
+package utn.donatrack.donatrack_frontend.controller.privados;
 
 import java.util.List;
 import java.util.Objects;

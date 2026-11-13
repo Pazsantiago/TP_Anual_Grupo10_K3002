@@ -2,11 +2,15 @@ package utn.donatrack.donatrack_frontend.config;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
+
+import jakarta.servlet.http.HttpSession;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Configuration
 @EnableConfigurationProperties({NotificacionesProperties.class, ServiciosProperties.class})
@@ -40,14 +44,32 @@ public class RestClientConfig {
 
     private static RestClient crear(String baseUrl, Duration connectTimeout, Duration readTimeout) {
         HttpClient httpClient = HttpClient.newBuilder()
-            .connectTimeout(connectTimeout)
-            .build();
+                .connectTimeout(connectTimeout)
+                .build();
         JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory(httpClient);
         factory.setReadTimeout(readTimeout);
 
         return RestClient.builder()
-            .baseUrl(baseUrl)
-            .requestFactory(factory)
-            .build();
+                .baseUrl(baseUrl)
+                .requestFactory(factory) // Configura timeouts
+                .requestInterceptor((request, body, execution) -> {
+                    // Obtenemos la sesión HTTP de la solicitud actual de forma limpia
+                    ServletRequestAttributes attributes =
+                            (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+
+                    if (attributes != null) {
+                        HttpSession session = attributes.getRequest().getSession(false);
+                        if (session != null) {
+                            String token = (String) session.getAttribute("jwtToken");
+                            if (token != null) {
+                                // Inyecta el encabezado Authorization: Bearer <token>
+                                request.getHeaders().add("Authorization", "Bearer " + token);
+                            }
+                        }
+                    }
+                    return execution.execute(request, body);
+                })
+                .build();
     }
 }
+

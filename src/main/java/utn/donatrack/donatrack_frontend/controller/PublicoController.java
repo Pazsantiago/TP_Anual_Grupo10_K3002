@@ -38,54 +38,55 @@ public class PublicoController {
     public String legal() {
         return "publico/legal";
     }
-
-    @GetMapping("/login")
-    public String login() {
-        return "auth/login";
-    }
-
-    @GetMapping("/registro/donante")
-    public String registroDonante() {
-        return "auth/registro-donante";
-    }
-
-    @GetMapping("/registro/entidad")
-    public String registroEntidad() {
-        return "auth/registro-entidad";
-    }
-
-    /** Auto-registro de donante: la persona define su propia contrasena. Post/Redirect/Get. */
-    @PostMapping("/registro/donante")
-    public String registrarDonante(@ModelAttribute DonanteForm form, RedirectAttributes flash) {
-        String error = form.validar(true);
-        if (error != null) {
-            flash.addFlashAttribute("errorServicio", error);
-            return "redirect:/registro/donante";
-        }
-        try {
-            donaciones.crearDonante(form.toRequest(true));
-        } catch (ServicioExternoException e) {
-            flash.addFlashAttribute("errorServicio", e.getMessage());
-            return "redirect:/registro/donante";
-        }
-        flash.addFlashAttribute("exito", "Te registraste correctamente. Ya podés iniciar sesión.");
-        return "redirect:/login";
-    }
-
-    @PostMapping("/registro/entidad")
-    public String registrarEntidad(@ModelAttribute EntidadForm form, RedirectAttributes flash) {
-        String error = form.validar(true);
-        if (error != null) {
-            flash.addFlashAttribute("errorServicio", error);
-            return "redirect:/registro/entidad";
-        }
-        try {
-            donaciones.crearEntidad(form.toRequest(true));
-        } catch (ServicioExternoException e) {
-            flash.addFlashAttribute("errorServicio", e.getMessage());
-            return "redirect:/registro/entidad";
-        }
-        flash.addFlashAttribute("exito", "Registramos tu entidad. Ya podés iniciar sesión.");
-        return "redirect:/login";
-    }
 }
+
+//
+//    @GetMapping("/login")
+//    public String login() {
+//        return "auth/login";
+//    }
+//
+//    @GetMapping("/registro/donante")
+//    public String registroDonante() {
+//        return "auth/registro-donante";
+//    }
+//
+//    @GetMapping("/registro/entidad")
+//    public String registroEntidad() {
+//        return "auth/registro-entidad";
+//    }
+//
+//    /** Auto-registro de donante: la persona define su propia contrasena. Post/Redirect/Get. */
+//    @PostMapping("/registro/donante")
+//    public String registrarDonante(@ModelAttribute DonanteForm form, RedirectAttributes flash) {
+//        String error = form.validar(true);
+//        if (error != null) {
+//            flash.addFlashAttribute("errorServicio", error);
+//            return "redirect:/registro/donante";
+//        }
+//        try {
+//            donaciones.crearDonante(form.toRequest(true));
+//        } catch (ServicioExternoException e) {
+//            flash.addFlashAttribute("errorServicio", e.getMessage());
+//            return "redirect:/registro/donante";
+//        }
+//        flash.addFlashAttribute("exito", "Te registraste correctamente. Ya podés iniciar sesión.");
+//        return "redirect:/login";
+//    }
+//
+//    @PostMapping("/registro/entidad")
+//    public String registrarEntidad(@ModelAttribute EntidadForm form, RedirectAttributes flash) {
+//        String error = form.validar(true);
+//        if (error != null) {
+//            flash.addFlashAttribute("errorServicio", error);
+//            return "redirect:/registro/entidad";
+//        }
+//        try {
+//            donaciones.crearEntidad(form.toRequest(true));
+//        } catch (ServicioExternoException e) {
+//            flash.addFlashAttribute("errorServicio", e.getMessage());
+//            return "redirect:/registro/entidad";
+//        }
+//        flash.addFlashAttribute("exito", "Registramos tu entidad. Ya podés iniciar sesión.");
+//        return "redirect:/login";
+//    }
