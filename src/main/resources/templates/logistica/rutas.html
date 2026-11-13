@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="container py-4">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<h2 class="mb-4">Rutas del día</h2>
+
+<form method="get" th:action="@{/logistica/rutas}" class="row g-2 mb-4 align-items-end">
+    <div class="col-md-4"><label for="fecha" class="form-label">Fecha</label>
+        <input id="fecha" name="fecha" type="date" class="form-control" th:value="${fecha}"></div>
+    <div class="col-md-2"><button class="btn btn-primary w-100" type="submit">Ver rutas</button></div>
+</form>
+
+<div class="card mb-3" th:each="r : ${rutas}">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span><strong th:text="${r.patenteCamion}"></strong> · <span th:text="${r.estado}"></span></span>
+        <form th:if="${r.estado == 'PLANIFICADA'}" th:action="@{/logistica/rutas/iniciar}" method="post">
+            <input type="hidden" name="id" th:value="${r.id}"/>
+            <button class="btn btn-sm btn-success" type="submit">Iniciar ruta</button>
+        </form>
+    </div>
+    <ol class="list-group list-group-flush list-group-numbered">
+        <li class="list-group-item" th:each="p : ${r.paradas}">
+            <span th:text="${p.razonSocial}"></span> — <span th:text="${p.direccion.calle}"></span>
+            <small class="text-muted" th:text="${p.distancia}"></small>
+        </li>
+    </ol>
+</div>
+<p class="text-muted" th:if="${rutas == null or #lists.isEmpty(rutas)}">No hay rutas para esa fecha.</p>
+
+<div th:replace="~{fragments/avisos :: avisos}"></div>
+</body>
+</html>

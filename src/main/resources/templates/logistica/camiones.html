@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="container py-4">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<h2 class="mb-4">Camiones</h2>
+
+<form th:action="@{/logistica/camiones}" method="post" class="row g-2 mb-4 align-items-end">
+    <div class="col-md-3"><label for="patente" class="form-label">Patente</label>
+        <input id="patente" name="patente" class="form-control" required placeholder="AB123CD"></div>
+    <div class="col-md-2"><label for="carga" class="form-label">Carga (kg)</label>
+        <input id="carga" name="capacidadCarga" type="number" step="any" min="1" class="form-control" required></div>
+    <div class="col-md-2"><label for="vol" class="form-label">Volumen (m³)</label>
+        <input id="vol" name="capacidadVolumenM3" type="number" step="any" min="0.1" class="form-control" required></div>
+    <div class="col-md-2"><label for="alt" class="form-label">Altura (m)</label>
+        <input id="alt" name="alturaM" type="number" step="any" min="0.1" class="form-control" required></div>
+    <div class="col-md-3"><button class="btn btn-primary w-100" type="submit">+ Nuevo camión</button></div>
+</form>
+
+<div class="table-responsive">
+<table class="table table-striped table-bordered align-middle">
+    <thead class="table-dark">
+    <tr><th>Patente</th><th>Carga (kg)</th><th>Volumen (m³)</th><th>Altura (m)</th><th>Disponible</th><th>Última ubicación</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+    <tr th:if="${camiones == null or #lists.isEmpty(camiones)}">
+        <td colspan="7" class="text-center text-muted">No hay camiones registrados.</td></tr>
+    <tr th:each="c : ${camiones}">
+        <td th:text="${c.patente}"></td>
+        <td th:text="${c.capacidadCarga}"></td>
+        <td th:text="${c.capacidadVolumenM3}"></td>
+        <td th:text="${c.alturaM}"></td>
+        <td><span class="badge" th:classappend="${c.disponible} ? 'bg-success' : 'bg-secondary'"
+                  th:text="${c.disponible} ? 'Sí' : 'No'"></span></td>
+        <td th:text="${c.ultimaUbicacion != null} ? ${c.ultimaUbicacion.latitud + ', ' + c.ultimaUbicacion.longitud} : 'Sin datos'"></td>
+        <td>
+            <form th:action="@{/logistica/camiones/disponible}" method="post" class="d-inline">
+                <input type="hidden" name="patente" th:value="${c.patente}"/>
+                <input type="hidden" name="disponible" th:value="${!c.disponible}"/>
+                <button type="submit" class="btn btn-sm btn-outline-dark"
+                        th:text="${c.disponible} ? 'Deshabilitar' : 'Habilitar'"></button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<div th:replace="~{fragments/avisos :: avisos}"></div>
+</body>
+</html>

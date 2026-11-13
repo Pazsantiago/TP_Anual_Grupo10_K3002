@@ -31,7 +31,7 @@ backend:
     url: ${SERVICIO_DONACIONES:http://localhost:8080}
   servicio-incentivos:
     url: ${SERVICIO_INCENTIVOS:http://localhost:8081}
-  servicio-logistica:
-    url: ${SERVICIO_LOGISTICA:http://localhost:8082}
+   servicio-logistica:
+    url: ${SERVICIO_LOGISTICA:https://tp-anual-grupo10-k3002-xjdn.onrender.com}
   auth:
     url: ${AUTH_URL:http://localhost:8083}

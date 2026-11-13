@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="container py-4">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<h2 class="mb-4">Seguimiento de entregas activas</h2>
+
+<form method="get" th:action="@{/logistica/seguimiento}" class="row g-2 mb-3 align-items-end">
+    <div class="col-md-3"><label for="entidad" class="form-label">Entidad (id)</label>
+        <input id="entidad" name="entidad" type="number" min="1" class="form-control" th:value="${entidad}"></div>
+    <div class="col-md-2"><button class="btn btn-primary w-100" type="submit">Ver</button></div>
+</form>
+
+<div id="mapa" role="img" aria-label="Mapa con la ubicación de los camiones"
+     style="height: 420px" class="border rounded mb-3"></div>
+
+<div class="table-responsive">
+<table class="table table-striped table-bordered align-middle">
+    <thead class="table-dark"><tr><th>Donación</th><th>Camión</th><th>Última actualización</th></tr></thead>
+    <tbody>
+    <tr th:if="${items == null or #lists.isEmpty(items)}">
+        <td colspan="3" class="text-center text-muted">No hay entregas en traslado.</td></tr>
+    <tr th:each="i : ${items}">
+        <td th:text="${i.idDonacion}"></td>
+        <td th:text="${i.patente}"></td>
+        <td th:text="${i.ubicacion != null} ? ${i.ubicacion.timestamp} : 'Sin ubicación'"></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<div th:replace="~{fragments/avisos :: avisos}"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script th:inline="javascript">
+    const items = /*[[${items}]]*/ [];
+    const mapa = L.map('mapa').setView([-34.6, -58.4], 11);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap'}).addTo(mapa);
+    (items || []).forEach(i => {
+        if (i.ubicacion) {
+            L.marker([i.ubicacion.latitud, i.ubicacion.longitud]).addTo(mapa)
+                .bindPopup('Camión ' + i.patente + '<br>Donación ' + i.idDonacion + '<br>' + i.ubicacion.timestamp);
+        }
+    });
+</script>
+</body>
+</html>

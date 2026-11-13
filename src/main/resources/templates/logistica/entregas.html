@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="container py-4">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<h2 class="mb-4">Entregas a recibir</h2>
+
+<form method="get" th:action="@{/logistica/entregas}" class="row g-2 mb-4 align-items-end">
+    <div class="col-md-3"><label for="entidad" class="form-label">Entidad (id)</label>
+        <input id="entidad" name="entidad" type="number" min="1" class="form-control" th:value="${entidad}"></div>
+    <div class="col-md-2"><button class="btn btn-primary w-100" type="submit">Ver</button></div>
+</form>
+
+<div class="card mb-3" th:each="e : ${entregas}">
+    <div class="card-header">Donación <strong th:text="${e.idDonacion}"></strong> · camión <span th:text="${e.patenteCamion}"></span></div>
+    <div class="card-body">
+        <form th:action="@{/logistica/entregas/confirmar}" method="post" class="row g-2 mb-2 align-items-end">
+            <input type="hidden" name="id" th:value="${e.id}"/>
+            <input type="hidden" name="entidad" th:value="${entidad}"/>
+            <div class="col-md-6"><label th:for="'foto'+${e.id}" class="form-label">Foto (nombre o URL)</label>
+                <input th:id="'foto'+${e.id}" name="foto" class="form-control" placeholder="foto1.jpg"></div>
+            <div class="col-md-3"><button class="btn btn-success w-100" type="submit">Confirmar recepción</button></div>
+        </form>
+        <form th:action="@{/logistica/entregas/no-recibida}" method="post" class="row g-2 align-items-end">
+            <input type="hidden" name="id" th:value="${e.id}"/>
+            <input type="hidden" name="entidad" th:value="${entidad}"/>
+            <div class="col-md-6"><label th:for="'mot'+${e.id}" class="form-label">Motivo si no se recibió</label>
+                <input th:id="'mot'+${e.id}" name="motivo" class="form-control" required></div>
+            <div class="col-md-3"><button class="btn btn-outline-danger w-100" type="submit">No la recibí</button></div>
+        </form>
+    </div>
+</div>
+<p class="text-muted" th:if="${entregas == null or #lists.isEmpty(entregas)}">No hay entregas en traslado.</p>
+
+<div th:replace="~{fragments/avisos :: avisos}"></div>
+</body>
+</html>
