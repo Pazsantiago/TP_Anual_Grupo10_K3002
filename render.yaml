@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: donatrack-frontend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free            # cambiar a starter si no querés que se duerma
+    region: oregon
+    healthCheckPath: /login   # /login es público; el resto redirige a Keycloak
+    autoDeploy: true
+    envVars:
+      # --- Microservicios (completar en el dashboard de Render con las URLs públicas) ---
+      - key: DONACIONES_URL
+        sync: false
+      - key: INCENTIVOS_URL
+        sync: false
+      - key: LOGISTICA_URL
+        sync: false
+      - key: NOTIFICACIONES_URL
+        sync: false
+      - key: AUTH_URL
+        sync: false
+      # --- Keycloak ---
+      - key: KEYCLOAK_ISSUER_URI    # ej: https://tu-keycloak.onrender.com/realms/donatrack
+        sync: false
+      - key: KEYCLOAK_CLIENT_SECRET
+        sync: false
