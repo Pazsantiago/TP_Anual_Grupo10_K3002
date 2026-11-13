@@ -6,13 +6,18 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class LoginController {
 
 
     @GetMapping("/login")
-    public String vistaLogin() {
+    public String vistaLogin(HttpSession session, RedirectAttributes redirectAttributes) {
+        String token = (String) session.getAttribute("jwtToken");
+        if (token != null) {
+            redirectAttributes.addFlashAttribute("exito", "Ya estas logueado.");
+        }
         return "redirect:/oauth2/authorization/keycloak";
     }
 
