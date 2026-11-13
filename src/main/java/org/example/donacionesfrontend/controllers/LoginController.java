@@ -18,12 +18,6 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    @GetMapping("/dev-login")
-    public String devLogin(HttpSession session) {
-        session.setAttribute("jwtToken", "token-falso-de-prueba");
-        session.setAttribute("rolUsuario", "ADMIN");
-        return "redirect:/donaciones/home";
-    }
 
     @GetMapping("/login")
     public String vistaLogin() {
