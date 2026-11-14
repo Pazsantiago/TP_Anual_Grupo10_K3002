@@ -7,7 +7,7 @@ import com.grupo10.servicio_donaciones.donaciones.dominio.donante.*;
 import com.grupo10.servicio_donaciones.donaciones.mensajes.DestinatarioRequestDTO;
 import com.grupo10.servicio_donaciones.donaciones.mensajes.NotificacionRequestDTO;
 import com.grupo10.servicio_donaciones.donaciones.mensajes.TipoEvento;
-import com.grupo10.servicio_donaciones.dtos.backend.*;
+import com.grupo10.servicio_donaciones.dtos.integracion.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

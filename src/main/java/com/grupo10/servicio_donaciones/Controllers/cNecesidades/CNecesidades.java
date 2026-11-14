@@ -1,9 +1,9 @@
 package com.grupo10.servicio_donaciones.Controllers.cNecesidades;
 
-//import donatrack.dominio.donacion.Donacion;
-
 import com.grupo10.servicio_donaciones.Services.ServiceNecesidades.ServicioNecesidades;
 import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
+import com.grupo10.servicio_donaciones.dtos.request.NecesidadRequestDTO;
+import com.grupo10.servicio_donaciones.dtos.response.NecesidadResponseDTO;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,24 +16,31 @@ import java.util.List;
 @RequestMapping("/api/entidadesBeneficiarias/{idEntidad}/necesidades")
 @RequiredArgsConstructor
 public class CNecesidades {
+
     private final DTOSMapper mapper;
     private final ServicioNecesidades servicioNecesidades;
 
     // READ - Obtener todas las Necesidades
     @GetMapping("")
-    public ResponseEntity<List<Necesidad>> getAllNecesidades(@PathVariable Long idEntidad) {
+    public ResponseEntity<List<NecesidadResponseDTO>> getAllNecesidades(@PathVariable Long idEntidad) {
         try {
-            return ResponseEntity.ok(servicioNecesidades.getAllNecesidades(idEntidad));
+            return ResponseEntity.ok(
+                    servicioNecesidades.getAllNecesidades(idEntidad).stream()
+                            .map(mapper::deDominioAResponse)
+                            .toList()
+            );
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // READ - Obtener una Necesidad  por ID
+    // READ - Obtener una Necesidad por ID
     @GetMapping("/{idNecesidad}")
-    public ResponseEntity<Necesidad> getNecesidadById(@PathVariable Long idEntidad, @PathVariable Long idNecesidad) {
+    public ResponseEntity<NecesidadResponseDTO> getNecesidadById(
+            @PathVariable Long idEntidad,
+            @PathVariable Long idNecesidad) {
         try {
-            return ResponseEntity.ok(servicioNecesidades.getNecesidadById(idNecesidad));
+            return ResponseEntity.ok(mapper.deDominioAResponse(servicioNecesidades.getNecesidadById(idNecesidad)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -41,9 +48,13 @@ public class CNecesidades {
 
     // CREATE - Agregar una nueva Necesidad
     @PostMapping("")
-    public ResponseEntity<Necesidad> createNecesidad(@PathVariable Long idEntidad, @RequestBody Necesidad necesidad) {
+    public ResponseEntity<NecesidadResponseDTO> createNecesidad(
+            @PathVariable Long idEntidad,
+            @RequestBody NecesidadRequestDTO dto) {
         try {
-            return ResponseEntity.ok(servicioNecesidades.createNecesidad(idEntidad, necesidad));
+            Necesidad necesidad = mapper.deDTORequestADominio(dto);
+            Necesidad creada = servicioNecesidades.createNecesidad(idEntidad, necesidad);
+            return ResponseEntity.ok(mapper.deDominioAResponse(creada));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -51,9 +62,14 @@ public class CNecesidades {
 
     // UPDATE - Actualizar una Necesidad existente de una entidad
     @PutMapping("/{idNecesidad}")
-    public ResponseEntity<Necesidad> updateNecesidad(@PathVariable Long idEntidad, @PathVariable Long idNecesidad, @RequestBody Necesidad updatedNecesidad) {
+    public ResponseEntity<NecesidadResponseDTO> updateNecesidad(
+            @PathVariable Long idEntidad,
+            @PathVariable Long idNecesidad,
+            @RequestBody NecesidadRequestDTO dto) {
         try {
-            return ResponseEntity.ok(servicioNecesidades.updateNecesidad(idNecesidad, updatedNecesidad));
+            Necesidad necesidad = mapper.deDTORequestADominio(dto);
+            Necesidad actualizada = servicioNecesidades.updateNecesidad(idNecesidad, necesidad);
+            return ResponseEntity.ok(mapper.deDominioAResponse(actualizada));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -61,7 +77,9 @@ public class CNecesidades {
 
     // DELETE - Eliminar una Necesidad
     @DeleteMapping("/{idNecesidad}")
-    public ResponseEntity<String> deleteNecesidad(@PathVariable Long idEntidad, @PathVariable Long idNecesidad) {
+    public ResponseEntity<String> deleteNecesidad(
+            @PathVariable Long idEntidad,
+            @PathVariable Long idNecesidad) {
         try {
             return ResponseEntity.ok(servicioNecesidades.deleteNecesidad(idNecesidad));
         } catch (Exception e) {

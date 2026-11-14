@@ -1,18 +1,16 @@
-package com.grupo10.servicio_donaciones.dtos.backend;
+package com.grupo10.servicio_donaciones.dtos.integracion;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class DonacionDTO {
     private Long id;
     private Date fechaEntrada = new Date();

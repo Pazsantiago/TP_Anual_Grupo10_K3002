@@ -1,8 +1,6 @@
 package com.grupo10.servicio_donaciones.donaciones.dominio.necesidad;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Subcategoria;
 import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
 import jakarta.persistence.*;
@@ -16,21 +14,6 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @ToString(exclude = {"entidadBeneficiaria"})
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "tipo"
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(
-                value = NecesidadExtraordinaria.class,
-                name = "EXTRAORDINARIA"
-        ),
-        @JsonSubTypes.Type(
-                value = NecesidadRecurrente.class,
-                name = "RECURRENTE"
-        )
-})
 @Entity
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)

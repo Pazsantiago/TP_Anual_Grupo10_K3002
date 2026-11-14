@@ -1,17 +1,14 @@
-package com.grupo10.servicio_donaciones.dtos.backend;
+package com.grupo10.servicio_donaciones.dtos.integracion;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
-
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
 public class DonacionAsignadaDTO {
     private Long idAsignada;
     private List<DonacionSegmentadaDTO> donacionesSegmentadas;

@@ -1,11 +1,12 @@
 package com.grupo10.servicio_donaciones.Controllers.cBeneficiarias;
 
-
 import com.grupo10.servicio_donaciones.Services.ServiceBeneficiarias.ServicioBeneficiarias;
 import com.grupo10.servicio_donaciones.Services.ServiceDonacionAsignada.ServicioDonacionAsignada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
+import com.grupo10.servicio_donaciones.dtos.request.EntidadBeneficiariaRequestDTO;
+import com.grupo10.servicio_donaciones.dtos.response.EntidadBeneficiariaResponseDTO;
 import com.grupo10.servicio_donaciones.excepciones.DonacionVencidaException;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
@@ -43,22 +44,25 @@ public class CBeneficiarias {
         return dto;
     }
 
-    // READ - Obtener todas las Entidades Beneficiaria
+    // READ - Obtener todas las Entidades Beneficiarias
     @GetMapping("")
-    public ResponseEntity<List<EntidadBeneficiaria>> getAllEntidades() {
+    public ResponseEntity<List<EntidadBeneficiariaResponseDTO>> getAllEntidades() {
         try {
-            return ResponseEntity.ok(servicioBeneficiarias.getAllEntidades());
+            return ResponseEntity.ok(
+                    servicioBeneficiarias.getAllEntidades().stream()
+                            .map(mapper::deDominioAResponse)
+                            .toList()
+            );
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-
     // READ - Obtener una Entidad Beneficiaria por id
     @GetMapping("/{idEntidad}")
-    public ResponseEntity<EntidadBeneficiaria> getEntidadById(@PathVariable Long idEntidad) {
+    public ResponseEntity<EntidadBeneficiariaResponseDTO> getEntidadById(@PathVariable Long idEntidad) {
         try {
-            return ResponseEntity.ok(servicioBeneficiarias.getEntidadById(idEntidad));
+            return ResponseEntity.ok(mapper.deDominioAResponse(servicioBeneficiarias.getEntidadById(idEntidad)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -66,9 +70,11 @@ public class CBeneficiarias {
 
     // CREATE - Agregar una nueva Entidad Beneficiaria
     @PostMapping("")
-    public ResponseEntity<EntidadBeneficiaria> createEntidad(@RequestBody EntidadBeneficiaria entidad) {
+    public ResponseEntity<EntidadBeneficiariaResponseDTO> createEntidad(@RequestBody EntidadBeneficiariaRequestDTO dto) {
         try {
-            return ResponseEntity.ok(servicioBeneficiarias.createEntidad(entidad));
+            EntidadBeneficiaria entidad = mapper.deDTORequestADominio(dto);
+            EntidadBeneficiaria creada = servicioBeneficiarias.createEntidad(entidad);
+            return ResponseEntity.ok(mapper.deDominioAResponse(creada));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -76,9 +82,11 @@ public class CBeneficiarias {
 
     // UPDATE - Actualizar una Entidad Beneficiaria existente
     @PutMapping("/{idEntidad}")
-    public ResponseEntity<EntidadBeneficiaria> updateEntidad(@PathVariable Long idEntidad, @RequestBody EntidadBeneficiaria updatedEntidad) {
+    public ResponseEntity<EntidadBeneficiariaResponseDTO> updateEntidad(@PathVariable Long idEntidad, @RequestBody EntidadBeneficiariaRequestDTO dto) {
         try {
-            return ResponseEntity.ok(servicioBeneficiarias.updateEntidad(idEntidad, updatedEntidad));
+            EntidadBeneficiaria entidad = mapper.deDTORequestADominio(dto);
+            EntidadBeneficiaria actualizada = servicioBeneficiarias.updateEntidad(idEntidad, entidad);
+            return ResponseEntity.ok(mapper.deDominioAResponse(actualizada));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -94,29 +102,35 @@ public class CBeneficiarias {
         }
     }
 
-    // DADA una entidad, se le asigna finalmente la donacion segmentada a su necesidad.
+    // Asignar donación segmentada a la necesidad de la entidad
     @PostMapping("/{idEntidad}/necesidades/{idNecesidad}/donaciones/{idDonacion}")
-    public ResponseEntity<Map<String, Object>> asignarDonacionAEntidadPorNecesidad(@PathVariable Long idEntidad, @PathVariable Long idNecesidad, @PathVariable Long idDonacion) {
-//        try {
-        return ResponseEntity.ok(aDonacionAsignadaREST(servicioDonacionAsignada.asignarDonacionAEntidadConNecesidad(idDonacion, idEntidad, idNecesidad)));
-//        } catch (DonacionVencidaException donacionVencidaException) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(aDonacionSegmentadaFallidaREST(idDonacion, donacionVencidaException.getMessage()));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-    }
-
-    //Se le agrega una donacion segmentada a la asignada para ir completando
-    @PostMapping("/donacionesAsignadas/{idDonacionAsignada}/donaciones/{idDonacionSegmentada}")
-    public ResponseEntity<Map<String, Object>> agregarDonacionADonacionAsignadaIncompleta(@PathVariable Long idDonacionAsignada, @PathVariable Long idDonacionSegmentada) {
+    public ResponseEntity<Map<String, Object>> asignarDonacionAEntidadPorNecesidad(
+            @PathVariable Long idEntidad,
+            @PathVariable Long idNecesidad,
+            @PathVariable Long idDonacion) {
         try {
-            return ResponseEntity.ok(aDonacionAsignadaREST(servicioDonacionAsignada.agregarDonacionADonacionAsignadaIncompleta(idDonacionAsignada, idDonacionSegmentada)));
-        } catch (DonacionVencidaException donacionVencidaException) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(aDonacionSegmentadaFallidaREST(idDonacionSegmentada, donacionVencidaException.getMessage()));
+            return ResponseEntity.ok(aDonacionAsignadaREST(
+                    servicioDonacionAsignada.asignarDonacionAEntidadConNecesidad(idDonacion, idEntidad, idNecesidad)
+            ));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-
+    // Agregar una donación segmentada a una asignación incompleta
+    @PostMapping("/donacionesAsignadas/{idDonacionAsignada}/donaciones/{idDonacionSegmentada}")
+    public ResponseEntity<Map<String, Object>> agregarDonacionADonacionAsignadaIncompleta(
+            @PathVariable Long idDonacionAsignada,
+            @PathVariable Long idDonacionSegmentada) {
+        try {
+            return ResponseEntity.ok(aDonacionAsignadaREST(
+                    servicioDonacionAsignada.agregarDonacionADonacionAsignadaIncompleta(idDonacionAsignada, idDonacionSegmentada)
+            ));
+        } catch (DonacionVencidaException donacionVencidaException) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(aDonacionSegmentadaFallidaREST(idDonacionSegmentada, donacionVencidaException.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

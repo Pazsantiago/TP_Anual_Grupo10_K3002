@@ -1,8 +1,6 @@
 package com.grupo10.servicio_donaciones.donaciones.dominio.bien;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Subcategoria;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
 import jakarta.persistence.*;
@@ -24,21 +22,6 @@ import java.net.URL;
 @ToString(exclude = {"donacion"})
 @Entity
 @NoArgsConstructor
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "tipo"
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(
-                value = BienPerecedero.class,
-                name = "PERECEDERO"
-        ),
-        @JsonSubTypes.Type(
-                value = BienConEstado.class,
-                name = "CON_ESTADO"
-        )
-})
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Bien {
     @Id

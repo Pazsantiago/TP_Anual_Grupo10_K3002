@@ -1,7 +1,5 @@
 package com.grupo10.servicio_donaciones.donaciones.dominio.donante;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,21 +8,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "tipo"
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(
-                value = PersonaHumana.class,
-                name = "HUMANA"
-        ),
-        @JsonSubTypes.Type(
-                value = PersonaJuridica.class,
-                name = "JURIDICA"
-        )
-})
 @Entity
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)

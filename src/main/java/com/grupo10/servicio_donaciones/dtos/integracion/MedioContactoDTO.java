@@ -1,13 +1,11 @@
-package com.grupo10.servicio_donaciones.dtos.backend;
+package com.grupo10.servicio_donaciones.dtos.integracion;
 
 import com.grupo10.servicio_donaciones.donaciones.dominio.donante.MedioNotificacion;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class MedioContactoDTO {
