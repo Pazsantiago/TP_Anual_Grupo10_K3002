@@ -1,6 +1,7 @@
 package com.grupo10.servicio_donaciones.donaciones.mensajes;
 
 public enum TipoEvento {
+    USUARIO_CREADO,
     DONACION_ASIGNADA_ENTIDAD,
     DONACION_ASIGNADA_DONANTE,
     DONANTE_INACTIVO,

@@ -89,13 +89,29 @@ public class ServicioDonantes {
     public String importarCSV(String rutaArchivo) {
         importadorCSV.setRepositorioDonadores(repoDonantes);
         Integer cantDonantesAnteriores = repoDonantes.findAll().size();
-        boolean importado = importadorCSV.importarCsv(rutaArchivo);
+        List<Donante> importados = importadorCSV.importarCsv(rutaArchivo);
 
-        if (importado) {
+        if (!importados.isEmpty()) {
+
+            //Crear cuenta
+            // TODO
+            //Avisar credenciales a cada donante
+            importados.forEach(donante -> {
+                String nombre = (donante.getPersona() instanceof PersonaHumana ph)
+                        ? ph.getNombre()
+                        : ((PersonaJuridica) donante.getPersona()).getRazonSocial();
+                comunicador.comunicarMensaje(
+                        nombre,
+                        donante.obtenerContactoPredeterminado().getCorreoElectronico(),
+                        donante.obtenerContactoPredeterminado().getTelefono(),
+                        donante.obtenerContactoPredeterminado().getTipo(),
+                        TipoEvento.USUARIO_CREADO, restClientMensajes
+                );
+            });
+            
             return "Archivo importado correctamente" +
                     " - Cantidad de registros creados: " + (repoDonantes.count() - cantDonantesAnteriores);
         }
-
         return "No se pudo importar el archivo";
     }
 

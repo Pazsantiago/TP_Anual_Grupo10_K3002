@@ -31,7 +31,7 @@ public class Importador {
     }
 
     @Transactional
-    public boolean importarCsv(String ruta_archivo) {
+    public List<Donante> importarCsv(String ruta_archivo) {
         boolean first = true;
         try (CSVReader csvReader = new CSVReader(new FileReader(ruta_archivo))) {
             String[] fila;
@@ -66,10 +66,10 @@ public class Importador {
 
             }
             repositorioDonadores.saveAll(donantes);
-            return true;
+            return donantes;
 
         } catch (IOException | CsvValidationException e) {
-            return false;
+            return List.of();
         }
     }
 
