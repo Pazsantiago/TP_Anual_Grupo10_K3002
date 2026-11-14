@@ -2,10 +2,10 @@ package org.example.donacionesfrontend.controllers.donaciones;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dominio.categoria.Categoria;
-import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
-import org.example.donacionesfrontend.dominio.entidad.EntidadBeneficiaria;
-import org.example.donacionesfrontend.dominio.necesidad.NecesidadExtraordinaria;
+import org.example.donacionesfrontend.dtos.request.EntidadBeneficiariaRequestDTO;
+import org.example.donacionesfrontend.dtos.request.NecesidadRequestDTO;
+import org.example.donacionesfrontend.dtos.request.SubcategoriaRequestDTO;
+import org.example.donacionesfrontend.dtos.response.EntidadBeneficiariaResponseDTO;
 import org.example.donacionesfrontend.services.EntidadService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,29 +23,29 @@ public class EntidadController {
 
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("entidades", entidadService.getAll());
+        List<EntidadBeneficiariaResponseDTO> entidades = entidadService.getAll();
+        model.addAttribute("entidades", entidades);
         return "entidades/lista";
     }
 
     @GetMapping("/nueva")
     public String formularioNuevo(Model model) {
-        EntidadBeneficiaria entidad = new EntidadBeneficiaria();
-        entidad.setDireccion("Ninguna");
+        EntidadBeneficiariaRequestDTO entidadDTO = new EntidadBeneficiariaRequestDTO();
+        entidadDTO.setDireccion("Ninguna");
 
-        NecesidadExtraordinaria necesidad = new NecesidadExtraordinaria();
-        Subcategoria subcat = new Subcategoria();
-        subcat.setCategoria(new Categoria());
-        necesidad.setSubcategoria(subcat);
+        NecesidadRequestDTO necesidadDTO = new NecesidadRequestDTO();
+        necesidadDTO.setTipo("EXTRAORDINARIA");
+        necesidadDTO.setSubcategoria(new SubcategoriaRequestDTO());
 
-        entidad.setNecesidades(new ArrayList<>(List.of(necesidad)));
+        entidadDTO.setNecesidades(new ArrayList<>(List.of(necesidadDTO)));
 
-        model.addAttribute("entidad", entidad);
+        model.addAttribute("entidad", entidadDTO);
         return "entidades/formulario";
     }
 
     @PostMapping
-    public String guardar(@ModelAttribute("entidad") EntidadBeneficiaria entidad, HttpSession session) {
-        entidadService.create(entidad);
+    public String guardar(@ModelAttribute("entidad") EntidadBeneficiariaRequestDTO entidadDTO, HttpSession session) {
+        entidadService.create(entidadDTO);
         return "redirect:/entidadesBeneficiarias";
     }
 

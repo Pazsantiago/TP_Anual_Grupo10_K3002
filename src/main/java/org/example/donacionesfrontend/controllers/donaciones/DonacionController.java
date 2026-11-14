@@ -1,11 +1,11 @@
 package org.example.donacionesfrontend.controllers.donaciones;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dominio.bien.Bien;
-import org.example.donacionesfrontend.dominio.bien.BienConEstado;
-import org.example.donacionesfrontend.dominio.categoria.Categoria;
-import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
-import org.example.donacionesfrontend.dominio.donacion.Donacion;
+import org.example.donacionesfrontend.dtos.request.BienRequestDTO;
+import org.example.donacionesfrontend.dtos.request.DonacionRequestDTO;
+import org.example.donacionesfrontend.dtos.request.SubcategoriaRequestDTO;
+import org.example.donacionesfrontend.dtos.response.DonacionResponseDTO;
+import org.example.donacionesfrontend.dtos.response.DonanteResponseDTO;
 import org.example.donacionesfrontend.services.CategoriaService;
 import org.example.donacionesfrontend.services.DonacionService;
 import org.example.donacionesfrontend.services.DonanteService;
@@ -28,9 +28,11 @@ public class DonacionController {
 
     @GetMapping
     public String listarPorDonante(@RequestParam(value = "idDonante", required = false) Long idDonante, Model model) {
-        model.addAttribute("donantes", donanteService.getAll());
+        List<DonanteResponseDTO> donantes = donanteService.getAll();
+        model.addAttribute("donantes", donantes);
         if (idDonante != null) {
-            model.addAttribute("donaciones", donacionService.getByDonante(idDonante));
+            List<DonacionResponseDTO> donaciones = donacionService.getByDonante(idDonante);
+            model.addAttribute("donaciones", donaciones);
             model.addAttribute("idDonanteSeleccionado", idDonante);
         }
         return "donaciones/lista";
@@ -38,17 +40,16 @@ public class DonacionController {
 
     @GetMapping("/nueva")
     public String formularioNuevo(@RequestParam(value = "idDonante", required = false) Long idDonante, Model model) {
-        Donacion donacion = new Donacion();
+        DonacionRequestDTO donacionDTO = new DonacionRequestDTO();
 
         // Inicializamos el primer bien con su subcategoría
-        BienConEstado primerBien = new BienConEstado();
-        Subcategoria subcat = new Subcategoria();
-        subcat.setCategoria(new Categoria());
-        primerBien.setSubcategoria(subcat);
+        BienRequestDTO primerBien = new BienRequestDTO();
+        primerBien.setTipo("CON_ESTADO");
+        primerBien.setSubcategoria(new SubcategoriaRequestDTO());
 
-        donacion.setBienesDeEntrada(new ArrayList<>(List.of(primerBien)));
+        donacionDTO.setBienesDeEntrada(new ArrayList<>(List.of(primerBien)));
 
-        model.addAttribute("donacion", donacion);
+        model.addAttribute("donacion", donacionDTO);
         model.addAttribute("donantes", donanteService.getAll());
         model.addAttribute("categorias", categoriaService.getAll());
         model.addAttribute("idDonanteSeleccionado", idDonante);
@@ -59,18 +60,18 @@ public class DonacionController {
     @PostMapping
     public String guardar(
             @RequestParam("idDonante") Long idDonante,
-            @ModelAttribute("donacion") Donacion donacion,
+            @ModelAttribute("donacion") DonacionRequestDTO donacionDTO,
             RedirectAttributes redirectAttributes) {
 
         // Filtramos cualquier bien que no tenga descripción cargada
-        if (donacion.getBienesDeEntrada() != null) {
-            List<Bien> bienesValidos = donacion.getBienesDeEntrada().stream()
+        if (donacionDTO.getBienesDeEntrada() != null) {
+            List<BienRequestDTO> bienesValidos = donacionDTO.getBienesDeEntrada().stream()
                     .filter(b -> b.getDescripcion() != null && !b.getDescripcion().isBlank())
                     .toList();
-            donacion.setBienesDeEntrada(bienesValidos);
+            donacionDTO.setBienesDeEntrada(bienesValidos);
         }
 
-        donacionService.create(idDonante, donacion);
+        donacionService.create(idDonante, donacionDTO);
         redirectAttributes.addFlashAttribute("exito", "Donación registrada correctamente.");
         return "redirect:/donaciones?idDonante=" + idDonante;
     }

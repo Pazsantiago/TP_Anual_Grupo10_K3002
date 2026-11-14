@@ -3,48 +3,55 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <body class="container py-4">
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Donantes Registrados</h2>
-    <a th:href="@{/donantes/nuevo}" class="btn btn-primary">+ Nuevo Donante</a>
+<h2>Gestión de Donantes</h2>
+
+<!-- Mensajes de éxito o error -->
+<div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+<!-- Botones de Acción -->
+<div class="mb-3 d-flex gap-2">
+    <a href="/donantes/nuevo?tipo=HUMANA" class="btn btn-primary">+ Nuevo Donante Humano</a>
+    <a href="/donantes/nuevo?tipo=JURIDICA" class="btn btn-secondary">+ Nuevo Donante Jurídico</a>
+    <a href="/donantes/importar" class="btn btn-outline-info">Importar CSV</a>
 </div>
 
-<table class="table table-striped table-bordered align-middle">
+<!-- Tabla de Donantes -->
+<table class="table table-striped table-hover align-middle">
     <thead class="table-dark">
     <tr>
         <th>ID</th>
-        <th>Tipo</th>
         <th>Nombre / Razón Social</th>
         <th>Contacto Predeterminado</th>
+        <th>Cant. Donaciones</th>
         <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${#lists.isEmpty(donantes)}">
-        <td colspan="5" class="text-center text-muted">No hay donantes registrados.</td>
-    </tr>
     <tr th:each="d : ${donantes}">
         <td th:text="${d.id}">1</td>
+        <td th:text="${d.nombre}">Juan Pérez</td>
         <td>
-            <span th:if="${d.persona != null and d.persona instanceof T(org.example.donacionesfrontend.dominio.donante.PersonaHumana)}">Humana</span>
-            <span th:if="${d.persona != null and d.persona instanceof T(org.example.donacionesfrontend.dominio.donante.PersonaJuridica)}">Jurídica</span>
-            <span th:if="${d.persona == null}" class="text-muted">-</span>
+                    <span th:if="${d.contactoPredeterminado != null}">
+                        <strong th:text="${d.contactoPredeterminado.tipo}">EMAIL</strong>:
+                        <span th:text="${d.contactoPredeterminado.correoElectronico}">juan@email.com</span>
+                        <span th:if="${d.contactoPredeterminado.telefono}" th:text="'(' + ${d.contactoPredeterminado.telefono} + ')'"></span>
+                    </span>
+            <span th:if="${d.contactoPredeterminado == null}" class="text-muted">Sin contacto</span>
         </td>
+        <td th:text="${d.donaciones != null ? d.donaciones.size() : 0}">0</td>
         <td>
-            <span th:if="${d.persona != null and d.persona instanceof T(org.example.donacionesfrontend.dominio.donante.PersonaHumana)}" th:text="${d.persona.nombre}">Juan Pérez</span>
-            <span th:if="${d.persona != null and d.persona instanceof T(org.example.donacionesfrontend.dominio.donante.PersonaJuridica)}" th:text="${d.persona.razonSocial}">Empresa S.A.</span>
-            <span th:if="${d.persona == null}" class="text-muted">Sin datos</span>
+            <div class="d-flex gap-2">
+                <a th:href="@{/donaciones(idDonante=${d.id})}" class="btn btn-sm btn-info">Ver Donaciones</a>
+                <form method="post" action="/donantes/eliminar" onsubmit="return confirm('¿Seguro deseas eliminar este donante?');">
+                    <input type="hidden" name="id" th:value="${d.id}"/>
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </div>
         </td>
-        <td>
-            <span th:if="${d.mediosDeContacto != null and !#lists.isEmpty(d.mediosDeContacto)}" th:text="${d.mediosDeContacto[0].correoElectronico}">contacto@mail.com</span>
-            <span th:if="${d.mediosDeContacto == null or #lists.isEmpty(d.mediosDeContacto)}" class="text-muted">Sin contacto</span>
-        </td>
-        <td class="d-flex gap-2">
-            <a th:href="@{/donaciones(idDonante=${d.id})}" class="btn btn-sm btn-info text-white">Donaciones</a>
-            <form th:action="@{/donantes/eliminar}" method="post" onsubmit="return confirm('¿Eliminar donante?');">
-                <input type="hidden" name="id" th:value="${d.id}"/>
-                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-            </form>
-        </td>
+    </tr>
+    <tr th:if="${donantes == null or #lists.isEmpty(donantes)}">
+        <td colspan="5" class="text-center text-muted">No hay donantes registrados.</td>
     </tr>
     </tbody>
 </table>

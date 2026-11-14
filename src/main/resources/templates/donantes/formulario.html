@@ -27,6 +27,9 @@
 
 <form th:action="@{/donantes/nuevo}" th:object="${donante}" method="post">
 
+    <!-- Campo Tipo en PersonaRequestDTO -->
+    <input type="hidden" name="persona.tipo" th:value="${tipoActual}"/>
+
     <!-- Campos Persona Humana -->
     <div th:if="${tipoActual == 'HUMANA'}" class="card mb-4">
         <div class="card-header bg-light fw-bold">Datos de Persona Humana</div>
@@ -45,21 +48,8 @@
                     <select th:field="*{persona.genero}" class="form-select">
                         <option value="MASCULINO">Masculino</option>
                         <option value="FEMENINO">Femenino</option>
-                        <option value="NO_BINARIO">No Binario</option>
-                        <option value="PREFIERO_NO_DECIR">Prefiero no decir</option>
+                        <option value="OTRO">Otro</option>
                     </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Tipo Documento</label>
-                    <select th:field="*{persona.documento.tipoDocumento}" class="form-select">
-                        <option value="DNI">DNI</option>
-                        <option value="PASAPORTE">Pasaporte</option>
-                        <option value="CUIL">CUIL</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Número Documento</label>
-                    <input type="text" th:field="*{persona.documento.documento}" class="form-control" required/>
                 </div>
             </div>
         </div>
@@ -74,30 +64,17 @@
                     <label class="form-label">Razón Social</label>
                     <input type="text" th:field="*{persona.razonSocial}" class="form-control" required/>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
+                    <label class="form-label">Tipo Jurídico</label>
+                    <select th:field="*{persona.tipoJuridica}" class="form-select">
+                        <option value="ONG">ONG</option>
+                        <option value="EMPRESA">Empresa</option>
+                        <option value="FUNDACION">Fundación</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
                     <label class="form-label">Rubro</label>
                     <input type="text" th:field="*{persona.rubro}" class="form-control" required/>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Dirección -->
-    <div class="card mb-4">
-        <div class="card-header bg-light fw-bold">Dirección</div>
-        <div class="card-body">
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Calle</label>
-                    <input type="text" th:field="*{persona.direccion.calle}" class="form-control" required/>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Altura</label>
-                    <input type="text" th:field="*{persona.direccion.altura}" class="form-control" required/>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Localidad</label>
-                    <input type="text" th:field="*{persona.direccion.localidad}" class="form-control" required/>
                 </div>
             </div>
         </div>

@@ -1,7 +1,8 @@
 package org.example.donacionesfrontend.services;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dominio.necesidad.Necesidad;
+import org.example.donacionesfrontend.dtos.request.NecesidadRequestDTO;
+import org.example.donacionesfrontend.dtos.response.NecesidadResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,14 @@ public class NecesidadService {
     public NecesidadService(@Qualifier("restClientDonaciones") RestClient restClient) {
         this.restClient = restClient;
     }
-    public List<Necesidad> getByEntidad(Long idEntidad) {
+    public List<NecesidadResponseDTO> getByEntidad(Long idEntidad) {
         return restClient.get()
                 .uri("/api/entidadesBeneficiarias/{idEntidad}/necesidades", idEntidad)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<Necesidad>>() {});
+                .body(new ParameterizedTypeReference<List<NecesidadResponseDTO>>() {});
     }
 
-    public void create(Long idEntidad, Necesidad necesidad) {
+    public void create(Long idEntidad, NecesidadRequestDTO necesidad) {
         restClient.post()
                 .uri("/api/entidadesBeneficiarias/{idEntidad}/necesidades", idEntidad)
                 .body(necesidad)

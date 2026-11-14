@@ -27,6 +27,9 @@
 
 <form th:action="@{/necesidades}" th:object="${necesidad}" method="post">
 
+    <!-- Campo Tipo de Necesidad -->
+    <input type="hidden" name="tipo" th:value="${tipoActual}"/>
+
     <!-- Selección de Entidad Beneficiaria -->
     <div class="card mb-4 border-primary">
         <div class="card-header bg-primary text-white fw-bold">1. Entidad Beneficiaria</div>
@@ -53,10 +56,10 @@
                     <input type="text" th:field="*{descripcion}" class="form-control" placeholder="Ej: Harina de trigo 000" required/>
                 </div>
 
-                <!-- Desplegable de Categoría Padre -->
+                <!-- Categoría Padre -->
                 <div class="col-md-6">
                     <label class="form-label">Categoría Padre</label>
-                    <select th:field="*{subcategoria.categoria.id}" class="form-select" required>
+                    <select th:field="*{subcategoria.idCategoria}" class="form-select" required>
                         <option value="">-- Seleccionar Categoría --</option>
                         <option th:each="cat : ${categorias}"
                                 th:value="${cat.id}"
@@ -72,24 +75,24 @@
 
                 <div class="col-md-12">
                     <label class="form-label">Cantidad Objetivo</label>
-                    <input type="number" th:field="*{cantidadObjetivo}" class="form-control" placeholder="Ej: 100" required/>
+                    <input type="number" th:field="*{cantidadObjetivo}" class="form-control" placeholder="Ej: 100" required min="1"/>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Parámetros de Recurrencia (si aplica) -->
-    <div th:if="${tipoActual == 'RECURRENTE' or necesidad instanceof T(org.example.donacionesfrontend.dominio.necesidad.NecesidadRecurrente)}" class="card mb-4">
+    <!-- Parámetros de Recurrencia (PeriodoRequestDTO) -->
+    <div th:if="${tipoActual == 'RECURRENTE'}" class="card mb-4">
         <div class="card-header bg-light fw-bold">3. Parámetros de Recurrencia</div>
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Días del Período</label>
-                    <input type="number" th:field="*{periodo.diasPeriodo}" class="form-control" placeholder="Ej: 30"/>
+                    <input type="number" th:field="*{periodoRequestDTO.periodoDias}" class="form-control" placeholder="Ej: 30" required/>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Fecha Inicio Período</label>
-                    <input type="date" th:field="*{periodo.fechaInicioPeriodo}" class="form-control"/>
+                    <input type="date" th:field="*{periodoRequestDTO.inicioPeriodo}" class="form-control" required/>
                 </div>
             </div>
         </div>

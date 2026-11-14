@@ -1,7 +1,8 @@
 package org.example.donacionesfrontend.services;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dominio.entidad.EntidadBeneficiaria;
+import org.example.donacionesfrontend.dtos.request.EntidadBeneficiariaRequestDTO;
+import org.example.donacionesfrontend.dtos.response.EntidadBeneficiariaResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -17,21 +18,21 @@ public class EntidadService {
     public EntidadService(@Qualifier("restClientDonaciones") RestClient restClient) {
         this.restClient = restClient;
     }
-    public List<EntidadBeneficiaria> getAll() {
+    public List<EntidadBeneficiariaResponseDTO> getAll() {
         return restClient.get()
                 .uri("/api/entidadesBeneficiarias")
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<EntidadBeneficiaria>>() {});
+                .body(new ParameterizedTypeReference<List<EntidadBeneficiariaResponseDTO>>() {});
     }
 
-    public EntidadBeneficiaria getById(Long id) {
+    public EntidadBeneficiariaResponseDTO getById(Long id) {
         return restClient.get()
                 .uri("/api/entidadesBeneficiarias/{id}", id)
                 .retrieve()
-                .body(EntidadBeneficiaria.class);
+                .body(EntidadBeneficiariaResponseDTO.class);
     }
 
-    public void create(EntidadBeneficiaria entidad) {
+    public void create(EntidadBeneficiariaRequestDTO entidad) {
         restClient.post()
                 .uri("/api/entidadesBeneficiarias")
                 .body(entidad)

@@ -1,9 +1,11 @@
 package org.example.donacionesfrontend.controllers.donaciones;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dominio.categoria.Categoria;
-import org.example.donacionesfrontend.dominio.categoria.Subcategoria;
-import org.example.donacionesfrontend.dominio.necesidad.*;
+import org.example.donacionesfrontend.dtos.request.NecesidadRequestDTO;
+import org.example.donacionesfrontend.dtos.request.PeriodoRequestDTO;
+import org.example.donacionesfrontend.dtos.request.SubcategoriaRequestDTO;
+import org.example.donacionesfrontend.dtos.response.EntidadBeneficiariaResponseDTO;
+import org.example.donacionesfrontend.dtos.response.NecesidadResponseDTO;
 import org.example.donacionesfrontend.services.CategoriaService;
 import org.example.donacionesfrontend.services.EntidadService;
 import org.example.donacionesfrontend.services.NecesidadService;
@@ -11,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+
 @Controller
 @RequestMapping("/necesidades")
 @RequiredArgsConstructor
@@ -21,42 +26,38 @@ public class NecesidadController {
     private final CategoriaService categoriaService;
 
     @ModelAttribute("necesidad")
-    public Necesidad prepararNecesidad(@RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo) {
-        Necesidad necesidad;
+    public NecesidadRequestDTO prepararNecesidad(@RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo) {
+        NecesidadRequestDTO necesidadDTO = new NecesidadRequestDTO();
+        necesidadDTO.setTipo(tipo); // "RECURRENTE" o "EXTRAORDINARIA"
+
         if ("RECURRENTE".equalsIgnoreCase(tipo)) {
-            NecesidadRecurrente nr = new NecesidadRecurrente();
-            Periodo periodo = new Periodo();
-            nr.setPeriodo(periodo);
-            necesidad = nr;
-        } else {
-            necesidad = new NecesidadExtraordinaria();
+            necesidadDTO.setPeriodoRequestDTO(new PeriodoRequestDTO());
         }
 
-        Subcategoria subcategoria = new Subcategoria();
-        subcategoria.setCategoria(new Categoria());
-        necesidad.setSubcategoria(subcategoria);
-
-        return necesidad;
+        necesidadDTO.setSubcategoria(new SubcategoriaRequestDTO());
+        return necesidadDTO;
     }
 
     @GetMapping
     public String listarPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, Model model) {
-        model.addAttribute("entidades", entidadService.getAll());
+        List<EntidadBeneficiariaResponseDTO> entidades = entidadService.getAll();
+        model.addAttribute("entidades", entidades);
         model.addAttribute("idEntidadSeleccionada", idEntidad);
         if (idEntidad != null) {
-            model.addAttribute("necesidades", necesidadService.getByEntidad(idEntidad));
+            List<NecesidadResponseDTO> necesidades = necesidadService.getByEntidad(idEntidad);
+            model.addAttribute("necesidades", necesidades);
         }
         return "necesidades/lista";
     }
 
     @GetMapping("/nueva")
     public String formularioNueva(
-            @RequestParam(value = "idEntidad", required = false) Long idEntidad, // CORREGIDO: ahora es opcional
+            @RequestParam(value = "idEntidad", required = false) Long idEntidad,
             @RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo,
             Model model) {
         model.addAttribute("idEntidadSeleccionada", idEntidad);
         model.addAttribute("tipoActual", tipo);
-        model.addAttribute("entidades", entidadService.getAll()); // Se cargan todas las entidades
+        model.addAttribute("entidades", entidadService.getAll());
         model.addAttribute("categorias", categoriaService.getAll());
         return "necesidades/formulario";
     }
@@ -64,9 +65,9 @@ public class NecesidadController {
     @PostMapping
     public String guardarNecesidad(
             @RequestParam("idEntidad") Long idEntidad,
-            @ModelAttribute("necesidad") Necesidad necesidad,
+            @ModelAttribute("necesidad") NecesidadRequestDTO necesidadDTO,
             RedirectAttributes redirectAttributes) {
-        necesidadService.create(idEntidad, necesidad);
+        necesidadService.create(idEntidad, necesidadDTO);
         redirectAttributes.addFlashAttribute("exito", "Necesidad registrada correctamente.");
         return "redirect:/necesidades?idEntidad=" + idEntidad;
     }

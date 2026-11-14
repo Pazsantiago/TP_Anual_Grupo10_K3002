@@ -1,7 +1,8 @@
 package org.example.donacionesfrontend.services;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dominio.donacion.Donacion;
+import org.example.donacionesfrontend.dtos.request.DonacionRequestDTO;
+import org.example.donacionesfrontend.dtos.response.DonacionResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -18,14 +19,14 @@ public class DonacionService {
         this.restClient = restClient;
     }
 
-    public List<Donacion> getByDonante(Long idDonante) {
+    public List<DonacionResponseDTO> getByDonante(Long idDonante) {
         return restClient.get()
                 .uri("/api/donantes/{idDonante}/donaciones", idDonante)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<Donacion>>() {});
+                .body(new ParameterizedTypeReference<List<DonacionResponseDTO>>() {});
     }
 
-    public void create(Long idDonante, Donacion donacion) {
+    public void create(Long idDonante, DonacionRequestDTO donacion) {
         restClient.post()
                 .uri("/api/donantes/{idDonante}/donaciones", idDonante)
                 .body(donacion)

@@ -3,62 +3,42 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <body class="container py-4">
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Necesidades por Entidad</h2>
-    <div>
-        <a th:href="@{/entidadesBeneficiarias}" class="btn btn-outline-secondary me-2">Volver a Entidades</a>
-        <a th:if="${idEntidadSeleccionada != null}" th:href="@{/necesidades/nueva(idEntidad=${idEntidadSeleccionada})}" class="btn btn-primary">+ Registrar Necesidad</a>
-    </div>
+<h2>Gestión de Entidades Beneficiarias</h2>
+
+<div class="mb-3">
+    <a href="/entidadesBeneficiarias/nueva" class="btn btn-primary">+ Nueva Entidad Beneficiaria</a>
 </div>
 
-
-<div class="card mb-4">
-    <div class="card-body">
-        <form th:action="@{/necesidades}" method="get" class="row align-items-center">
-            <div class="col-auto">
-                <label class="form-label mb-0 fw-bold">Seleccionar Entidad:</label>
-            </div>
-            <div class="col-md-6">
-                <select name="idEntidad" class="form-select" onchange="this.form.submit()">
-                    <option value="">-- Seleccionar una entidad --</option>
-                    <option th:each="e : ${entidades}"
-                            th:value="${e.id}"
-                            th:text="${e.razonSocial}"
-                            th:selected="${e.id == idEntidadSeleccionada}">
-                    </option>
-                </select>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-<table th:if="${idEntidadSeleccionada != null}" class="table table-striped table-bordered align-middle">
+<table class="table table-bordered table-hover align-middle">
     <thead class="table-dark">
     <tr>
         <th>ID</th>
-        <th>Descripción</th>
-        <th>Subcategoría</th>
-        <th>Cantidad Objetivo</th>
+        <th>Razón Social</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>Correo Representante</th>
         <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${#lists.isEmpty(necesidades)}">
-        <td colspan="5" class="text-center text-muted">Esta entidad no registra necesidades cargadas.</td>
-    </tr>
-    <tr th:each="n : ${necesidades}">
-        <td th:text="${n.id}">1</td>
-        <td th:text="${n.descripcion}">Harina de trigo</td>
-        <td th:text="${n.subcategoria != null ? n.subcategoria.nombre : 'Sin subcategoría'}">Harina</td>
-        <td th:text="${n.cantidadObjetivo}">100</td>
+    <tr th:each="ent : ${entidades}">
+        <td th:text="${ent.id}">1</td>
+        <td th:text="${ent.razonSocial}">Comedor Los Lapachos</td>
+        <td th:text="${ent.direccion}">Av. San Martín 1234</td>
+        <td th:text="${ent.telefono}">011-4567-8900</td>
+        <td th:text="${ent.correoRepresentante}">contacto@lapachos.org</td>
         <td>
-            <form th:action="@{/necesidades/eliminar}" method="post" onsubmit="return confirm('¿Eliminar necesidad?');">
-                <input type="hidden" name="idEntidad" th:value="${idEntidadSeleccionada}"/>
-                <input type="hidden" name="idNecesidad" th:value="${n.id}"/>
-                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-            </form>
+            <div class="d-flex gap-2">
+                <a th:href="@{/necesidades(idEntidad=${ent.id})}" class="btn btn-sm btn-info">Ver Necesidades</a>
+                <form method="post" action="/entidadesBeneficiarias/eliminar" onsubmit="return confirm('¿Seguro deseas eliminar esta entidad?');">
+                    <input type="hidden" name="id" th:value="${ent.id}"/>
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </div>
         </td>
+    </tr>
+    <tr th:if="${entidades == null or #lists.isEmpty(entidades)}">
+        <td colspan="6" class="text-center text-muted">No hay entidades beneficiarias registradas.</td>
     </tr>
     </tbody>
 </table>

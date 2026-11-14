@@ -1,7 +1,10 @@
 package org.example.donacionesfrontend.controllers.donaciones;
 
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.dominio.donante.*;
+import org.example.donacionesfrontend.dtos.request.DonanteRequestDTO;
+import org.example.donacionesfrontend.dtos.request.MedioContactoRequestDTO;
+import org.example.donacionesfrontend.dtos.request.PersonaRequestDTO;
+import org.example.donacionesfrontend.dtos.response.DonanteResponseDTO;
 import org.example.donacionesfrontend.services.DonanteService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,52 +23,39 @@ public class DonanteController {
 
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("donantes", donanteService.getAll());
+        List<DonanteResponseDTO> donantes = donanteService.getAll();
+        model.addAttribute("donantes", donantes);
         return "donantes/lista";
     }
 
     @ModelAttribute("donante")
-    public Donante prepararDonante(@RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo) {
-        Donante donante = new Donante();
-        if ("JURIDICA".equalsIgnoreCase(tipo)) {
-            PersonaJuridica pj = new PersonaJuridica();
-            pj.setDireccion(new Direccion());
-            pj.setRepresentantes(new ArrayList<>());
-            donante.setPersona(pj);
-        } else {
-            PersonaHumana ph = new PersonaHumana();
-            ph.setDocumento(new Documento());
-            ph.setDireccion(new Direccion());
-            donante.setPersona(ph);
-        }
+    public DonanteRequestDTO prepararDonante(@RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo) {
+        DonanteRequestDTO donanteDTO = new DonanteRequestDTO();
 
-        MedioContacto contacto = new MedioContacto();
-        contacto.setEsPredeterminado(true);
-        donante.setMediosDeContacto(new ArrayList<>(List.of(contacto)));
+        PersonaRequestDTO personaDTO = new PersonaRequestDTO();
+        personaDTO.setTipo(tipo); // "HUMANA" o "JURIDICA"
+        donanteDTO.setPersona(personaDTO);
 
-        return donante;
+        MedioContactoRequestDTO contactoDTO = new MedioContactoRequestDTO();
+        contactoDTO.setEsPredeterminado(true);
+        donanteDTO.setMediosDeContacto(new ArrayList<>(List.of(contactoDTO)));
+
+        return donanteDTO;
     }
 
     @GetMapping("/nuevo")
     public String formularioNuevo(
             @RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo,
             Model model) {
-        List<Donante> donantes = donanteService.getAll();
-        List<PersonaHumana> personasHumanas = donantes.stream()
-                .filter(d -> d.getPersona() instanceof PersonaHumana)
-                .map(d -> (PersonaHumana) d.getPersona())
-                .toList();
-
-        model.addAttribute("personasHumanas", personasHumanas);
         model.addAttribute("tipoActual", tipo);
         return "donantes/formulario";
     }
 
     @PostMapping("/nuevo")
     public String guardarDonante(
-            @ModelAttribute("donante") Donante donante,
+            @ModelAttribute("donante") DonanteRequestDTO donanteDTO,
             RedirectAttributes redirectAttributes) {
-        donanteService.create(donante);
+        donanteService.create(donanteDTO);
         redirectAttributes.addFlashAttribute("exito", "Donante registrado correctamente.");
         return "redirect:/donantes";
     }
