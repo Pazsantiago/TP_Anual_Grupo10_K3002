@@ -31,8 +31,9 @@
       <li><a class="topbar__link" th:href="@{/mapa}" th:attr="aria-current=${activo == 'mapa'} ? 'true'">Mapa</a></li>
     </ul>
     <ul class="topbar__list topbar__list--end">
-      <li><a class="topbar__link" th:href="@{/login}" th:attr="aria-current=${activo == 'login'} ? 'true'">Iniciar sesión</a></li>
-      <li><a class="topbar__link" th:href="@{/registro/donante}" th:attr="aria-current=${activo == 'registro'} ? 'true'">Registrarme</a></li>
+      <li><a class="topbar__link" th:if="${session.jwtToken == null}" th:href="@{/login}" th:attr="aria-current=${activo == 'login'} ? 'true'">Iniciar sesión</a></li>
+      <li><a class="topbar__link" th:href="@{/registro/donante}" th:if="${session.jwtToken == null}" th:attr="aria-current=${activo == 'registro'} ? 'true'">Registrarme</a></li>
+      <li><a  th:href="@{/inicio}" th:if="${session.jwtToken != null}" class="topbar__link" class="btn btn-outline-danger" th:attr="aria-current=${activo == 'registro'} ? 'true'">Registrarme</a></li>
     </ul>
   </nav>
   <div class="progress" data-progress role="progressbar" aria-label="Cargando" hidden></div>
