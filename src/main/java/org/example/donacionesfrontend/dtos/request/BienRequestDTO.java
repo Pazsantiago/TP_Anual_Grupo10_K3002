@@ -1,7 +1,5 @@
 package org.example.donacionesfrontend.dtos.request;
 
-import com.grupo10.servicio_donaciones.donaciones.dominio.bien.Estado;
-import com.grupo10.servicio_donaciones.donaciones.dominio.bien.UnidadMedida;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,10 +15,10 @@ public class BienRequestDTO {
     private String tipo;
     private SubcategoriaRequestDTO subcategoria;
     private URL foto;
-    private UnidadMedida unidad;
+    private String unidad;
     private Integer cantidadOriginal;
     private Integer cantidadActual;
-    private Estado estado;
+    private String estado;
     private LocalDate fechaVencimiento;
 
 }
