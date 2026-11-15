@@ -1,7 +1,6 @@
 package org.example.donacionesfrontend.services;
 
-import org.example.donacionesfrontend.dominio.categoria.Categoria;
-import org.example.donacionesfrontend.dominio.donante.Donante;
+import org.example.donacionesfrontend.dtos.response.CategoriaResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -17,10 +16,10 @@ public class CategoriaService {
         this.restClient = restClient;
     }
 
-    public List<Categoria> getAll() {
+    public List<CategoriaResponseDTO> getAll() {
         return restClient.get()
                 .uri("/api/categorias")
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<Categoria>>() {});
+                .body(new ParameterizedTypeReference<List<CategoriaResponseDTO>>() {});
     }
 }

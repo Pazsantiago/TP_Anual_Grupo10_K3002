@@ -3,17 +3,18 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <body class="container py-4">
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<h2>Gestión de Donantes</h2>
 
-<!-- Mensajes de éxito o error -->
+<h2 class="mb-4">Gestión de Donantes</h2>
+
+<!-- Mensajes de feedback -->
 <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
 <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
 <!-- Botones de Acción -->
 <div class="mb-3 d-flex gap-2">
-    <a href="/donantes/nuevo?tipo=HUMANA" class="btn btn-primary">+ Nuevo Donante Humano</a>
-    <a href="/donantes/nuevo?tipo=JURIDICA" class="btn btn-secondary">+ Nuevo Donante Jurídico</a>
-    <a href="/donantes/importar" class="btn btn-outline-info">Importar CSV</a>
+    <a th:href="@{/donantes/nuevo(tipo='HUMANA')}" class="btn btn-primary">+ Nuevo Donante Humano</a>
+    <a th:href="@{/donantes/nuevo(tipo='JURIDICA')}" class="btn btn-secondary">+ Nuevo Donante Jurídico</a>
+    <a th:href="@{/donantes/importar}" class="btn btn-outline-info">Importar CSV</a>
 </div>
 
 <!-- Tabla de Donantes -->
@@ -32,18 +33,18 @@
         <td th:text="${d.id}">1</td>
         <td th:text="${d.nombre}">Juan Pérez</td>
         <td>
-                    <span th:if="${d.contactoPredeterminado != null}">
-                        <strong th:text="${d.contactoPredeterminado.tipo}">EMAIL</strong>:
-                        <span th:text="${d.contactoPredeterminado.correoElectronico}">juan@email.com</span>
-                        <span th:if="${d.contactoPredeterminado.telefono}" th:text="'(' + ${d.contactoPredeterminado.telefono} + ')'"></span>
-                    </span>
+                <span th:if="${d.contactoPredeterminado != null}">
+                    <strong th:text="${d.contactoPredeterminado.tipo}">EMAIL</strong>:
+                    <span th:text="${d.contactoPredeterminado.correoElectronico}">correo@ejemplo.com</span>
+                    <span th:if="${d.contactoPredeterminado.telefono}" th:text="'(' + ${d.contactoPredeterminado.telefono} + ')'"></span>
+                </span>
             <span th:if="${d.contactoPredeterminado == null}" class="text-muted">Sin contacto</span>
         </td>
         <td th:text="${d.donaciones != null ? d.donaciones.size() : 0}">0</td>
         <td>
             <div class="d-flex gap-2">
                 <a th:href="@{/donaciones(idDonante=${d.id})}" class="btn btn-sm btn-info">Ver Donaciones</a>
-                <form method="post" action="/donantes/eliminar" onsubmit="return confirm('¿Seguro deseas eliminar este donante?');">
+                <form method="post" th:action="@{/donantes/eliminar}" onsubmit="return confirm('¿Seguro deseas eliminar este donante?');">
                     <input type="hidden" name="id" th:value="${d.id}"/>
                     <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                 </form>

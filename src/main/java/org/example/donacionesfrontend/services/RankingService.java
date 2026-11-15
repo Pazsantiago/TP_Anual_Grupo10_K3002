@@ -1,7 +1,7 @@
 package org.example.donacionesfrontend.services;
 
-import org.example.donacionesfrontend.dominio.algoritmosAsignacion.RankingEntidadBeneficiaria;
-import org.example.donacionesfrontend.dominio.algoritmosAsignacion.SegmentadaRankings;
+import org.example.donacionesfrontend.dtos.response.RankingEntidadBeneficiariaResponseDTO;
+import org.example.donacionesfrontend.dtos.response.SegmentadaRankingsResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -19,11 +19,11 @@ public class RankingService {
         this.restClient = restClient;
     }
 
-    public List<SegmentadaRankings> obtenerRankings() {
+    public List<SegmentadaRankingsResponseDTO> obtenerRankings() {
         return restClient.get()
                 .uri("/api/rankings")
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<SegmentadaRankings>>() {});
+                .body(new ParameterizedTypeReference<List<SegmentadaRankingsResponseDTO>>() {});
     }
 
     public void generarRankings() {
@@ -33,11 +33,11 @@ public class RankingService {
                 .toBodilessEntity();
     }
 
-    public List<RankingEntidadBeneficiaria> obtenerEntidadesRepetidas(Long idDonacion) {
+    public List<RankingEntidadBeneficiariaResponseDTO> obtenerEntidadesRepetidas(Long idDonacion) {
         String uri = (idDonacion != null) ? "/api/rankings/" + idDonacion : "/api/rankings/1";
         return restClient.get()
                 .uri(uri)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<RankingEntidadBeneficiaria>>() {});
+                .body(new ParameterizedTypeReference<List<RankingEntidadBeneficiariaResponseDTO>>() {});
     }
 }

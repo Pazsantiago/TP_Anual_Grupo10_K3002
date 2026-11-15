@@ -3,17 +3,18 @@
 <head th:replace="~{fragments/head :: head}"></head>
 <body class="container py-4">
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<h2>Gestión de Donaciones</h2>
+
+<h2 class="mb-4">Gestión de Donaciones</h2>
 
 <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
 
 <!-- Filtro por Donante -->
-<form method="get" action="/donaciones" class="card card-body mb-4 bg-light">
+<form method="get" th:action="@{/donaciones}" class="card card-body mb-4 bg-light">
     <div class="row align-items-end">
         <div class="col-md-8">
-            <label for="selectDonante" class="form-label">Filtrar por Donante:</label>
+            <label for="selectDonante" class="form-label fw-bold">Filtrar por Donante:</label>
             <select id="selectDonante" name="idDonante" class="form-select" onchange="this.form.submit()">
-                <option value="" disabled th:selected="${idDonanteSeleccionado == null}">-- Seleccione un donante --</option>
+                <option value="" disabled th:selected="${idDonanteSeleccionado == null}">-- Seleccionar Donante --</option>
                 <option th:each="d : ${donantes}"
                         th:value="${d.id}"
                         th:text="${d.nombre}"
@@ -47,12 +48,13 @@
             <td th:text="${don.cantBienes}">3</td>
             <td>
                 <span th:each="cat : ${don.categoriasIncluidas}" class="badge bg-secondary me-1" th:text="${cat}">Alimentos</span>
+                <span th:if="${don.categoriasIncluidas == null or #lists.isEmpty(don.categoriasIncluidas)}" class="text-muted">General</span>
             </td>
             <td>
                 <span th:text="${don.segmentadasIncluidas != null ? don.segmentadasIncluidas.size() : 0}">0</span> lote(s)
             </td>
             <td>
-                <form method="post" action="/donaciones/eliminar" onsubmit="return confirm('¿Seguro deseas eliminar esta donación?');">
+                <form method="post" th:action="@{/donaciones/eliminar}" onsubmit="return confirm('¿Seguro deseas eliminar esta donación?');">
                     <input type="hidden" name="idDonante" th:value="${idDonanteSeleccionado}"/>
                     <input type="hidden" name="idDonacion" th:value="${don.id}"/>
                     <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>

@@ -1,6 +1,5 @@
 package org.example.donacionesfrontend.dtos.request;
 
-import com.grupo10.servicio_donaciones.donaciones.dominio.bien.Bien;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
