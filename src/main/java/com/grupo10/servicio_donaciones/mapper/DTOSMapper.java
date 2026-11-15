@@ -10,6 +10,7 @@ import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Subcategoria
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.EstadoDonacion;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donante.*;
 import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
 import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
@@ -101,6 +102,8 @@ public class DTOSMapper {
             dto.setCantidadOriginal(segmentada.getBien().getCantidadOriginal());
             dto.setCantidadActual(segmentada.getBien().getCantidadActual());
             dto.setEstadoActual(segmentada.getEstadoActual().toString());
+            dto.setCategoria(segmentada.getBien().getSubcategoria().toString());
+            dto.setSubcategoria(segmentada.getBien().getSubcategoria().toString());
             if (segmentada.getBien().getUnidad() != null) {
                 dto.setUnidad(segmentada.getBien().getUnidad().toString());
             }
@@ -299,6 +302,16 @@ public class DTOSMapper {
         return donacion;
     }
 
+    public EstadoDonacion deDTORequestADominio(EstadoDonacionRequestDTO dto) {
+        if (dto == null) return null;
+        EstadoDonacion estado = new EstadoDonacion();
+        estado.setTipoEstado(dto.getTipoEstado());
+        if (dto.getJustificacion() != null) {
+            estado.setJustificacion(dto.getJustificacion());
+        }
+        return estado;
+    }
+
 
     public Periodo deDTORequestADominio(PeriodoRequestDTO dto) {
         if (dto == null) return null;
@@ -362,4 +375,5 @@ public class DTOSMapper {
 
         return entidad;
     }
+
 }

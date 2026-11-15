@@ -2,6 +2,7 @@ package com.grupo10.servicio_donaciones.Services.ServiceBeneficiarias;
 
 import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Categoria;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.BienAsignado;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
 import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
@@ -48,6 +49,10 @@ public class ServicioBeneficiarias {
 
     public Necesidad buscarNecesidadDeEntidad(Long idNecesidad) {
         return repoBeneficiarias.findNecesidadById(idNecesidad).orElse(null);
+    }
+
+    public List<DonacionAsignada> getDonacionesAsignadasByIdEntidad(Long idEntidad) {
+        return repoBeneficiarias.findDonacionesAsignadasByIdEntidad(idEntidad);
     }
 
     @Transactional

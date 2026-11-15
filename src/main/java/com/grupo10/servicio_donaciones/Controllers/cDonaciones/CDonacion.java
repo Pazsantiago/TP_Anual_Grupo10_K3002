@@ -3,8 +3,11 @@ package com.grupo10.servicio_donaciones.Controllers.cDonaciones;
 import com.grupo10.servicio_donaciones.Services.ServiceDonaciones.ServicioDonacion;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.TipoEstadoDonacion;
 import com.grupo10.servicio_donaciones.dtos.request.DonacionRequestDTO;
+import com.grupo10.servicio_donaciones.dtos.request.EstadoDonacionRequestDTO;
 import com.grupo10.servicio_donaciones.dtos.response.DonacionResponseDTO;
+import com.grupo10.servicio_donaciones.dtos.response.DonacionSegmentadaResponseDTO;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/donantes/{idDonante}/donaciones")
@@ -46,12 +50,47 @@ public class CDonacion {
     }
 
     // Obtener todas las donaciones segmentadas
-    @GetMapping("/{idDonacion}/segmentadas")
-    public ResponseEntity<List<DonacionSegmentada>> obtenerDonacionesSegmentadas(
-            @PathVariable Long idDonante,
-            @PathVariable Long idDonacion) {
+    @GetMapping("/segmentadas")
+    public ResponseEntity<List<DonacionSegmentadaResponseDTO>> obtenerDonacionesSegmentadasPorIdDonante(
+            @PathVariable Long idDonante) {
         try {
-            return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadas(idDonante, idDonacion));
+            return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadas(idDonante).stream().map(mapper::deDominioAResponse).collect(Collectors.toList()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Obtener todas las donaciones segmentadas por estado
+    @GetMapping("/{idDonacion}/segmentadas/estado")
+    public ResponseEntity<List<DonacionSegmentada>> obtenerDonacionesSegmentadasPorEstado(
+            @PathVariable Long idDonante,
+            @RequestParam(value = "estadoDonacion") TipoEstadoDonacion estadoDonacion) {
+        try {
+            return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadasPorEstado(idDonante, estadoDonacion));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Obtener todas las donaciones segmentadas por subcategoria
+    @GetMapping("/{idDonacion}/segmentadas/subcategoria")
+    public ResponseEntity<List<DonacionSegmentada>> obtenerDonacionesSegmentadasPorSubcategoria(
+            @PathVariable Long idDonante,
+            @RequestParam(value = "subcategoria") String subcategoria) {
+        try {
+            return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadasPorSubcategoria(idDonante, subcategoria));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Obtener todas las donaciones segmentadas por categoria
+    @GetMapping("/{idDonacion}/segmentadas/categoria")
+    public ResponseEntity<List<DonacionSegmentada>> obtenerDonacionesSegmentadasPorCategoria(
+            @PathVariable Long idDonante,
+            @PathVariable Long idCategoria) {
+        try {
+            return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadasPorCategoria(idDonante, idCategoria));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -109,4 +148,19 @@ public class CDonacion {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    // Indicar que una Donacion esta vencida
+    @PatchMapping("/{idDonacion}/segmentadas/{idSegmentada}")
+    public ResponseEntity<String> actualizarEstadoDonacionAVencida(
+            @PathVariable Long idDonacion,
+            @PathVariable Long idSegmentada,
+            @RequestBody EstadoDonacionRequestDTO dto) {
+        try {
+            return ResponseEntity.ok(servicioDonacion.actualizarDonacionAVencida(idDonacion, idSegmentada, mapper.deDTORequestADominio(dto)));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
 }

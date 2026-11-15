@@ -6,6 +6,7 @@ import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsign
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
 import com.grupo10.servicio_donaciones.dtos.request.EntidadBeneficiariaRequestDTO;
+import com.grupo10.servicio_donaciones.dtos.response.DonacionAsignadaResponseDTO;
 import com.grupo10.servicio_donaciones.dtos.response.EntidadBeneficiariaResponseDTO;
 import com.grupo10.servicio_donaciones.excepciones.DonacionVencidaException;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/entidadesBeneficiarias")
@@ -63,6 +65,15 @@ public class CBeneficiarias {
     public ResponseEntity<EntidadBeneficiariaResponseDTO> getEntidadById(@PathVariable Long idEntidad) {
         try {
             return ResponseEntity.ok(mapper.deDominioAResponse(servicioBeneficiarias.getEntidadById(idEntidad)));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/{idEntidad}/donaciones-asignadas")
+    public ResponseEntity<List<DonacionAsignadaResponseDTO>> getDonacionesAsignadasByIdEntidad(@PathVariable Long idEntidad) {
+        try {
+            return ResponseEntity.ok(servicioBeneficiarias.getDonacionesAsignadasByIdEntidad(idEntidad).stream().map(mapper::deDominioAResponse).collect(Collectors.toList()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

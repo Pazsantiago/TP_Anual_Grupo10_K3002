@@ -15,9 +15,24 @@ import java.util.Optional;
 public interface RepoDonaciones extends JpaRepository<Donacion, Long> {
     Optional<Donacion> findByDonacionesSegmentadasId(Long idSegmentada);
 
-    @Query("SELECT ds from DonacionSegmentada ds " + "JOIN FETCH ds.donacionInicial " + "JOIN FETCH ds.donacionInicial.donante" +
-            " where ds.donacionInicial.id = :idDonacion and ds.donacionInicial.donante.id = :idDonante")
-    List<DonacionSegmentada> getAllSegmentadasWithIdDonacionAndIdDonante(@Param("idDonante") Long idDonante, @Param("idDonacion") Long idDonacion);
+    @Query("SELECT ds from DonacionSegmentada ds " + "JOIN FETCH ds.donacionInicial.donante" +
+            " where ds.donacionInicial.donante.id = :idDonante")
+    List<DonacionSegmentada> getAllSegmentadasWithIdDonacionAndIdDonante(@Param("idDonante") Long idDonante);
+
+    @Query("SELECT ds from DonacionSegmentada ds " + "JOIN FETCH ds.donacionInicial.donante " +
+            "JOIN FETCH ds.estadoActual " +
+            " where ds.estadoActual.tipoEstado = :estadoDonacion and ds.donacionInicial.donante.id = :idDonante")
+    List<DonacionSegmentada> getAllSegmentadasWithEstadoDonacionAndIdDonante(@Param("idDonante") Long idDonante, @Param("estadoDonacion") TipoEstadoDonacion estadoDonacion);
+
+    @Query("SELECT ds from DonacionSegmentada ds " + "JOIN FETCH ds.donacionInicial.donante " +
+            "JOIN FETCH ds.subcategoria " +
+            " where ds.subcategoria.nombre = :subcategoria and ds.donacionInicial.donante.id = :idDonante")
+    List<DonacionSegmentada> getAllSegmentadasWithSubcategoriaAndIdDonante(@Param("idDonante") Long idDonante, @Param("subcategoria") String subcategoria);
+
+    @Query("SELECT ds from DonacionSegmentada ds " + "JOIN FETCH ds.subcategoria.categoria " +
+            " where ds.subcategoria.categoria.id = :idCategoria and ds.donacionInicial.donante.id = :idDonante")
+    List<DonacionSegmentada> getAllSegmentadasWithCategoriaAndIdDonante(@Param("idDonante") Long idDonante, @Param("idCategoria") Long idCategoria);
+
 
     @Query("SELECT ds from DonacionSegmentada ds where ds.estadoActual.tipoEstado = :estado")
     List<DonacionSegmentada> obtenerDonacionesSegmentadasPorEstado(@Param("estado") TipoEstadoDonacion estado);

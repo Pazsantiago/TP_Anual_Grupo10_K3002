@@ -2,10 +2,7 @@ package com.grupo10.servicio_donaciones.Services.ServiceDonaciones;
 
 import com.grupo10.servicio_donaciones.Services.ServiceDonantes.ServicioDonantes;
 import com.grupo10.servicio_donaciones.comunicador.Comunicador;
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.TipoEstadoDonacion;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.*;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donante.Donante;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonaciones;
 import com.grupo10.servicio_donaciones.repositorios.RepoDonacionesAsignadas;
@@ -54,9 +51,22 @@ public class ServicioDonacion {
         return repoDonacionesAsignadas.findAll();
     }
 
-    public List<DonacionSegmentada> obtenerDonacionesSegmentadas(Long idDonante, Long idDonacion) {
-        return repoDonaciones.getAllSegmentadasWithIdDonacionAndIdDonante(idDonante, idDonacion);
+    public List<DonacionSegmentada> obtenerDonacionesSegmentadas(Long idDonante) {
+        return repoDonaciones.getAllSegmentadasWithIdDonacionAndIdDonante(idDonante);
     }
+
+    public List<DonacionSegmentada> obtenerDonacionesSegmentadasPorEstado(Long idDonante, TipoEstadoDonacion estadoDonacion) {
+        return repoDonaciones.getAllSegmentadasWithEstadoDonacionAndIdDonante(idDonante, estadoDonacion);
+    }
+
+    public List<DonacionSegmentada> obtenerDonacionesSegmentadasPorSubcategoria(Long idDonante, String subcategoria) {
+        return repoDonaciones.getAllSegmentadasWithSubcategoriaAndIdDonante(idDonante, subcategoria);
+    }
+
+    public List<DonacionSegmentada> obtenerDonacionesSegmentadasPorCategoria(Long idDonante, Long idCategoria) {
+        return repoDonaciones.getAllSegmentadasWithCategoriaAndIdDonante(idDonante, idCategoria);
+    }
+
 
     public DonacionSegmentada obtenerDonacionSegmentada(Long idSegmentada) {
         return repoDonaciones.findByDonacionSegmentadaId(idSegmentada).orElse(null);
@@ -101,5 +111,12 @@ public class ServicioDonacion {
         return "Donacion borrada";
     }
 
-
+    @Transactional
+    public String actualizarDonacionAVencida(Long idDonacion, Long idSegmentada, EstadoDonacion estadoDonacion) {
+        Donacion donacion = repoDonaciones.findById(idDonacion).orElse(null);
+        DonacionSegmentada ds = donacion.buscarPorIdSegmentada(idSegmentada);
+        ds.cambiarEstadoActual(estadoDonacion);
+        ds.setearEstadosHistoricos();
+        return "Donacion actualizada";
+    }
 }

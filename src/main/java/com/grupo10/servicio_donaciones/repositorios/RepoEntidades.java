@@ -1,5 +1,6 @@
 package com.grupo10.servicio_donaciones.repositorios;
 
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
 import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,11 @@ import java.util.Optional;
 public interface RepoEntidades extends JpaRepository<EntidadBeneficiaria, Long> {
     @Query("SELECT n FROM Necesidad n " + "JOIN FETCH n.entidadBeneficiaria " + " where n.entidadBeneficiaria.id = :idEntidad")
     List<Necesidad> findNecesidades(@Param("idEntidad") Long idEntidad);
+
+    @Query("SELECT da from DonacionAsignada da " + "JOIN FETCH da.necesidadResuelta.entidadBeneficiaria " +
+            " where da.necesidadResuelta.entidadBeneficiaria.id = :idEntidad")
+    List<DonacionAsignada> findDonacionesAsignadasByIdEntidad(@Param("idEntidad") Long idEntidad);
+
 
     @Query("SELECT n FROM Necesidad n where n.id = :idNecesidad")
     Optional<Necesidad> findNecesidadById(@Param("idNecesidad") Long idNecesidad);
