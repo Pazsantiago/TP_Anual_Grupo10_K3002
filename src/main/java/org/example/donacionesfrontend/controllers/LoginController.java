@@ -24,6 +24,12 @@ public class LoginController {
         return "redirect:/oauth2/authorization/keycloak";
     }
 
+    @GetMapping("/dev-login")
+    public String devLogin(HttpSession session) {
+        session.setAttribute("jwtToken", "token-falso-de-prueba");
+        session.setAttribute("rolUsuario", "ADMIN");
+        return "redirect:/donaciones/home";
+    }
 
     @GetMapping("/login/callback")
     public String procesarLogin(
