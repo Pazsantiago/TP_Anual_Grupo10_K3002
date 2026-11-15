@@ -1,23 +1,27 @@
 package org.example.donacionesfrontend.controllers.donaciones;
 
+import lombok.RequiredArgsConstructor;
+import org.example.donacionesfrontend.dtos.response.DonacionAsignadaResponseDTO;
+import org.example.donacionesfrontend.dtos.response.EntidadBeneficiariaResponseDTO;
 import org.example.donacionesfrontend.services.AsignacionService;
+import org.example.donacionesfrontend.services.DonacionService;
 import org.example.donacionesfrontend.services.EntidadService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/asignaciones")
+@RequiredArgsConstructor
 public class AsignacionController {
 
     private final AsignacionService asignacionService;
+    private final DonacionService donacionService;
     private final EntidadService entidadService;
 
-    public AsignacionController(AsignacionService asignacionService, EntidadService entidadService) {
-        this.asignacionService = asignacionService;
-        this.entidadService = entidadService;
-    }
 
     @GetMapping("/nueva")
     public String vistaNuevaAsignacion(Model model) {
@@ -59,4 +63,22 @@ public class AsignacionController {
             return "redirect:/asignaciones/agregar-segmentada";
         }
     }
+
+    @GetMapping
+    public String listarAsignadasPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, Model model) {
+
+        // Cargamos todas las entidades para el desplegable de selección
+        List<EntidadBeneficiariaResponseDTO> entidades = entidadService.getAll();
+        model.addAttribute("entidades", entidades);
+        model.addAttribute("idEntidadSeleccionada", idEntidad);
+
+        if (idEntidad != null) {
+            // Obtenemos la lista de DonacionAsignadaResponseDTO para esa entidad
+            List<DonacionAsignadaResponseDTO> asignadas = donacionService.getAsignadasPorEntidad(idEntidad);
+            model.addAttribute("asignaciones", asignadas);
+        }
+
+        return "donaciones/asignadas";
+    }
+
 }

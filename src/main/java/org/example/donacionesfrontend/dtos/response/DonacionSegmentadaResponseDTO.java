@@ -12,5 +12,7 @@ public class DonacionSegmentadaResponseDTO {
     private Integer cantidadOriginal;
     private Integer cantidadActual;
     private String estadoActual;
+    private String subcategoria;
+    private String categoria;
     private String unidad;
 }
