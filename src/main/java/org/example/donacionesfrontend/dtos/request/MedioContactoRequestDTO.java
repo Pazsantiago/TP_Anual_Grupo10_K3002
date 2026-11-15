@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MedioContactoRequestDTO {
-    private String tipo;
+    private MedioNotificacion tipo;
     private String correoElectronico;
     private String telefono;
     private boolean esPredeterminado;

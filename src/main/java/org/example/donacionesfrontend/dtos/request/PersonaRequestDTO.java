@@ -14,10 +14,10 @@ public class PersonaRequestDTO {
     private String tipo;
     private String nombre;
     private Integer edad;
-    private String genero;
+    private Genero genero;
     //
     private String razonSocial;
-    private String tipoJuridica;
+    private TipoPersonaJuridica tipoJuridica;
     private String rubro;
     private List<Long> representantes = new ArrayList<>();
 }
