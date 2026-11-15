@@ -75,7 +75,6 @@ public class Importador {
 
     @Transactional
     public Donante controlarDonanteEnLista(String[] fila) {
-        // TODO , cambiar el tema de que sea por un find by
         Optional<Donante> donanteExistente = repositorioDonadores.findByMediosDeContactoCorreoElectronico(fila[4]);
         //En caso de que un registro
         //ya exista (esto quiere decir que el correo electrónico ya se encuentra registrado en el servicio) se deberá

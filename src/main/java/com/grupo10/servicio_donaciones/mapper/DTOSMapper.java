@@ -1,5 +1,7 @@
 package com.grupo10.servicio_donaciones.mapper;
 
+import com.grupo10.servicio_donaciones.donaciones.dominio.algoritmosAsignacion.RankingEntidadBeneficiaria;
+import com.grupo10.servicio_donaciones.donaciones.dominio.algoritmosAsignacion.SegmentadaRankings;
 import com.grupo10.servicio_donaciones.donaciones.dominio.bien.Bien;
 import com.grupo10.servicio_donaciones.donaciones.dominio.bien.BienConEstado;
 import com.grupo10.servicio_donaciones.donaciones.dominio.bien.BienPerecedero;
@@ -150,6 +152,36 @@ public class DTOSMapper {
         if (necesidad.getEntidadBeneficiaria() != null) {
             dto.setIdEntidadBeneficiaria(necesidad.getEntidadBeneficiaria().getId());
         }
+
+        return dto;
+    }
+
+    public SegmentadaRankingsResponseDTO deDominioAResponse(SegmentadaRankings segmentadaRankings) {
+        if (segmentadaRankings == null) return null;
+        SegmentadaRankingsResponseDTO dto = new SegmentadaRankingsResponseDTO();
+        dto.setSegmentada(deDominioAResponse(segmentadaRankings.getSegmentada()));
+        dto.setRankings(segmentadaRankings.getRankings().stream().map(this::deDominioAResponse).collect(Collectors.toList()));
+        return dto;
+    }
+
+    public RankingEntidadBeneficiariaResponseDTO deDominioAResponse(RankingEntidadBeneficiaria ranking) {
+        if (ranking == null) return null;
+
+        RankingEntidadBeneficiariaResponseDTO dto = new RankingEntidadBeneficiariaResponseDTO();
+        dto.setPosicion(ranking.getPosicion());
+        dto.setPuntaje(ranking.getPuntaje());
+        dto.setAlgoritmoUsado(ranking.getAlgoritmoUsado().toString());
+        dto.setEntidadBeneficiaria(deDominioAResponse(ranking.getEntidadBeneficiaria()));
+        return dto;
+    }
+
+    public CategoriaResponseDTO deDominioAResponse(Categoria categoria) {
+        if (categoria == null) return null;
+
+        CategoriaResponseDTO dto = new CategoriaResponseDTO();
+        dto.setId(categoria.getId());
+        dto.setNombre(categoria.getNombre());
+        dto.setTipo(categoria.getTipo().toString());
 
         return dto;
     }
