@@ -52,13 +52,13 @@ public class CDonantes {
 
     // CREATE - Agregar un nuevo donante
     @PostMapping("")
-    public ResponseEntity<DonanteResponseDTO> createPersona(@RequestBody DonanteRequestDTO dto) {
+    public ResponseEntity<?> createPersona(@RequestBody DonanteRequestDTO dto) {
         try {
             Donante donante = mapper.deDTORequestADominio(dto);
             Donante creado = servicioDonantes.createPersona(donante);
             return ResponseEntity.ok(mapper.deDominioAResponse(creado));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
