@@ -16,8 +16,10 @@ public interface RepoEntidades extends JpaRepository<EntidadBeneficiaria, Long> 
     @Query("SELECT n FROM Necesidad n " + "JOIN FETCH n.entidadBeneficiaria " + " where n.entidadBeneficiaria.id = :idEntidad")
     List<Necesidad> findNecesidades(@Param("idEntidad") Long idEntidad);
 
-    @Query("SELECT da from DonacionAsignada da " + "JOIN FETCH da.necesidadResuelta.entidadBeneficiaria " +
-            " where da.necesidadResuelta.entidadBeneficiaria.id = :idEntidad")
+    @Query("SELECT da from DonacionAsignada da " +
+            "JOIN FETCH da.necesidadResuelta nr " +
+            "JOIN FETCH nr.entidadBeneficiaria " +
+            "where nr.entidadBeneficiaria.id = :idEntidad")
     List<DonacionAsignada> findDonacionesAsignadasByIdEntidad(@Param("idEntidad") Long idEntidad);
 
 
