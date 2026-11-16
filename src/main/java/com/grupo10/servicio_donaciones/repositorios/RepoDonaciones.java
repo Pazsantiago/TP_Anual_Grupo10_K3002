@@ -15,22 +15,30 @@ import java.util.Optional;
 public interface RepoDonaciones extends JpaRepository<Donacion, Long> {
     Optional<Donacion> findByDonacionesSegmentadasId(Long idSegmentada);
 
-    @Query("SELECT ds from DonacionSegmentada ds " + "JOIN FETCH ds.donacionInicial.donante" +
-            " where ds.donacionInicial.donante.id = :idDonante")
+    @Query("SELECT ds from DonacionSegmentada ds " +
+            "JOIN FETCH ds.donacionInicial di " +
+            "JOIN FETCH di.donante " +
+            "where di.donante.id = :idDonante")
     List<DonacionSegmentada> getAllSegmentadasWithIdDonacionAndIdDonante(@Param("idDonante") Long idDonante);
 
-    @Query("SELECT ds from DonacionSegmentada ds " + "JOIN FETCH ds.donacionInicial.donante " +
+    @Query("SELECT ds from DonacionSegmentada ds " +
+            "JOIN FETCH ds.donacionInicial di " +
+            "JOIN FETCH di.donante " +
             "JOIN FETCH ds.estadoActual " +
-            " where ds.estadoActual.tipoEstado = :estadoDonacion and ds.donacionInicial.donante.id = :idDonante")
+            "where ds.estadoActual.tipoEstado = :estadoDonacion and di.donante.id = :idDonante")
     List<DonacionSegmentada> getAllSegmentadasWithEstadoDonacionAndIdDonante(@Param("idDonante") Long idDonante, @Param("estadoDonacion") TipoEstadoDonacion estadoDonacion);
 
-    @Query("SELECT ds from DonacionSegmentada ds " + "JOIN FETCH ds.donacionInicial.donante " +
+    @Query("SELECT ds from DonacionSegmentada ds " +
+            "JOIN FETCH ds.donacionInicial di " +
+            "JOIN FETCH di.donante " +
             "JOIN FETCH ds.subcategoria " +
-            " where ds.subcategoria.nombre = :subcategoria and ds.donacionInicial.donante.id = :idDonante")
+            "where ds.subcategoria.nombre = :subcategoria and di.donante.id = :idDonante")
     List<DonacionSegmentada> getAllSegmentadasWithSubcategoriaAndIdDonante(@Param("idDonante") Long idDonante, @Param("subcategoria") String subcategoria);
 
-    @Query("SELECT ds from DonacionSegmentada ds " + "JOIN FETCH ds.subcategoria.categoria " +
-            " where ds.subcategoria.categoria.id = :idCategoria and ds.donacionInicial.donante.id = :idDonante")
+    @Query("SELECT ds from DonacionSegmentada ds " +
+            "JOIN FETCH ds.subcategoria sc " +
+            "JOIN FETCH sc.categoria " +
+            "where sc.categoria.id = :idCategoria and ds.donacionInicial.donante.id = :idDonante")
     List<DonacionSegmentada> getAllSegmentadasWithCategoriaAndIdDonante(@Param("idDonante") Long idDonante, @Param("idCategoria") Long idCategoria);
 
 
