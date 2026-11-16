@@ -5,9 +5,11 @@ import com.grupo10.servicio_donaciones.repositorios.RepoDonantes;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +33,9 @@ public class Importador {
     }
 
     @Transactional
-    public List<Donante> importarCsv(String ruta_archivo) {
+    public List<Donante> importarCsv(MultipartFile archivo) {
         boolean first = true;
-        try (CSVReader csvReader = new CSVReader(new FileReader(ruta_archivo))) {
+        try (CSVReader csvReader = new CSVReader(new InputStreamReader(archivo.getInputStream(), StandardCharsets.UTF_8))) {
             String[] fila;
             List<Donante> donantes = new ArrayList<>();
             while ((fila = csvReader.readNext()) != null) {

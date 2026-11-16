@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -63,9 +64,12 @@ public class CDonantes {
 
     // Importar CSV
     @PostMapping("/importador")
-    public ResponseEntity<String> importarCSV(@RequestParam String rutaArchivo) {
+    public ResponseEntity<String> importarCSV(@RequestParam("archivo") MultipartFile archivo) {
         try {
-            return ResponseEntity.ok(servicioDonantes.importarCSV(rutaArchivo));
+            if (archivo.isEmpty()) {
+                return ResponseEntity.badRequest().body("El archivo está vacío.");
+            }
+            return ResponseEntity.ok(servicioDonantes.importarCSV(archivo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

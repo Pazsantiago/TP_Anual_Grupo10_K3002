@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -89,10 +90,10 @@ public class ServicioDonantes {
     }
 
     @Transactional
-    public String importarCSV(String rutaArchivo) {
+    public String importarCSV(MultipartFile archivo) {
         importadorCSV.setRepositorioDonadores(repoDonantes);
         Integer cantDonantesAnteriores = repoDonantes.findAll().size();
-        List<Donante> importados = importadorCSV.importarCsv(rutaArchivo);
+        List<Donante> importados = importadorCSV.importarCsv(archivo);
 
         if (!importados.isEmpty()) {
 
