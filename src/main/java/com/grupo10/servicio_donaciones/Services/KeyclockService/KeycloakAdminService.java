@@ -39,9 +39,6 @@ public class KeycloakAdminService {
     @Value("${keycloak.admin.password:admin}")
     private String adminPassword;
 
-    /**
-     * 1. Obtiene el Access Token de Administrador desde Keycloak
-     */
     private String obtenerAdminToken() {
         String tokenUrl = keycloakServerUrl + "/realms/master/protocol/openid-connect/token";
 
@@ -60,10 +57,7 @@ public class KeycloakAdminService {
         return (String) response.getBody().get("access_token");
     }
 
-    /**
-     * 2. Crea el usuario en Keycloak enviando el JSON estructurado
-     */
-    public void crearUsuarioEnKeycloak(String email, String telefono, String password, String rol) {
+    public void crearUsuarioEnKeycloak(String email, String password, String rol) {
         String adminToken = obtenerAdminToken();
         String usersUrl = keycloakServerUrl + "/admin/realms/" + realm + "/users";
 
@@ -73,18 +67,12 @@ public class KeycloakAdminService {
         userJson.put("email", email);
         userJson.put("enabled", true);
 
-        // Atributos adicionales (ej. teléfono)
-        if (telefono != null && !telefono.isBlank()) {
-            Map<String, List<String>> attributes = new HashMap<>();
-            attributes.put("telefono", List.of(telefono));
-            userJson.put("attributes", attributes);
-        }
 
         // Credenciales (Contraseña)
         Map<String, Object> credential = new HashMap<>();
         credential.put("type", "password");
-        credential.put("value", password); // Texto plano (Keycloak se encarga de hashearla)
-        credential.put("temporary", true); // 'true' si es por CSV para obligar a cambiarla
+        credential.put("value", password);
+        credential.put("temporary", true);
         userJson.put("credentials", List.of(credential));
 
         // Transmisión con Header Bearer Token

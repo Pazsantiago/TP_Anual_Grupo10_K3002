@@ -101,7 +101,6 @@ public class ServicioDonantes {
             for (Donante donante : importados) {
                 keycloakAdminService.crearUsuarioEnKeycloak(
                         donante.obtenerContactoPredeterminado().getCorreoElectronico(),
-                        donante.obtenerContactoPredeterminado().getTelefono(),
                         "Tmp_" + UUID.randomUUID().toString().replace("-", "").substring(0, 10) + "!A9",
                         "ROL_DONANTE"
                 );
