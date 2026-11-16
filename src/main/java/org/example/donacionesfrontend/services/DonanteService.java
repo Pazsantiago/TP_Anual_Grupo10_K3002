@@ -5,7 +5,9 @@ import org.example.donacionesfrontend.dtos.request.DonanteRequestDTO;
 import org.example.donacionesfrontend.dtos.response.DonanteResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
@@ -45,13 +47,12 @@ public class DonanteService {
                 .toBodilessEntity();
     }
 
-    public void importarMasivoCsv(String rutaArchivo) {
+    public void importarMasivoCsv(MultiValueMap<String, Object> body) {
         restClient.post()
-                .uri(uriBuilder -> uriBuilder
-                .path("/api/donantes/importador")
-                .queryParam("rutaArchivo", rutaArchivo)
-                .build())
-            .retrieve()
+                .uri("/importador")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(body)
+                .retrieve()
                 .toBodilessEntity();
     }
 

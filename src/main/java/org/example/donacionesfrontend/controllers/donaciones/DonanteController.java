@@ -7,9 +7,13 @@ import org.example.donacionesfrontend.dtos.request.PersonaRequestDTO;
 import org.example.donacionesfrontend.dtos.response.DonanteResponseDTO;
 import org.example.donacionesfrontend.services.DonanteService;
 import org.example.donacionesfrontend.services.KeycloakAdminService;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -92,17 +96,17 @@ public class DonanteController {
     }
 
     @PostMapping("/importador")
-    public String importarCsv(@RequestParam("rutaArchivo") String rutaArchivo, RedirectAttributes redirectAttributes) {
-        if (rutaArchivo == null || rutaArchivo.isBlank()) {
-            redirectAttributes.addFlashAttribute("error", "Por favor ingresá la ruta o nombre del archivo CSV.");
-            return "redirect:/donantes/importar";
-        }
+    public String importarCSV(@RequestParam("archivo") MultipartFile archivo, RedirectAttributes redirectAttributes) {
         try {
-            donanteService.importarMasivoCsv(rutaArchivo);
-            redirectAttributes.addFlashAttribute("exito", "Importación iniciada correctamente para: " + rutaArchivo);
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            body.add("archivo", archivo.getResource());
+
+            donanteService.importarMasivoCsv(body);
+
+            redirectAttributes.addFlashAttribute("exito", "¡Archivo CSV importado con éxito!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al procesar la importación: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error al procesar el archivo CSV: " + e.getMessage());
         }
-        return "redirect:/donantes/importar";
+        return "redirect:/importador";
     }
 }
