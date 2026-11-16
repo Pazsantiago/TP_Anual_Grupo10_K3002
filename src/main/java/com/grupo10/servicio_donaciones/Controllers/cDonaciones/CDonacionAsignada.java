@@ -2,7 +2,6 @@ package com.grupo10.servicio_donaciones.Controllers.cDonaciones;
 //import donatrack.dominio.donacion.Donacion;
 
 import com.grupo10.servicio_donaciones.Services.ServiceDonaciones.ServicioDonacion;
-import com.grupo10.servicio_donaciones.dtos.response.DonacionAsignadaResponseDTO;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,7 +22,7 @@ public class CDonacionAsignada {
 
     // Conocer las donaciones ya asignadas
     @GetMapping("")
-    public ResponseEntity<List<DonacionAsignadaResponseDTO>> obtenerDonacionesAsignadas() {
+    public ResponseEntity<?> obtenerDonacionesAsignadas() {
         try {
             return ResponseEntity.ok(servicioDonacion.obtenerDonacionesAsignadas().stream().map(mapper::deDominioAResponse).collect(Collectors.toList()));
         } catch (Exception e) {

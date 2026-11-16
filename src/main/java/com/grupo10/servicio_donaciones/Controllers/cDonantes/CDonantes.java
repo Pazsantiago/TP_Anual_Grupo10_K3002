@@ -3,7 +3,6 @@ package com.grupo10.servicio_donaciones.Controllers.cDonantes;
 import com.grupo10.servicio_donaciones.Services.ServiceDonantes.ServicioDonantes;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donante.Donante;
 import com.grupo10.servicio_donaciones.dtos.request.DonanteRequestDTO;
-import com.grupo10.servicio_donaciones.dtos.response.DonanteResponseDTO;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,7 @@ public class CDonantes {
 
     // READ - Obtener todos los Donantes
     @GetMapping("")
-    public ResponseEntity<List<DonanteResponseDTO>> getAllPersonas(
+    public ResponseEntity<?> getAllPersonas(
             @RequestParam(value = "tipoD", required = false) String tipoD,
             @RequestParam(value = "doc", required = false) String doc) {
         try {
@@ -42,7 +41,7 @@ public class CDonantes {
 
     // READ - Obtener Donante por ID
     @GetMapping("/{id}")
-    public ResponseEntity<DonanteResponseDTO> getPersonaById(@PathVariable Long id) {
+    public ResponseEntity<?> getPersonaById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(mapper.deDominioAResponse(servicioDonantes.obtenerPorId(id)));
         } catch (Exception e) {
@@ -64,7 +63,7 @@ public class CDonantes {
 
     // Importar CSV
     @PostMapping("/importador")
-    public ResponseEntity<String> importarCSV(@RequestParam("archivo") MultipartFile archivo) {
+    public ResponseEntity<?> importarCSV(@RequestParam("archivo") MultipartFile archivo) {
         try {
             if (archivo.isEmpty()) {
                 return ResponseEntity.badRequest().body("El archivo está vacío.");
@@ -78,7 +77,7 @@ public class CDonantes {
 
     // UPDATE - Actualizar donante existente
     @PutMapping("/{id}")
-    public ResponseEntity<DonanteResponseDTO> updateDonante(@PathVariable Long id, @RequestBody DonanteRequestDTO dto) {
+    public ResponseEntity<?> updateDonante(@PathVariable Long id, @RequestBody DonanteRequestDTO dto) {
         try {
             Donante donante = mapper.deDTORequestADominio(dto);
             Donante actualizado = servicioDonantes.updateDonante(id, donante);
@@ -90,7 +89,7 @@ public class CDonantes {
 
     // DELETE - Eliminar un donante
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePersona(@PathVariable Long id) {
+    public ResponseEntity<?> deletePersona(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(servicioDonantes.deletePersona(id));
         } catch (Exception e) {

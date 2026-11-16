@@ -2,19 +2,15 @@ package com.grupo10.servicio_donaciones.Controllers.cDonaciones;
 
 import com.grupo10.servicio_donaciones.Services.ServiceDonaciones.ServicioDonacion;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.TipoEstadoDonacion;
 import com.grupo10.servicio_donaciones.dtos.request.DonacionRequestDTO;
 import com.grupo10.servicio_donaciones.dtos.request.EstadoDonacionRequestDTO;
-import com.grupo10.servicio_donaciones.dtos.response.DonacionResponseDTO;
-import com.grupo10.servicio_donaciones.dtos.response.DonacionSegmentadaResponseDTO;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,7 +23,7 @@ public class CDonacion {
 
     // Obtener todas las Donaciones
     @GetMapping("")
-    public ResponseEntity<List<DonacionResponseDTO>> getAllDonaciones(@PathVariable Long idDonante) {
+    public ResponseEntity<?> getAllDonaciones(@PathVariable Long idDonante) {
         try {
             return ResponseEntity.ok(
                     servicioDonacion.getAllDonaciones(idDonante).stream()
@@ -41,7 +37,7 @@ public class CDonacion {
 
     // Obtener una Donacion por idDonacion
     @GetMapping("/{idDonacion}")
-    public ResponseEntity<DonacionResponseDTO> getDonacionById(@PathVariable Long idDonacion) {
+    public ResponseEntity<?> getDonacionById(@PathVariable Long idDonacion) {
         try {
             return ResponseEntity.ok(mapper.deDominioAResponse(servicioDonacion.getDonacionById(idDonacion)));
         } catch (Exception e) {
@@ -51,7 +47,7 @@ public class CDonacion {
 
     // Obtener todas las donaciones segmentadas
     @GetMapping("/segmentadas")
-    public ResponseEntity<List<DonacionSegmentadaResponseDTO>> obtenerDonacionesSegmentadasPorIdDonante(
+    public ResponseEntity<?> obtenerDonacionesSegmentadasPorIdDonante(
             @PathVariable Long idDonante) {
         try {
             return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadas(idDonante).stream().map(mapper::deDominioAResponse).collect(Collectors.toList()));
@@ -62,7 +58,7 @@ public class CDonacion {
 
     // Obtener todas las donaciones segmentadas por estado
     @GetMapping("/{idDonacion}/segmentadas/estado")
-    public ResponseEntity<List<DonacionSegmentada>> obtenerDonacionesSegmentadasPorEstado(
+    public ResponseEntity<?> obtenerDonacionesSegmentadasPorEstado(
             @PathVariable Long idDonante,
             @RequestParam(value = "estadoDonacion") TipoEstadoDonacion estadoDonacion) {
         try {
@@ -74,7 +70,7 @@ public class CDonacion {
 
     // Obtener todas las donaciones segmentadas por subcategoria
     @GetMapping("/{idDonacion}/segmentadas/subcategoria")
-    public ResponseEntity<List<DonacionSegmentada>> obtenerDonacionesSegmentadasPorSubcategoria(
+    public ResponseEntity<?> obtenerDonacionesSegmentadasPorSubcategoria(
             @PathVariable Long idDonante,
             @RequestParam(value = "subcategoria") String subcategoria) {
         try {
@@ -86,7 +82,7 @@ public class CDonacion {
 
     // Obtener todas las donaciones segmentadas por categoria
     @GetMapping("/{idDonacion}/segmentadas/categoria")
-    public ResponseEntity<List<DonacionSegmentada>> obtenerDonacionesSegmentadasPorCategoria(
+    public ResponseEntity<?> obtenerDonacionesSegmentadasPorCategoria(
             @PathVariable Long idDonante,
             @PathVariable Long idCategoria) {
         try {
@@ -98,7 +94,7 @@ public class CDonacion {
 
     // Obtener una donacion segmentada especifica
     @GetMapping("/{idDonacion}/segmentadas/{idSegmentada}")
-    public ResponseEntity<DonacionSegmentada> obtenerDonacionSegmentada(
+    public ResponseEntity<?> obtenerDonacionSegmentada(
             @PathVariable Long idDonante,
             @PathVariable Long idDonacion,
             @PathVariable Long idSegmentada) {
@@ -111,7 +107,7 @@ public class CDonacion {
 
     // Agregar una nueva Donacion
     @PostMapping("")
-    public ResponseEntity<DonacionResponseDTO> createDonacion(
+    public ResponseEntity<?> createDonacion(
             @RequestBody DonacionRequestDTO dto,
             @PathVariable Long idDonante) {
         try {
@@ -125,7 +121,7 @@ public class CDonacion {
 
     // Actualizar una Donacion existente
     @PutMapping("/{idDonacion}")
-    public ResponseEntity<DonacionResponseDTO> updateDonacion(
+    public ResponseEntity<?> updateDonacion(
             @RequestBody DonacionRequestDTO dto,
             @PathVariable Long idDonacion) {
         try {
@@ -139,7 +135,7 @@ public class CDonacion {
 
     // Eliminar una Donacion
     @DeleteMapping("/{idDonacion}")
-    public ResponseEntity<String> deleteDonacion(
+    public ResponseEntity<?> deleteDonacion(
             @PathVariable Long idDonante,
             @PathVariable Long idDonacion) {
         try {
@@ -151,7 +147,7 @@ public class CDonacion {
 
     // Indicar que una Donacion esta vencida
     @PatchMapping("/{idDonacion}/segmentadas/{idSegmentada}")
-    public ResponseEntity<String> actualizarEstadoDonacionAVencida(
+    public ResponseEntity<?> actualizarEstadoDonacionAVencida(
             @PathVariable Long idDonacion,
             @PathVariable Long idSegmentada,
             @RequestBody EstadoDonacionRequestDTO dto) {

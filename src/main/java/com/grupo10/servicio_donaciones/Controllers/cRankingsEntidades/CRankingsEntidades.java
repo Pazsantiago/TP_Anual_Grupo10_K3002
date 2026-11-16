@@ -1,7 +1,6 @@
 package com.grupo10.servicio_donaciones.Controllers.cRankingsEntidades;
 
 import com.grupo10.servicio_donaciones.Services.ServiceAsignacion.ServicioAsignacion;
-import com.grupo10.servicio_donaciones.dtos.response.RankingEntidadBeneficiariaResponseDTO;
 import com.grupo10.servicio_donaciones.dtos.response.SegmentadaRankingsResponseDTO;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,7 @@ public class CRankingsEntidades {
     }
 
     @GetMapping("/{idDonacion}")
-    public ResponseEntity<List<RankingEntidadBeneficiariaResponseDTO>> obtenerEntidadesRepetidas(@PathVariable Long idDonacion) {
+    public ResponseEntity<?> obtenerEntidadesRepetidas(@PathVariable Long idDonacion) {
         try {
             return ResponseEntity.ok(servicioAsignacion.filtrarEntidades(idDonacion).stream().map(mapper::deDominioAResponse).collect(Collectors.toList()));
         } catch (Exception e) {
@@ -38,7 +37,7 @@ public class CRankingsEntidades {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> crearRankings() {
+    public ResponseEntity<?> crearRankings() {
         try {
             return ResponseEntity.ok(servicioAsignacion.generarRanking());
         } catch (Exception e) {

@@ -3,14 +3,11 @@ package com.grupo10.servicio_donaciones.Controllers.cNecesidades;
 import com.grupo10.servicio_donaciones.Services.ServiceNecesidades.ServicioNecesidades;
 import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
 import com.grupo10.servicio_donaciones.dtos.request.NecesidadRequestDTO;
-import com.grupo10.servicio_donaciones.dtos.response.NecesidadResponseDTO;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/entidadesBeneficiarias/{idEntidad}/necesidades")
@@ -22,7 +19,7 @@ public class CNecesidades {
 
     // READ - Obtener todas las Necesidades
     @GetMapping("")
-    public ResponseEntity<List<NecesidadResponseDTO>> getAllNecesidades(@PathVariable Long idEntidad) {
+    public ResponseEntity<?> getAllNecesidades(@PathVariable Long idEntidad) {
         try {
             return ResponseEntity.ok(
                     servicioNecesidades.getAllNecesidades(idEntidad).stream()
@@ -36,7 +33,7 @@ public class CNecesidades {
 
     // READ - Obtener una Necesidad por ID
     @GetMapping("/{idNecesidad}")
-    public ResponseEntity<NecesidadResponseDTO> getNecesidadById(
+    public ResponseEntity<?> getNecesidadById(
             @PathVariable Long idEntidad,
             @PathVariable Long idNecesidad) {
         try {
@@ -48,7 +45,7 @@ public class CNecesidades {
 
     // CREATE - Agregar una nueva Necesidad
     @PostMapping("")
-    public ResponseEntity<NecesidadResponseDTO> createNecesidad(
+    public ResponseEntity<?> createNecesidad(
             @PathVariable Long idEntidad,
             @RequestBody NecesidadRequestDTO dto) {
         try {
@@ -62,7 +59,7 @@ public class CNecesidades {
 
     // UPDATE - Actualizar una Necesidad existente de una entidad
     @PutMapping("/{idNecesidad}")
-    public ResponseEntity<NecesidadResponseDTO> updateNecesidad(
+    public ResponseEntity<?> updateNecesidad(
             @PathVariable Long idEntidad,
             @PathVariable Long idNecesidad,
             @RequestBody NecesidadRequestDTO dto) {
@@ -77,7 +74,7 @@ public class CNecesidades {
 
     // DELETE - Eliminar una Necesidad
     @DeleteMapping("/{idNecesidad}")
-    public ResponseEntity<String> deleteNecesidad(
+    public ResponseEntity<?> deleteNecesidad(
             @PathVariable Long idEntidad,
             @PathVariable Long idNecesidad) {
         try {

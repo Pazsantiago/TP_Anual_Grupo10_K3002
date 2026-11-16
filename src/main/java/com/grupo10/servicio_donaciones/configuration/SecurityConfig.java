@@ -2,6 +2,7 @@ package com.grupo10.servicio_donaciones.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,6 +16,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/error", "/actuator/health").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/donantes", "/api/entidadesBeneficiarias").permitAll()
                         .anyRequest().authenticated() // Exige token para cualquier endpoint
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));

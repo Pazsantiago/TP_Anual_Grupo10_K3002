@@ -22,7 +22,7 @@ public class CNotificaciones {
     }
 
     @PostMapping("/iniciosDeRutas")
-    public ResponseEntity<String> comenzarRuta(@RequestBody MensajeInicioDeRuta mensajeInicioDeRuta) {
+    public ResponseEntity<?> comenzarRuta(@RequestBody MensajeInicioDeRuta mensajeInicioDeRuta) {
         try {
             return ResponseEntity.ok(servicioDonacionAsignada.comenzarRuta(mensajeInicioDeRuta));
         } catch (Exception e) {
@@ -31,7 +31,7 @@ public class CNotificaciones {
     }
 
     @PostMapping("/entregasConfirmadas")
-    public ResponseEntity<String> updateEstadoDonacion(@RequestBody MensajeConfirmacionEntrega mensajeConfirmacionEntrega) {
+    public ResponseEntity<?> updateEstadoDonacion(@RequestBody MensajeConfirmacionEntrega mensajeConfirmacionEntrega) {
         try {
             return ResponseEntity.ok(servicioDonacionAsignada.entregaConfirmada(mensajeConfirmacionEntrega));
         } catch (Exception e) {
@@ -40,7 +40,7 @@ public class CNotificaciones {
     }
 
     @PostMapping("/entregasFallidas")
-    public ResponseEntity<String> updateEstadoDonacion(@RequestBody MensajeEntregaFallida mensajeEntregaFallida) {
+    public ResponseEntity<?> updateEstadoDonacion(@RequestBody MensajeEntregaFallida mensajeEntregaFallida) {
         try {
             return ResponseEntity.ok(servicioDonacionAsignada.entregaFallida(mensajeEntregaFallida));
         } catch (Exception e) {

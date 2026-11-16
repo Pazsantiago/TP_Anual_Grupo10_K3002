@@ -6,8 +6,6 @@ import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsign
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
 import com.grupo10.servicio_donaciones.dtos.request.EntidadBeneficiariaRequestDTO;
-import com.grupo10.servicio_donaciones.dtos.response.DonacionAsignadaResponseDTO;
-import com.grupo10.servicio_donaciones.dtos.response.EntidadBeneficiariaResponseDTO;
 import com.grupo10.servicio_donaciones.excepciones.DonacionVencidaException;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -48,7 +45,7 @@ public class CBeneficiarias {
 
     // READ - Obtener todas las Entidades Beneficiarias
     @GetMapping("")
-    public ResponseEntity<List<EntidadBeneficiariaResponseDTO>> getAllEntidades() {
+    public ResponseEntity<?> getAllEntidades() {
         try {
             return ResponseEntity.ok(
                     servicioBeneficiarias.getAllEntidades().stream()
@@ -62,7 +59,7 @@ public class CBeneficiarias {
 
     // READ - Obtener una Entidad Beneficiaria por id
     @GetMapping("/{idEntidad}")
-    public ResponseEntity<EntidadBeneficiariaResponseDTO> getEntidadById(@PathVariable Long idEntidad) {
+    public ResponseEntity<?> getEntidadById(@PathVariable Long idEntidad) {
         try {
             return ResponseEntity.ok(mapper.deDominioAResponse(servicioBeneficiarias.getEntidadById(idEntidad)));
         } catch (Exception e) {
@@ -71,7 +68,7 @@ public class CBeneficiarias {
     }
 
     @GetMapping("/{idEntidad}/donaciones-asignadas")
-    public ResponseEntity<List<DonacionAsignadaResponseDTO>> getDonacionesAsignadasByIdEntidad(@PathVariable Long idEntidad) {
+    public ResponseEntity<?> getDonacionesAsignadasByIdEntidad(@PathVariable Long idEntidad) {
         try {
             return ResponseEntity.ok(servicioBeneficiarias.getDonacionesAsignadasByIdEntidad(idEntidad).stream().map(mapper::deDominioAResponse).collect(Collectors.toList()));
         } catch (Exception e) {
@@ -81,7 +78,7 @@ public class CBeneficiarias {
 
     // CREATE - Agregar una nueva Entidad Beneficiaria
     @PostMapping("")
-    public ResponseEntity<EntidadBeneficiariaResponseDTO> createEntidad(@RequestBody EntidadBeneficiariaRequestDTO dto) {
+    public ResponseEntity<?> createEntidad(@RequestBody EntidadBeneficiariaRequestDTO dto) {
         try {
             EntidadBeneficiaria entidad = mapper.deDTORequestADominio(dto);
             EntidadBeneficiaria creada = servicioBeneficiarias.createEntidad(entidad);
@@ -93,7 +90,7 @@ public class CBeneficiarias {
 
     // UPDATE - Actualizar una Entidad Beneficiaria existente
     @PutMapping("/{idEntidad}")
-    public ResponseEntity<EntidadBeneficiariaResponseDTO> updateEntidad(@PathVariable Long idEntidad, @RequestBody EntidadBeneficiariaRequestDTO dto) {
+    public ResponseEntity<?> updateEntidad(@PathVariable Long idEntidad, @RequestBody EntidadBeneficiariaRequestDTO dto) {
         try {
             EntidadBeneficiaria entidad = mapper.deDTORequestADominio(dto);
             EntidadBeneficiaria actualizada = servicioBeneficiarias.updateEntidad(idEntidad, entidad);
@@ -105,7 +102,7 @@ public class CBeneficiarias {
 
     // DELETE - Eliminar una Entidad Beneficiaria
     @DeleteMapping("/{idEntidad}")
-    public ResponseEntity<String> deleteEntidad(@PathVariable Long idEntidad) {
+    public ResponseEntity<?> deleteEntidad(@PathVariable Long idEntidad) {
         try {
             return ResponseEntity.ok(servicioBeneficiarias.deleteEntidad(idEntidad));
         } catch (Exception e) {
@@ -115,7 +112,7 @@ public class CBeneficiarias {
 
     // Asignar donación segmentada a la necesidad de la entidad
     @PostMapping("/{idEntidad}/necesidades/{idNecesidad}/donaciones/{idDonacion}")
-    public ResponseEntity<Map<String, Object>> asignarDonacionAEntidadPorNecesidad(
+    public ResponseEntity<?> asignarDonacionAEntidadPorNecesidad(
             @PathVariable Long idEntidad,
             @PathVariable Long idNecesidad,
             @PathVariable Long idDonacion) {
@@ -130,7 +127,7 @@ public class CBeneficiarias {
 
     // Agregar una donación segmentada a una asignación incompleta
     @PostMapping("/donacionesAsignadas/{idDonacionAsignada}/donaciones/{idDonacionSegmentada}")
-    public ResponseEntity<Map<String, Object>> agregarDonacionADonacionAsignadaIncompleta(
+    public ResponseEntity<?> agregarDonacionADonacionAsignadaIncompleta(
             @PathVariable Long idDonacionAsignada,
             @PathVariable Long idDonacionSegmentada) {
         try {
