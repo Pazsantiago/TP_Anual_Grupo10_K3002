@@ -6,7 +6,6 @@
 
 <h2 class="mb-4">Registrar Donante</h2>
 
-<!-- Selector de Tipo de Persona -->
 <div class="card mb-4">
     <div class="card-body">
         <label class="form-label fw-bold">Tipo de Persona</label>
@@ -27,10 +26,8 @@
 
 <form th:action="@{/donantes/nuevo}" th:object="${donante}" method="post">
 
-    <!-- Campo Tipo en PersonaRequestDTO -->
     <input type="hidden" name="persona.tipo" th:value="${tipoActual}"/>
 
-    <!-- Campos Persona Humana -->
     <div th:if="${tipoActual == 'HUMANA'}" class="card mb-4">
         <div class="card-header bg-light fw-bold">Datos de Persona Humana</div>
         <div class="card-body">
@@ -55,7 +52,6 @@
         </div>
     </div>
 
-    <!-- Campos Persona Jurídica -->
     <div th:if="${tipoActual == 'JURIDICA'}" class="card mb-4">
         <div class="card-header bg-light fw-bold">Datos de Persona Jurídica</div>
         <div class="card-body">
@@ -80,7 +76,6 @@
         </div>
     </div>
 
-    <!-- Medio de Contacto Predeterminado -->
     <div class="card mb-4">
         <div class="card-header bg-light fw-bold">Medio de Contacto Predeterminado</div>
         <div class="card-body">
@@ -106,20 +101,47 @@
         </div>
     </div>
 
-    <!-- Sección de Datos de Acceso / Registro -->
     <div class="card mb-4 border-primary">
-        <div class="card-header bg-primary text-white fw-bold">Credenciales de Acceso</div>
+        <div class="card-header bg-primary text-white fw-bold">Credenciales de Acceso y Contacto</div>
         <div class="card-body">
             <div class="row g-3">
+
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Correo Electrónico (Usuario)</label>
-                    <!-- Usamos el email del primer medio de contacto como username -->
-                    <input type="email" th:field="*{mediosDeContacto.correoElectronico}" class="form-control" placeholder="ejemplo@correo.com" required/>
+                    <input type="email"
+                           th:field="*{mediosDeContacto[0].correoElectronico}"
+                           class="form-control"
+                           placeholder="ejemplo@correo.com"
+                           required/>
                 </div>
+
+
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Contraseña</label>
-                    <input type="password" name="password" class="form-control" placeholder="Mínimo 8 caracteres" required minlength="6"/>
+                    <input type="password"
+                           name="password"
+                           class="form-control"
+                           placeholder="Mínimo 6 caracteres"
+                           required
+                           minlength="6"/>
                 </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Tipo Contacto</label>
+                    <select th:field="*{mediosDeContacto[0].tipo}" class="form-select">
+                        <option value="EMAIL">Email</option>
+                        <option value="WHATSAPP">WhatsApp</option>
+                        <option value="TELEFONO">Teléfono</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Teléfono</label>
+                    <input type="text" th:field="*{mediosDeContacto[0].telefono}" class="form-control"/>
+                </div>
+
+                <input type="hidden" th:field="*{mediosDeContacto[0].esPredeterminado}" value="true"/>
+
             </div>
         </div>
     </div>
