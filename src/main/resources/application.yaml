@@ -18,6 +18,15 @@ spring:
           keycloak:
             issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8180/realms/donatrack}
 
+keycloak:
+  realm: ${REALM:donatrack}
+  admin:
+    client-id:
+      ${CLIENT_ID: admin-cli}
+    client-secret: ${CLIENT_SECRET:}
+    username:
+      ${CLIENT_USERNAME:admin}
+    password: ${CLIENT_PASSWORD:admin}
 
 server:
   port: 8086

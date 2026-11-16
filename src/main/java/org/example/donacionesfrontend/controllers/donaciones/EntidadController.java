@@ -7,9 +7,11 @@ import org.example.donacionesfrontend.dtos.request.NecesidadRequestDTO;
 import org.example.donacionesfrontend.dtos.request.SubcategoriaRequestDTO;
 import org.example.donacionesfrontend.dtos.response.EntidadBeneficiariaResponseDTO;
 import org.example.donacionesfrontend.services.EntidadService;
+import org.example.donacionesfrontend.services.KeycloakAdminService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EntidadController {
 
+    private final KeycloakAdminService  keycloakAdminService;
     private final EntidadService entidadService;
 
     @GetMapping
@@ -43,10 +46,31 @@ public class EntidadController {
         return "entidades/formulario";
     }
 
-    @PostMapping
-    public String guardar(@ModelAttribute("entidad") EntidadBeneficiariaRequestDTO entidadDTO, HttpSession session) {
-        entidadService.create(entidadDTO);
-        return "redirect:/entidadesBeneficiarias";
+    @PostMapping("/nueva")
+    public String guardarEntidad(
+            @ModelAttribute("entidad") EntidadBeneficiariaRequestDTO entidadDTO,
+            @RequestParam("password") String password,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            // 1. Alta en Keycloak con ROL_ENTIDAD
+            keycloakAdminService.crearUsuarioEnKeycloak(
+                    entidadDTO.getCorreoRepresentante(),
+                    entidadDTO.getTelefono(),
+                    password,
+                    "ROLE_ENTIDAD"
+            );
+
+            // 2. Alta de la Entidad en la Base de Datos Local
+            entidadService.create(entidadDTO);
+
+            redirectAttributes.addFlashAttribute("exito", "¡Entidad Beneficiaria y usuario creados con éxito! Por favor inicie sesión.");
+            return "redirect:/oauth2/authorization/keycloak";
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al registrar la entidad/usuario: " + e.getMessage());
+            return "redirect:/entidadesBeneficiarias/nueva";
+        }
     }
 
     @PostMapping("/eliminar")

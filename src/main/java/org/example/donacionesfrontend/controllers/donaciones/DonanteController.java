@@ -6,6 +6,7 @@ import org.example.donacionesfrontend.dtos.request.MedioContactoRequestDTO;
 import org.example.donacionesfrontend.dtos.request.PersonaRequestDTO;
 import org.example.donacionesfrontend.dtos.response.DonanteResponseDTO;
 import org.example.donacionesfrontend.services.DonanteService;
+import org.example.donacionesfrontend.services.KeycloakAdminService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DonanteController {
 
+    private final KeycloakAdminService keycloakAdminService;
     private final DonanteService donanteService;
 
     @GetMapping
@@ -54,10 +56,31 @@ public class DonanteController {
     @PostMapping("/nuevo")
     public String guardarDonante(
             @ModelAttribute("donante") DonanteRequestDTO donanteDTO,
+            @RequestParam("password") String password,
             RedirectAttributes redirectAttributes) {
-        donanteService.create(donanteDTO);
-        redirectAttributes.addFlashAttribute("exito", "Donante registrado correctamente.");
-        return "redirect:/donantes";
+
+        try {
+            // 1. Obtenemos el correo del medio de contacto enviado
+            String email = donanteDTO.getMediosDeContacto() .getFirst().getCorreoElectronico();
+
+            // 2. Creamos el usuario en Keycloak enviando mail, clave en texto plano y rol
+            keycloakAdminService.crearUsuarioEnKeycloak(
+                    email,
+                    donanteDTO.getMediosDeContacto().getFirst().getTelefono(),
+                    password,
+                    "ROLE_DONANTE"
+            );
+
+            // 3. Guardamos la entidad Donante en la base de datos de nuestro sistema
+            donanteService.create(donanteDTO);
+
+            redirectAttributes.addFlashAttribute("exito", "¡Donante y usuario creados con éxito! Por favor inicie sesión.");
+            return "redirect:/oauth2/authorization/keycloak";
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al registrar el donante/usuario: " + e.getMessage());
+            return "redirect:/donantes/nuevo";
+        }
     }
 
     @PostMapping("/eliminar")
