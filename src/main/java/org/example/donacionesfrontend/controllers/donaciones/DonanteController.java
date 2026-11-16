@@ -86,12 +86,12 @@ public class DonanteController {
         return "redirect:/donantes";
     }
 
-    @GetMapping("/importar")
+    @GetMapping("/importador")
     public String vistaImportar() {
         return "donantes/importar";
     }
 
-    @PostMapping("/importar")
+    @PostMapping("/importador")
     public String importarCsv(@RequestParam("rutaArchivo") String rutaArchivo, RedirectAttributes redirectAttributes) {
         if (rutaArchivo == null || rutaArchivo.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Por favor ingresá la ruta o nombre del archivo CSV.");

@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
@@ -33,11 +35,12 @@ public class LoginController {
 
     @GetMapping("/login/callback")
     public String procesarLogin(
+            @RegisteredOAuth2AuthorizedClient("keycloak") OAuth2AuthorizedClient authorizedClient,
             @AuthenticationPrincipal OidcUser usuarioLogueado,
             HttpSession session) {
             if (usuarioLogueado != null) {
-                String token = usuarioLogueado.getIdToken().getTokenValue();
-                session.setAttribute("jwtToken", token);
+                String accessToken = authorizedClient.getAccessToken().getTokenValue();
+                session.setAttribute("jwtToken", accessToken);
             }else{
                 return "redirect:/login";
             }

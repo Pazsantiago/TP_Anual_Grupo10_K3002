@@ -11,13 +11,11 @@ import org.springframework.web.client.RestClient;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class NecesidadService {
-
+    @Qualifier("restClientDonaciones")
     private final RestClient restClient;
 
-    public NecesidadService(@Qualifier("restClientDonaciones") RestClient restClient) {
-        this.restClient = restClient;
-    }
     public List<NecesidadResponseDTO> getByEntidad(Long idEntidad) {
         return restClient.get()
                 .uri("/api/entidadesBeneficiarias/{idEntidad}/necesidades", idEntidad)

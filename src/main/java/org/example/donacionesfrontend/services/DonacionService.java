@@ -14,13 +14,10 @@ import org.springframework.web.client.RestClient;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DonacionService {
-
+    @Qualifier("restClientDonaciones")
     private final RestClient restClient;
-
-    public DonacionService(@Qualifier("restClientDonaciones") RestClient restClient) {
-        this.restClient = restClient;
-    }
 
     public List<DonacionResponseDTO> getByDonante(Long idDonante) {
         return restClient.get()

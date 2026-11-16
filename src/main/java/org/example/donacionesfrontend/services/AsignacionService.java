@@ -1,17 +1,15 @@
 package org.example.donacionesfrontend.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 @Service
+@RequiredArgsConstructor
 public class AsignacionService {
-
+    @Qualifier("restClientDonaciones")
     private final RestClient restClient;
-
-    public AsignacionService(@Qualifier("restClientDonaciones") RestClient restClient) {
-        this.restClient = restClient;
-    }
 
     public void asignarDonacionANecesidad(Long idEntidad, Long idNecesidad, Long idDonacionSegmentada) {
         restClient.post()

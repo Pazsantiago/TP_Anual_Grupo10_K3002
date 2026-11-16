@@ -1,5 +1,6 @@
 package org.example.donacionesfrontend.services;
 
+import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.dtos.response.RankingEntidadBeneficiariaResponseDTO;
 import org.example.donacionesfrontend.dtos.response.SegmentadaRankingsResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,13 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class RankingService {
-
+    @Qualifier("restClientDonaciones")
     private final RestClient restClient;
-
-    public RankingService(@Qualifier("restClientDonaciones") RestClient restClient) {
-        this.restClient = restClient;
-    }
 
     public List<SegmentadaRankingsResponseDTO> obtenerRankings() {
         return restClient.get()
