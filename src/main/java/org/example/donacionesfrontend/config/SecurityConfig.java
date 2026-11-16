@@ -20,7 +20,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Permitimos rutas estáticas, login, dev-login y el callback
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/error", "/login", "/login/callback", "/donaciones/nuevo", "/entidadesBeneficiarias/nueva").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/error", "/login", "/login/callback","/inicio","/","/donaciones/home", "/galeria","/mapa","/legal", "/donaciones/nuevo", "/entidadesBeneficiarias/nueva").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
