@@ -37,21 +37,16 @@ public class LoginController {
     public String procesarLogin(
             @RegisteredOAuth2AuthorizedClient("keycloak") OAuth2AuthorizedClient authorizedClient,
             @AuthenticationPrincipal OidcUser usuarioLogueado,
-            HttpSession session) {
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
             if (usuarioLogueado != null) {
                 String accessToken = authorizedClient.getAccessToken().getTokenValue();
                 session.setAttribute("jwtToken", accessToken);
             }else{
                 return "redirect:/login";
             }
-
-            SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-            if (savedRequest != null) {
-                String targetUrl = savedRequest.getRedirectUrl();
-                session.removeAttribute("SPRING_SECURITY_SAVED_REQUEST");
-                return "redirect:" + targetUrl;
-            }
-            return "redirect:/home";
+            redirectAttributes.addFlashAttribute("exito", "Usuario autenticado! volviendo al inicio");
+            return "redirect:/donaciones/home";
     }
 
     @GetMapping("/logout")

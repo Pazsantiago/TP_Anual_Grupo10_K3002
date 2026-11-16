@@ -107,6 +107,6 @@ public class DonanteController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al procesar el archivo CSV: " + e.getMessage());
         }
-        return "redirect:/importador";
+        return "redirect:/donantes/importador";
     }
 }
