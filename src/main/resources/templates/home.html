@@ -125,13 +125,19 @@
                 <h5 class="card-title text-success fw-bold">
                     <i class="bi bi-arrow-left-right me-2"></i>Matchmaking / Asignaciones
                 </h5>
-                <p class="card-text text-muted">Asigna donaciones segmentadas y consulta lo asignado a cada entidad.</p>
+                <p class="card-text text-muted">Asigna donaciones segmentadas a necesidades de entidades o completa asignaciones existentes.</p>
             </div>
             <div class="card-footer bg-transparent border-0 pb-3 d-flex flex-column gap-2">
-                <a th:href="@{/asignaciones}" class="btn btn-success btn-sm">
-                    <i class="bi bi-search"></i> Ver Asignadas por Entidad
+                <a th:href="@{/asignaciones}" class="btn btn-success btn-sm text-start">
+                    <i class="bi bi-search me-1"></i> Ver Asignadas por Entidad
                 </a>
-                <a th:href="@{/asignaciones/nueva}" class="btn btn-outline-success btn-sm">Asignar a Necesidad</a>
+
+                <a th:href="@{/asignaciones/nueva}" class="btn btn-outline-success btn-sm text-start">
+                    <i class="bi bi-link-45deg me-1"></i> Asignar Donación a Necesidad
+                </a>
+                <a th:href="@{/asignaciones/agregar-segmentada}" class="btn btn-outline-secondary btn-sm text-start">
+                    <i class="bi bi-plus-circle me-1"></i> Agregar a Asignación Existente
+                </a>
             </div>
         </div>
     </div>
