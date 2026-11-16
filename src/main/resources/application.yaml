@@ -23,9 +23,8 @@ keycloak:
   admin:
     client-id:
       ${CLIENT_ID: admin-cli}
-    client-secret: ${CLIENT_SECRET:}
-    username:
-      ${CLIENT_USERNAME:admin}
+    client-secret: ${CLIENT_SECRET:secreto}
+    username: ${CLIENT_USERNAME:admin}
     password: ${CLIENT_PASSWORD:admin}
 
 server:
