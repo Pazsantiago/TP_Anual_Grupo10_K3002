@@ -1,5 +1,6 @@
 package com.grupo10.servicio_donaciones.Services.ServiceDonantes;
 
+import com.grupo10.servicio_donaciones.Services.KeyclockService.KeycloakAdminService;
 import com.grupo10.servicio_donaciones.comunicador.Comunicador;
 import com.grupo10.servicio_donaciones.donaciones.dominio.Importador.Importador;
 import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Categoria;
@@ -19,6 +20,7 @@ import org.springframework.web.client.RestClient;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +34,8 @@ public class ServicioDonantes {
     private final RestClient restClientIncentivos;
     @Qualifier("restClientMensajes")
     private final RestClient restClientMensajes;
-
     private final Comunicador comunicador;
+    private final KeycloakAdminService keycloakAdminService;
 
     public List<Donante> getAllPersonas() {
         return repoDonantes.findAll();
@@ -47,6 +49,7 @@ public class ServicioDonantes {
     public Donante obtenerPorId(Long id) {
         return repoDonantes.findById(id).orElse(null);
     }
+
 
     @Transactional
     public void setearCategorias(Donante persona) {
@@ -94,7 +97,16 @@ public class ServicioDonantes {
         if (!importados.isEmpty()) {
 
             //Crear cuenta
-            // TODO
+
+            for (Donante donante : importados) {
+                keycloakAdminService.crearUsuarioEnKeycloak(
+                        donante.obtenerContactoPredeterminado().getCorreoElectronico(),
+                        donante.obtenerContactoPredeterminado().getTelefono(),
+                        "Tmp_" + UUID.randomUUID().toString().replace("-", "").substring(0, 10) + "!A9",
+                        "ROL_DONANTE"
+                );
+            }
+
             //Avisar credenciales a cada donante
             importados.forEach(donante -> {
                 String nombre = (donante.getPersona() instanceof PersonaHumana ph)
@@ -108,7 +120,7 @@ public class ServicioDonantes {
                         TipoEvento.USUARIO_CREADO, restClientMensajes
                 );
             });
-            
+
             return "Archivo importado correctamente" +
                     " - Cantidad de registros creados: " + (repoDonantes.count() - cantDonantesAnteriores);
         }
