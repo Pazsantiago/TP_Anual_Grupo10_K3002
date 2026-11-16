@@ -102,20 +102,17 @@
     </div>
 
     <div class="card mb-4 border-primary">
-        <div class="card-header bg-primary text-white fw-bold">Credenciales de Acceso y Contacto</div>
+        <div class="card-header bg-primary text-white fw-bold">Credenciales de Acceso</div>
         <div class="card-body">
             <div class="row g-3">
-
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Correo Electrónico (Usuario)</label>
                     <input type="email"
-                           th:field="*{mediosDeContacto[0].correoElectronico}"
+                           name="email"
                            class="form-control"
                            placeholder="ejemplo@correo.com"
                            required/>
                 </div>
-
-
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Contraseña</label>
                     <input type="password"
@@ -125,23 +122,6 @@
                            required
                            minlength="6"/>
                 </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Tipo Contacto</label>
-                    <select th:field="*{mediosDeContacto[0].tipo}" class="form-select">
-                        <option value="EMAIL">Email</option>
-                        <option value="WHATSAPP">WhatsApp</option>
-                        <option value="TELEFONO">Teléfono</option>
-                    </select>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Teléfono</label>
-                    <input type="text" th:field="*{mediosDeContacto[0].telefono}" class="form-control"/>
-                </div>
-
-                <input type="hidden" th:field="*{mediosDeContacto[0].esPredeterminado}" value="true"/>
-
             </div>
         </div>
     </div>

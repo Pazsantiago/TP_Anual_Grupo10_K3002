@@ -56,17 +56,14 @@ public class DonanteController {
     @PostMapping("/nuevo")
     public String guardarDonante(
             @ModelAttribute("donante") DonanteRequestDTO donanteDTO,
+            @RequestParam("email") String email,
             @RequestParam("password") String password,
             RedirectAttributes redirectAttributes) {
 
         try {
-            // 1. Obtenemos el correo del medio de contacto enviado
-            String email = donanteDTO.getMediosDeContacto() .getFirst().getCorreoElectronico();
 
-            // 2. Creamos el usuario en Keycloak enviando mail, clave en texto plano y rol
             keycloakAdminService.crearUsuarioEnKeycloak(
                     email,
-                    donanteDTO.getMediosDeContacto().getFirst().getTelefono(),
                     password,
                     "ROLE_DONANTE"
             );
