@@ -53,15 +53,12 @@ public class EntidadController {
             RedirectAttributes redirectAttributes) {
 
         try {
-            // 1. Alta en Keycloak con ROL_ENTIDAD
             keycloakAdminService.crearUsuarioEnKeycloak(
                     entidadDTO.getCorreoRepresentante(),
-                    entidadDTO.getTelefono(),
                     password,
                     "ROLE_ENTIDAD"
             );
 
-            // 2. Alta de la Entidad en la Base de Datos Local
             entidadService.create(entidadDTO);
 
             redirectAttributes.addFlashAttribute("exito", "¡Entidad Beneficiaria y usuario creados con éxito! Por favor inicie sesión.");
