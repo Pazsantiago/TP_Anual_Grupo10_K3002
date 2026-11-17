@@ -21,6 +21,4 @@ public interface RepoDonantes extends JpaRepository<Donante, Long> {
 
     @Query("SELECT d from Donante d LEFT JOIN FETCH d.donaciones where d.id = :id")
     Optional<Donante> findByIdWithDonaciones(@Param("id") Long id);
-
-    List<Donante> findB(List<String> correosCSV);
 }
