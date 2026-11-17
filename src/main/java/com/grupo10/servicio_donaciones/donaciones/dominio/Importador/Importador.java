@@ -1,7 +1,6 @@
 package com.grupo10.servicio_donaciones.donaciones.dominio.Importador;
 
 import com.grupo10.servicio_donaciones.donaciones.dominio.donante.*;
-import com.grupo10.servicio_donaciones.repositorios.RepoDonantes;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,13 +10,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 public class Importador {
     private static Importador instancia = null;
-    private RepoDonantes repositorioDonadores = null;
-
 
     private Importador() {
     }
@@ -28,80 +26,30 @@ public class Importador {
         return instancia;
     }
 
-    public void setRepositorioDonadores(RepoDonantes repo) {
-        this.repositorioDonadores = repo;
-    }
-
     @Transactional
     public List<Donante> importarCsv(MultipartFile archivo) {
-        boolean first = true;
+        Map<String, Donante> donantesUnicosCSV = new LinkedHashMap<>();
+        boolean primeraLinea = true;
+
         try (CSVReader csvReader = new CSVReader(new InputStreamReader(archivo.getInputStream(), StandardCharsets.UTF_8))) {
             String[] fila;
-            List<Donante> donantes = new ArrayList<>();
             while ((fila = csvReader.readNext()) != null) {
-                Boolean repetido = false;
-                if (first) {
-                    first = false;
+                if (primeraLinea) {
+                    primeraLinea = false;
                     continue;
                 }
-                //donantes.add(controlarDonanteEnLista(fila));
-//                Con esto busca siempre si se repite pero tarda mucho.
-                String correo = fila[4];
 
+                String correo = fila[4].toLowerCase().trim();
                 Donante donante = setearDonante(fila);
-
-                for (Donante d : donantes) {
-                    if (d.getMediosDeContacto().stream().anyMatch(m -> m.getCorreoElectronico().equalsIgnoreCase(correo))) {
-                        donantes.set(donantes.indexOf(d), donante);
-                        repetido = true;
-                        break;
-                    }
-                }
-                if (!repetido) {
-                    donantes.add(donante);
-                }
-
-//                donantes.removeIf(d ->
-//                        d.getMediosDeContacto().stream()
-//                                .anyMatch(m -> m.getCorreoElectronico().equalsIgnoreCase(correo))
-//                );
-
+                donantesUnicosCSV.put(correo, donante);
             }
-            repositorioDonadores.saveAll(donantes);
-            return donantes;
 
         } catch (IOException | CsvValidationException e) {
             return List.of();
         }
+        return new ArrayList<>(donantesUnicosCSV.values());
     }
 
-    @Transactional
-    public Donante controlarDonanteEnLista(String[] fila) {
-        Optional<Donante> donanteExistente = repositorioDonadores.findByMediosDeContactoCorreoElectronico(fila[4]);
-        //En caso de que un registro
-        //ya exista (esto quiere decir que el correo electrónico ya se encuentra registrado en el servicio) se deberá
-        //actualizar su información --> Esto es para el csv.
-        Donante donanteAGuardar;
-        if (donanteExistente.isPresent()) {
-            Donante donante = donanteExistente.get();
-            Donante datosCSV = setearDonante(fila);
-
-            donante.setPersona(datosCSV.getPersona());
-
-            MedioContacto contactoCSV = datosCSV.getMediosDeContacto().get(0);
-
-            donante.getMediosDeContacto().stream()
-                    .filter(m -> fila[4].equalsIgnoreCase(m.getCorreoElectronico()))
-                    .findFirst()
-                    .ifPresent(m -> {
-                        m.setTelefono(contactoCSV.getTelefono());
-                        m.setEsPredeterminado(true);
-                    });
-
-            return donante;
-        }
-        return setearDonante(fila);
-    }
 
     public Donante setearDonante(String[] fila) {
         Donante donante = new Donante();

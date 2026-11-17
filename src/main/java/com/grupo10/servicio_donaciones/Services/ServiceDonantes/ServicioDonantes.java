@@ -91,14 +91,13 @@ public class ServicioDonantes {
 
     @Transactional
     public String importarCSV(MultipartFile archivo) {
-        importadorCSV.setRepositorioDonadores(repoDonantes);
         Integer cantDonantesAnteriores = repoDonantes.findAll().size();
         List<Donante> importados = importadorCSV.importarCsv(archivo);
 
         if (!importados.isEmpty()) {
-
+            //Guardarlos
+            this.repoDonantes.saveAll(importados);
             //Crear cuenta
-
             for (Donante donante : importados) {
                 keycloakAdminService.crearUsuarioEnKeycloak(
                         donante.obtenerContactoPredeterminado().getCorreoElectronico(),
@@ -106,7 +105,6 @@ public class ServicioDonantes {
                         "ROL_DONANTE"
                 );
             }
-
             //Avisar credenciales a cada donante
             importados.forEach(donante -> {
                 String nombre = (donante.getPersona() instanceof PersonaHumana ph)
