@@ -27,7 +27,7 @@ public class CNecesidades {
                             .toList()
             );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -39,7 +39,7 @@ public class CNecesidades {
         try {
             return ResponseEntity.ok(mapper.deDominioAResponse(servicioNecesidades.getNecesidadById(idNecesidad)));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class CNecesidades {
             Necesidad creada = servicioNecesidades.createNecesidad(idEntidad, necesidad);
             return ResponseEntity.ok(mapper.deDominioAResponse(creada));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -68,7 +68,7 @@ public class CNecesidades {
             Necesidad actualizada = servicioNecesidades.updateNecesidad(idNecesidad, necesidad);
             return ResponseEntity.ok(mapper.deDominioAResponse(actualizada));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -80,7 +80,7 @@ public class CNecesidades {
         try {
             return ResponseEntity.ok(servicioNecesidades.deleteNecesidad(idNecesidad));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

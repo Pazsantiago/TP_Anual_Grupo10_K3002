@@ -21,7 +21,7 @@ public class CCategorias {
         try {
             return ResponseEntity.ok(repoCategorias.findAll().stream().toList());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

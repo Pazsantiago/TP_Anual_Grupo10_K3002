@@ -23,7 +23,7 @@ public class CRankingsEntidades {
         try {
             return ResponseEntity.ok(servicioAsignacion.obtenerRankings().stream().map(mapper::deDominioAResponse).collect(Collectors.toList()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -32,7 +32,7 @@ public class CRankingsEntidades {
         try {
             return ResponseEntity.ok(servicioAsignacion.filtrarEntidades(idDonacion).stream().map(mapper::deDominioAResponse).collect(Collectors.toList()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -41,7 +41,7 @@ public class CRankingsEntidades {
         try {
             return ResponseEntity.ok(servicioAsignacion.generarRanking());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

@@ -26,7 +26,7 @@ public class CDonacionAsignada {
         try {
             return ResponseEntity.ok(servicioDonacion.obtenerDonacionesAsignadas().stream().map(mapper::deDominioAResponse).collect(Collectors.toList()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }

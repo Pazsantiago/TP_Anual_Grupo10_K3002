@@ -31,7 +31,7 @@ public class CDonacion {
                             .toList()
             );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -41,7 +41,7 @@ public class CDonacion {
         try {
             return ResponseEntity.ok(mapper.deDominioAResponse(servicioDonacion.getDonacionById(idDonacion)));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -52,7 +52,7 @@ public class CDonacion {
         try {
             return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadas(idDonante).stream().map(mapper::deDominioAResponse).collect(Collectors.toList()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -64,7 +64,7 @@ public class CDonacion {
         try {
             return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadasPorEstado(idDonante, estadoDonacion));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -76,7 +76,7 @@ public class CDonacion {
         try {
             return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadasPorSubcategoria(idDonante, subcategoria));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ public class CDonacion {
         try {
             return ResponseEntity.ok(servicioDonacion.obtenerDonacionesSegmentadasPorCategoria(idDonante, idCategoria));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -101,7 +101,7 @@ public class CDonacion {
         try {
             return ResponseEntity.ok(servicioDonacion.obtenerDonacionSegmentada(idSegmentada));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -115,7 +115,7 @@ public class CDonacion {
             Donacion creada = servicioDonacion.createDonacion(donacion, idDonante);
             return ResponseEntity.ok(mapper.deDominioAResponse(creada));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -129,7 +129,7 @@ public class CDonacion {
             Donacion actualizada = servicioDonacion.updateDonacion(idDonacion, donacion);
             return ResponseEntity.ok(mapper.deDominioAResponse(actualizada));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -141,7 +141,7 @@ public class CDonacion {
         try {
             return ResponseEntity.ok(servicioDonacion.deleteDonacion(idDonacion));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -154,7 +154,7 @@ public class CDonacion {
         try {
             return ResponseEntity.ok(servicioDonacion.actualizarDonacionAVencida(idDonacion, idSegmentada, mapper.deDTORequestADominio(dto)));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

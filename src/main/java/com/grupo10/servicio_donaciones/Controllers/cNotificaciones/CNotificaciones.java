@@ -26,7 +26,7 @@ public class CNotificaciones {
         try {
             return ResponseEntity.ok(servicioDonacionAsignada.comenzarRuta(mensajeInicioDeRuta));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -35,7 +35,7 @@ public class CNotificaciones {
         try {
             return ResponseEntity.ok(servicioDonacionAsignada.entregaConfirmada(mensajeConfirmacionEntrega));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ public class CNotificaciones {
         try {
             return ResponseEntity.ok(servicioDonacionAsignada.entregaFallida(mensajeEntregaFallida));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

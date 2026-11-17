@@ -35,7 +35,7 @@ public class CDonantes {
                             .toList()
             );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -45,7 +45,7 @@ public class CDonantes {
         try {
             return ResponseEntity.ok(mapper.deDominioAResponse(servicioDonantes.obtenerPorId(id)));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -70,7 +70,7 @@ public class CDonantes {
             }
             return ResponseEntity.ok(servicioDonantes.importarCSV(archivo));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -83,7 +83,7 @@ public class CDonantes {
             Donante actualizado = servicioDonantes.updateDonante(id, donante);
             return ResponseEntity.ok(mapper.deDominioAResponse(actualizado));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -93,7 +93,7 @@ public class CDonantes {
         try {
             return ResponseEntity.ok(servicioDonantes.deletePersona(id));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }
