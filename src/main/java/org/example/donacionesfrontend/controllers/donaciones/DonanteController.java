@@ -1,8 +1,10 @@
 package org.example.donacionesfrontend.controllers.donaciones;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.dtos.request.DonanteRequestDTO;
 import org.example.donacionesfrontend.dtos.request.MedioContactoRequestDTO;
+import org.example.donacionesfrontend.dtos.request.MedioNotificacion;
 import org.example.donacionesfrontend.dtos.request.PersonaRequestDTO;
 import org.example.donacionesfrontend.dtos.response.DonanteResponseDTO;
 import org.example.donacionesfrontend.services.DonanteService;
@@ -45,8 +47,8 @@ public class DonanteController {
 
         MedioContactoRequestDTO contactoDTO = new MedioContactoRequestDTO();
         contactoDTO.setEsPredeterminado(true);
+        contactoDTO.setTipo(MedioNotificacion.EMAIL);
         donanteDTO.setMediosDeContacto(new ArrayList<>(List.of(contactoDTO)));
-
         return donanteDTO;
     }
 
@@ -63,8 +65,8 @@ public class DonanteController {
             @ModelAttribute("donante") DonanteRequestDTO donanteDTO,
             @RequestParam("email") String email,
             @RequestParam("password") String password,
+            HttpSession session,
             RedirectAttributes redirectAttributes) {
-
         try {
 
             keycloakAdminService.crearUsuarioEnKeycloak(
@@ -73,12 +75,11 @@ public class DonanteController {
                     "ROLE_DONANTE"
             );
 
-            // 3. Guardamos la entidad Donante en la base de datos de nuestro sistema
             donanteService.create(donanteDTO);
 
-            redirectAttributes.addFlashAttribute("exito", "¡Donante y usuario creados con éxito! Por favor inicie sesión.");
-            return "redirect:/oauth2/authorization/keycloak";
-
+            String accessToken = keycloakAdminService.obtenerTokenUsuario(email, password);
+            session.setAttribute("jwtToken", accessToken);
+            return "redirect:/donaciones/home";
         } catch (RestClientResponseException e) {
              System.err.println("🔴 Código de estado devuelto por el Backend: " + e.getStatusCode());
             System.err.println("🔴 Respuesta del Backend: " + e.getResponseBodyAsString());

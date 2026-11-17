@@ -49,20 +49,23 @@ public class EntidadController {
     @PostMapping("/nueva")
     public String guardarEntidad(
             @ModelAttribute("entidad") EntidadBeneficiariaRequestDTO entidadDTO,
+            @RequestParam("email") String email,
             @RequestParam("password") String password,
+            HttpSession session,
             RedirectAttributes redirectAttributes) {
 
         try {
             keycloakAdminService.crearUsuarioEnKeycloak(
-                    entidadDTO.getCorreoRepresentante(),
+                    email,
                     password,
                     "ROLE_ENTIDAD"
             );
 
             entidadService.create(entidadDTO);
 
-            redirectAttributes.addFlashAttribute("exito", "¡Entidad Beneficiaria y usuario creados con éxito! Por favor inicie sesión.");
-            return "redirect:/oauth2/authorization/keycloak";
+            String accessToken = keycloakAdminService.obtenerTokenUsuario(email, password);
+            session.setAttribute("jwtToken", accessToken);
+            return "redirect:/donaciones/home";
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al registrar la entidad/usuario: " + e.getMessage());

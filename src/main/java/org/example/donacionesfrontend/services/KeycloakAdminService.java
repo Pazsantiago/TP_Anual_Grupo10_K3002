@@ -25,14 +25,38 @@ public class KeycloakAdminService {
     @Value("${keycloak.admin.client-id:admin-cli}")
     private String adminClientId;
 
-    @Value("${keycloak.admin.client-secret:}") // Si usás client-credentials
+    @Value("${keycloak.admin.client-secret:}")
     private String adminClientSecret;
 
-    @Value("${keycloak.admin.username:admin}") // O usuario admin directo
+    @Value("${keycloak.admin.username:admin}")
     private String adminUsername;
 
     @Value("${keycloak.admin.password:admin}")
     private String adminPassword;
+
+    public String obtenerTokenUsuario(String email, String password) {
+        String tokenUrl = keycloakServerUrl + "/realms/" + realm + "/protocol/openid-connect/token";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("client_id", adminClientId);
+        body.add("client_secret", adminClientSecret);
+        body.add("grant_type", "password");
+        body.add("username", email);
+        body.add("password", password);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
+
+        ResponseEntity<Map> response = restTemplate.postForEntity(tokenUrl, request, Map.class);
+
+        if (response.getBody() != null && response.getBody().containsKey("access_token")) {
+            return (String) response.getBody().get("access_token");
+        }
+
+        throw new RuntimeException("No se pudo obtener el token para el usuario: " + email);
+    }
 
     private String obtenerAdminToken() {
         String tokenUrl = keycloakServerUrl + "/realms/master/protocol/openid-connect/token";
@@ -70,14 +94,11 @@ public class KeycloakAdminService {
         credential.put("temporary", false);
         userJson.put("credentials", List.of(credential));
 
-        // Transmisión con Header Bearer Token
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(adminToken);
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(userJson, headers);
-
-        // Hace el POST a la Admin API de Keycloak
         restTemplate.postForEntity(usersUrl, request, String.class);
     }
 }

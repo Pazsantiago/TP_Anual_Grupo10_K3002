@@ -31,18 +31,26 @@
         </div>
     </div>
 
-    <!-- Credenciales de Acceso para la Entidad -->
     <div class="card mb-4 border-primary">
         <div class="card-header bg-primary text-white fw-bold">Credenciales de Acceso</div>
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-bold">Correo Representante (Usuario)</label>
-                    <input type="email" th:field="*{correoRepresentante}" class="form-control" placeholder="representante@entidad.org" required/>
+                    <label class="form-label fw-bold">Correo Electrónico (Usuario)</label>
+                    <input type="email"
+                           name="email"
+                           class="form-control"
+                           placeholder="ejemplo@correo.com"
+                           required/>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Contraseña</label>
-                    <input type="password" name="password" class="form-control" placeholder="Mínimo 6 caracteres" required minlength="6"/>
+                    <input type="password"
+                           name="password"
+                           class="form-control"
+                           placeholder="Mínimo 6 caracteres"
+                           required
+                           minlength="6"/>
                 </div>
             </div>
         </div>

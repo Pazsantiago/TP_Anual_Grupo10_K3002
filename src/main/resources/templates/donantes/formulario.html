@@ -24,8 +24,7 @@
     </div>
 </div>
 
-<form th:action="@{/donantes/nuevo}" th:object="${donante}" method="post">
-
+<form th:action="@{/donantes/nuevo(tipo=${tipoActual})}" th:object="${donante}" method="post">
     <input type="hidden" name="persona.tipo" th:value="${tipoActual}"/>
 
     <div th:if="${tipoActual == 'HUMANA'}" class="card mb-4">
