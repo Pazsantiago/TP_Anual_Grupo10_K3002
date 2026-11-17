@@ -74,7 +74,7 @@ public class DonanteController {
             keycloakAdminService.crearUsuarioEnKeycloak(
                     email,
                     password,
-                    "ROLE_DONANTE"
+                    "DONANTE"
             );
 
 
@@ -82,7 +82,7 @@ public class DonanteController {
 //            session.setAttribute("jwtToken", accessToken);
 //            session.setAttribute("userEmail", email);
 //            session.setAttribute("userRol", "ROLE_DONANTE");
-            String rol = session.getAttribute("userRol").toString();
+            String rol = (session != null) ? session.getAttribute("userRol").toString() : null;
             if("ADMIN".equals(rol) || "ROLE_ADMIN".equalsIgnoreCase(rol)){
                 redirectAttributes.addFlashAttribute("Exito", "El usuario ya ha sido creado");
                 return "redirect:/donaciones/home";
