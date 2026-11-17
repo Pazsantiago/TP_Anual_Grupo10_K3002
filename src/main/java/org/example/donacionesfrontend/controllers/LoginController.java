@@ -63,6 +63,6 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        return keycloakAdminService.logout(session);
+        return "redirect:" + keycloakAdminService.logout(session);
     }
 }

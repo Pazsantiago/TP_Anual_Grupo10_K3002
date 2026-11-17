@@ -127,7 +127,6 @@ public class KeycloakAdminService {
         asignarRolAUsuario(email, rol, adminToken);
     }
 
-    // Método auxiliar para buscar el usuario recién creado y vincularle el rol
     private void asignarRolAUsuario(String email, String nombreRol, String adminToken) {
         try {
             String searchUserUrl = keycloakServerUrl + "/admin/realms/" + realm + "/users?username=" + email;
@@ -153,3 +152,4 @@ public class KeycloakAdminService {
         }
     }
 }
+
