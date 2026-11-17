@@ -83,12 +83,12 @@
                     <label class="form-label">Tipo Contacto</label>
                     <select th:field="*{mediosDeContacto[0].tipo}" class="form-select">
                         <option value="EMAIL">Email</option>
-                        <option value="SMS">WhatsApp</option>
-                        <option value="WHATSAPP">Teléfono</option>
+                        <option value="SMS">SMS</option>
+                        <option value="WHATSAPP">WHATSAPP</option>
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Correo Electrónico</label>
+                    <label class="form-label">Correo Electrónico de Contacto</label>
                     <input type="email" th:field="*{mediosDeContacto[0].correoElectronico}" class="form-control" required/>
                 </div>
                 <div class="col-md-4">
@@ -100,26 +100,18 @@
         </div>
     </div>
 
+
     <div class="card mb-4 border-primary">
-        <div class="card-header bg-primary text-white fw-bold">Credenciales de Acceso</div>
+        <div class="card-header bg-primary text-white fw-bold">Credenciales de Acceso (Usuario Keycloak)</div>
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Correo Electrónico (Usuario)</label>
-                    <input type="email"
-                           name="emailCredencial"
-                           class="form-control"
-                           placeholder="ejemplo@correo.com"
-                           required/>
+                    <input type="email" name="email" class="form-control" placeholder="usuario@correo.com" required/>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Contraseña</label>
-                    <input type="password"
-                           name="password"
-                           class="form-control"
-                           placeholder="Mínimo 6 caracteres"
-                           required
-                           minlength="6"/>
+                    <input type="password" name="password" class="form-control" placeholder="Mínimo 6 caracteres" required minlength="6"/>
                 </div>
             </div>
         </div>

@@ -63,7 +63,7 @@ public class DonanteController {
     @PostMapping("/nuevo")
     public String guardarDonante(
             @ModelAttribute("donante") DonanteRequestDTO donanteDTO,
-            @RequestParam("emailCredencial") String email,
+            @RequestParam("email") String email,
             @RequestParam("password") String password,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
