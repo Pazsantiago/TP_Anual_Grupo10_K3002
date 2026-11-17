@@ -81,14 +81,7 @@ public class DonanteController {
             String accessToken = keycloakAdminService.obtenerTokenUsuario(email, password);
             session.setAttribute("jwtToken", accessToken);
             return "redirect:/donaciones/home";
-        } catch (RestClientResponseException e) {
-             System.err.println("🔴 Código de estado devuelto por el Backend: " + e.getStatusCode());
-            System.err.println("🔴 Respuesta del Backend: " + e.getResponseBodyAsString());
-
-            redirectAttributes.addFlashAttribute("error", "Error " + e.getStatusCode() + ": " + e.getResponseBodyAsString());
-            return "redirect:/donantes/nuevo";
         } catch (Exception e) {
-            System.err.println("🔴 Respuesta del Backend: " + e.getMessage());
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
             return "redirect:/donantes/nuevo";
