@@ -88,6 +88,7 @@ public class DonanteController {
             redirectAttributes.addFlashAttribute("error", "Error " + e.getStatusCode() + ": " + e.getResponseBodyAsString());
             return "redirect:/donantes/nuevo";
         } catch (Exception e) {
+            System.err.println("🔴 Respuesta del Backend: " + e.getMessage());
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
             return "redirect:/donantes/nuevo";
