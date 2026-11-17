@@ -45,7 +45,7 @@ public class LoginController {
             }else{
                 return "redirect:/login";
             }
-            redirectAttributes.addFlashAttribute("exito", "Usuario autenticado! volviendo al inicio");
+            redirectAttributes.addFlashAttribute("exito", "Usuario autenticado!");
             return "redirect:/donaciones/home";
     }
 
