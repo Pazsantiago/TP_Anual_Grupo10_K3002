@@ -53,15 +53,15 @@ public class EntidadController {
             @RequestParam("password") String password,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
-
         try {
+            entidadService.create(entidadDTO);
+
             keycloakAdminService.crearUsuarioEnKeycloak(
                     email,
                     password,
                     "ROLE_ENTIDAD"
             );
 
-            entidadService.create(entidadDTO);
 
             String accessToken = keycloakAdminService.obtenerTokenUsuario(email, password);
             session.setAttribute("jwtToken", accessToken);

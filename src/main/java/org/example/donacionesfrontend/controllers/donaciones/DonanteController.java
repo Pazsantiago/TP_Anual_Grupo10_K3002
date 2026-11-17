@@ -63,22 +63,20 @@ public class DonanteController {
     @PostMapping("/nuevo")
     public String guardarDonante(
             @ModelAttribute("donante") DonanteRequestDTO donanteDTO,
-            @RequestParam("email") String email,
+            @RequestParam("emailCredencial") String email,
             @RequestParam("password") String password,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
         try {
-            if (donanteDTO.getMediosDeContacto().get(0).getTipo() == null) {
-                System.out.println("El tipo de contacto venía null, asignando EMAIL por defecto");
-                donanteDTO.getMediosDeContacto().get(0).setTipo(MedioNotificacion.EMAIL); // O "EMAIL" según el tipo de tu DTO
-            }
+
+            donanteService.create(donanteDTO);
+
             keycloakAdminService.crearUsuarioEnKeycloak(
                     email,
                     password,
                     "ROLE_DONANTE"
             );
 
-            donanteService.create(donanteDTO);
 
             String accessToken = keycloakAdminService.obtenerTokenUsuario(email, password);
             session.setAttribute("jwtToken", accessToken);
