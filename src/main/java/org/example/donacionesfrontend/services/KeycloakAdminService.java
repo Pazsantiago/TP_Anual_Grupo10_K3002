@@ -4,11 +4,14 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Service
@@ -42,18 +45,22 @@ public class KeycloakAdminService {
     private String adminPassword;
 
     public String logout(HttpSession session) {
-        session.invalidate();
-        String redirectUri = frontendUrl + "/donaciones/home";
+        if (session != null) {
+            session.invalidate();
+        }
+        SecurityContextHolder.clearContext();
 
-        String keycloakLogoutUrl = String.format(
+        String redirectUri = frontendUrl + "/donaciones/home";
+        // Esto lo pusimos porque keycloak exige que el parametro logout_redirect este url-encoded
+        String encodedRedirectUri = URLEncoder.encode(redirectUri, StandardCharsets.UTF_8);
+
+        return String.format(
                 "%s/realms/%s/protocol/openid-connect/logout?client_id=%s&post_logout_redirect_uri=%s",
                 keycloakServerUrl,
                 realm,
                 userClientId,
-                redirectUri
+                encodedRedirectUri
         );
-
-        return keycloakLogoutUrl;
     }
 
     public String obtenerTokenUsuario(String email, String password) {
