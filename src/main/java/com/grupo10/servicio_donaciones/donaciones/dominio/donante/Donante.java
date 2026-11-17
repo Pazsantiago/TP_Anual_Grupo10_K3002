@@ -41,7 +41,7 @@ public class Donante {
         this.donaciones = donaciones;
         setearDonaciones();
     }
-    
+
 
     public void setMediosDeContacto(List<MedioContacto> mediosDeContacto) {
         this.mediosDeContacto = mediosDeContacto;
@@ -81,11 +81,14 @@ public class Donante {
     }
 
     public void cambiarContactoPredeterminado(MedioContacto contactoPredeterminado) {
-        mediosDeContacto.stream().filter(p -> p.isEsPredeterminado()).findFirst().ifPresent(antiguo -> antiguo.setEsPredeterminado(false));
-        mediosDeContacto.stream().filter(p -> p.equals(contactoPredeterminado)).findFirst().ifPresent(nuevo -> nuevo.setEsPredeterminado(true));
+        MedioContacto antiguo = this.obtenerContactoPredeterminado();
+        if (antiguo != null) {
+            antiguo.setEsPredeterminado(false);
+        }
         if (!mediosDeContacto.contains(contactoPredeterminado)) {
             mediosDeContacto.add(contactoPredeterminado);
         }
+        contactoPredeterminado.setEsPredeterminado(true);
     }
 
 }
