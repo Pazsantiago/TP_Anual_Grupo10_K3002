@@ -1,14 +1,12 @@
 package com.grupo10.servicio_donaciones.Controllers.cRankingsEntidades;
 
 import com.grupo10.servicio_donaciones.Services.ServiceAsignacion.ServicioAsignacion;
-import com.grupo10.servicio_donaciones.dtos.response.SegmentadaRankingsResponseDTO;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -19,7 +17,7 @@ public class CRankingsEntidades {
     private final DTOSMapper mapper;
 
     @GetMapping("")
-    public ResponseEntity<List<SegmentadaRankingsResponseDTO>> obtenerRankings() {
+    public ResponseEntity<?> obtenerRankings() {
         try {
             return ResponseEntity.ok(servicioAsignacion.obtenerRankings().stream().map(mapper::deDominioAResponse).collect(Collectors.toList()));
         } catch (Exception e) {
