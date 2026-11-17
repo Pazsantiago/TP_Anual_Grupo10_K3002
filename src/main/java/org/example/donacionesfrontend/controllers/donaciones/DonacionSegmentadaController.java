@@ -80,7 +80,6 @@ public class DonacionSegmentadaController {
             RedirectAttributes redirectAttributes) {
 
         try {
-            // Se envía la petición al backend con la ruta RESTful completa o con los IDs correspondientes
             donacionService.actualizarEstadoSegmentada(idDonante, idDonacion, idDonacionSegmentada, estadoDTO);
             redirectAttributes.addFlashAttribute("exito", "Estado de la donación segmentada #" + idDonacionSegmentada + " actualizado a VENCIDA.");
         } catch (Exception e) {

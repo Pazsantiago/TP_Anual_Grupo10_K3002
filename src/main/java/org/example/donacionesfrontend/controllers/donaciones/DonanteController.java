@@ -80,6 +80,8 @@ public class DonanteController {
 
             String accessToken = keycloakAdminService.obtenerTokenUsuario(email, password);
             session.setAttribute("jwtToken", accessToken);
+            session.setAttribute("userEmail", email);
+            session.setAttribute("userRol", "ROLE_DONANTE");
             return "redirect:/donaciones/home";
         } catch (Exception e) {
             e.printStackTrace();

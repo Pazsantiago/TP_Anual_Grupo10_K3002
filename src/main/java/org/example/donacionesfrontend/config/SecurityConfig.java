@@ -1,13 +1,20 @@
 package org.example.donacionesfrontend.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.ForwardedHeaderFilter;
 
 @Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final SessionAuthFilter sessionAuthFilter;
 
     @Bean
     public ForwardedHeaderFilter forwardedHeaderFilter() {
@@ -19,14 +26,19 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Permitimos rutas estáticas, login, dev-login y el callback
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/error", "/login", "/login/callback","/inicio","/","/donaciones/home", "/galeria","/mapa","/legal", "/donantes/nuevo", "/entidadesBeneficiarias/nueva").permitAll()
+                        // Rutas públicas accesibles por cualquiera
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/error", "/login", "/login/callback", "/inicio", "/", "/donaciones/home", "/galeria", "/mapa", "/legal", "/donantes/nuevo", "/entidadesBeneficiarias/nueva").permitAll()
+                        // Permisos con Rol
+                        .requestMatchers("/donaciones/vencida", "/asignaciones/nueva", "/donantes/agregar-segmentada", "/donantes/importador").hasRole("ADMIN")
+                        .requestMatchers("/entidadesBeneficiarias").hasAnyRole("DONANTE", "ENTIDAD")
+                        .requestMatchers("/donantes/**", "/donaciones/**").hasRole("DONANTE")
+                        .requestMatchers("/entidades/**").hasRole("ENTIDAD")
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        // Al volver de Keycloak, Spring ejecuta procesarLogin en LoginController
                         .defaultSuccessUrl("/login/callback", true)
-                );
+                )
+                .addFilterBefore(sessionAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

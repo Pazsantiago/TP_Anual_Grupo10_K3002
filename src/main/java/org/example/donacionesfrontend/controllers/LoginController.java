@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.services.KeycloakAdminService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
@@ -45,6 +46,14 @@ public class LoginController {
             if (usuarioLogueado != null) {
                 String accessToken = authorizedClient.getAccessToken().getTokenValue();
                 session.setAttribute("jwtToken", accessToken);
+                session.setAttribute("userEmail", usuarioLogueado.getEmail());
+                String rol = usuarioLogueado.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .filter(a -> a.startsWith("ROLE_"))
+                        .findFirst()
+                        .orElse("ROLE_DONANTE");
+                session.setAttribute("userRol", rol);
+
             }else{
                 return "redirect:/login";
             }

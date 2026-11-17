@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EntidadController {
 
-    private final KeycloakAdminService  keycloakAdminService;
+    private final KeycloakAdminService keycloakAdminService;
     private final EntidadService entidadService;
 
     @GetMapping
@@ -65,6 +65,8 @@ public class EntidadController {
 
             String accessToken = keycloakAdminService.obtenerTokenUsuario(email, password);
             session.setAttribute("jwtToken", accessToken);
+            session.setAttribute("userEmail", email);
+            session.setAttribute("userRol", "ROLE_ENTIDAD");
             return "redirect:/donaciones/home";
 
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package org.example.donacionesfrontend.controllers.donaciones;
 
+import lombok.RequiredArgsConstructor;
 import org.example.donacionesfrontend.services.RankingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,13 +9,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/rankings")
+@RequiredArgsConstructor
 public class RankingController {
 
     private final RankingService rankingService;
-
-    public RankingController(RankingService rankingService) {
-        this.rankingService = rankingService;
-    }
 
     @GetMapping
     public String listarRankings(Model model) {

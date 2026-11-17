@@ -124,5 +124,32 @@ public class KeycloakAdminService {
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(userJson, headers);
         restTemplate.postForEntity(usersUrl, request, String.class);
+        asignarRolAUsuario(email, rol, adminToken);
+    }
+
+    // Método auxiliar para buscar el usuario recién creado y vincularle el rol
+    private void asignarRolAUsuario(String email, String nombreRol, String adminToken) {
+        try {
+            String searchUserUrl = keycloakServerUrl + "/admin/realms/" + realm + "/users?username=" + email;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(adminToken);
+            HttpEntity<Void> request = new HttpEntity<>(headers);
+
+            ResponseEntity<List> userResponse = restTemplate.exchange(searchUserUrl, HttpMethod.GET, request, List.class);
+            if (userResponse.getBody() == null || userResponse.getBody().isEmpty()) return;
+
+            Map<String, Object> usuario = (Map<String, Object>) userResponse.getBody().get(0);
+            String userId = (String) usuario.get("id");
+
+            String getRoleUrl = keycloakServerUrl + "/admin/realms/" + realm + "/roles/" + nombreRol;
+            ResponseEntity<Map> roleResponse = restTemplate.exchange(getRoleUrl, HttpMethod.GET, request, Map.class);
+            Map<String, Object> roleMap = roleResponse.getBody();
+
+            String addRoleUrl = keycloakServerUrl + "/admin/realms/" + realm + "/users/" + userId + "/role-mappings/realm";
+            HttpEntity<List<Map<String, Object>>> addRoleRequest = new HttpEntity<>(List.of(roleMap), headers);
+            restTemplate.postForEntity(addRoleUrl, addRoleRequest, String.class);
+        } catch (Exception e) {
+            System.err.println("No se pudo asignar el rol en Keycloak: " + e.getMessage());
+        }
     }
 }
