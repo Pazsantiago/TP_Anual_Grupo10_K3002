@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -78,8 +79,15 @@ public class DonanteController {
             redirectAttributes.addFlashAttribute("exito", "¡Donante y usuario creados con éxito! Por favor inicie sesión.");
             return "redirect:/oauth2/authorization/keycloak";
 
+        } catch (RestClientResponseException e) {
+             System.err.println("🔴 Código de estado devuelto por el Backend: " + e.getStatusCode());
+            System.err.println("🔴 Respuesta del Backend: " + e.getResponseBodyAsString());
+
+            redirectAttributes.addFlashAttribute("error", "Error " + e.getStatusCode() + ": " + e.getResponseBodyAsString());
+            return "redirect:/donantes/nuevo";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al registrar el donante/usuario: " + e.getMessage());
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
             return "redirect:/donantes/nuevo";
         }
     }
