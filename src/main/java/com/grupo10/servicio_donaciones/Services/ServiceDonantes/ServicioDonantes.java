@@ -20,10 +20,10 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -91,21 +91,26 @@ public class ServicioDonantes {
 
     }
 
+    @Transactional
     private List<Donante> revisarDonantesRepetidos(List<Donante> donantes) {
-        List<String> correosCSV = donantes.stream()
-                .map(d -> d.getMediosDeContacto().get(0).getCorreoElectronico())
-                .collect(Collectors.toList());
+        List<Donante> donantesAProcesar = new ArrayList<>();
 
-        List<Donante> existentesEnDB = repoDonantes.findByMediosDeContactoCorreoElectronicoIn(correosCSV);
-        Set<String> correosExistentes = existentesEnDB.stream()
-                .map(d -> d.getMediosDeContacto().get(0).getCorreoElectronico().toLowerCase())
-                .collect(Collectors.toSet());
+        for (Donante donanteCSV : donantes) {
+            String correo = donanteCSV.getMediosDeContacto().get(0).getCorreoElectronico();
+            Optional<Donante> existenteEnDB = repoDonantes.findByMediosDeContactoCorreoElectronico(correo);
 
-        return donantes.stream()
-                .filter(d -> !correosExistentes.contains(
-                        d.getMediosDeContacto().get(0).getCorreoElectronico().toLowerCase()
-                ))
-                .collect(Collectors.toList());
+            if (existenteEnDB.isPresent()) {
+                Donante donanteAActualizar = existenteEnDB.get();
+                donanteAActualizar.setPersona(donanteCSV.getPersona());
+                donanteAActualizar.setMediosDeContacto(donanteCSV.getMediosDeContacto());
+
+                donantesAProcesar.add(donanteAActualizar); //UPDATE
+            } else {
+                donantesAProcesar.add(donanteCSV); //INSERT
+            }
+
+        }
+        return donantesAProcesar;
     }
 
     @Transactional
