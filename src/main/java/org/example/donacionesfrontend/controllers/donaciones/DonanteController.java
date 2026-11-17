@@ -68,6 +68,13 @@ public class DonanteController {
             HttpSession session,
             RedirectAttributes redirectAttributes) {
         try {
+            if (donanteDTO.getMediosDeContacto() == null || donanteDTO.getMediosDeContacto().isEmpty() || donanteDTO.getMediosDeContacto().get(0) == null) {
+                System.out.println("La contacto no puede estar vacio");
+                MedioContactoRequestDTO contactoAux = new MedioContactoRequestDTO();
+                contactoAux.setTipo(MedioNotificacion.EMAIL);
+                contactoAux.setEsPredeterminado(true);
+                donanteDTO.setMediosDeContacto(new ArrayList<>(List.of(contactoAux)));
+            }
 
             keycloakAdminService.crearUsuarioEnKeycloak(
                     email,
