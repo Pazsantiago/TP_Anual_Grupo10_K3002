@@ -1,6 +1,8 @@
 package org.example.donacionesfrontend.controllers;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.example.donacionesfrontend.services.KeycloakAdminService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,8 +20,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor
 public class LoginController {
-
+    private final KeycloakAdminService keycloakAdminService;
 
     @GetMapping("/login")
     public String vistaLogin() {
@@ -51,7 +54,6 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/oauth2/authorization/keycloak";
+        return keycloakAdminService.logout(session);
     }
 }

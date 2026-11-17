@@ -26,11 +26,12 @@ keycloak:
   realm: ${REALM:donatrack}
   admin:
     client-id:
-      ${CLIENT_ID: admin-cli}
+      ${ADMIN_CLIENT_ID: admin-cli}
     client-secret: ${CLIENT_SECRET:secreto}
     username: ${CLIENT_USERNAME:admin}
     password: ${CLIENT_PASSWORD:admin}
-
+  user:
+    client-id: ${USER_CLIENT_ID:cliente-liviano}
 server:
   port: 8086
   forward-headers-strategy: framework
