@@ -78,11 +78,16 @@ public class DonanteController {
             );
 
 
-            String accessToken = keycloakAdminService.obtenerTokenUsuario(email, password);
-            session.setAttribute("jwtToken", accessToken);
-            session.setAttribute("userEmail", email);
-            session.setAttribute("userRol", "ROLE_DONANTE");
-            return "redirect:/donaciones/home";
+//            String accessToken = keycloakAdminService.obtenerTokenUsuario(email, password);
+//            session.setAttribute("jwtToken", accessToken);
+//            session.setAttribute("userEmail", email);
+//            session.setAttribute("userRol", "ROLE_DONANTE");
+            String rol = session.getAttribute("userRol").toString();
+            if("ADMIN".equals(rol) || "ROLE_ADMIN".equalsIgnoreCase(rol)){
+                redirectAttributes.addFlashAttribute("Exito", "El usuario ya ha sido creado");
+                return "redirect:/donaciones/home";
+            }
+            return "redirect:/login";
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
