@@ -21,7 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -89,10 +91,27 @@ public class ServicioDonantes {
 
     }
 
+    private List<Donante> revisarDonantesRepetidos(List<Donante> donantes) {
+        List<String> correosCSV = donantes.stream()
+                .map(d -> d.getMediosDeContacto().get(0).getCorreoElectronico())
+                .collect(Collectors.toList());
+
+        List<Donante> existentesEnDB = repoDonantes.findByMediosDeContactoCorreoElectronicoIn(correosCSV);
+        Set<String> correosExistentes = existentesEnDB.stream()
+                .map(d -> d.getMediosDeContacto().get(0).getCorreoElectronico().toLowerCase())
+                .collect(Collectors.toSet());
+
+        return donantes.stream()
+                .filter(d -> !correosExistentes.contains(
+                        d.getMediosDeContacto().get(0).getCorreoElectronico().toLowerCase()
+                ))
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public String importarCSV(MultipartFile archivo) {
         Integer cantDonantesAnteriores = repoDonantes.findAll().size();
-        List<Donante> importados = importadorCSV.importarCsv(archivo);
+        List<Donante> importados = revisarDonantesRepetidos(importadorCSV.importarCsv(archivo));
 
         if (!importados.isEmpty()) {
             //Guardarlos
