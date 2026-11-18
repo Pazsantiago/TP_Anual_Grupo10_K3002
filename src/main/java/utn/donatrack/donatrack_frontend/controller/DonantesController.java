@@ -3,6 +3,8 @@ package utn.donatrack.donatrack_frontend.controller;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
+
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import utn.donatrack.donatrack_frontend.client.DonacionesClient;
 import utn.donatrack.donatrack_frontend.client.ServicioExternoException;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.DonacionResponse;
+import utn.donatrack.donatrack_frontend.client.dto.donaciones.DonanteRequest;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.DonanteResponse;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.ImportacionResponse;
+import utn.donatrack.donatrack_frontend.services.KeycloakAdminService;
 import utn.donatrack.donatrack_frontend.viewmodel.DonanteForm;
 import utn.donatrack.donatrack_frontend.viewmodel.Seccion;
 
@@ -26,8 +30,9 @@ import utn.donatrack.donatrack_frontend.viewmodel.Seccion;
 public class DonantesController {
 
     private final DonacionesClient client;
-
-    public DonantesController(DonacionesClient client) {
+    private final KeycloakAdminService keycloakAdminService;
+    public DonantesController(DonacionesClient client, KeycloakAdminService kas) {
+        this.keycloakAdminService = kas;
         this.client = client;
     }
 
@@ -47,7 +52,7 @@ public class DonantesController {
 
     /** Alta en el deposito: la persona recibe un correo de bienvenida para su primer acceso (sin contrasena aca). */
     @PostMapping("/nuevo")
-    public String crear(@ModelAttribute DonanteForm form, RedirectAttributes flash) {
+    public String crear(@ModelAttribute DonanteForm form, RedirectAttributes flash, HttpSession session) {
         String error = form.validar(false);
         if (error != null) {
             flash.addFlashAttribute("errorServicio", error);
@@ -55,12 +60,24 @@ public class DonantesController {
         }
         try {
             client.crearDonante(form.toRequest(false));
+            DonanteRequest d = form.toRequest(true);
+            keycloakAdminService.crearUsuarioEnKeycloak(
+                    d.correoElectronico(),
+                    d.clave(),
+                    "DONANTE"
+            );
+
+            Object rol = (session != null) ? session.getAttribute("userRol") : null;
+            if("ADMIN".equals(rol) || "ROLE_ADMIN".equals(rol)){
+                flash.addFlashAttribute("Exito", "El usuario ya ha sido creado");
+                return "redirect:/panel";
+            }
         } catch (ServicioExternoException e) {
             flash.addFlashAttribute("errorServicio", e.getMessage());
             return "redirect:/donantes/nuevo";
         }
         flash.addFlashAttribute("exito", "Donante registrado. Le enviamos un correo de bienvenida.");
-        return "redirect:/donantes";
+        return "redirect:/";
     }
 
     @GetMapping("/importar")

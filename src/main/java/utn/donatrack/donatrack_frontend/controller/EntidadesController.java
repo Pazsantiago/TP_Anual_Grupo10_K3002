@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import utn.donatrack.donatrack_frontend.client.DonacionesClient;
 import utn.donatrack.donatrack_frontend.client.LogisticaClient;
 import utn.donatrack.donatrack_frontend.client.ServicioExternoException;
+import utn.donatrack.donatrack_frontend.client.dto.donaciones.EntidadRequest;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.EntidadResponse;
 import utn.donatrack.donatrack_frontend.client.dto.logistica.DonacionPendienteResponse;
+import utn.donatrack.donatrack_frontend.services.KeycloakAdminService;
 import utn.donatrack.donatrack_frontend.viewmodel.EntidadForm;
 import utn.donatrack.donatrack_frontend.viewmodel.NecesidadForm;
 import utn.donatrack.donatrack_frontend.viewmodel.Seccion;
@@ -26,9 +28,11 @@ public class EntidadesController {
 
     private final DonacionesClient client;
     private final LogisticaClient logistica;
+    private final KeycloakAdminService keycloakAdminService;
 
-    public EntidadesController(DonacionesClient client, LogisticaClient logistica) {
+    public EntidadesController(DonacionesClient client, LogisticaClient logistica, KeycloakAdminService kas) {
         this.client = client;
+        this.keycloakAdminService=kas;
         this.logistica = logistica;
     }
 
@@ -52,6 +56,12 @@ public class EntidadesController {
         }
         try {
             client.crearEntidad(form.toRequest(false));
+            EntidadRequest e = form.toRequest(true);
+            keycloakAdminService.crearUsuarioEnKeycloak(
+                   e.correoRepresentante(),
+                    e.clave(),
+                    "ENTIDAD"
+            );
         } catch (ServicioExternoException e) {
             flash.addFlashAttribute("errorServicio", e.getMessage());
             return "redirect:/entidades/nueva";
