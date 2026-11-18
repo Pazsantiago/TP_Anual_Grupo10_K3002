@@ -83,7 +83,7 @@ public class DonanteController {
 //            session.setAttribute("userEmail", email);
 //            session.setAttribute("userRol", "ROLE_DONANTE");
             Object rol = (session != null) ? session.getAttribute("userRol") : null;
-            if("ADMIN".equals(rol) || "ROLE_ADMIN".equalsIgnoreCase(rol)){
+            if("ADMIN".equals(rol) || "ROLE_ADMIN".equals(rol)){
                 redirectAttributes.addFlashAttribute("Exito", "El usuario ya ha sido creado");
                 return "redirect:/donaciones/home";
             }
