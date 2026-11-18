@@ -45,22 +45,30 @@ public class KeycloakAdminService {
     private String adminPassword;
 
     public String logout(HttpSession session) {
+        String idToken = null;
+
         if (session != null) {
+            idToken = (String) session.getAttribute("jwtToken");
             session.invalidate();
         }
-        SecurityContextHolder.clearContext();
 
+        SecurityContextHolder.clearContext();
         String redirectUri = frontendUrl + "/donaciones/home";
         // Esto lo pusimos porque keycloak exige que el parametro logout_redirect este url-encoded
         String encodedRedirectUri = URLEncoder.encode(redirectUri, StandardCharsets.UTF_8);
 
-        return String.format(
+        String logoutUrl = String.format(
                 "%s/realms/%s/protocol/openid-connect/logout?client_id=%s&post_logout_redirect_uri=%s",
                 keycloakServerUrl,
                 realm,
                 userClientId,
                 encodedRedirectUri
         );
+
+        if (idToken != null) {
+            logoutUrl += "&id_token_hint=" + idToken;
+        }
+        return logoutUrl;
     }
 
     public String obtenerTokenUsuario(String email, String password) {
