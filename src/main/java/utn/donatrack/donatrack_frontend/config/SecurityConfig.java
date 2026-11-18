@@ -27,9 +27,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas accesibles por cualquiera
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/error", "/login", "/logout", "/login/callback", "/inicio", "/", "/donaciones/home", "/galeria", "/mapa", "/legal", "/donantes/nuevo", "/entidadesBeneficiarias/nueva").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/error", "/login", "/logout", "/login/callback", "/inicio", "/", "/donaciones/home", "/galeria", "/mapa", "/legal", "/donantes/nuevo", "/entidades/nueva").permitAll()
                         // Permisos con Rol
-                        .requestMatchers("/entidadesBeneficiarias").hasAnyRole("DONANTE", "ENTIDAD")
+                        .requestMatchers("/entidades").hasAnyRole("DONANTE", "ENTIDAD")
                         .requestMatchers("/donaciones/vencida", "/asignaciones/nueva", "/asignaciones/agregar-segmentada", "/donantes/importador").hasRole("ADMIN")
                         // Definir arriba CUALES son los endpoints especificos que solo puede el ADMINISTRADOR sobre incentivos y logistica
                         // Especificamente son administrar camiones, ver el ranking de incentivos de donantes mas activos y rankings anteriores

@@ -31,7 +31,7 @@ public class LoginController {
             HttpSession session) {
         if (session != null && session.getAttribute("jwtToken") != null) {
             redirectAttributes.addFlashAttribute("Exito", "Ya estás autenticado");
-            return "redirect:/";
+            return "redirect:/panel";
         }
         return "redirect:/oauth2/authorization/keycloak";
     }
@@ -59,7 +59,7 @@ public class LoginController {
                 return "redirect:/login";
             }
             redirectAttributes.addFlashAttribute("exito", "Usuario autenticado!");
-            return "redirect:/";
+            return "redirect:/panel";
     }
 
     @GetMapping("/logout")
