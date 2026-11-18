@@ -88,13 +88,10 @@ public class DonanteController {
                 return "redirect:/donaciones/home";
             }
             return "redirect:/login";
-        } catch (org.springframework.web.client.RestClientResponseException e) {
-            System.err.println("Error HTTP al llamar al Backend: " + e.getStatusCode());
-            System.err.println("Cuerpo de la respuesta de error: " + e.getResponseBodyAsString());
-            throw e; // Volvemos a lanzar la excepción para que no tape el flujo
         } catch (Exception e) {
-            System.err.println("Error de conexión/red hacia el Backend: " + e.getMessage());
-            throw e;
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
+            return "redirect:/donantes/nuevo";
         }
     }
 

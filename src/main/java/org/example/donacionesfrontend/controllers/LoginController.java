@@ -26,7 +26,13 @@ public class LoginController {
     private final KeycloakAdminService keycloakAdminService;
 
     @GetMapping("/login")
-    public String vistaLogin() {
+    public String vistaLogin(
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
+        if (session != null && session.getAttribute("jwtToken") != null) {
+            redirectAttributes.addFlashAttribute("Exito", "Ya estás autenticado");
+            return "redirect:/donaciones/home";
+        }
         return "redirect:/oauth2/authorization/keycloak";
     }
 
