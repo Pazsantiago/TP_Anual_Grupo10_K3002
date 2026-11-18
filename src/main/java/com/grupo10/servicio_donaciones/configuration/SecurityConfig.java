@@ -15,21 +15,13 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/error", "/actuator/health").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/donantes", "/api/entidadesBeneficiarias", "/api/donantes/importador").permitAll()
-                        .anyRequest().authenticated() // Exige token para cualquier endpoint
+                                .requestMatchers("/error", "/actuator/health").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/donantes", "/api/entidadesBeneficiarias", "/api/donantes/importador").permitAll()
+                                .anyRequest().authenticated() // Exige token para cualquier endpoint
+                        // .anyRequest().permitAll() // Permite todas las peticiones sin autenticar
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
         return http.build();
     }
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth -> auth
-//                        .anyRequest().permitAll() // Permite todas las peticiones sin autenticaciÃ³n
-//                );
-//        return http.build();
-//    }
 }

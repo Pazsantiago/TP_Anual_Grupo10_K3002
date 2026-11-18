@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.client.RestClient;
 
 @Configuration
@@ -21,35 +23,51 @@ public class RestClientConfig {
     @Value("${conexiones.cola-de-mensajes}")
     private String urlMensajes;
 
-    private final JwtInterceptor jwtInterceptor;
-
     @Bean
     @Qualifier("restClientBrokerLogistica")
-    public RestClient restClientBroker(RestClient.Builder builder) {
-        return builder
+    public RestClient restClientBroker() {
+        return RestClient.builder()
                 .baseUrl(urlLogistica)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .requestInterceptor(jwtInterceptor)
+                .requestInterceptor((request, body, execution) -> {
+                    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                    if (auth != null && auth.getPrincipal() instanceof Jwt jwt) {
+                        request.getHeaders().set(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue());
+                    }
+
+                    return execution.execute(request, body);
+                })
                 .build();
     }
 
     @Bean
     @Qualifier("restClientIncentivos")
-    public RestClient restClientIncentivos(RestClient.Builder builder) {
-        return builder
+    public RestClient restClientIncentivos() {
+        return RestClient.builder()
                 .baseUrl(urlIncentivos)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .requestInterceptor(jwtInterceptor)
+                .requestInterceptor((request, body, execution) -> {
+                    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                    if (auth != null && auth.getPrincipal() instanceof Jwt jwt) {
+                        request.getHeaders().set(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue());
+                    }
+
+                    return execution.execute(request, body);
+                })
                 .build();
     }
 
     @Bean
     @Qualifier("restClientMensajes")
-    public RestClient restClientMensajes(RestClient.Builder builder) {
-        return builder
+    public RestClient restClientMensajes() {
+        return RestClient.builder()
                 .baseUrl(urlMensajes)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .requestInterceptor(jwtInterceptor)
+                .requestInterceptor((request, body, execution) -> {
+                    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                    if (auth != null && auth.getPrincipal() instanceof Jwt jwt) {
+                        request.getHeaders().set(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue());
+                    }
+
+                    return execution.execute(request, body);
+                })
                 .build();
     }
 }
