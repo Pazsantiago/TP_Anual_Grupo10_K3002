@@ -1,4 +1,4 @@
-package utn.donatrack.donatrack_frontend.controller.privados;
+package utn.donatrack.donatrack_frontend.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

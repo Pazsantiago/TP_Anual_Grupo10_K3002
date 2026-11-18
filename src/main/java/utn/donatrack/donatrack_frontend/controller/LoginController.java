@@ -1,22 +1,37 @@
-package utn.donatrack.donatrack_frontend.controller;
+package org.example.donacionesfrontend.controllers;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.example.donacionesfrontend.services.KeycloakAdminService;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller
-public class LoginController {
+import java.util.Map;
 
+@Controller
+@RequiredArgsConstructor
+public class LoginController {
+    private final KeycloakAdminService keycloakAdminService;
 
     @GetMapping("/login")
-    public String vistaLogin(HttpSession session, RedirectAttributes redirectAttributes) {
-        String token = (String) session.getAttribute("jwtToken");
-        if (token != null) {
-            redirectAttributes.addFlashAttribute("exito", "Ya estas logueado.");
+    public String vistaLogin(
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
+        if (session != null && session.getAttribute("jwtToken") != null) {
+            redirectAttributes.addFlashAttribute("Exito", "Ya estás autenticado");
+            return "redirect:/";
         }
         return "redirect:/oauth2/authorization/keycloak";
     }
@@ -24,27 +39,31 @@ public class LoginController {
 
     @GetMapping("/login/callback")
     public String procesarLogin(
+            @RegisteredOAuth2AuthorizedClient("keycloak") OAuth2AuthorizedClient authorizedClient,
             @AuthenticationPrincipal OidcUser usuarioLogueado,
-            HttpSession session) {
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
             if (usuarioLogueado != null) {
-                String token = usuarioLogueado.getIdToken().getTokenValue();
-                session.setAttribute("jwtToken", token);
+                String accessToken = authorizedClient.getAccessToken().getTokenValue();
+                session.setAttribute("jwtToken", accessToken);
+                session.setAttribute("userEmail", usuarioLogueado.getEmail());
+                String rol = usuarioLogueado.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .filter(a -> a.startsWith("ROLE_"))
+                        .findFirst()
+                        .orElse("ROLE_DONANTE");
+                session.setAttribute("idToken", usuarioLogueado.getIdToken().getTokenValue());
+                session.setAttribute("userRol", rol);
+
             }else{
                 return "redirect:/login";
             }
-
-            SavedRequest savedRequest = (SavedRequest) session.getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-            if (savedRequest != null) {
-                String targetUrl = savedRequest.getRedirectUrl();
-                session.removeAttribute("SPRING_SECURITY_SAVED_REQUEST");
-                return "redirect:" + targetUrl;
-            }
+            redirectAttributes.addFlashAttribute("exito", "Usuario autenticado!");
             return "redirect:/";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/oauth2/authorization/keycloak";
+        return "redirect:" + keycloakAdminService.logout(session);
     }
 }

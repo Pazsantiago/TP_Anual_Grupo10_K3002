@@ -1,4 +1,4 @@
-package utn.donatrack.donatrack_frontend.controller.privados;
+package utn.donatrack.donatrack_frontend.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;

@@ -1,4 +1,4 @@
-package utn.donatrack.donatrack_frontend.controller.privados;
+package utn.donatrack.donatrack_frontend.controller;
 
 import java.util.List;
 import org.springframework.stereotype.Controller;
