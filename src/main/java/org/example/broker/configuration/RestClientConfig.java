@@ -42,7 +42,7 @@ public class RestClientConfig {
 
     @Bean
     @Qualifier("restClientIncentivos")
-    public RestClient restClientIncentivos(RestClient.Builder builder) {
+    public RestClient restClientIncentivos() {
         return RestClient.builder()
                 .baseUrl(urlIncentivos)
                 .requestInterceptor((request, body, execution) -> {
@@ -58,7 +58,7 @@ public class RestClientConfig {
 
     @Bean
     @Qualifier("restClientLogistica")
-    public RestClient restClientLogistica(RestClient.Builder builder) {
+    public RestClient restClientLogistica() {
         return RestClient.builder()
                 .baseUrl(urlLogistica)
                 .requestInterceptor((request, body, execution) -> {
