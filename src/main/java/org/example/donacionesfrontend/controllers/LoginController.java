@@ -52,6 +52,7 @@ public class LoginController {
                         .filter(a -> a.startsWith("ROLE_"))
                         .findFirst()
                         .orElse("ROLE_DONANTE");
+                session.setAttribute("idToken", usuarioLogueado.getIdToken().getTokenValue());
                 session.setAttribute("userRol", rol);
 
             }else{

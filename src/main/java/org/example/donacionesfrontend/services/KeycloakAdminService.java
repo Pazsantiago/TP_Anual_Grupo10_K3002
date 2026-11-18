@@ -65,9 +65,10 @@ public class KeycloakAdminService {
                 encodedRedirectUri
         );
 
-        if (idToken != null) {
+        if (idToken != null && !idToken.isBlank() && !"null".equalsIgnoreCase(idToken)) {
             logoutUrl += "&id_token_hint=" + idToken;
         }
+
         return logoutUrl;
     }
 
