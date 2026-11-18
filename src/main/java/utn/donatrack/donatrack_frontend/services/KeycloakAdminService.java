@@ -1,4 +1,4 @@
-package utn.donatrack.donatrack_frontend;
+package utn.donatrack.donatrack_frontend.services;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

@@ -17,7 +17,7 @@ import utn.donatrack.donatrack_frontend.client.dto.donaciones.EntidadResponse;
 import utn.donatrack.donatrack_frontend.client.dto.logistica.DonacionPendienteResponse;
 import utn.donatrack.donatrack_frontend.viewmodel.EntidadForm;
 import utn.donatrack.donatrack_frontend.viewmodel.NecesidadForm;
-import utn.donatrack.donatrack_frontend.viewmodel.Seccion;
+import utn.donatrack.donatrack_frontend.viewmodel.Se;
 import java.util.List;
 
 @Controller

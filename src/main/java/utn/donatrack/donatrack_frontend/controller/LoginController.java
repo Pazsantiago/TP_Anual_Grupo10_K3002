@@ -1,8 +1,8 @@
-package org.example.donacionesfrontend.controllers;
+package utn.donatrack.donatrack_frontend.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.donacionesfrontend.services.KeycloakAdminService;
+import utn.donatrack.donatrack_frontend.services.KeycloakAdminService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
