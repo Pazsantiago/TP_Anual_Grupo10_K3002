@@ -27,12 +27,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas accesibles por cualquiera
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/error", "/login", "/login/callback", "/inicio", "/", "/donaciones/home", "/galeria", "/mapa", "/legal", "/donantes/nuevo", "/entidadesBeneficiarias/nueva").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/error", "/login", "/logout", "/login/callback", "/inicio", "/", "/donaciones/home", "/galeria", "/mapa", "/legal", "/donantes/nuevo", "/entidadesBeneficiarias/nueva").permitAll()
                         // Permisos con Rol
-                        .requestMatchers("/donaciones/vencida", "/asignaciones/nueva", "/donantes/agregar-segmentada", "/donantes/importador").hasRole("ADMIN")
                         .requestMatchers("/entidadesBeneficiarias").hasAnyRole("DONANTE", "ENTIDAD")
+                        .requestMatchers("/donaciones/vencida", "/asignaciones/nueva", "/asignaciones/agregar-segmentada", "/donantes/importador").hasRole("ADMIN")
                         .requestMatchers("/donantes/**", "/donaciones/**").hasRole("DONANTE")
-                        .requestMatchers("/entidades/**").hasRole("ENTIDAD")
+                        .requestMatchers("/entidades/**", "/necesidades/**", "/asignadas").hasRole("ENTIDAD")
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
