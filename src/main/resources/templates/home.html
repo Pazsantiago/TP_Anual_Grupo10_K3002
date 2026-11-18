@@ -18,7 +18,9 @@
         </p>
     </div>
 </div>
-
+<div th:if="${errorMsg}" class="alert alert-danger" role="alert" th:text="${errorMsg}">
+    Mensaje de error por defecto
+</div>
 <div th:if="${exito}" class="alert alert-success alert-dismissible fade show" role="alert">
     <span th:text="${exito}"></span>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
