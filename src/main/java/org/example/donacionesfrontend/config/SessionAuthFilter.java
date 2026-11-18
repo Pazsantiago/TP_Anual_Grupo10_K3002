@@ -31,7 +31,8 @@ public class SessionAuthFilter extends OncePerRequestFilter {
             String rol = (String) session.getAttribute("userRol");
 
             if (rol != null) {
-                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(rol));
+                String authorityName = rol.startsWith("ROLE_") ? rol : "ROLE_" + rol;
+                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(authorityName));
 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(email, null, authorities);
