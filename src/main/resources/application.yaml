@@ -1,7 +1,21 @@
 spring:
   application:
     name: broker
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${conexiones.auth-url}/realms/donatrack
 
+keycloak:
+  realm: ${REALM:donatrack}
+  admin:
+    client-id:
+      ${CLIENT_ID: admin-cli}
+    client-secret: ${CLIENT_SECRET:}
+    username:
+      ${CLIENT_USERNAME:admin}
+    password: ${CLIENT_PASSWORD:admin}
 server:
   port: ${SERVER_PORT:8083}
 
@@ -14,4 +28,5 @@ conexiones:
   servicio-incentivos: ${SERVICIO_INCENTIVOS:http://localhost:8081/incentivos}
   servicio-logistica-online: ${SERVICIO_LOGISTICA_ONLINE}
   servicio-logistica-local: ${SERVICIO_LOGISTICA_LOCAL:http://localhost:8084}
+  auth-url: ${AUTH_URL:http://localhost:8085}
 
