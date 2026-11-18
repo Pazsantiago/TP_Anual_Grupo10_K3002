@@ -48,7 +48,7 @@ public class KeycloakAdminService {
         String idToken = null;
 
         if (session != null) {
-            idToken = (String) session.getAttribute("jwtToken");
+            idToken = (String) session.getAttribute("idToken");
             session.invalidate();
         }
 
