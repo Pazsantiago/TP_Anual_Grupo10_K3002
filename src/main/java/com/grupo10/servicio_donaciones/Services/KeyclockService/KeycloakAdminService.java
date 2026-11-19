@@ -18,7 +18,7 @@ public class KeycloakAdminService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${backend.auth.url:http://localhost:8080}")
+    @Value("${keycloak.server-url:http://localhost:8080}")
     private String keycloakServerUrl;
 
     @Value("${keycloak.realm:donatrack}")
@@ -26,8 +26,8 @@ public class KeycloakAdminService {
 
     @Value("${keycloak.admin.client-id:admin-cli}")
     private String adminClientId;
-    
-    @Value("${keycloak.admin.username:admin}") // O usuario admin directo
+
+    @Value("${keycloak.admin.username:admin}")
     private String adminUsername;
 
     @Value("${keycloak.admin.password:admin}")
