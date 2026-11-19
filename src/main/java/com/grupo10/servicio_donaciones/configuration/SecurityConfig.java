@@ -16,7 +16,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/error", "/actuator/health").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/donantes", "/api/entidadesBeneficiarias", "/api/donantes/importador").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/donantes", "/api/entidadesBeneficiarias").permitAll()
                                 .anyRequest().authenticated() // Exige token para cualquier endpoint
                         // .anyRequest().permitAll() // Permite todas las peticiones sin autenticar
                 )

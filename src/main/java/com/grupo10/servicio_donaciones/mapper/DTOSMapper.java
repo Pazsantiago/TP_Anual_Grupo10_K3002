@@ -5,375 +5,258 @@ import com.grupo10.servicio_donaciones.donaciones.dominio.algoritmosAsignacion.S
 import com.grupo10.servicio_donaciones.donaciones.dominio.bien.Bien;
 import com.grupo10.servicio_donaciones.donaciones.dominio.bien.BienConEstado;
 import com.grupo10.servicio_donaciones.donaciones.dominio.bien.BienPerecedero;
-import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Categoria;
-import com.grupo10.servicio_donaciones.donaciones.dominio.categoria.Subcategoria;
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
-import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.EstadoDonacion;
+import com.grupo10.servicio_donaciones.donaciones.dominio.bien.Estado;
+import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.*;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donante.*;
 import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
 import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
 import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.NecesidadExtraordinaria;
 import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.NecesidadRecurrente;
-import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Periodo;
-import com.grupo10.servicio_donaciones.dtos.request.*;
-import com.grupo10.servicio_donaciones.dtos.response.*;
+import com.grupo10.servicio_donaciones.dtos.frontend.*;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class DTOSMapper {
 
-    // ==========================================
-    // DOMINIO -> RESPONSE DTO (Lecturas / GET)
-    // ==========================================
-
-    public DonanteResponseDTO deDominioAResponse(Donante donante) {
+    public DonanteResponse deDominioAResponse(Donante donante) {
         if (donante == null) return null;
 
-        DonanteResponseDTO dto = new DonanteResponseDTO();
-        dto.setId(donante.getId());
+        String tipoPersona = donante.getPersona() instanceof PersonaHumana ? "HUMANA" : "JURIDICA";
+        String nombre = null;
+        String apellido = null;
+        String tipoDocumento = null;
+        String documento = null;
+        String razonSocial = null;
+        String rubro = null;
 
         if (donante.getPersona() instanceof PersonaHumana ph) {
-            dto.setNombre(ph.getNombre());
+            nombre = ph.getNombre();
+            apellido = null;
+            tipoDocumento = ph.getDocumento().getTipoDocumento() != null ? ph.getDocumento().getTipoDocumento() : null;
+            documento = ph.getDocumento().getDocumento() != null ? ph.getDocumento().getDocumento() : null;
         } else if (donante.getPersona() instanceof PersonaJuridica pj) {
-            dto.setNombre(pj.getRazonSocial());
+            razonSocial = pj.getRazonSocial();
+            rubro = pj.getRubro();
+            tipoDocumento = "CUIT";
+            documento = pj.getDocumento().getDocumento() != null ? pj.getDocumento().getDocumento() : null;
         }
 
-        if (donante.obtenerContactoPredeterminado() != null) {
-            MedioContacto contacto = donante.obtenerContactoPredeterminado();
-            MedioContactoResponseDTO contactoDTO = new MedioContactoResponseDTO();
-            if (contacto.getTipo() != null) {
-                contactoDTO.setTipo(contacto.getTipo().toString());
-            }
-            contactoDTO.setCorreoElectronico(contacto.getCorreoElectronico());
-            contactoDTO.setTelefono(contacto.getTelefono());
-            dto.setContactoPredeterminado(contactoDTO);
-        }
+        String correo = donante.obtenerContactoPredeterminado() != null ? donante.obtenerContactoPredeterminado().getCorreoElectronico() : null;
+        String telefono = donante.obtenerContactoPredeterminado() != null ? donante.obtenerContactoPredeterminado().getTelefono() : null;
 
-        if (donante.getDonaciones() != null) {
-            dto.setDonaciones(
-                    donante.getDonaciones().stream()
-                            .map(this::deDominioAResponse)
-                            .collect(Collectors.toList())
-            );
-        }
-
-        return dto;
+        return new DonanteResponse(
+                donante.getId(),
+                tipoPersona,
+                nombre,
+                apellido,
+                tipoDocumento,
+                documento,
+                razonSocial,
+                rubro,
+                correo,
+                telefono
+        );
     }
 
-    public DonacionResponseDTO deDominioAResponse(Donacion donacion) {
-        if (donacion == null) return null;
-
-        DonacionResponseDTO dto = new DonacionResponseDTO();
-        dto.setId(donacion.getId());
-        dto.setFechaEntrada(donacion.getFechaRegistro());
-
-        if (donacion.getBienesDeEntrada() != null) {
-            dto.setCantBienes(donacion.getBienesDeEntrada().size());
-            dto.setCategoriasIncluidas(
-                    donacion.getBienesDeEntrada().stream()
-                            .map(b -> b.getSubcategoria() != null && b.getSubcategoria().getCategoria() != null
-                                    ? b.getSubcategoria().getCategoria().getNombre() : "General")
-                            .distinct()
-                            .collect(Collectors.toList())
-            );
-        }
-
-        if (donacion.getDonacionesSegmentadas() != null) {
-            dto.setSegmentadasIncluidas(
-                    donacion.getDonacionesSegmentadas().stream()
-                            .map(DonacionSegmentada::getId)
-                            .collect(Collectors.toList())
-            );
-        }
-
-        return dto;
+    public EntidadResponse deDominioAResponse(EntidadBeneficiaria entidad) {
+        if (entidad == null) return null;
+        return new EntidadResponse(
+                entidad.getId(),
+                entidad.getRazonSocial(),
+                entidad.getDireccion(),
+                entidad.getTelefono(),
+                entidad.getCorreoRepresentante()
+        );
     }
 
-    public DonacionSegmentadaResponseDTO deDominioAResponse(DonacionSegmentada segmentada) {
-        if (segmentada == null) return null;
-
-        DonacionSegmentadaResponseDTO dto = new DonacionSegmentadaResponseDTO();
-        dto.setIdSegmentada(segmentada.getId());
-        if (segmentada.getBien() != null) {
-            dto.setCantidadOriginal(segmentada.getBien().getCantidadOriginal());
-            dto.setCantidadActual(segmentada.getBien().getCantidadActual());
-            dto.setEstadoActual(segmentada.getEstadoActual().toString());
-            dto.setCategoria(segmentada.getBien().getSubcategoria().toString());
-            dto.setSubcategoria(segmentada.getBien().getSubcategoria().toString());
-            if (segmentada.getBien().getUnidad() != null) {
-                dto.setUnidad(segmentada.getBien().getUnidad().toString());
-            }
-        }
-        return dto;
+    public NecesidadResponse deDominioAResponse(Necesidad necesidad) {
+        if (necesidad == null) return null;
+        Long idEntidad = necesidad.getEntidadBeneficiaria() != null ? necesidad.getEntidadBeneficiaria().getId() : null;
+        return new NecesidadResponse(
+                necesidad.getId(),
+                idEntidad,
+                necesidad.getDescripcion(),
+                necesidad.getCantidadObjetivo(),
+                necesidad.getEstaSatisfechaConDonacion()
+        );
     }
 
-    public DonacionAsignadaResponseDTO deDominioAResponse(DonacionAsignada asignada) {
+    public BienResponse deDominioAResponse(Bien bien) {
+        if (bien == null) return null;
+        String unidad = bien.getUnidad() != null ? bien.getUnidad().toString() : null;
+        return new BienResponse(
+                bien.getDescripcion(),
+                bien.getCantidadOriginal(),
+                unidad
+        );
+    }
+
+    public DonacionAsignadaResponse deDominioAResponse(DonacionAsignada asignada) {
         if (asignada == null) return null;
 
-        DonacionAsignadaResponseDTO dto = new DonacionAsignadaResponseDTO();
-        dto.setIdAsignada(asignada.getId());
-        if (asignada.getNecesidadResuelta() != null && asignada.getNecesidadResuelta().getEntidadBeneficiaria() != null) {
-            dto.setIdEntidad(asignada.getNecesidadResuelta().getEntidadBeneficiaria().getId());
-            dto.setDireccionEntidad(asignada.getNecesidadResuelta().getEntidadBeneficiaria().getDireccion());
-        }
-        if (asignada.getDonacionesSegmentadas() != null) {
-            dto.setDonacionesSegmentadas(
-                    asignada.getDonacionesSegmentadas().stream()
-                            .map(this::deDominioAResponse)
-                            .collect(Collectors.toList())
-            );
-        }
-        return dto;
+        return new DonacionAsignadaResponse(
+                asignada.getId(),
+                asignada.getDonacionesSegmentadas().stream().map(DonacionSegmentada::getId).toList(),
+                asignada.getNecesidadResuelta().getId()
+        );
     }
 
-    public EntidadBeneficiariaResponseDTO deDominioAResponse(EntidadBeneficiaria entidad) {
-        if (entidad == null) return null;
+    public DonacionSegmentadaResponse deDominioAResponse(DonacionSegmentada segmentada) {
+        if (segmentada == null) return null;
 
-        EntidadBeneficiariaResponseDTO dto = new EntidadBeneficiariaResponseDTO();
-        dto.setId(entidad.getId());
-        dto.setRazonSocial(entidad.getRazonSocial());
-        dto.setDireccion(entidad.getDireccion());
-        dto.setTelefono(entidad.getTelefono());
-        dto.setCorreoRepresentante(entidad.getCorreoRepresentante());
-
-        return dto;
+        return new DonacionSegmentadaResponse(
+                segmentada.getId(),
+                segmentada.getDonacionInicial().getId(),
+                segmentada.getEstadoActual().toString(),
+                segmentada.getSubcategoria().getNombre()
+        );
     }
 
-    public NecesidadResponseDTO deDominioAResponse(Necesidad necesidad) {
-        if (necesidad == null) return null;
+    public DonacionResponse deDominioAResponse(Donacion donacion) {
+        if (donacion == null) return null;
+        Long idDonante = donacion.getDonante() != null ? donacion.getDonante().getId() : null;
+        var bienes = donacion.getBienesDeEntrada() != null ?
+                donacion.getBienesDeEntrada().stream().map(this::deDominioAResponse).collect(Collectors.toList()) :
+                java.util.List.<BienResponse>of();
 
-        NecesidadResponseDTO dto = new NecesidadResponseDTO();
-        dto.setId(necesidad.getId());
-        dto.setDescripcion(necesidad.getDescripcion());
-        dto.setCantidadObjetivo(necesidad.getCantidadObjetivo());
-        dto.setEstaSatisfechaConDonacion(necesidad.getEstaSatisfechaConDonacion());
-        dto.setCantidadAsignada(necesidad.getCantidadRecibida());
-        if (necesidad.getEntidadBeneficiaria() != null) {
-            dto.setIdEntidadBeneficiaria(necesidad.getEntidadBeneficiaria().getId());
-        }
-
-        return dto;
+        return new DonacionResponse(
+                donacion.getId(),
+                idDonante,
+                donacion.getDescripcionGeneral(),
+                bienes,
+                null
+        );
     }
 
-    public SegmentadaRankingsResponseDTO deDominioAResponse(SegmentadaRankings segmentadaRankings) {
-        if (segmentadaRankings == null) return null;
-        SegmentadaRankingsResponseDTO dto = new SegmentadaRankingsResponseDTO();
-        dto.setSegmentada(deDominioAResponse(segmentadaRankings.getSegmentada()));
-        dto.setRankings(segmentadaRankings.getRankings().stream().map(this::deDominioAResponse).collect(Collectors.toList()));
-        return dto;
-    }
-
-    public RankingEntidadBeneficiariaResponseDTO deDominioAResponse(RankingEntidadBeneficiaria ranking) {
+    public RankingEntidadResponse deDominioAResponse(RankingEntidadBeneficiaria ranking) {
         if (ranking == null) return null;
-
-        RankingEntidadBeneficiariaResponseDTO dto = new RankingEntidadBeneficiariaResponseDTO();
-        dto.setPosicion(ranking.getPosicion());
-        dto.setPuntaje(ranking.getPuntaje());
-        dto.setAlgoritmoUsado(ranking.getAlgoritmoUsado().toString());
-        dto.setEntidadBeneficiaria(deDominioAResponse(ranking.getEntidadBeneficiaria()));
-        return dto;
+        Long idEntidad = ranking.getEntidadBeneficiaria() != null ? ranking.getEntidadBeneficiaria().getId() : null;
+        String algoritmo = ranking.getAlgoritmoUsado() != null ? ranking.getAlgoritmoUsado().toString() : null;
+        return new RankingEntidadResponse(
+                idEntidad,
+                ranking.getPosicion(),
+                ranking.getPuntaje(),
+                algoritmo
+        );
     }
 
-    public CategoriaResponseDTO deDominioAResponse(Categoria categoria) {
-        if (categoria == null) return null;
-
-        CategoriaResponseDTO dto = new CategoriaResponseDTO();
-        dto.setId(categoria.getId());
-        dto.setNombre(categoria.getNombre());
-        dto.setTipo(categoria.getTipo().toString());
-
-        return dto;
+    public RankingSegmentadaResponse deDominioAResponse(SegmentadaRankings segmentadaRankings) {
+        if (segmentadaRankings == null) return null;
+        Long idSegmentada = segmentadaRankings.getSegmentada() != null ? segmentadaRankings.getSegmentada().getId() : null;
+        var rankings = segmentadaRankings.getRankings() != null ?
+                segmentadaRankings.getRankings().stream().map(this::deDominioAResponse).collect(Collectors.toList()) :
+                java.util.List.<RankingEntidadResponse>of();
+        return new RankingSegmentadaResponse(idSegmentada, rankings);
     }
 
-    // ==========================================
-    // REQUEST DTO -> DOMINIO (Escrituras / POST / PUT)
-    // ==========================================
-
-    public Persona deDTORequestADominio(PersonaRequestDTO dto) {
-        if (dto == null) return null;
-
-
-        if ("JURIDICA".equalsIgnoreCase(dto.getTipo()) || dto.getRazonSocial() != null || dto.getTipoJuridica() != null) {
-            PersonaJuridica pj = new PersonaJuridica();
-            pj.setRazonSocial(dto.getRazonSocial());
-            pj.setTipoJuridica(dto.getTipoJuridica());
-            pj.setRubro(dto.getRubro());
-            return pj;
-        } else {
-            PersonaHumana ph = new PersonaHumana();
-            ph.setNombre(dto.getNombre());
-            ph.setEdad(dto.getEdad());
-            ph.setGenero(dto.getGenero());
-            return ph;
-        }
-    }
-
-    public MedioContacto deDTORequestADominio(MedioContactoRequestDTO dto) {
-        if (dto == null) return null;
-        MedioContacto mc = new MedioContacto();
-        mc.setTipo(dto.getTipo());
-        mc.setCorreoElectronico(dto.getCorreoElectronico());
-        mc.setTelefono(dto.getTelefono());
-        return mc;
-    }
-
-    public Donante deDTORequestADominio(DonanteRequestDTO dto) {
+    public Donante deDTORequestADominio(DonanteRequest dto) {
         if (dto == null) return null;
         Donante donante = new Donante();
 
-        if (dto.getPersona() != null) {
-            donante.setPersona(deDTORequestADominio(dto.getPersona()));
+        if ("JURIDICA".equalsIgnoreCase(dto.tipoPersona()) || dto.razonSocial() != null) {
+            PersonaJuridica pj = new PersonaJuridica();
+            pj.setRazonSocial(dto.razonSocial());
+            pj.setTipoJuridica(TipoPersonaJuridica.valueOf(dto.tipoOrganizacion()));
+            pj.setRubro(dto.rubro());
+            pj.setDocumento(new Documento());
+            pj.getDocumento().setTipoDocumento(dto.tipoDocumento());
+            pj.getDocumento().setDocumento(dto.documento());
+            donante.setPersona(pj);
+        } else {
+            PersonaHumana ph = new PersonaHumana();
+            ph.setNombre(dto.nombre());
+            if (dto.edad() != null) ph.setEdad(dto.edad());
+            ph.getDocumento().setTipoDocumento(dto.tipoDocumento());
+            ph.getDocumento().setDocumento(dto.documento());
+            donante.setPersona(ph);
         }
 
-        if (dto.getMediosDeContacto() != null) {
-            for (MedioContactoRequestDTO mcDto : dto.getMediosDeContacto()) {
-                MedioContacto mc = deDTORequestADominio(mcDto);
-                if (mcDto.isEsPredeterminado()) {
-                    donante.cambiarContactoPredeterminado(mc);
-                } else {
-                    donante.agregarMedioContacto(mc);
-                }
-            }
-        }
-
-        if (dto.getDonaciones() != null) {
-            donante.setDonaciones(
-                    dto.getDonaciones().stream()
-                            .map(this::deDTORequestADominio)
-                            .collect(Collectors.toList())
-            );
+        if (dto.correoElectronico() != null || dto.telefono() != null || dto.whatsapp() != null || dto.direccion() != null) {
+            MedioContacto mc = new MedioContacto();
+            mc.setCorreoElectronico(dto.correoElectronico());
+            mc.setTipo(MedioNotificacion.valueOf(dto.medioPredeterminado()));
+            mc.setTelefono(dto.telefono());
+            mc.setTelefono(dto.whatsapp());
+            donante.cambiarContactoPredeterminado(mc);
         }
 
         return donante;
     }
 
-    public Subcategoria deDTORequestADominio(SubcategoriaRequestDTO dto) {
-        if (dto == null) return null;
-        Subcategoria subcategoria = new Subcategoria();
-        subcategoria.setNombre(dto.getNombre());
-        if (dto.getIdCategoria() != null) {
-            Categoria categoria = new Categoria();
-            categoria.setId(dto.getIdCategoria());
-            subcategoria.setCategoria(categoria);
-        }
-        return subcategoria;
-    }
-
-    public Bien deDTORequestADominio(BienRequestDTO dto) {
-        if (dto == null) return null;
-
-        Bien bien;
-        if ("PERECEDERO".equalsIgnoreCase(dto.getTipo()) || (dto.getTipo() == null && dto.getFechaVencimiento() != null)) {
-            BienPerecedero bp = new BienPerecedero();
-            bp.setFechaVencimiento(dto.getFechaVencimiento());
-            bien = bp;
-        } else {
-            BienConEstado be = new BienConEstado();
-            be.setEstado(dto.getEstado());
-            bien = be;
-        }
-
-        bien.setDescripcion(dto.getDescripcion());
-        if (dto.getSubcategoria() != null) {
-            bien.setSubcategoria(deDTORequestADominio(dto.getSubcategoria()));
-        }
-        bien.setFoto(dto.getFoto());
-        bien.setUnidad(dto.getUnidad());
-        bien.setCantidadOriginal(dto.getCantidadOriginal());
-        bien.setCantidadActual(dto.getCantidadActual());
-
-        return bien;
-    }
-
-    public Donacion deDTORequestADominio(DonacionRequestDTO dto) {
-        if (dto == null) return null;
-        Donacion donacion = new Donacion();
-        donacion.setDescripcionGeneral(dto.getDescripcionGeneral());
-        if (dto.getFechaRegistro() != null) {
-            donacion.setFechaRegistro(dto.getFechaRegistro());
-        }
-        if (dto.getBienesDeEntrada() != null) {
-            donacion.setBienesDeEntrada(dto.getBienesDeEntrada().stream().map(this::deDTORequestADominio).collect(Collectors.toList()));
-        }
-        return donacion;
-    }
-
-    public EstadoDonacion deDTORequestADominio(EstadoDonacionRequestDTO dto) {
-        if (dto == null) return null;
-        EstadoDonacion estado = new EstadoDonacion();
-        estado.setTipoEstado(dto.getTipoEstado());
-        if (dto.getJustificacion() != null) {
-            estado.setJustificacion(dto.getJustificacion());
-        }
-        return estado;
-    }
-
-
-    public Periodo deDTORequestADominio(PeriodoRequestDTO dto) {
-        if (dto == null) return null;
-        Periodo periodo = new Periodo();
-        periodo.setPeriodoDias(dto.getPeriodoDias());
-        periodo.setInicioPeriodo(dto.getInicioPeriodo());
-        return periodo;
-    }
-
-    public Necesidad deDTORequestADominio(NecesidadRequestDTO dto) {
-        if (dto == null) return null;
-
-        Necesidad necesidad;
-        if ("RECURRENTE".equalsIgnoreCase(dto.getTipo()) || (dto.getTipo() == null && dto.getPeriodoRequestDTO() != null)) {
-            NecesidadRecurrente nr = new NecesidadRecurrente();
-            if (dto.getPeriodoRequestDTO() != null) {
-                nr.setPeriodo(deDTORequestADominio(dto.getPeriodoRequestDTO()));
-            }
-            if (dto.getCantidadRecibidaEnPeriodo() != null) {
-                nr.setCantidadRecibidaEnPeriodo(dto.getCantidadRecibidaEnPeriodo());
-            }
-            necesidad = nr;
-        } else {
-            necesidad = new NecesidadExtraordinaria();
-        }
-        necesidad.setDescripcion(dto.getDescripcion());
-        if (dto.getSubcategoria() != null) {
-            necesidad.setSubcategoria(deDTORequestADominio(dto.getSubcategoria()));
-        }
-        necesidad.setCantidadObjetivo(dto.getCantidadObjetivo());
-        if (dto.getCantidadRecibida() != null) {
-            necesidad.setCantidadRecibida(dto.getCantidadRecibida());
-        }
-        if (dto.getEstaSatisfechaConDonacion() != null) {
-            necesidad.setEstaSatisfechaConDonacion(dto.getEstaSatisfechaConDonacion());
-        }
-        necesidad.setSatisfechaEn(dto.getSatisfechaEn());
-
-        if (dto.getEntidadBeneficiaria() != null) {
-            necesidad.setEntidadBeneficiaria(deDTORequestADominio(dto.getEntidadBeneficiaria()));
-        }
-
-        return necesidad;
-    }
-
-    public EntidadBeneficiaria deDTORequestADominio(EntidadBeneficiariaRequestDTO dto) {
+    public EntidadBeneficiaria deDTORequestADominio(EntidadRequest dto) {
         if (dto == null) return null;
         EntidadBeneficiaria entidad = new EntidadBeneficiaria();
-        entidad.setRazonSocial(dto.getRazonSocial());
-        entidad.setTelefono(dto.getTelefono());
-        entidad.setCorreoRepresentante(dto.getCorreoRepresentante());
-        entidad.setDireccion(dto.getDireccion());
+        entidad.setRazonSocial(dto.razonSocial());
+        entidad.setTelefono(dto.telefono());
+        entidad.setCorreoRepresentante(dto.correoRepresentante());
 
-        if (dto.getNecesidades() != null) {
-            entidad.setNecesidades(
-                    dto.getNecesidades().stream()
-                            .map(this::deDTORequestADominio)
-                            .collect(Collectors.toList())
-            );
-        }
+        String direccionCompleta = Stream.of(dto.calle(), dto.numero(), dto.ciudad(), dto.provincia(), dto.codigoPostal())
+                .filter(Objects::nonNull)
+                .filter(s -> !s.isBlank())
+                .collect(Collectors.joining(", "));
+        entidad.setDireccion(direccionCompleta);
 
         return entidad;
     }
 
+    public Necesidad deDTORequestADominio(NecesidadRequest dto) {
+        if (dto == null) return null;
+        Necesidad necesidad;
+        if ("RECURRENTE".equalsIgnoreCase(dto.tipo()) || dto.periodo() != null) {
+            NecesidadRecurrente nr = new NecesidadRecurrente();
+            necesidad = nr;
+        } else {
+            necesidad = new NecesidadExtraordinaria();
+        }
+        necesidad.setDescripcion(dto.descripcion());
+        necesidad.setCantidadObjetivo(dto.cantidadObjetivo());
+        return necesidad;
+    }
+
+    public Bien deDTORequestADominio(BienRequest dto) {
+        if (dto == null) return null;
+        Bien bien;
+        if (Boolean.TRUE.equals(dto.perecedero()) || dto.fechaVencimiento() != null) {
+            BienPerecedero bp = new BienPerecedero();
+            bp.setFechaVencimiento(dto.fechaVencimiento());
+            bien = bp;
+        } else {
+            BienConEstado be = new BienConEstado();
+            be.setEstado(Estado.valueOf(dto.estado()));
+            bien = be;
+        }
+
+        bien.setDescripcion(dto.descripcion());
+        bien.setCantidadOriginal(dto.cantidad());
+        bien.setCantidadActual(dto.cantidad());
+        return bien;
+    }
+
+    public Donacion deDTORequestADominio(DonacionRequest dto) {
+        if (dto == null) return null;
+        Donacion donacion = new Donacion();
+        donacion.setDescripcionGeneral(dto.descripcionGeneral());
+        if (dto.bienes() != null) {
+            donacion.setBienesDeEntrada(
+                    dto.bienes().stream()
+                            .map(this::deDTORequestADominio)
+                            .collect(Collectors.toList())
+            );
+        }
+        return donacion;
+    }
+
+    public EstadoDonacion deDTORequestADominio(EstadoDonacionRequest dto) {
+        if (dto == null) return null;
+        EstadoDonacion estado = new EstadoDonacion();
+        estado.setTipoEstado(TipoEstadoDonacion.valueOf(dto.estado()));
+        if (dto.justificacion() != null) {
+            estado.setJustificacion(dto.justificacion());
+        }
+        return estado;
+    }
 }

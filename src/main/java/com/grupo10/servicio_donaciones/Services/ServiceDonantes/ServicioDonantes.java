@@ -114,6 +114,30 @@ public class ServicioDonantes {
     }
 
     @Transactional
+    public void crearUsuarioKeycloak(Donante donante) {
+        //Crear cuenta
+        String clave = "Tmp_" + UUID.randomUUID().toString().replace("-", "").substring(0, 10) + "!A9";
+        keycloakAdminService.crearUsuarioEnKeycloak(
+                donante.obtenerContactoPredeterminado().getCorreoElectronico(),
+                clave,
+                "ROLE_DONANTE"
+        );
+
+        //Avisar credencial a donante
+        String nombre = (donante.getPersona() instanceof PersonaHumana ph)
+                ? ph.getNombre()
+                : ((PersonaJuridica) donante.getPersona()).getRazonSocial();
+        comunicador.enviarCredenciales(
+                clave,
+                nombre,
+                donante.obtenerContactoPredeterminado().getCorreoElectronico(),
+                donante.obtenerContactoPredeterminado().getTelefono(),
+                donante.obtenerContactoPredeterminado().getTipo(),
+                TipoEvento.USUARIO_CREADO, restClientMensajes
+        );
+    }
+
+    @Transactional
     public String importarCSV(MultipartFile archivo) {
         Integer cantDonantesAnteriores = repoDonantes.findAll().size();
         List<Donante> importados = revisarDonantesRepetidos(importadorCSV.importarCsv(archivo));
@@ -121,27 +145,10 @@ public class ServicioDonantes {
         if (!importados.isEmpty()) {
             //Guardarlos
             this.repoDonantes.saveAll(importados);
-            //Crear cuenta
+
             for (Donante donante : importados) {
-                keycloakAdminService.crearUsuarioEnKeycloak(
-                        donante.obtenerContactoPredeterminado().getCorreoElectronico(),
-                        "Tmp_" + UUID.randomUUID().toString().replace("-", "").substring(0, 10) + "!A9",
-                        "ROL_DONANTE"
-                );
+                crearUsuarioKeycloak(donante);
             }
-            //Avisar credenciales a cada donante
-            importados.forEach(donante -> {
-                String nombre = (donante.getPersona() instanceof PersonaHumana ph)
-                        ? ph.getNombre()
-                        : ((PersonaJuridica) donante.getPersona()).getRazonSocial();
-                comunicador.comunicarMensaje(
-                        nombre,
-                        donante.obtenerContactoPredeterminado().getCorreoElectronico(),
-                        donante.obtenerContactoPredeterminado().getTelefono(),
-                        donante.obtenerContactoPredeterminado().getTipo(),
-                        TipoEvento.USUARIO_CREADO, restClientMensajes
-                );
-            });
 
             return "Archivo importado correctamente" +
                     " - Cantidad de registros creados: " + (repoDonantes.count() - cantDonantesAnteriores);

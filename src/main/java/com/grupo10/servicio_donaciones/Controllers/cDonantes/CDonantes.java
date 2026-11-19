@@ -2,7 +2,7 @@ package com.grupo10.servicio_donaciones.Controllers.cDonantes;
 
 import com.grupo10.servicio_donaciones.Services.ServiceDonantes.ServicioDonantes;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donante.Donante;
-import com.grupo10.servicio_donaciones.dtos.request.DonanteRequestDTO;
+import com.grupo10.servicio_donaciones.dtos.frontend.DonanteRequest;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,10 +51,23 @@ public class CDonantes {
 
     // CREATE - Agregar un nuevo donante
     @PostMapping("")
-    public ResponseEntity<?> createPersona(@RequestBody DonanteRequestDTO dto) {
+    public ResponseEntity<?> createPersona(@RequestBody DonanteRequest dto) {
         try {
             Donante donante = mapper.deDTORequestADominio(dto);
             Donante creado = servicioDonantes.createPersona(donante);
+            return ResponseEntity.ok(mapper.deDominioAResponse(creado));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    //Alta por el admin
+    @PostMapping("/admin")
+    public ResponseEntity<?> createPersonaByAdmin(@RequestBody DonanteRequest dto) {
+        try {
+            Donante donante = mapper.deDTORequestADominio(dto);
+            Donante creado = servicioDonantes.createPersona(donante);
+            servicioDonantes.crearUsuarioKeycloak(creado);
             return ResponseEntity.ok(mapper.deDominioAResponse(creado));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -77,7 +90,7 @@ public class CDonantes {
 
     // UPDATE - Actualizar donante existente
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateDonante(@PathVariable Long id, @RequestBody DonanteRequestDTO dto) {
+    public ResponseEntity<?> updateDonante(@PathVariable Long id, @RequestBody DonanteRequest dto) {
         try {
             Donante donante = mapper.deDTORequestADominio(dto);
             Donante actualizado = servicioDonantes.updateDonante(id, donante);

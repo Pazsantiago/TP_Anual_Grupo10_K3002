@@ -168,8 +168,13 @@ public class ServicioDonacionAsignada {
             throw new DonacionVencidaException("Esta vencida, como minimo debe tener " + diasTolerablesDeVencimiento + " dias de no vencimiento");
         }
         EntidadBeneficiaria entidad = servicioBeneficiarias.getEntidadById(idEntidad);
-        Necesidad necesidad = servicioBeneficiarias.buscarNecesidadDeEntidad(idNecesidad);
-
+        Necesidad necesidad;
+        if (idNecesidad != -1) {
+            necesidad = servicioBeneficiarias.buscarNecesidadDeEntidad(idNecesidad);
+        } else {
+            necesidad = entidad.getNecesidades().stream().filter(n -> n.getSubcategoria().getNombre().equals(donacionSegmentada.getSubcategoria().getNombre())).findFirst().orElse(null);
+        }
+        
         servicioBeneficiarias.asignarDonacionANecesidad(necesidad, donacionSegmentada);
 
         Donacion donacionOriginal = servicioDonacion.buscarDonacionPorIdSegmentada(idDonacionSegmentada);

@@ -25,6 +25,17 @@ public class Comunicador {
                 .toBodilessEntity();
     }
 
+    public void enviarCredenciales(String clave, String nombre, String correo, String telefono, MedioNotificacion tipoNotificacion, TipoEvento tipoEvento, RestClient restClient) {
+        restClient
+                .post()
+                .uri("/mensajes")
+                .body(new NotificacionRequestDTO(tipoNotificacion, "Prueba",
+                        "Su usuario ha sido creado! Debe ingresar sesión con esta contraseña: " + clave + " y luego cambiarla por una propia",
+                        new DestinatarioRequestDTO(nombre, telefono, correo, telefono), tipoEvento.toString()))
+                .retrieve()
+                .toBodilessEntity();
+    }
+
 
     public DonacionDTO aDonacionDTO(Donacion donacion) {
         return new DonacionDTO(donacion.getId(), donacion.getFechaRegistro(), donacion.conocerCategorias(), donacion.conocerCantidadDeBienesDonados(), donacion.getDonacionesSegmentadas().stream().map(DonacionSegmentada::getId).toList());

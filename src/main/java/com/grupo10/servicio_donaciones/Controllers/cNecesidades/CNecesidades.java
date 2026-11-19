@@ -2,7 +2,7 @@ package com.grupo10.servicio_donaciones.Controllers.cNecesidades;
 
 import com.grupo10.servicio_donaciones.Services.ServiceNecesidades.ServicioNecesidades;
 import com.grupo10.servicio_donaciones.donaciones.dominio.necesidad.Necesidad;
-import com.grupo10.servicio_donaciones.dtos.request.NecesidadRequestDTO;
+import com.grupo10.servicio_donaciones.dtos.frontend.NecesidadRequest;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,7 +47,7 @@ public class CNecesidades {
     @PostMapping("")
     public ResponseEntity<?> createNecesidad(
             @PathVariable Long idEntidad,
-            @RequestBody NecesidadRequestDTO dto) {
+            @RequestBody NecesidadRequest dto) {
         try {
             Necesidad necesidad = mapper.deDTORequestADominio(dto);
             Necesidad creada = servicioNecesidades.createNecesidad(idEntidad, necesidad);
@@ -62,7 +62,7 @@ public class CNecesidades {
     public ResponseEntity<?> updateNecesidad(
             @PathVariable Long idEntidad,
             @PathVariable Long idNecesidad,
-            @RequestBody NecesidadRequestDTO dto) {
+            @RequestBody NecesidadRequest dto) {
         try {
             Necesidad necesidad = mapper.deDTORequestADominio(dto);
             Necesidad actualizada = servicioNecesidades.updateNecesidad(idNecesidad, necesidad);

@@ -5,7 +5,7 @@ import com.grupo10.servicio_donaciones.Services.ServiceDonacionAsignada.Servicio
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionAsignada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.DonacionSegmentada;
 import com.grupo10.servicio_donaciones.donaciones.dominio.entidad.EntidadBeneficiaria;
-import com.grupo10.servicio_donaciones.dtos.request.EntidadBeneficiariaRequestDTO;
+import com.grupo10.servicio_donaciones.dtos.frontend.EntidadRequest;
 import com.grupo10.servicio_donaciones.excepciones.DonacionVencidaException;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
@@ -78,7 +78,7 @@ public class CBeneficiarias {
 
     // CREATE - Agregar una nueva Entidad Beneficiaria
     @PostMapping("")
-    public ResponseEntity<?> createEntidad(@RequestBody EntidadBeneficiariaRequestDTO dto) {
+    public ResponseEntity<?> createEntidad(@RequestBody EntidadRequest dto) {
         try {
             EntidadBeneficiaria entidad = mapper.deDTORequestADominio(dto);
             EntidadBeneficiaria creada = servicioBeneficiarias.createEntidad(entidad);
@@ -90,7 +90,7 @@ public class CBeneficiarias {
 
     // UPDATE - Actualizar una Entidad Beneficiaria existente
     @PutMapping("/{idEntidad}")
-    public ResponseEntity<?> updateEntidad(@PathVariable Long idEntidad, @RequestBody EntidadBeneficiariaRequestDTO dto) {
+    public ResponseEntity<?> updateEntidad(@PathVariable Long idEntidad, @RequestBody EntidadRequest dto) {
         try {
             EntidadBeneficiaria entidad = mapper.deDTORequestADominio(dto);
             EntidadBeneficiaria actualizada = servicioBeneficiarias.updateEntidad(idEntidad, entidad);
