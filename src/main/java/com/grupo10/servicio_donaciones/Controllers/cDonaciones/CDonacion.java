@@ -3,8 +3,8 @@ package com.grupo10.servicio_donaciones.Controllers.cDonaciones;
 import com.grupo10.servicio_donaciones.Services.ServiceDonaciones.ServicioDonacion;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.Donacion;
 import com.grupo10.servicio_donaciones.donaciones.dominio.donacion.TipoEstadoDonacion;
-import com.grupo10.servicio_donaciones.dtos.frontend.DonacionRequest;
-import com.grupo10.servicio_donaciones.dtos.frontend.EstadoDonacionRequest;
+import com.grupo10.servicio_donaciones.dtos.request.DonacionRequestDTO;
+import com.grupo10.servicio_donaciones.dtos.request.EstadoDonacionRequestDTO;
 import com.grupo10.servicio_donaciones.mapper.DTOSMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -108,7 +108,7 @@ public class CDonacion {
     // Agregar una nueva Donacion
     @PostMapping("")
     public ResponseEntity<?> createDonacion(
-            @RequestBody DonacionRequest dto,
+            @RequestBody DonacionRequestDTO dto,
             @PathVariable Long idDonante) {
         try {
             Donacion donacion = mapper.deDTORequestADominio(dto);
@@ -122,7 +122,7 @@ public class CDonacion {
     // Actualizar una Donacion existente
     @PutMapping("/{idDonacion}")
     public ResponseEntity<?> updateDonacion(
-            @RequestBody DonacionRequest dto,
+            @RequestBody DonacionRequestDTO dto,
             @PathVariable Long idDonacion) {
         try {
             Donacion donacion = mapper.deDTORequestADominio(dto);
@@ -150,7 +150,7 @@ public class CDonacion {
     public ResponseEntity<?> actualizarEstadoDonacionAVencida(
             @PathVariable Long idDonacion,
             @PathVariable Long idSegmentada,
-            @RequestBody EstadoDonacionRequest dto) {
+            @RequestBody EstadoDonacionRequestDTO dto) {
         try {
             return ResponseEntity.ok(servicioDonacion.actualizarDonacionAVencida(idDonacion, idSegmentada, mapper.deDTORequestADominio(dto)));
         } catch (Exception e) {
