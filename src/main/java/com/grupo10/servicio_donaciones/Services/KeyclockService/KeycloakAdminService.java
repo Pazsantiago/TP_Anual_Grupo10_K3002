@@ -21,15 +21,12 @@ public class KeycloakAdminService {
     @Value("${backend.auth.url:http://localhost:8080}")
     private String keycloakServerUrl;
 
-    @Value("${keycloak.realm:donaciones-realm}")
+    @Value("${keycloak.realm:donatrack}")
     private String realm;
 
     @Value("${keycloak.admin.client-id:admin-cli}")
     private String adminClientId;
-
-    @Value("${keycloak.admin.client-secret:}") // Si usás client-credentials
-    private String adminClientSecret;
-
+    
     @Value("${keycloak.admin.username:admin}") // O usuario admin directo
     private String adminUsername;
 

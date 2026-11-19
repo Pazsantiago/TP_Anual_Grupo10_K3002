@@ -25,6 +25,14 @@ spring:
         jwt:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:${conexiones.auth-url}/realms/donatrack}
 
+keycloak:
+  server-url: ${conexiones.auth-url}
+  realm: ${REALM:donatrack}
+  admin:
+    client-id: ${CLIENT_ID}
+    username: ${ADMIN_USERNAME}
+    password: ${ADMIN_PASSWORD}
+
 diasTolerablesDeVencimiento: ${DIASTOLERABLESDEVENCIMIENTO:14}
 
 server:
