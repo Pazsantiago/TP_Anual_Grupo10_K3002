@@ -15,7 +15,7 @@ RUN find src -type f \( -name "*.properties" -o -name "*.java" -o -name "*.html"
     done
 
 # Tests afuera: el contextLoads necesita Keycloak y los otros servicios levantados
-RUN mvn -B -q clean package -DskipTests
+RUN mvn -B -q clean package  -DskipTests
 
 # ---------- Etapa 2: runtime ----------
 FROM eclipse-temurin:21-jre

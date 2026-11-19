@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="container py-4">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h2 class="mb-4">Registrar Nueva Donación</h2>
+
+<form th:action="@{/donaciones/nueva}" th:object="${donacion}" method="post">
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white fw-bold">1. Datos Generales de la Donación</div>
+        <div class="card-body row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Donante</label>
+                <select name="idDonante" class="form-select" required>
+                    <option value="">-- Seleccionar Donante --</option>
+                    <option th:each="d : ${donantes}"
+                            th:value="${d.id}"
+                            th:text="${d.nombre}"
+                            th:selected="${d.id == idDonanteSeleccionado}">
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Descripción General</label>
+                <input type="text" th:field="*{descripcionGeneral}" class="form-control" placeholder="Ej: Donación de alimentos no perecederos" required/>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+            <span class="fw-bold">2. Detalle de los Bienes Donados</span>
+            <button type="button" class="btn btn-sm btn-light fw-bold" onclick="agregarBien()">+ Agregar otro bien</button>
+        </div>
+        <div class="card-body" id="contenedorBienes">
+            <div class="item-bien border p-3 mb-3 rounded bg-light" data-index="0">
+                <h5 class="text-secondary mb-3">Bien #1</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Tipo de Bien</label>
+                        <select name="bienesDeEntrada[0].tipo" class="form-select select-tipo-bien" onchange="toggleCamposTipo(this)">
+                            <option value="CON_ESTADO">Con Estado (No Perecedero)</option>
+                            <option value="PERECEDERO">Perecedero</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-8">
+                        <label class="form-label">Descripción del Bien</label>
+                        <input type="text" name="bienesDeEntrada[0].descripcion" class="form-control" placeholder="Ej: Leche Entera" required/>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Cantidad</label>
+                        <input type="number" name="bienesDeEntrada[0].cantidadOriginal" class="form-control" required min="1"/>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Unidad de Medida</label>
+                        <select name="bienesDeEntrada[0].unidad" class="form-select">
+                            <option value="UNIDAD">Unidades</option>
+                            <option value="KILOGRAMO">Kilogramos</option>
+                            <option value="LITRO">Litros</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Categoría Padre</label>
+                        <select name="bienesDeEntrada[0].subcategoria.idCategoria" class="form-select" required>
+                            <option value="">-- Categoría --</option>
+                            <option th:each="cat : ${categorias}"
+                                    th:value="${cat.id}"
+                                    th:text="${cat.nombre}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Nombre Subcategoría</label>
+                        <input type="text" name="bienesDeEntrada[0].subcategoria.nombre" class="form-control" placeholder="Ej: Lácteos" required/>
+                    </div>
+
+                    <div class="col-md-6 div-estado">
+                        <label class="form-label">Estado del Bien</label>
+                        <select name="bienesDeEntrada[0].estado" class="form-select">
+                            <option value="NUEVO">Nuevo</option>
+                            <option value="USADO_BUEN_ESTADO">Usado en buen estado</option>
+                            <option value="REPARADO">Reparado</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 div-vencimiento" style="display: none;">
+                        <label class="form-label">Fecha de Vencimiento</label>
+                        <input type="date" name="bienesDeEntrada[0].fechaVencimiento" class="form-control"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <a th:href="@{/donaciones}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success">Guardar Donación Completa</button>
+    </div>
+</form>
+
+<script>
+    let bienIndex = 1;
+
+    function toggleCamposTipo(selectElem) {
+        const row = selectElem.closest('.row');
+        const divEstado = row.querySelector('.div-estado');
+        const divVencimiento = row.querySelector('.div-vencimiento');
+        if (selectElem.value === 'PERECEDERO') {
+            divEstado.style.display = 'none';
+            divVencimiento.style.display = 'block';
+        } else {
+            divEstado.style.display = 'block';
+            divVencimiento.style.display = 'none';
+        }
+    }
+
+    function agregarBien() {
+        const contenedor = document.getElementById('contenedorBienes');
+        const primerBien = document.querySelector('.item-bien');
+
+        const nuevoBien = primerBien.cloneNode(true);
+        nuevoBien.setAttribute('data-index', bienIndex);
+        nuevoBien.querySelector('h5').innerText = 'Bien #' + (bienIndex + 1);
+
+        nuevoBien.querySelectorAll('input, select').forEach(element => {
+            let name = element.getAttribute('name');
+            if (name) {
+                name = name.replace(/bienesDeEntrada\\[\d+\\]/, `bienesDeEntrada[${bienIndex}]`);
+                element.setAttribute('name', name);
+                if (element.tagName === 'INPUT') element.value = '';
+            }
+        });
+
+        contenedor.appendChild(nuevoBien);
+        bienIndex++;
+    }
+</script>
+</body>
+</html>

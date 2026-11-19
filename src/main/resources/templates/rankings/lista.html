@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="container py-4">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h2 class="mb-4">Rankings de Entidades Beneficiarias</h2>
+
+<div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+<!-- Botón Generar Ranking -->
+<form method="post" th:action="@{/rankings/generar}" class="mb-4">
+    <button type="submit" class="btn btn-primary">Generar Nuevo Ranking</button>
+</form>
+
+<!-- Tabla de Rankings -->
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-dark">
+    <tr>
+        <th>ID Donación Segmentada</th>
+        <th>Entidad Beneficiaria</th>
+        <th>Posición</th>
+        <th>Puntaje</th>
+        <th>Algoritmo</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="sr : ${rankings}">
+        <tr th:each="r : ${sr.rankings}">
+            <td th:text="${sr.segmentada != null ? sr.segmentada.idSegmentada : 'N/A'}">1</td>
+            <td th:text="${r.entidadBeneficiaria != null ? (r.entidadBeneficiaria.razonSocial != null ? r.entidadBeneficiaria.razonSocial : 'Entidad #' + r.entidadBeneficiaria.id) : '-'}">Comedor Los Lapachos</td>
+            <td>
+                <span class="badge bg-info text-dark" th:text="'#' + ${r.posicion}">#1</span>
+            </td>
+            <td th:text="${r.puntaje}">100.0</td>
+            <td th:text="${r.algoritmoUsado != null ? r.algoritmoUsado : 'Por Necesidad'}">Por Necesidad</td>
+        </tr>
+    </th:block>
+    <tr th:if="${rankings == null or #lists.isEmpty(rankings)}">
+        <td colspan="5" class="text-center text-muted">No hay rankings calculados actualmente.</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

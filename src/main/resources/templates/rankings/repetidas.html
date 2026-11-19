@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="container py-4 bg-light">
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h2 class="fw-bold text-dark mb-4"><i class="bi bi-arrow-repeat text-success me-2"></i>Entidades Repetidas por Donación</h2>
+
+<div class="card p-3 shadow-sm mb-4 border-0">
+    <form method="get" th:action="@{/rankings/repetidas}" class="row align-items-center g-3">
+        <div class="col-md-3">
+            <label class="form-label fw-bold mb-0">ID de Donación a Consultar:</label>
+        </div>
+        <div class="col-md-6">
+            <input type="number" name="idDonacion" th:value="${idDonacionSeleccionada}" class="form-control" placeholder="Ingrese ID de Donación" required />
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-success w-100"><i class="bi bi-search me-1"></i> Buscar</button>
+        </div>
+    </form>
+</div>
+
+<div th:if="${idDonacionSeleccionada != null}" class="table-responsive bg-white rounded shadow-sm border">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+        <tr>
+            <th>Entidad</th>
+            <th>Posición</th>
+            <th>Puntaje</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(repetidas)}">
+            <td colspan="3" class="text-center text-muted py-4">No se encontraron asignaciones repetidas para esta donación.</td>
+        </tr>
+        <tr th:each="item : ${repetidas}">
+            <td th:text="${item['entidadBeneficiaria'] != null ? item['entidadBeneficiaria']['razonSocial'] : 'Entidad #' + item['idEntidad']}">Comedor</td>
+            <td th:text="${item['posicion']}">1</td>
+            <td th:text="${item['puntaje']}">50.0</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

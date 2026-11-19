@@ -23,7 +23,7 @@ public class RestClientConfig {
         return crear(props.baseUrl(), props.connectTimeout(), props.readTimeout());
     }
 
-    @Bean
+    @Bean(name = {"donacionesRestClient", "restClientDonaciones"})
     RestClient donacionesRestClient(ServiciosProperties props) {
         return crear(props.donaciones());
     }

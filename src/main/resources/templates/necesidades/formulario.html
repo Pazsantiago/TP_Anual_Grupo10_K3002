@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="container py-4">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h2 class="mb-4">Registrar Necesidad</h2>
+
+<!-- Selector de Tipo de Necesidad -->
+<div class="card mb-4">
+    <div class="card-body">
+        <label class="form-label fw-bold">Tipo de Necesidad</label>
+        <div>
+            <a th:href="@{/necesidades/nueva(idEntidad=${idEntidadSeleccionada}, tipo='EXTRAORDINARIA')}"
+               class="btn"
+               th:classappend="${tipoActual == 'RECURRENTE' ? 'btn-outline-primary' : 'btn-primary'}">
+                Extraordinaria
+            </a>
+            <a th:href="@{/necesidades/nueva(idEntidad=${idEntidadSeleccionada}, tipo='RECURRENTE')}"
+               class="btn ms-2"
+               th:classappend="${tipoActual == 'RECURRENTE' ? 'btn-primary' : 'btn-outline-primary'}">
+                Recurrente
+            </a>
+        </div>
+    </div>
+</div>
+
+<form th:action="@{/necesidades}" th:object="${necesidad}" method="post">
+
+    <!-- Campo Tipo de Necesidad -->
+    <input type="hidden" name="tipo" th:value="${tipoActual}"/>
+
+    <!-- Selección de Entidad Beneficiaria -->
+    <div class="card mb-4 border-primary">
+        <div class="card-header bg-primary text-white fw-bold">1. Entidad Beneficiaria</div>
+        <div class="card-body">
+            <label class="form-label fw-bold">Seleccionar Entidad</label>
+            <select name="idEntidad" class="form-select" required>
+                <option value="">-- Seleccionar Entidad Beneficiaria --</option>
+                <option th:each="e : ${entidades}"
+                        th:value="${e.id}"
+                        th:text="${e.razonSocial}"
+                        th:selected="${e.id == idEntidadSeleccionada}">
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Detalle de la Necesidad -->
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white fw-bold">2. Detalle de la Necesidad</div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <label class="form-label">Descripción</label>
+                    <input type="text" th:field="*{descripcion}" class="form-control" placeholder="Ej: Harina de trigo 000" required/>
+                </div>
+
+                <!-- Categoría Padre -->
+                <div class="col-md-6">
+                    <label class="form-label">Categoría Padre</label>
+                    <select th:field="*{subcategoria.idCategoria}" class="form-select" required>
+                        <option value="">-- Seleccionar Categoría --</option>
+                        <option th:each="cat : ${categorias}"
+                                th:value="${cat.id}"
+                                th:text="${cat.nombre}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Subcategoría</label>
+                    <input type="text" th:field="*{subcategoria.nombre}" class="form-control" placeholder="Ej: Alimentos Secos" required/>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label">Cantidad Objetivo</label>
+                    <input type="number" th:field="*{cantidadObjetivo}" class="form-control" placeholder="Ej: 100" required min="1"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parámetros de Recurrencia (PeriodoRequestDTO) -->
+    <div th:if="${tipoActual == 'RECURRENTE'}" class="card mb-4">
+        <div class="card-header bg-light fw-bold">3. Parámetros de Recurrencia</div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Días del Período</label>
+                    <input type="number" th:field="*{periodoRequestDTO.periodoDias}" class="form-control" placeholder="Ej: 30" required/>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Fecha Inicio Período</label>
+                    <input type="date" th:field="*{periodoRequestDTO.inicioPeriodo}" class="form-control" required/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <a th:href="@{/necesidades}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-success">Guardar Necesidad</button>
+    </div>
+</form>
+</body>
+</html>

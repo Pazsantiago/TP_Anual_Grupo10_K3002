@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utn.donatrack.donatrack_frontend.client.DonacionesClient;
 import utn.donatrack.donatrack_frontend.client.ServicioExternoException;
-import utn.donatrack.donatrack_frontend.viewmodel.DonanteForm;
-import utn.donatrack.donatrack_frontend.viewmodel.EntidadForm;
 
 /**
  * Paginas de acceso publico (sin login): galeria, mapa, informacion legal, inicio de sesion y registro.

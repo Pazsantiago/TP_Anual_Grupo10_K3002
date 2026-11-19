@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="container py-4">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h2 class="mb-4">Gestión de Necesidades Beneficiarias</h2>
+
+<div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
+
+<!-- Filtro por Entidad -->
+<form method="get" th:action="@{/necesidades}" class="card card-body mb-4 bg-light">
+    <div class="row align-items-end">
+        <div class="col-md-8">
+            <label for="selectEntidad" class="form-label fw-bold">Filtrar por Entidad Beneficiaria:</label>
+            <select id="selectEntidad" name="idEntidad" class="form-select" onchange="this.form.submit()">
+                <option value="" disabled th:selected="${idEntidadSeleccionada == null}">-- Seleccionar Entidad --</option>
+                <option th:each="e : ${entidades}"
+                        th:value="${e.id}"
+                        th:text="${e.razonSocial}"
+                        th:selected="${e.id == idEntidadSeleccionada}">
+                </option>
+            </select>
+        </div>
+        <div class="col-md-4" th:if="${idEntidadSeleccionada != null}">
+            <a th:href="@{/necesidades/nueva(idEntidad=${idEntidadSeleccionada})}" class="btn btn-success w-100">+ Nueva Necesidad</a>
+        </div>
+    </div>
+</form>
+
+<!-- Tabla de Necesidades -->
+<div th:if="${idEntidadSeleccionada != null}">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Descripción</th>
+            <th>Cantidad Objetivo</th>
+            <th>Cantidad Asignada</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="n : ${necesidades}">
+            <td th:text="${n.id}">1</td>
+            <td th:text="${n.descripcion}">Arroz 1kg</td>
+            <td th:text="${n.cantidadObjetivo}">100</td>
+            <td th:text="${n.cantidadAsignada != null ? n.cantidadAsignada : 0}">25</td>
+            <td>
+                <span th:if="${n.estaSatisfechaConDonacion}" class="badge bg-success">Satisfecha</span>
+                <span th:if="${!n.estaSatisfechaConDonacion}" class="badge bg-warning text-dark">Pendiente</span>
+            </td>
+            <td>
+                <form method="post" th:action="@{/necesidades/eliminar}" onsubmit="return confirm('¿Deseas eliminar esta necesidad?');">
+                    <input type="hidden" name="idEntidad" th:value="${idEntidadSeleccionada}"/>
+                    <input type="hidden" name="idNecesidad" th:value="${n.id}"/>
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${necesidades == null or #lists.isEmpty(necesidades)}">
+            <td colspan="6" class="text-center text-muted">La entidad no tiene necesidades registradas.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:if="${idEntidadSeleccionada == null}" class="alert alert-info text-center">
+    Por favor seleccioná una entidad beneficiaria para ver sus necesidades registradas.
+</div>
+</body>
+</html>

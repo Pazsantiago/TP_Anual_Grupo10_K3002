@@ -5,14 +5,112 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67621db1-9369-4a54-97ba-ab1256cb9f2b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/DonacionAsignadaResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/DonacionSegmentadaResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/BienRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/DireccionRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/DocumentoRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/DonacionRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/DonanteRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/EntidadBeneficiariaRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/Estado.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/EstadoDonacionRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/Genero.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/MedioContactoRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/MedioNotificacion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/NecesidadRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/PeriodoRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/PersonaRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/SubcategoriaRequestDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/TipoAlgoritmo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/TipoCategoria.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/TipoEstadoDonacion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/TipoPersonaJuridica.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/request/UnidadMedida.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/response/CategoriaResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/response/DonacionAsignadaResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/response/DonacionResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/response/DonacionSegmentadaResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/response/DonanteResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/response/EntidadBeneficiariaResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/response/MedioContactoResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/response/NecesidadResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/response/RankingEntidadBeneficiariaResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/response/SegmentadaRankingsResponseDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/AsignacionController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/DonacionController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/DonacionSegmentadaController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/DonacionesHomeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/DonanteController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/EntidadController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/NecesidadController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/RankingController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/AsignacionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/CategoriaService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/DonacionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/DonanteService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/EntidadService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/NecesidadService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/RankingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/agregar-segmentada.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/asignadas.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/formulario.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/formulario.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/segmentadas.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/vencidas.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/formulario.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/entidades/formulario.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/necesidades/formulario.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/necesidades/lista.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/rankings/lista.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/rankings/repetidas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/DonacionesClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/DonacionesClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/AsignacionesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/AsignacionesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/DonacionesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/DonacionesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/DonantesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/DonantesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/InicioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/InicioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/LogisticaClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/LogisticaClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/AsignacionRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/BienRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/BienResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/DonacionAsignadaResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/DonacionRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/DonacionResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/DonacionSegmentadaResponseDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/DonanteRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/DonanteResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/EntidadRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/EntidadResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/EstadoDonacionRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/ImportacionResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/NecesidadRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/NecesidadResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/RankingEntidadResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/client/dto/donaciones/RankingSegmentadaResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/AsignacionesController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/DonacionesController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/DonantesController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/EntidadesController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/PublicoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/PublicoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/viewmodel/BienForm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/viewmodel/DonacionForm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/viewmodel/DonanteForm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/viewmodel/EntidadForm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/viewmodel/NecesidadForm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/detalle.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/lista.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/detalle.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/donaciones.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/form-no-key.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/importar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/importar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/entidades/donaciones.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/entidades/form-no-key.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/entidades/form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/entidades/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/entidades/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/entidades/necesidad-form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/entidades/necesidades.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/entidades/recepcion.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +121,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -41,18 +140,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.DonatrackFrontendApplication.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;rama__cliente&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.DonatrackFrontendApplication.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "rama__cliente",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/santi/IdeaProjects/Cliente liviano entrega 6/TP_Anual_Grupo10_K3002/src/main/resources/templates",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\resources\templates" />
+      <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\java\utn\donatrack\donatrack_frontend\controller\donaciones" />
+      <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\java\utn\donatrack\donatrack_frontend\services" />
+      <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\resources\templates\donaciones" />
+      <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\resources\templates\necesidades" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Gonzalo Diez\Desktop\EstudiosUTN\VsCode\ejercitacionParciales\TP_Anual_Grupo10_K3002\src\main\java\utn\donatrack\donatrack_frontend\controller" />
     </key>
