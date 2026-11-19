@@ -57,7 +57,7 @@ public class DonacionesController {
             return volverAlForm(form.getIdDonante());
         }
         try {
-            client.crearDonacion(form.toRequest());
+            client.crearDonacion(form.getIdDonante(), form.toRequest());
         } catch (ServicioExternoException e) {
             flash.addFlashAttribute("errorServicio", e.getMessage());
             return volverAlForm(form.getIdDonante());
@@ -69,9 +69,9 @@ public class DonacionesController {
     /** Una donacion vencida deja de estar disponible para asignarse. */
     @PostMapping("/{id}/vencida")
     public String marcarVencida(@PathVariable("id") long id,
-                                @RequestParam(name = "idDonante", required = false) Long idDonante, RedirectAttributes flash) {
+    public String marcarVencida(@PathVariable("id") long id, @RequestParam(name = "idDonante", required = false) Long idDonante, RedirectAttributes flash) {
         try {
-            client.cambiarEstadoDonacion(id, new EstadoDonacionRequest("VENCIDA", null));
+            client.cambiarEstadoDonacion(idDonante,id, new EstadoDonacionRequest("VENCIDA", null));
             flash.addFlashAttribute("exito", "La donación N.º " + id + " quedó como vencida.");
         } catch (ServicioExternoException e) {
             flash.addFlashAttribute("errorServicio", e.getMessage());

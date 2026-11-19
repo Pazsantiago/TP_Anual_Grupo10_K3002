@@ -59,6 +59,14 @@ public class DonantesController {
             return "redirect:/donantes/nuevo";
         }
         try {
+
+            Object rol = (session != null) ? session.getAttribute("userRol") : null;
+            if("ADMIN".equals(rol) || "ROLE_ADMIN".equals(rol)){
+                client.crearDonanteByAdmin(form.toRequest(false));
+                flash.addFlashAttribute("Exito", "El usuario ya ha sido creado");
+                return "redirect:/panel";
+            }
+
             client.crearDonante(form.toRequest(false));
             DonanteRequest d = form.toRequest(true);
             keycloakAdminService.crearUsuarioEnKeycloak(
@@ -67,11 +75,7 @@ public class DonantesController {
                     "DONANTE"
             );
 
-            Object rol = (session != null) ? session.getAttribute("userRol") : null;
-            if("ADMIN".equals(rol) || "ROLE_ADMIN".equals(rol)){
-                flash.addFlashAttribute("Exito", "El usuario ya ha sido creado");
-                return "redirect:/panel";
-            }
+
         } catch (ServicioExternoException e) {
             flash.addFlashAttribute("errorServicio", e.getMessage());
             return "redirect:/donantes/nuevo";

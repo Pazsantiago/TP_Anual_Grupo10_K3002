@@ -1,5 +1,6 @@
 package utn.donatrack.donatrack_frontend.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,14 @@ public class InicioController {
 
     /** Panel de gestion: accesos a todas las secciones (ver NavegacionAdvice). */
     @GetMapping("/panel")
-    public String panel() {
+    public String panel(HttpSession session,
+                        Model model
+                       ) {
+        Object msg = session.getAttribute("errorMsg");
+        if (msg != null) {
+            session.removeAttribute("errorMsg");
+            model.addAttribute("errorServicio", msg);
+        }
         return "panel";
     }
 }

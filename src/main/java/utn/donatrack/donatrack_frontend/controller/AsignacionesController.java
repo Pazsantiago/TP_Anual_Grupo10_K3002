@@ -86,7 +86,7 @@ public class AsignacionesController {
     public String confirmar(@PathVariable("idSegmentada") long idSegmentada, @RequestParam("idEntidad") long idEntidad,
                             RedirectAttributes flash) {
         try {
-            client.confirmarAsignacion(idSegmentada, idEntidad);
+            client.confirmarAsignacion(idSegmentada, -1,idEntidad);
             flash.addFlashAttribute("exito", "Donación asignada. Avisamos a la entidad y a la persona donante.");
         } catch (ServicioExternoException e) {
             flash.addFlashAttribute("errorServicio", e.getMessage());
