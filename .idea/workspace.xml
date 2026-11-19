@@ -5,12 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67621db1-9369-4a54-97ba-ab1256cb9f2b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/formulario-no-key.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/NavegacionAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/NavegacionAdvice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/DonanteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/DonanteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/agregar-segmentada.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/agregar-segmentada.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/asignadas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/asignadas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/formulario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/formulario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/formulario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/formulario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/segmentadas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/segmentadas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/vencidas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/vencidas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/formulario-no-key.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/formulario-no-key.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/formulario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/formulario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/importar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/importar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/entidades/formulario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/entidades/formulario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/entidades/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/entidades/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/necesidades/formulario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/necesidades/formulario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/necesidades/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/necesidades/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/rankings/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/rankings/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/rankings/repetidas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/rankings/repetidas.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
