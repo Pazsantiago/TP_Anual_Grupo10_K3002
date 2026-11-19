@@ -24,9 +24,8 @@ import utn.donatrack.donatrack_frontend.client.dto.logistica.DonacionPendienteRe
 public class LogisticaClient extends ClienteServicio {
 
     public LogisticaClient(@Qualifier("logisticaRestClient") RestClient restClient) {
-        super(restClient, "logística");
+        super(restClient, "logistica");
     }
-
     /** GET /api/camiones */
     public List<CamionResponse> listarCamiones() {
         return listaDe(() -> http().get()

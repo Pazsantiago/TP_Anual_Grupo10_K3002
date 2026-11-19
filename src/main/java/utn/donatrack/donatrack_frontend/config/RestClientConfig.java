@@ -1,68 +1,62 @@
 package utn.donatrack.donatrack_frontend.config;
 
-import java.net.http.HttpClient;
-import java.time.Duration;
-
 import jakarta.servlet.http.HttpSession;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Configuration
-@EnableConfigurationProperties({NotificacionesProperties.class, ServiciosProperties.class})
 public class RestClientConfig {
 
-    /** Un RestClient por servicio externo: cada uno con su propia base URL y timeouts.
-     *  Para sumar un servicio: agregar su Endpoint en ServiciosProperties y un @Bean aca. */
-    @Bean
-    RestClient notificacionesRestClient(NotificacionesProperties props) {
-        return crear(props.baseUrl(), props.connectTimeout(), props.readTimeout());
+    @Value("${donatrack.services.donaciones.base-url:http://localhost:8090}")
+    private String donacionesUrl;
+
+    @Value("${donatrack.services.incentivos.base-url:http://localhost:8091}")
+    private String incentivosUrl;
+
+    @Value("${donatrack.services.logistica.base-url:http://localhost:8092}")
+    private String logisticaUrl;
+
+    @Value("${donatrack.services.notificaciones.base-url:http://localhost:8081}")
+    private String notificacionesUrl;
+
+    // 1. Cliente para Donaciones
+    @Bean(name = "donacionesRestClient")
+    public RestClient restClientDonaciones() {
+        return crearRestClient(donacionesUrl);
     }
 
-    @Bean(name = {"donacionesRestClient", "restClientDonaciones"})
-    RestClient donacionesRestClient(ServiciosProperties props) {
-        return crear(props.donaciones());
+    // 2. Cliente para Incentivos
+    @Bean(name = "incentivosRestClient")
+    public RestClient restClientIncentivos() {
+        return crearRestClient(incentivosUrl);
     }
 
-    @Bean
-    RestClient incentivosRestClient(ServiciosProperties props) {
-        return crear(props.incentivos());
+    // 3. Cliente para Logística
+    @Bean(name = "logisticaRestClient")
+    public RestClient restClientLogistica() {
+        return crearRestClient(logisticaUrl);
     }
 
-    @Bean
-    RestClient logisticaRestClient(ServiciosProperties props) {
-        return crear(props.logistica());
+    // 4. Cliente para Notificaciones
+    @Bean(name = "notificacionesRestClient")
+    public RestClient restClientNotificaciones() {
+        return crearRestClient(notificacionesUrl);
     }
 
-    private static RestClient crear(ServiciosProperties.Endpoint endpoint) {
-        return crear(endpoint.baseUrl(), endpoint.connectTimeout(), endpoint.readTimeout());
-    }
-
-    private static RestClient crear(String baseUrl, Duration connectTimeout, Duration readTimeout) {
-        HttpClient httpClient = HttpClient.newBuilder()
-                .connectTimeout(connectTimeout)
-                .build();
-        JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory(httpClient);
-        factory.setReadTimeout(readTimeout);
-
+    private RestClient crearRestClient(String baseUrl) {
         return RestClient.builder()
                 .baseUrl(baseUrl)
-                .requestFactory(factory) // Configura timeouts
                 .requestInterceptor((request, body, execution) -> {
-                    // Obtenemos la sesión HTTP de la solicitud actual de forma limpia
-                    ServletRequestAttributes attributes =
-                            (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-
-                    if (attributes != null) {
-                        HttpSession session = attributes.getRequest().getSession(false);
+                    ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+                    if (attrs != null) {
+                        HttpSession session = attrs.getRequest().getSession(false);
                         if (session != null) {
                             String token = (String) session.getAttribute("jwtToken");
-                            if (token != null) {
-                                // Inyecta el encabezado Authorization: Bearer <token>
+                            if (token != null && !token.isBlank()) {
                                 request.getHeaders().add("Authorization", "Bearer " + token);
                             }
                         }
@@ -72,4 +66,3 @@ public class RestClientConfig {
                 .build();
     }
 }
-
