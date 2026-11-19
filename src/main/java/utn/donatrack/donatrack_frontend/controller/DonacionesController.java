@@ -68,7 +68,6 @@ public class DonacionesController {
 
     /** Una donacion vencida deja de estar disponible para asignarse. */
     @PostMapping("/{id}/vencida")
-    public String marcarVencida(@PathVariable("id") long id,
     public String marcarVencida(@PathVariable("id") long id, @RequestParam(name = "idDonante", required = false) Long idDonante, RedirectAttributes flash) {
         try {
             client.cambiarEstadoDonacion(idDonante,id, new EstadoDonacionRequest("VENCIDA", null));
