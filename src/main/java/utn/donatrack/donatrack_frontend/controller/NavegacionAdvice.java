@@ -56,30 +56,74 @@ public class NavegacionAdvice {
     // ---- Migas de pan: se arman solas desde la URL, asi cada pagina nueva las tiene sin tocar nada ----
 
     private static final Map<String, String> ETIQUETAS = Map.ofEntries(
-        Map.entry("panel", "Panel"), Map.entry("donantes", "Donantes"), Map.entry("donaciones", "Donaciones"),
-        Map.entry("entidades", "Entidades"), Map.entry("necesidades", "Necesidades"),
-        Map.entry("asignaciones", "Asignaciones"), Map.entry("incentivos", "Incentivos"),
-        Map.entry("misiones", "Categorías y misiones"), Map.entry("gestion", "Gestión de perfiles"), Map.entry("logistica", "Logística"),
-        Map.entry("camiones", "Camiones"), Map.entry("seguimiento", "Seguimiento"), Map.entry("ruta", "Mi ruta"),
-        Map.entry("entregas-fallidas", "Entregas no recibidas"), Map.entry("recepcion", "Confirmar recepción"),
-        Map.entry("notificaciones", "Notificaciones"), Map.entry("galeria", "Galería"), Map.entry("mapa", "Mapa"),
-        Map.entry("legal", "Información legal y de privacidad"), Map.entry("login", "Iniciar sesión"),
-        Map.entry("registro", "Registro"), Map.entry("importar", "Importar CSV"), Map.entry("editar", "Editar"),
-        Map.entry("nuevo", "Nuevo"), Map.entry("nueva", "Nueva"));
+            Map.entry("panel", "Panel"),
+            Map.entry("donantes", "Donantes"),
+            Map.entry("admin", "Administrador"),
+            Map.entry("donaciones", "Donaciones"),
+            Map.entry("entidades", "Entidades"),
+            Map.entry("entidadesBeneficiarias", "Entidades beneficiarias"),
+            Map.entry("necesidades", "Necesidades"),
+            Map.entry("asignaciones", "Asignaciones"),
+            Map.entry("rankings", "Rankings"),
+            Map.entry("segmentadas", "Donaciones segmentadas"),
+            Map.entry("vencida", "Marcar vencida"),
+            Map.entry("repetidas", "Entidades repetidas"),
+            Map.entry("incentivos", "Incentivos"),
+            Map.entry("misiones", "Categorías y misiones"),
+            Map.entry("gestion", "Gestión de perfiles"),
+            Map.entry("logistica", "Logística"),
+            Map.entry("camiones", "Camiones"),
+            Map.entry("seguimiento", "Seguimiento"),
+            Map.entry("ruta", "Mi ruta"),
+            Map.entry("entregas-fallidas", "Entregas no recibidas"),
+            Map.entry("recepcion", "Confirmar recepción"),
+            Map.entry("notificaciones", "Notificaciones"),
+            Map.entry("galeria", "Galería"),
+            Map.entry("mapa", "Mapa"),
+            Map.entry("legal", "Información legal y de privacidad"),
+            Map.entry("login", "Iniciar sesión"),
+            Map.entry("registro", "Registro"),
+            Map.entry("importar", "Importar CSV"),
+            Map.entry("importador", "Importar CSV"),
+            Map.entry("editar", "Editar"),
+            Map.entry("nuevo", "Nuevo"),
+            Map.entry("nueva", "Nueva"),
+            Map.entry("agregar-segmentada", "Agregar segmentada")
+    );
 
-    /** Etiquetas que dependen del tramo anterior ("nuevo" no significa lo mismo en donantes que en camiones). */
-    private static final Map<String, String> ETIQUETAS_EN_CONTEXTO = Map.of(
-        "donantes/nuevo", "Registrar donante", "camiones/nuevo", "Nuevo camión", "donaciones/nueva", "Cargar donación",
-        "entidades/nueva", "Registrar entidad", "necesidades/nueva", "Registrar necesidad",
-        "registro/donante", "Como donante", "registro/entidad", "Como entidad beneficiaria");
+    /** Etiquetas que dependen del tramo anterior. */
+    private static final Map<String, String> ETIQUETAS_EN_CONTEXTO = Map.ofEntries(
+            Map.entry("donantes/nuevo", "Registrar donante"),
+            Map.entry("donantes/nuevo/admin", "Registrar donante por Admin"),
+            Map.entry("donantes/importador", "Importar donantes CSV"),
+            Map.entry("donaciones/nueva", "Cargar donación"),
+            Map.entry("donaciones/segmentadas", "Donaciones segmentadas"),
+            Map.entry("donaciones/vencida", "Marcar vencida"),
+            Map.entry("entidadesBeneficiarias/nueva", "Registrar entidad"),
+            Map.entry("necesidades/nueva", "Registrar necesidad"),
+            Map.entry("asignaciones/nueva", "Nueva asignación"),
+            Map.entry("asignaciones/agregar-segmentada", "Agregar segmentada"),
+            Map.entry("rankings/repetidas", "Entidades repetidas"),
+            Map.entry("camiones/nuevo", "Nuevo camión"),
+            Map.entry("registro/donante", "Como donante"),
+            Map.entry("registro/entidad", "Como entidad beneficiaria")
+    );
 
-    /** Rutas que existen como pagina (GET). Un tramo intermedio que no coincide se muestra sin enlace, para no llevar a un 404. */
+    /** Rutas que existen como pagina (GET) navegable en la aplicación. */
     private static final Pattern RUTA_NAVEGABLE = Pattern.compile(
-        "^/(panel|donantes|donaciones|entidades|asignaciones|incentivos|logistica|notificaciones|galeria|mapa|legal|login)$"
-            + "|^/logistica/(camiones|seguimiento|ruta|entregas-fallidas)$|^/incentivos/(misiones|gestion)$"
-            + "|^/donantes/\\d+/donaciones$|^/entidades/\\d+/(necesidades|donaciones)$"
-            + "|^/asignaciones/\\d+$|^/incentivos/donantes/\\d+$");
-
+            "^/(panel|donantes|donaciones|entidadesBeneficiarias|entidades|necesidades|asignaciones|rankings|incentivos|logistica|notificaciones|galeria|mapa|legal|login)$"
+                    + "|^/donantes/(nuevo|nuevo/admin|importador)$"
+                    + "|^/donaciones/(nueva|segmentadas|vencida)$"
+                    + "|^/entidadesBeneficiarias/nueva$"
+                    + "|^/necesidades/nueva$"
+                    + "|^/asignaciones/(nueva|agregar-segmentada)$"
+                    + "|^/rankings/repetidas$"
+                    + "|^/logistica/(camiones|seguimiento|ruta|entregas-fallidas)$"
+                    + "|^/incentivos/(misiones|gestion)$"
+                    + "|^/donantes/\\d+/donaciones$"
+                    + "|^/entidadesBeneficiarias/\\d+/(necesidades|donaciones)$"
+                    + "|^/asignaciones/\\d+$|^/incentivos/donantes/\\d+$"
+    );
     @ModelAttribute("migas")
     public List<Miga> migas(HttpServletRequest request) {
         List<Miga> migas = new ArrayList<>();
