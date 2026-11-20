@@ -25,6 +25,11 @@ public class InicioController {
         return "inicio";
     }
 
+    @GetMapping("/inicio")
+    public String inicioHome(Model model) {
+        return "redirect:/inicio";
+    }
+
     /** Panel de gestion: accesos a todas las secciones (ver NavegacionAdvice). */
     @GetMapping("/panel")
     public String panel(HttpSession session,
