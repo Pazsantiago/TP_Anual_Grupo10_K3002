@@ -67,16 +67,17 @@ public class AsignacionController {
     @GetMapping
     public String listarAsignadasPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, Model model) {
 
-        // Cargamos todas las entidades para el desplegable de selección
         List<EntidadBeneficiariaResponseDTO> entidades = entidadService.getAll();
-        model.addAttribute("entidades", entidades);
+        model.addAttribute("entidades", entidades != null ? entidades : List.of());
         model.addAttribute("idEntidadSeleccionada", idEntidad);
 
+        List<DonacionAsignadaResponseDTO> asignadas = List.of();
+
         if (idEntidad != null) {
-            // Obtenemos la lista de DonacionAsignadaResponseDTO para esa entidad
-            List<DonacionAsignadaResponseDTO> asignadas = donacionService.getAsignadasPorEntidad(idEntidad);
-            model.addAttribute("asignaciones", asignadas);
+            asignadas = donacionService.getAsignadasPorEntidad(idEntidad);
         }
+
+        model.addAttribute("asignaciones", asignadas != null ? asignadas : List.of());
 
         return "donaciones/asignadas";
     }
