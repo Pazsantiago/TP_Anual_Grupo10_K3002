@@ -24,25 +24,25 @@ public class RestClientConfig {
     private String notificacionesUrl;
 
     // 1. Cliente para Donaciones
-    @Bean(name = "donacionesRestClient")
+    @Bean(name = {"donacionesRestClient", "restClientDonaciones"})
     public RestClient restClientDonaciones() {
         return crearRestClient(donacionesUrl);
     }
 
     // 2. Cliente para Incentivos
-    @Bean(name = "incentivosRestClient")
+    @Bean(name = {"incentivosRestClient", "restClientIncentivos"})
     public RestClient restClientIncentivos() {
         return crearRestClient(incentivosUrl);
     }
 
-    // 3. Cliente para Logística
-    @Bean(name = "logisticaRestClient")
+    // 3. Cliente para Logistica
+    @Bean(name = {"logisticaRestClient", "restClientLogistica"})
     public RestClient restClientLogistica() {
         return crearRestClient(logisticaUrl);
     }
 
     // 4. Cliente para Notificaciones
-    @Bean(name = "notificacionesRestClient")
+    @Bean(name = {"notificacionesRestClient", "restClientNotificaciones"})
     public RestClient restClientNotificaciones() {
         return crearRestClient(notificacionesUrl);
     }
