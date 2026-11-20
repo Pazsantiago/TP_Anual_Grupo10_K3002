@@ -38,18 +38,14 @@
         <td th:text="${d.nombre}">Juan Pérez</td>
 
         <td>
+            <!-- Muestra el contacto si viene presente en el DTO -->
             <div th:if="${d.contactoPredeterminado != null}">
                 <strong th:text="${d.contactoPredeterminado.tipo}">EMAIL</strong>:
                 <span th:text="${d.contactoPredeterminado.correoElectronico != null and !#strings.isEmpty(d.contactoPredeterminado.correoElectronico) ? d.contactoPredeterminado.correoElectronico : d.contactoPredeterminado.telefono}">correo@ejemplo.com</span>
             </div>
 
-
-            <div th:if="${d.contactoPredeterminado == null and d.mediosDeContacto != null and !#lists.isEmpty(d.mediosDeContacto)}">
-                <strong th:text="${d.mediosDeContacto[0].tipo}">EMAIL</strong>:
-                <span th:text="${d.mediosDeContacto[0].correoElectronico != null and !#strings.isEmpty(d.mediosDeContacto[0].correoElectronico) ? d.mediosDeContacto[0].correoElectronico : d.mediosDeContacto[0].telefono}">correo@ejemplo.com</span>
-            </div>
-
-            <span th:if="${d.contactoPredeterminado == null and (d.mediosDeContacto == null or #lists.isEmpty(d.mediosDeContacto))}"
+            <!-- Si es null -->
+            <span th:if="${d.contactoPredeterminado == null}"
                   class="text-muted fst-italic">Sin contacto</span>
         </td>
 
