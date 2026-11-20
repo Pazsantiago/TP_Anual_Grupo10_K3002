@@ -1,69 +1,64 @@
 package utn.donatrack.donatrack_frontend.services;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
-import utn.donatrack.donatrack_frontend.client.ClienteServicio;
+import lombok.RequiredArgsConstructor;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.DonacionRequestDTO;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.EstadoDonacionRequestDTO;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.response.DonacionAsignadaResponseDTO;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.response.DonacionResponseDTO;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.response.DonacionSegmentadaResponseDTO;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
 @Service
-public class DonacionService extends ClienteServicio {
-
-    public DonacionService(@Qualifier("restClientDonaciones") RestClient restClient) {
-        super(restClient, "donaciones");
-    }
+@RequiredArgsConstructor
+public class DonacionService {
+    @Qualifier("restClientDonaciones")
+    private final RestClient restClient;
 
     public List<DonacionResponseDTO> getByDonante(Long idDonante) {
-        return listaDe(() -> http().get()
+        return restClient.get()
                 .uri("/api/donantes/{idDonante}/donaciones", idDonante)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<DonacionResponseDTO>>() {}));
+                .body(new ParameterizedTypeReference<List<DonacionResponseDTO>>() {});
     }
 
     public List<DonacionSegmentadaResponseDTO> getSegmentadasByDonante(Long idDonante) {
-        return listaDe(() -> http().get()
+        return restClient.get()
                 .uri("/api/donantes/{idDonante}/donaciones/segmentadas", idDonante)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<DonacionSegmentadaResponseDTO>>() {}));
+                .body(new ParameterizedTypeReference<List<DonacionSegmentadaResponseDTO>>() {});
     }
 
-    public List<DonacionAsignadaResponseDTO> getAsignadasPorEntidad(Long idEntidad) {
-        return listaDe(() -> http().get()
-                .uri("/api/entidadesBeneficiarias/{idEntidad}/donaciones-asignadas", idEntidad)
+    public List<DonacionAsignadaResponseDTO> getAsignadasPorEntidad(Long idDonante) {
+        return restClient.get()
+                .uri("/api/entidadesBeneficiarias/{idEntidad}/donaciones-asignadas", idDonante)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<DonacionAsignadaResponseDTO>>() {}));
+                .body(new ParameterizedTypeReference<List<DonacionAsignadaResponseDTO>>() {});
     }
 
     public void actualizarEstadoSegmentada(Long idDonante, Long idDonacion, Long idSegmentada, EstadoDonacionRequestDTO estadoDTO) {
-        ejecutar(() -> http().patch()
+        restClient.get()
                 .uri("/api/donantes/{idDonante}/donaciones/{idDonacion}/segmentadas/{idSegmentada}", idDonante, idDonacion, idSegmentada)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(estadoDTO)
                 .retrieve()
-                .toBodilessEntity());
+                .toBodilessEntity();
     }
 
     public void create(Long idDonante, DonacionRequestDTO donacion) {
-        ejecutar(() -> http().post()
+        restClient.post()
                 .uri("/api/donantes/{idDonante}/donaciones", idDonante)
-                .contentType(MediaType.APPLICATION_JSON)
                 .body(donacion)
                 .retrieve()
-                .toBodilessEntity());
+                .toBodilessEntity();
     }
 
     public void delete(Long idDonante, Long idDonacion) {
-        ejecutar(() -> http().delete()
+        restClient.delete()
                 .uri("/api/donantes/{idDonante}/donaciones/{idDonacion}", idDonante, idDonacion)
                 .retrieve()
-                .toBodilessEntity());
+                .toBodilessEntity();
     }
 }

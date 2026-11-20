@@ -6,8 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="67621db1-9369-4a54-97ba-ab1256cb9f2b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/InicioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/InicioController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/AsignacionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/AsignacionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/CategoriaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/CategoriaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/DonacionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/DonacionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/DonanteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/DonanteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/EntidadService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/EntidadService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/NecesidadService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/NecesidadService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/RankingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/RankingService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +58,8 @@
   "keyToString": {
     "Application.DonatrackFrontendApplication.executor": "Run",
     "DefaultHtmlFileTemplate": "HTML File",
+    "Maven.donatrack-frontend [clean].executor": "Run",
+    "Maven.donatrack-frontend [compile].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -62,7 +69,7 @@
     "git-widget-placeholder": "rama__cliente",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/santi/IdeaProjects/Cliente liviano entrega 6/TP_Anual_Grupo10_K3002",
+    "last_opened_file_path": "C:/Users/santi/IdeaProjects/Cliente liviano entrega 6/TP_Anual_Grupo10_K3002/src/main/java/utn/donatrack/donatrack_frontend/services",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -77,11 +84,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\java\utn\donatrack\donatrack_frontend\services" />
       <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002" />
       <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\resources\templates\donantes" />
       <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\resources\templates" />
       <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\java\utn\donatrack\donatrack_frontend\controller\donaciones" />
-      <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\java\utn\donatrack\donatrack_frontend\services" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Gonzalo Diez\Desktop\EstudiosUTN\VsCode\ejercitacionParciales\TP_Anual_Grupo10_K3002\src\main\java\utn\donatrack\donatrack_frontend\controller" />

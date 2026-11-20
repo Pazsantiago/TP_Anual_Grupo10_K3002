@@ -1,50 +1,47 @@
 package utn.donatrack.donatrack_frontend.services;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
-import utn.donatrack.donatrack_frontend.client.ClienteServicio;
+import lombok.RequiredArgsConstructor;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.EntidadBeneficiariaRequestDTO;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.response.EntidadBeneficiariaResponseDTO;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
 @Service
-public class EntidadService extends ClienteServicio {
-
-    public EntidadService(@Qualifier("restClientDonaciones") RestClient restClient) {
-        super(restClient, "donaciones");
-    }
+@RequiredArgsConstructor
+public class EntidadService {
+    @Qualifier("restClientDonaciones")
+    private final RestClient restClient;
 
     public List<EntidadBeneficiariaResponseDTO> getAll() {
-        return listaDe(() -> http().get()
+        return restClient.get()
                 .uri("/api/entidadesBeneficiarias")
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<EntidadBeneficiariaResponseDTO>>() {}));
+                .body(new ParameterizedTypeReference<List<EntidadBeneficiariaResponseDTO>>() {});
     }
 
     public EntidadBeneficiariaResponseDTO getById(Long id) {
-        return call(() -> http().get()
+        return restClient.get()
                 .uri("/api/entidadesBeneficiarias/{id}", id)
                 .retrieve()
-                .body(EntidadBeneficiariaResponseDTO.class));
+                .body(EntidadBeneficiariaResponseDTO.class);
     }
 
     public void create(EntidadBeneficiariaRequestDTO entidad) {
-        ejecutar(() -> http().post()
+        restClient.post()
                 .uri("/api/entidadesBeneficiarias")
-                .contentType(MediaType.APPLICATION_JSON)
                 .body(entidad)
                 .retrieve()
-                .toBodilessEntity());
+                .toBodilessEntity();
     }
 
     public void delete(Long id) {
-        ejecutar(() -> http().delete()
+        restClient.delete()
                 .uri("/api/entidadesBeneficiarias/{id}", id)
                 .retrieve()
-                .toBodilessEntity());
+                .toBodilessEntity();
     }
 }

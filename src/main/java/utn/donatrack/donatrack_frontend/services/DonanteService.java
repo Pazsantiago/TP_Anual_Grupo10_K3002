@@ -1,69 +1,69 @@
 package utn.donatrack.donatrack_frontend.services;
 
+import lombok.RequiredArgsConstructor;
+
+import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.DonanteRequestDTO;
+import utn.donatrack.donatrack_frontend.client.dto.donaciones.response.DonanteResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
-import utn.donatrack.donatrack_frontend.client.ClienteServicio;
-import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.DonanteRequestDTO;
-import utn.donatrack.donatrack_frontend.client.dto.donaciones.response.DonanteResponseDTO;
 
 import java.util.List;
 
 @Service
-public class DonanteService extends ClienteServicio {
-
-    public DonanteService(@Qualifier("restClientDonaciones") RestClient restClient) {
-        super(restClient, "donaciones");
-    }
+@RequiredArgsConstructor
+public class DonanteService {
+    @Qualifier("restClientDonaciones")
+    private final RestClient restClient;
 
     public List<DonanteResponseDTO> getAll() {
-        return listaDe(() -> http().get()
+        return restClient.get()
                 .uri("/api/donantes")
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<DonanteResponseDTO>>() {}));
+                .body(new ParameterizedTypeReference<List<DonanteResponseDTO>>() {});
     }
 
     public DonanteResponseDTO getById(Long id) {
-        return call(() -> http().get()
+        return restClient.get()
                 .uri("/api/donantes/{id}", id)
                 .retrieve()
-                .body(DonanteResponseDTO.class));
+                .body(DonanteResponseDTO.class);
     }
 
     public void create(DonanteRequestDTO donante) {
-        ejecutar(() -> http().post()
+        restClient.post()
                 .uri("/api/donantes")
-                .contentType(MediaType.APPLICATION_JSON)
                 .body(donante)
                 .retrieve()
-                .toBodilessEntity());
+                .toBodilessEntity();
     }
 
-    public void createByAdmin(DonanteRequestDTO donante, String email) {
-        ejecutar(() -> http().post()
-                .uri("/api/donantes/admin?email={email}", email)
-                .contentType(MediaType.APPLICATION_JSON)
+    public void createByAdmin(DonanteRequestDTO donante, String emaiil) {
+        restClient.post()
+                .uri("/api/donantes/admin?email={email}", emaiil)
                 .body(donante)
                 .retrieve()
-                .toBodilessEntity());
+                .toBodilessEntity();
     }
+
 
     public void delete(Long id) {
-        ejecutar(() -> http().delete()
+        restClient.delete()
                 .uri("/api/donantes/{id}", id)
                 .retrieve()
-                .toBodilessEntity());
+                .toBodilessEntity();
     }
 
     public void importarMasivoCsv(MultiValueMap<String, Object> body) {
-        ejecutar(() -> http().post()
-                .uri("/api/donantes/importador")
+        restClient.post()
+                .uri("/importador")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(body)
                 .retrieve()
-                .toBodilessEntity());
+                .toBodilessEntity();
     }
+
 }
