@@ -69,7 +69,9 @@ public class DonanteController {
             RedirectAttributes redirectAttributes) {
         try {
             if (donanteDTO.getMediosDeContacto() != null && !donanteDTO.getMediosDeContacto().isEmpty()) {
-                donanteDTO.getMediosDeContacto().get(0).setCorreoElectronico(email);
+                MedioContactoRequestDTO contacto = donanteDTO.getMediosDeContacto().get(0);
+                contacto.setCorreoElectronico(email);
+                contacto.setEsPredeterminado(true);
             }
             donanteService.create(donanteDTO);
             keycloakAdminService.crearUsuarioEnKeycloak(
