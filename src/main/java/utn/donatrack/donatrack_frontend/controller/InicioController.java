@@ -19,7 +19,12 @@ public class InicioController {
 
     /** Landing publica: proposito, como funciona y los tres donantes mas activos del mes. */
     @GetMapping({"/", "/inicio"})
-    public String inicio(Model model) {
+    public String inicio(Model model, HttpSession session) {
+        Object msg = session.getAttribute("errorMsg");
+        if (msg != null) {
+            session.removeAttribute("errorMsg");
+            model.addAttribute("errorServicio", msg);
+        }
         Seccion<PosicionRankingResponse> ranking = Seccion.cargar(incentivos::rankingMensual);
         model.addAttribute("topRanking", new Seccion<>(ranking.datos().stream().limit(3).toList(), ranking.error()));
         return "inicio";
