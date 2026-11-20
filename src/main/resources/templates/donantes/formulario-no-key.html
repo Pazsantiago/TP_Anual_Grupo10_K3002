@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Dar de alta a un usuario como administrador')}"></head>
 <body class="bg-light">
+<header th:replace="~{fragments/navbar :: encabezado('donaciones')}"></header>
+
 <div class="container py-4" style="max-width: 600px;">
     <div class="mb-3">
         <a th:href="@{/donantes}" class="text-decoration-none">&larr; Volver a donantes</a>

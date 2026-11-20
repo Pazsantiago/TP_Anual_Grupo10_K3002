@@ -43,18 +43,20 @@ public class LoginController {
             @AuthenticationPrincipal OidcUser usuarioLogueado,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
-            if (usuarioLogueado != null) {
-                String accessToken = authorizedClient.getAccessToken().getTokenValue();
-                session.setAttribute("jwtToken", accessToken);
-                session.setAttribute("userEmail", usuarioLogueado.getEmail());
-                String rol = usuarioLogueado.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .filter(a -> a.startsWith("ROLE_"))
-                        .findFirst()
-                        .orElse("ROLE_DONANTE");
-                session.setAttribute("idToken", usuarioLogueado.getIdToken().getTokenValue());
-                session.setAttribute("userRol", rol);
+        if (usuarioLogueado != null) {
+            String accessToken = authorizedClient.getAccessToken().getTokenValue();
+            session.setAttribute("jwtToken", accessToken);
+            session.setAttribute("userEmail", usuarioLogueado.getEmail());
+            session.setAttribute("idToken", usuarioLogueado.getIdToken().getTokenValue());
 
+            String rol = usuarioLogueado.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .filter(a -> a.contains("ADMIN") || a.contains("DONANTE") || a.contains("ENTIDAD") || a.contains("CHOFER"))
+                    .findFirst()
+                    .orElse("ROLE_DONANTE");
+
+            String rolFinal = rol.startsWith("ROLE_") ? rol : "ROLE_" + rol;
+            session.setAttribute("userRol", rolFinal);
             }else{
                 return "redirect:/login";
             }
