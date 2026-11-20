@@ -13,7 +13,9 @@
 <div class="mb-3 d-flex gap-2">
     <a th:href="@{/donantes/nuevo(tipo='HUMANA')}" class="btn btn-primary">+ Nuevo Donante Humano</a>
     <a th:href="@{/donantes/nuevo(tipo='JURIDICA')}" class="btn btn-secondary">+ Nuevo Donante Jurídico</a>
-    <a th:href="@{/donantes/importar}" class="btn btn-outline-info">Importar CSV</a>
+
+    <a th:href="@{/donantes/importador}" class="btn btn-outline-info">Importar CSV</a>
+
     <a th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}"
        th:href="@{/donantes/nuevo/admin}"
        class="btn btn-primary me-2">
@@ -38,14 +40,13 @@
         <td th:text="${d.nombre}">Juan Pérez</td>
 
         <td>
-            <!-- Muestra el contacto si viene presente en el DTO -->
-            <div th:if="${d.contactoPredeterminado != null}">
+
+            <div th:if="${d.contactoPredeterminado != null and (!#strings.isEmpty(d.contactoPredeterminado.correoElectronico) or !#strings.isEmpty(d.contactoPredeterminado.telefono))}">
                 <strong th:text="${d.contactoPredeterminado.tipo}">EMAIL</strong>:
-                <span th:text="${d.contactoPredeterminado.correoElectronico != null and !#strings.isEmpty(d.contactoPredeterminado.correoElectronico) ? d.contactoPredeterminado.correoElectronico : d.contactoPredeterminado.telefono}">correo@ejemplo.com</span>
+                <span th:text="${!#strings.isEmpty(d.contactoPredeterminado.correoElectronico) ? d.contactoPredeterminado.correoElectronico : d.contactoPredeterminado.telefono}">correo@ejemplo.com</span>
             </div>
 
-            <!-- Si es null -->
-            <span th:if="${d.contactoPredeterminado == null}"
+            <span th:if="${d.contactoPredeterminado == null or (#strings.isEmpty(d.contactoPredeterminado.correoElectronico) and #strings.isEmpty(d.contactoPredeterminado.telefono))}"
                   class="text-muted fst-italic">Sin contacto</span>
         </td>
 

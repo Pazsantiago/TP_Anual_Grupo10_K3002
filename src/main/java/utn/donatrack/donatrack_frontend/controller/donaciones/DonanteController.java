@@ -43,7 +43,7 @@ public class DonanteController {
         DonanteRequestDTO donanteDTO = new DonanteRequestDTO();
 
         PersonaRequestDTO personaDTO = new PersonaRequestDTO();
-        personaDTO.setTipo(tipo); // "HUMANA" o "JURIDICA"
+        personaDTO.setTipo(tipo);
         donanteDTO.setPersona(personaDTO);
 
         MedioContactoRequestDTO contactoDTO = new MedioContactoRequestDTO();
@@ -68,8 +68,10 @@ public class DonanteController {
             @RequestParam("password") String password,
             RedirectAttributes redirectAttributes) {
         try {
+            if (donanteDTO.getMediosDeContacto() != null && !donanteDTO.getMediosDeContacto().isEmpty()) {
+                donanteDTO.getMediosDeContacto().get(0).setCorreoElectronico(email);
+            }
             donanteService.create(donanteDTO);
-
             keycloakAdminService.crearUsuarioEnKeycloak(
                     email,
                     password,
@@ -77,7 +79,9 @@ public class DonanteController {
             );
 
             redirectAttributes.addFlashAttribute("exito", "¡Donante y usuario creados con éxito!");
-            return "redirect:/login";
+
+            // 3. Redirigir a la lista de donantes para verificar que aparezca
+            return "redirect:/donantes";
 
         } catch (Exception e) {
             e.printStackTrace();
