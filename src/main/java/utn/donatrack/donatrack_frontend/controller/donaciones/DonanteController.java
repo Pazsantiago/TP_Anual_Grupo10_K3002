@@ -34,7 +34,7 @@ public class DonanteController {
     @GetMapping
     public String listar(Model model) {
         List<DonanteResponseDTO> donantes = donanteService.getAll();
-        model.addAttribute("donantes", donantes);
+        model.addAttribute("donantes", donantes != null ? donantes : List.of());
         return "donantes/lista";
     }
 
