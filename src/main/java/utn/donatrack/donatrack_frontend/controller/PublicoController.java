@@ -2,11 +2,6 @@ package utn.donatrack.donatrack_frontend.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import utn.donatrack.donatrack_frontend.client.DonacionesClient;
-import utn.donatrack.donatrack_frontend.client.ServicioExternoException;
 
 /**
  * Paginas de acceso publico (sin login): galeria, mapa, informacion legal, inicio de sesion y registro.
@@ -16,10 +11,8 @@ import utn.donatrack.donatrack_frontend.client.ServicioExternoException;
 @Controller
 public class PublicoController {
 
-    private final DonacionesClient donaciones;
-
-    public PublicoController(DonacionesClient donaciones) {
-        this.donaciones = donaciones;
+    public PublicoController() {
+        
     }
 
     @GetMapping("/galeria")
