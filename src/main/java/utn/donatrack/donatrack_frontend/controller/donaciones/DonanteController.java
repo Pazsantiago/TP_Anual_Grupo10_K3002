@@ -68,11 +68,17 @@ public class DonanteController {
             @RequestParam("password") String password,
             RedirectAttributes redirectAttributes) {
         try {
-            if (donanteDTO.getMediosDeContacto() != null && !donanteDTO.getMediosDeContacto().isEmpty()) {
-                MedioContactoRequestDTO contacto = donanteDTO.getMediosDeContacto().get(0);
-                contacto.setCorreoElectronico(email);
-                contacto.setEsPredeterminado(true);
+            if (donanteDTO.getMediosDeContacto() == null || donanteDTO.getMediosDeContacto().isEmpty()) {
+                donanteDTO.setMediosDeContacto(new ArrayList<>(List.of(new MedioContactoRequestDTO())));
             }
+
+            MedioContactoRequestDTO contacto = donanteDTO.getMediosDeContacto().get(0);
+            contacto.setCorreoElectronico(email);
+            contacto.setEsPredeterminado(true);
+            if (contacto.getTipo() == null) {
+                contacto.setTipo(MedioNotificacion.EMAIL);
+            }
+
             donanteService.create(donanteDTO);
             keycloakAdminService.crearUsuarioEnKeycloak(
                     email,

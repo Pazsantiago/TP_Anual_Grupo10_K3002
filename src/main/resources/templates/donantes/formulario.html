@@ -97,7 +97,6 @@
             <label class="field__label" for="telefonoContacto">Teléfono <span class="field__hint">(opcional)</span></label>
             <input class="field__control" id="telefonoContacto" type="text" th:field="*{mediosDeContacto[0].telefono}" autocomplete="tel"/>
           </div>
-          <!-- Fijate que acá usamos name="..." en lugar de th:field para forzar value="true" -->
           <input type="hidden" name="mediosDeContacto[0].esPredeterminado" value="true"/>
         </div>
       </fieldset>
