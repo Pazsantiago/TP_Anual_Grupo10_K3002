@@ -42,9 +42,17 @@ public class DTOSMapper {
             dto.setNombre(pj.getRazonSocial());
         }
 
+        MedioContactoResponseDTO contactoDTO = new MedioContactoResponseDTO();
         if (donante.obtenerContactoPredeterminado() != null) {
             MedioContacto contacto = donante.obtenerContactoPredeterminado();
-            MedioContactoResponseDTO contactoDTO = new MedioContactoResponseDTO();
+            if (contacto.getTipo() != null) {
+                contactoDTO.setTipo(contacto.getTipo().toString());
+            }
+            contactoDTO.setCorreoElectronico(contacto.getCorreoElectronico());
+            contactoDTO.setTelefono(contacto.getTelefono());
+            dto.setContactoPredeterminado(contactoDTO);
+        } else if (!donante.getMediosDeContacto().isEmpty()) {
+            MedioContacto contacto = donante.getMediosDeContacto().get(0);
             if (contacto.getTipo() != null) {
                 contactoDTO.setTipo(contacto.getTipo().toString());
             }
@@ -52,7 +60,7 @@ public class DTOSMapper {
             contactoDTO.setTelefono(contacto.getTelefono());
             dto.setContactoPredeterminado(contactoDTO);
         }
-
+        dto.setContactoPredeterminado(contactoDTO);
         if (donante.getDonaciones() != null) {
             dto.setDonaciones(
                     donante.getDonaciones().stream()
