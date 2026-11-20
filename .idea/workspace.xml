@@ -6,7 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="67621db1-9369-4a54-97ba-ab1256cb9f2b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/KeycloakAdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/KeycloakAdminService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/NavegacionAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/NavegacionAdvice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/agregar-segmentada.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/agregar-segmentada.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/formulario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/formulario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/formulario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/formulario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/segmentadas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/segmentadas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/vencidas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/vencidas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/formulario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/formulario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/importar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/importar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/entidades/formulario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/entidades/formulario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/entidades/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/entidades/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/necesidades/formulario.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/necesidades/formulario.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/necesidades/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/necesidades/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/rankings/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/rankings/lista.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/rankings/repetidas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/rankings/repetidas.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +39,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Pazsantiago"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Pazsantiago/TP_Anual_Grupo10_K3002.git",
+    "accountId": "63205798-1083-415c-9d10-53a313a074be"
+  }
+}]]></component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
@@ -43,17 +70,23 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "rama__cliente",
+    "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/santi/IdeaProjects/Cliente liviano entrega 6/TP_Anual_Grupo10_K3002",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "to.speed.mode.migration.done": "true"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -97,6 +130,9 @@
       <updated>1793479924166</updated>
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
