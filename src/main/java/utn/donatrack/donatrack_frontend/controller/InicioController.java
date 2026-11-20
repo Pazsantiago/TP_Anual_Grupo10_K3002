@@ -18,17 +18,13 @@ public class InicioController {
     }
 
     /** Landing publica: proposito, como funciona y los tres donantes mas activos del mes. */
-    @GetMapping("/")
+    @GetMapping({"/", "/inicio"})
     public String inicio(Model model) {
         Seccion<PosicionRankingResponse> ranking = Seccion.cargar(incentivos::rankingMensual);
         model.addAttribute("topRanking", new Seccion<>(ranking.datos().stream().limit(3).toList(), ranking.error()));
         return "inicio";
     }
 
-    @GetMapping("/inicio")
-    public String inicioHome(Model model) {
-        return "inicio";
-    }
 
     /** Panel de gestion: accesos a todas las secciones (ver NavegacionAdvice). */
     @GetMapping("/panel")
