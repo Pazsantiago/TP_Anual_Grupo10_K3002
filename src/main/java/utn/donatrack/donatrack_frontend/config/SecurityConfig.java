@@ -29,7 +29,7 @@ public class SecurityConfig {
                         // Rutas públicas accesibles por cualquiera
                         .requestMatchers("/css/", "/js/", "/images/", "/error", "/login", "/logout", "/login/callback", "/inicio", "/", "/galeria", "/mapa", "/legal", "/donantes/nuevo", "/entidadesBeneficiarias/nueva", "/logistica/panel").permitAll()
                         // Permisos con Rol
-                        .requestMatchers("logistica/seguimiento", "logistica/seguimiento/ubicaciones").hasAnyRole("ENTIDAD", "DONANTE")
+                        .requestMatchers("/logistica/seguimiento", "logistica/seguimiento/ubicaciones").hasAnyRole("ENTIDAD", "DONANTE")
                         .requestMatchers("/ruta", "/ruta/iniciar").hasRole("CHOFER")
                         .requestMatchers("/donaciones/nueva", "/donaciones/vencida", "/asignaciones/nueva", "/asignaciones/agregar-segmentada",
                                 "/donantes/importador", "/donantes/nuevo/admin", "/logistica/", "/incentivos/ranking-mensual").hasRole("ADMIN")
