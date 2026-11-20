@@ -1,65 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Dar de alta una entidad beneficiaria')}"></head>
+<<<<<<< Updated upstream
 <body class="container py-4">
 <header th:replace="~{fragments/navbar :: encabezado('donaciones')}"></header>
 <h2 class="mb-4">Registrar Entidad Beneficiaria</h2>
+=======
+<body>
 
-<form th:action="@{/entidadesBeneficiarias/nueva}" th:object="${entidad}" method="post">
-    <div class="card mb-4">
-        <div class="card-header bg-light fw-bold">Datos Generales</div>
-        <div class="card-body">
-            <div class="row g-3">
-                <div class="col-md-12">
-                    <label class="form-label">Razón Social</label>
-                    <input type="text" th:field="*{razonSocial}" class="form-control" required/>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Teléfono de Contacto</label>
-                    <input type="text" th:field="*{telefono}" class="form-control" required/>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Correo Electrónico del Representante</label>
-                    <input type="email" th:field="*{correoRepresentante}" class="form-control" required/>
-                </div>
-                <div class="col-md-12">
-                    <label class="form-label">Dirección</label>
-                    <input type="text" th:field="*{direccion}" class="form-control" placeholder="Ej: Av. Medrano 951" required/>
-                </div>
-            </div>
+<main>
+  <section class="card">
+    <h2 class="fieldset__legend" style="font-size: 1.4rem; margin-bottom: 1rem;">Registrar Entidad Beneficiaria</h2>
+
+    <form class="form" th:action="@{/entidadesBeneficiarias/nueva}" th:object="${entidad}" method="post">
+      <p class="form__note">
+        Los campos marcados con <span class="field__required" aria-hidden="true">*</span> son obligatorios.
+      </p>
+>>>>>>> Stashed changes
+
+      <!-- DATOS GENERALES -->
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">Datos Generales</legend>
+
+        <div class="field">
+          <label class="field__label" for="razonSocial">Razón Social <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+          <input class="field__control" id="razonSocial" type="text" th:field="*{razonSocial}" required aria-required="true" autocomplete="organization"/>
         </div>
-    </div>
 
-    <div class="card mb-4 border-primary">
-        <div class="card-header bg-primary text-white fw-bold">Credenciales de Acceso</div>
-        <div class="card-body">
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Correo Electrónico (Usuario)</label>
-                    <input type="email"
-                           name="email"
-                           class="form-control"
-                           placeholder="ejemplo@correo.com"
-                           required/>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Contraseña</label>
-                    <input type="password"
-                           name="password"
-                           class="form-control"
-                           placeholder="Mínimo 6 caracteres"
-                           required
-                           minlength="6"/>
-                </div>
-            </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="telefono">Teléfono de Contacto <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+            <input class="field__control" id="telefono" type="tel" th:field="*{telefono}" required aria-required="true" autocomplete="tel"/>
+          </div>
+          <div class="field">
+            <label class="field__label" for="correoRepresentante">Correo Electrónico del Representante <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+            <input class="field__control" id="correoRepresentante" type="email" th:field="*{correoRepresentante}" required aria-required="true" autocomplete="email"/>
+          </div>
         </div>
-    </div>
 
+        <div class="field">
+          <label class="field__label" for="direccion">Dirección <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+          <input class="field__control" id="direccion" type="text" th:field="*{direccion}" placeholder="Ej: Av. Medrano 951" required aria-required="true" autocomplete="street-address"/>
+        </div>
+      </fieldset>
 
-    <div class="d-flex gap-2">
-        <a th:href="@{/entidadesBeneficiarias}" class="btn btn-secondary">Cancelar</a>
-        <button type="submit" class="btn btn-success">Guardar Entidad</button>
-    </div>
-</form>
+      <!-- CREDENCIALES DE ACCESO -->
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">Credenciales de Acceso</legend>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="emailUsuario">Correo Electrónico (Usuario) <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
+            <input class="field__control" id="emailUsuario" type="email" name="email" placeholder="ejemplo@correo.com" required aria-required="true" autocomplete="username"/>
+          </div>
+          <div class="field">
+            <label class="field__label" for="passwordUsuario">Contraseña <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span> <span class="field__hint">(mínimo 6 caracteres)</span></label>
+            <input class="field__control" id="passwordUsuario" type="password" name="password" placeholder="Mínimo 6 caracteres" required aria-required="true" minlength="6" autocomplete="new-password"/>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- BOTONES -->
+      <div class="cluster">
+        <button class="btn" type="submit">Guardar Entidad</button>
+        <a class="btn btn--secondary" th:href="@{/entidadesBeneficiarias}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+</main>
+
 </body>
 </html>
