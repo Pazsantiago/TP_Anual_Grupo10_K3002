@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/donaciones/nueva", "/donaciones/vencida", "/asignaciones/nueva", "/asignaciones/agregar-segmentada",
                                 "/donantes/importador", "/donantes/nuevo/admin", "/logistica/**", "/incentivos/ranking-mensual").hasRole("ADMIN")
                         .requestMatchers("/entidadesBeneficiarias").hasAnyRole("DONANTE", "ENTIDAD")
+                        .requestMatchers("/donantes").hasRole("DONANTE")
                         .requestMatchers("/donantes/**", "/donaciones/**").hasRole("DONANTE")
                         .requestMatchers("/entidadesBeneficiarias/**", "/necesidades/**", "/asignadas/**", "/rankings/**").hasRole("ENTIDAD")
                         .anyRequest().authenticated()

@@ -23,7 +23,7 @@ public class NavegacionAdvice {
             "Personas y organizaciones que donan, con sus donaciones."),
         new NavItem("donaciones", "Donaciones", "/donaciones",
             "Cargar donaciones en el depósito y seguir su trazabilidad."),
-        new NavItem("entidades", "Entidades", "/entidades",
+        new NavItem("entidades", "Entidades", "/entidadesBeneficiarias",
             "Entidades beneficiarias y las necesidades que declararon."),
         new NavItem("asignaciones", "Asignaciones", "/asignaciones",
             "Ranking de entidades que proponen los algoritmos de asignación."),

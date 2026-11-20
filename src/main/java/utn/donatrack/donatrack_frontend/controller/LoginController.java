@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -49,17 +50,25 @@ public class LoginController {
             session.setAttribute("userEmail", usuarioLogueado.getEmail());
             session.setAttribute("idToken", usuarioLogueado.getIdToken().getTokenValue());
 
-            String rol = usuarioLogueado.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .filter(a -> a.contains("ADMIN") || a.contains("DONANTE") || a.contains("ENTIDAD") || a.contains("CHOFER"))
-                    .findFirst()
-                    .orElse("ROLE_DONANTE");
+            Map<String, Object> realmAccess = usuarioLogueado.getAttribute("realm_access");
+            List<String> roles = (realmAccess != null && realmAccess.get("roles") instanceof List)
+                    ? (List<String>) realmAccess.get("roles")
+                    : List.of();
 
-            String rolFinal = rol.startsWith("ROLE_") ? rol : "ROLE_" + rol;
-            session.setAttribute("userRol", rolFinal);
-            }else{
-                return "redirect:/login";
+            // 2. Asignamos el rol correspondiente
+            String rolFinal = "ROLE_DONANTE"; // Rol por defecto
+            if (roles.contains("ADMIN")) {
+                rolFinal = "ROLE_ADMIN";
+            } else if (roles.contains("ENTIDAD")) {
+                rolFinal = "ROLE_ENTIDAD";
+            } else if (roles.contains("CHOFER")) {
+                rolFinal = "ROLE_CHOFER";
             }
+            session.setAttribute("userRol", rolFinal);
+
+        }else{
+            return "redirect:/login";
+        }
             redirectAttributes.addFlashAttribute("exito", "Usuario autenticado!");
             return "redirect:/panel";
     }
