@@ -53,7 +53,7 @@ public class KeycloakAdminService {
         }
 
         SecurityContextHolder.clearContext();
-        String redirectUri = frontendUrl + "/";
+        String redirectUri = frontendUrl;
         // Esto lo pusimos porque keycloak exige que el parametro logout_redirect este url-encoded
         String encodedRedirectUri = URLEncoder.encode(redirectUri, StandardCharsets.UTF_8);
 
