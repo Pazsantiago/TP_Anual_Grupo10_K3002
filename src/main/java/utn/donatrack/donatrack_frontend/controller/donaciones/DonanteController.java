@@ -61,52 +61,13 @@ public class DonanteController {
         return "donantes/formulario";
     }
 
-    @GetMapping("/nuevo/admin")
-    public String formularioNuevoByAdmin(
-            @RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo,
-            Model model) {
-        model.addAttribute("tipoActual", tipo);
-        return "donantes/formulario-no-key";
-    }
-
-    @PostMapping("/nuevo")
-    public String guardarDonanteByAdmin(
-            @ModelAttribute("donante") DonanteRequestDTO donanteDTO,
-            @RequestParam("email") String email,
-            HttpSession session,
-            RedirectAttributes redirectAttributes) {
-        try {
-
-            Object rol = (session != null) ? session.getAttribute("userRol") : null;
-            if("ADMIN".equals(rol) || "ROLE_ADMIN".equals(rol)){
-                donanteService.createByAdmin(donanteDTO);
-                redirectAttributes.addFlashAttribute("Exito", "El usuario ya ha sido creado");
-                return "redirect:/panel";
-            }
-
-            return "redirect:/";
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
-            return "redirect:/donantes/nuevo";
-        }
-    }
-
     @PostMapping("/nuevo")
     public String guardarDonante(
             @ModelAttribute("donante") DonanteRequestDTO donanteDTO,
             @RequestParam("email") String email,
             @RequestParam("password") String password,
-            HttpSession session,
             RedirectAttributes redirectAttributes) {
         try {
-
-            Object rol = (session != null) ? session.getAttribute("userRol") : null;
-            if("ADMIN".equals(rol) || "ROLE_ADMIN".equals(rol)){
-                donanteService.createByAdmin(donanteDTO);
-                redirectAttributes.addFlashAttribute("Exito", "El usuario ya ha sido creado");
-                return "redirect:/panel";
-            }
 
             donanteService.create(donanteDTO);
 
@@ -121,6 +82,37 @@ public class DonanteController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
             return "redirect:/donantes/nuevo";
+        }
+    }
+
+    @GetMapping("/nuevo/admin")
+    public String formularioNuevoByAdmin(
+            @RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo,
+            Model model) {
+        model.addAttribute("tipoActual", tipo);
+        return "donantes/formulario-no-key";
+    }
+
+    @PostMapping("/nuevo/admin")
+    public String guardarDonanteByAdmin(
+            @ModelAttribute("donante") DonanteRequestDTO donanteDTO,
+            @RequestParam("email") String email,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+        try {
+
+            Object rol = (session != null) ? session.getAttribute("userRol") : null;
+            if("ADMIN".equals(rol) || "ROLE_ADMIN".equals(rol)){
+                donanteService.createByAdmin(donanteDTO, email);
+                redirectAttributes.addFlashAttribute("Exito", "El usuario ya ha sido creado");
+                return "redirect:/panel";
+            }
+
+            return "redirect:/";
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
+            return "redirect:/donantes/nuevo/admin";
         }
     }
 

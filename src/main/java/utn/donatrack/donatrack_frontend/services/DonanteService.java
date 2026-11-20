@@ -42,9 +42,9 @@ public class DonanteService extends ClienteServicio {
                 .toBodilessEntity());
     }
 
-    public void createByAdmin(DonanteRequestDTO donante) {
+    public void createByAdmin(DonanteRequestDTO donante, String email) {
         ejecutar(() -> http().post()
-                .uri("/api/donantes/admin")
+                .uri("/api/donantes/admin?email={email}", email)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(donante)
                 .retrieve()
