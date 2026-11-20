@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             request.getSession().setAttribute("errorMsg", "No tenés permisos suficientes para acceder a ese recurso.");
-                            response.sendRedirect("/panel");
+                            response.sendRedirect("/");
                         })
                 )
                 .oauth2Login(oauth2 -> oauth2
