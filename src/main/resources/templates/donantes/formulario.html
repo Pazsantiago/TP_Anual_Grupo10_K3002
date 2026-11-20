@@ -29,7 +29,6 @@
         Los campos marcados con <span class="field__required" aria-hidden="true">*</span> son obligatorios.
       </p>
 
-      <input type="hidden" name="persona.tipo" th:value="${tipoActual}"/>
       <input type="hidden" th:field="*{persona.tipo}" />
 
       <!-- DATOS PERSONA HUMANA -->
@@ -91,14 +90,15 @@
             </select>
           </div>
           <div class="field">
-            <label class="field__label" for="correoContacto">Correo Electrónico de Contacto <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
-            <input class="field__control" id="correoContacto" type="email" th:field="*{mediosDeContacto[0].correoElectronico}" required aria-required="true" autocomplete="email"/>
+            <label class="field__label" for="correoContacto">Correo Electrónico de Contacto <span class="field__required" aria-hidden="true">*</span></label>
+            <input class="field__control" id="correoContacto" type="email" th:field="*{mediosDeContacto[0].correoElectronico}" required autocomplete="email"/>
           </div>
           <div class="field">
             <label class="field__label" for="telefonoContacto">Teléfono <span class="field__hint">(opcional)</span></label>
             <input class="field__control" id="telefonoContacto" type="text" th:field="*{mediosDeContacto[0].telefono}" autocomplete="tel"/>
           </div>
-          <input type="hidden" th:field="*{mediosDeContacto[0].esPredeterminado}" value="true"/>
+          <!-- Fijate que acá usamos name="..." en lugar de th:field para forzar value="true" -->
+          <input type="hidden" name="mediosDeContacto[0].esPredeterminado" value="true"/>
         </div>
       </fieldset>
 
@@ -118,7 +118,6 @@
           </div>
         </div>
       </div>
-
       <!-- BOTONES -->
       <div class="cluster">
         <button class="btn" type="submit">Guardar Donante</button>
