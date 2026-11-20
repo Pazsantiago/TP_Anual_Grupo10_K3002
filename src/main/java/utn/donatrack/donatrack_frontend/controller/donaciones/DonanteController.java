@@ -68,7 +68,6 @@ public class DonanteController {
             @RequestParam("password") String password,
             RedirectAttributes redirectAttributes) {
         try {
-
             donanteService.create(donanteDTO);
 
             keycloakAdminService.crearUsuarioEnKeycloak(
@@ -77,10 +76,12 @@ public class DonanteController {
                     "DONANTE"
             );
 
+            redirectAttributes.addFlashAttribute("exito", "¡Donante y usuario creados con éxito!");
             return "redirect:/login";
+
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error al registrar donante: " + e.getMessage());
             return "redirect:/donantes/nuevo";
         }
     }

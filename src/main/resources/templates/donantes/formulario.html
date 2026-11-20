@@ -102,19 +102,21 @@
       </fieldset>
 
       <!-- CREDENCIALES DE ACCESO -->
-      <fieldset class="fieldset">
-        <legend class="fieldset__legend">Credenciales de Acceso (Usuario Keycloak)</legend>
-        <div class="field-row">
-          <div class="field">
-            <label class="field__label" for="emailUsuario">Correo Electrónico (Usuario) <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
-            <input class="field__control" id="emailUsuario" type="email" name="email" placeholder="usuario@correo.com" required aria-required="true" autocomplete="username"/>
-          </div>
-          <div class="field">
-            <label class="field__label" for="passwordUsuario">Contraseña <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span> <span class="field__hint">(mínimo 6 caracteres)</span></label>
-            <input class="field__control" id="passwordUsuario" type="password" name="password" placeholder="Mínimo 6 caracteres" required aria-required="true" minlength="6" autocomplete="new-password"/>
+      <div class="card mb-4">
+        <div class="card-header bg-light fw-bold">Credenciales de Acceso (Usuario)</div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Correo Electrónico (Usuario) *</label>
+              <input type="email" name="email" class="form-control" placeholder="ejemplo@correo.com" required/>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Contraseña *</label>
+              <input type="password" name="password" class="form-control" placeholder="Mínimo 6 caracteres" required/>
+            </div>
           </div>
         </div>
-      </fieldset>
+      </div>
 
       <!-- BOTONES -->
       <div class="cluster">

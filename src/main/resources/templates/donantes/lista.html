@@ -14,7 +14,7 @@
     <a th:href="@{/donantes/nuevo(tipo='HUMANA')}" class="btn btn-primary">+ Nuevo Donante Humano</a>
     <a th:href="@{/donantes/nuevo(tipo='JURIDICA')}" class="btn btn-secondary">+ Nuevo Donante Jurídico</a>
     <a th:href="@{/donantes/importar}" class="btn btn-outline-info">Importar CSV</a>
-    <a th:if="${session.userRol == 'ADMIN' or session.userRol == 'ROLE_ADMIN'}"
+    <a th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}"
        th:href="@{/donantes/nuevo/admin}"
        class="btn btn-primary me-2">
         Registrar donante (Admin)
