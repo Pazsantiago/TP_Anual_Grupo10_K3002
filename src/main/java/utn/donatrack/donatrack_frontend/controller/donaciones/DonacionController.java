@@ -28,13 +28,20 @@ public class DonacionController {
 
     @GetMapping
     public String listarPorDonante(@RequestParam(value = "idDonante", required = false) Long idDonante, Model model) {
-        List<DonanteResponseDTO> donantes = donanteService.getAll();
+        List<DonanteResponseDTO> donantes = List.of();
+
+        donantes = donanteService.getAll();
         model.addAttribute("donantes", donantes);
+        List<DonacionResponseDTO> donaciones = List.of();
         if (idDonante != null) {
-            List<DonacionResponseDTO> donaciones = donacionService.getByDonante(idDonante);
-            model.addAttribute("donaciones", donaciones);
+            try {
+                donaciones = donacionService.getByDonante(idDonante);
+            } catch (Exception e) {
+                model.addAttribute("error", "Error al cargar las donaciones del donante.");
+            }
             model.addAttribute("idDonanteSeleccionado", idDonante);
         }
+        model.addAttribute("donaciones", donaciones);
         return "donaciones/lista";
     }
 
