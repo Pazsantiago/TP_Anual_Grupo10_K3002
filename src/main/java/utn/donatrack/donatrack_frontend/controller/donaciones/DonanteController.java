@@ -33,8 +33,14 @@ public class DonanteController {
 
     @GetMapping
     public String listar(Model model) {
-        List<DonanteResponseDTO> donantes = donanteService.getAll();
-        model.addAttribute("donantes", donantes != null ? donantes : List.of());
+        try {
+            List<DonanteResponseDTO> donantes = donanteService.getAll();
+            model.addAttribute("donantes", donantes != null ? donantes : List.of());
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Error al conectar con el servicio de donantes: " + e.getMessage());
+            model.addAttribute("donantes", List.of()); // Mantiene la lista vacía para que no explote el HTML
+        }
         return "donantes/lista";
     }
 
