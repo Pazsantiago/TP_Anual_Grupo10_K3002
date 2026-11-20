@@ -61,6 +61,21 @@ public class CDonantes {
         }
     }
 
+    //Alta por el admin
+    @PostMapping("/admin")
+    public ResponseEntity<?> createPersonaByAdmin(
+            @RequestBody DonanteRequestDTO dto,
+            @RequestParam("email") String email) {
+        try {
+            Donante donante = mapper.deDTORequestADominio(dto);
+            Donante creado = servicioDonantes.createPersona(donante);
+            servicioDonantes.crearUsuarioKeycloak(creado, email);
+            return ResponseEntity.ok(mapper.deDominioAResponse(creado));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     // Importar CSV
     @PostMapping("/importador")
     public ResponseEntity<?> importarCSV(@RequestParam("archivo") MultipartFile archivo) {

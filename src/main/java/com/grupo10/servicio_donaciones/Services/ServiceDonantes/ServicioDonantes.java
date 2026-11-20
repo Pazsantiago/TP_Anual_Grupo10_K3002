@@ -114,11 +114,12 @@ public class ServicioDonantes {
     }
 
     @Transactional
-    public void crearUsuarioKeycloak(Donante donante) {
+    public void crearUsuarioKeycloak(Donante donante, String email) {
         //Crear cuenta
+
         String clave = "Tmp_" + UUID.randomUUID().toString().replace("-", "").substring(0, 10) + "!A9";
         keycloakAdminService.crearUsuarioEnKeycloak(
-                donante.obtenerContactoPredeterminado().getCorreoElectronico(),
+                (email != null && !email.isBlank()) ? email : donante.obtenerContactoPredeterminado().getCorreoElectronico(),
                 clave,
                 "ROLE_DONANTE"
         );
@@ -147,7 +148,7 @@ public class ServicioDonantes {
             this.repoDonantes.saveAll(importados);
 
             for (Donante donante : importados) {
-                crearUsuarioKeycloak(donante);
+                crearUsuarioKeycloak(donante, null);
             }
 
             return "Archivo importado correctamente" +
