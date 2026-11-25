@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head}"></head>
-<head th:replace="~{fragments/layout :: head('Asignacion de donacion a necesidad de una entidad')}"></head>
+<head th:replace="~{fragments/layout :: head('Asignación de donación a necesidad')}"></head>
 <body class="container py-4 bg-light">
-
-
 
 <div class="row justify-content-center">
     <div class="col-md-8">
@@ -21,8 +18,14 @@
 
                 <form th:action="@{/asignaciones/nueva}" method="post">
                     <div class="mb-3">
-                        <label class="form-label fw-bold">1. ID Entidad Beneficiaria</label>
-                        <input type="number" name="idEntidad" class="form-control" placeholder="Ej: 1" required>
+                        <label class="form-label fw-bold">1. Entidad Beneficiaria</label>
+                        <select name="idEntidad" class="form-select" required>
+                            <option value="">-- Seleccionar Entidad Beneficiaria --</option>
+                            <option th:each="e : ${entidades}"
+                                    th:value="${e.id}"
+                                    th:text="${e.razonSocial}">
+                            </option>
+                        </select>
                     </div>
 
                     <div class="mb-3">

@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/rankings")
 @RequiredArgsConstructor
@@ -16,7 +18,12 @@ public class RankingController {
 
     @GetMapping
     public String listarRankings(Model model) {
-        model.addAttribute("rankings", rankingService.obtenerRankings());
+        try {
+            model.addAttribute("rankings", rankingService.obtenerRankings());
+        } catch (Exception e) {
+            model.addAttribute("rankings", List.of());
+            model.addAttribute("error", "Error al obtener los rankings: " + e.getMessage());
+        }
         return "rankings/lista";
     }
 
@@ -35,7 +42,12 @@ public class RankingController {
     public String entidadesRepetidas(@RequestParam(value = "idDonacion", required = false) Long idDonacion, Model model) {
         model.addAttribute("idDonacionSeleccionada", idDonacion);
         if (idDonacion != null) {
-            model.addAttribute("repetidas", rankingService.obtenerEntidadesRepetidas(idDonacion));
+            try {
+                model.addAttribute("repetidas", rankingService.obtenerEntidadesRepetidas(idDonacion));
+            } catch (Exception e) {
+                model.addAttribute("error", "Error al consultar entidades repetidas: " + e.getMessage());
+                model.addAttribute("repetidas", List.of());
+            }
         }
         return "rankings/repetidas";
     }

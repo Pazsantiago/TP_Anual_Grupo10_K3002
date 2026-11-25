@@ -11,51 +11,103 @@
 
     <div class="card shadow-sm">
         <div class="card-body">
-            <h3 class="card-title mb-2">Registrar donante</h3>
+            <h3 class="card-title mb-2">Registrar donante (Por Administrador)</h3>
             <p class="text-muted small mb-3">
-                Cargá los datos de la persona que llegó al depósito. Antes de registrarla, buscá si ya tiene usuario.
-                Al guardar, recibirá un correo de bienvenida para acceder por primera vez.
+                Cargá los datos del donante.
             </p>
 
-            <!-- Alerta de Error -->
             <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+            <form class="form" th:action="@{/donantes/nuevo/admin}" th:object="${donante}" method="post">
+                <input type="hidden" th:field="*{persona.tipo}" />
 
-            <form th:action="@{/donantes/nuevo}" th:object="${donante}" method="post">
+                <!-- DATOS PERSONA HUMANA -->
+                <fieldset th:if="${tipoActual == 'HUMANA'}" class="border p-3 rounded mb-4">
+                    <legend class="w-auto px-2 fw-bold text-primary">Datos de Persona Humana</legend>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="nombre">Nombre Completo *</label>
+                            <input class="form-control" id="nombre" type="text" th:field="*{persona.nombre}" required/>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="edad">Edad *</label>
+                            <input class="form-control" id="edad" type="number" th:field="*{persona.edad}" required min="0" max="120"/>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="genero">Género *</label>
+                            <select class="form-select" id="genero" th:field="*{persona.genero}" required>
+                                <option value="MASCULINO">Masculino</option>
+                                <option value="FEMENINO">Femenino</option>
+                                <option value="NO_BINARIO">No binario</option>
+                                <option value="PREFIERO_NO_DECIR">Prefiero no decir</option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Tipo de donante *</label>
-                    <select th:field="*{tipo}" class="form-select" required>
-                        <option value="HUMANA" th:selected="${tipoActual == 'HUMANA'}">Persona Humana</option>
-                        <option value="JURIDICA" th:selected="${tipoActual == 'JURIDICA'}">Persona Jurídica</option>
-                    </select>
-                </div>
+                <!-- DATOS PERSONA JURIDICA -->
+                <fieldset th:if="${tipoActual == 'JURIDICA'}" class="border p-3 rounded mb-4">
+                    <legend class="w-auto px-2 fw-bold text-primary">Datos de Persona Jurídica</legend>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="razonSocial">Razón Social *</label>
+                            <input class="form-control" id="razonSocial" type="text" th:field="*{persona.razonSocial}" required/>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="tipoJuridica">Tipo de Organización *</label>
+                            <select class="form-select" id="tipoJuridica" th:field="*{persona.tipoJuridica}" required>
+                                <option value="GUBERNAMENTAL">Gubernamental</option>
+                                <option value="ONG">Organización No Gubernamental (ONG)</option>
+                                <option value="EMPRESA">Empresa</option>
+                                <option value="INSTITUCION">Institución</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="rubro">Rubro *</label>
+                            <input class="form-control" id="rubro" type="text" th:field="*{persona.rubro}" required/>
+                        </div>
+                    </div>
+                </fieldset>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Nombre / Razón Social *</label>
-                    <input type="text" th:field="*{nombre}" class="form-control" placeholder="Ej. Ana Pérez o Empresa S.A." required/>
-                </div>
+                <!-- CONTACTO PREDETERMINADO -->
+                <fieldset class="border p-3 rounded mb-4">
+                    <legend class="w-auto px-2 fw-bold text-primary">Medio de Contacto Principal</legend>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label" for="tipoContacto">Canal de Preferencia *</label>
+                            <select class="form-select" id="tipoContacto" th:field="*{mediosDeContacto[0].tipo}" required>
+                                <option value="EMAIL">Correo Electrónico</option>
+                                <option value="SMS">SMS</option>
+                                <option value="WHATSAPP">WhatsApp</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" for="correoContacto">Correo Electrónico *</label>
+                            <input class="form-control" id="correoContacto" type="email" th:field="*{mediosDeContacto[0].correoElectronico}" required/>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" for="telefonoContacto">Teléfono de Contacto</label>
+                            <input class="form-control" id="telefonoContacto" type="tel" th:field="*{mediosDeContacto[0].telefono}"/>
+                        </div>
+                    </div>
+                </fieldset>
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Documento / CUIT *</label>
-                    <input type="text" th:field="*{documento}" class="form-control" placeholder="Ej. DNI 12345678 o CUIT 30-12345678-9" required/>
-                </div>
+                <!-- USUARIO -->
+                <fieldset class="border p-3 rounded mb-4">
+                    <legend class="w-auto px-2 fw-bold text-primary">Credenciales de Cuenta</legend>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="emailUsuario">Email de Acceso *</label>
+                            <input class="form-control" id="emailUsuario" type="email" name="email" required/>
+                        </div>
+                    </div>
+                </fieldset>
 
-                <div class="mb-3">
-                    <label class="form-label">Teléfono de contacto</label>
-                    <input type="text" th:field="*{telefono}" class="form-control" placeholder="Ej. +54 11 5555-5555"/>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Correo electrónico *</label>
-                    <input type="email" name="email" class="form-control" placeholder="correo@ejemplo.com" required/>
-                    <div class="form-text">A esta dirección se enviará el correo con las credenciales de acceso.</div>
-                </div>
-
-                <div class="d-flex justify-content-between pt-3">
+                <div class="d-flex gap-2">
                     <a th:href="@{/donantes}" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary">Registrar donante</button>
+                    <button class="btn btn-primary" type="submit">Registrar Donante</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>

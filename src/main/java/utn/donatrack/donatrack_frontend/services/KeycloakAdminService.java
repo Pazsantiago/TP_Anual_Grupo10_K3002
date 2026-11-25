@@ -20,7 +20,7 @@ public class KeycloakAdminService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${app.frontend.url:http://localhost:8080}")
+    @Value("${app.frontend.url:http://localhost:8090}")
     private String frontendUrl;
 
     @Value("${backend.auth.url:http://localhost:8080}")
@@ -35,7 +35,7 @@ public class KeycloakAdminService {
     @Value("${keycloak.admin.client-id:admin-cli}")
     private String adminClientId;
 
-    @Value("${keycloak.admin.client-secret:}")
+    @Value("${KEYCLOAK_CLIENT_SECRET:secret}")
     private String adminClientSecret;
 
     @Value("${keycloak.admin.username:admin}")

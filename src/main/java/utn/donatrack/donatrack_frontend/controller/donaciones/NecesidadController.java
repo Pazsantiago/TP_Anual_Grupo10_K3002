@@ -25,27 +25,26 @@ public class NecesidadController {
     private final EntidadService entidadService;
     private final CategoriaService categoriaService;
 
-    @ModelAttribute("necesidad")
-    public NecesidadRequestDTO prepararNecesidad(@RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo) {
-        NecesidadRequestDTO necesidadDTO = new NecesidadRequestDTO();
-        necesidadDTO.setTipo(tipo); // "RECURRENTE" o "EXTRAORDINARIA"
-
-        if ("RECURRENTE".equalsIgnoreCase(tipo)) {
-            necesidadDTO.setPeriodoRequestDTO(new PeriodoRequestDTO());
-        }
-
-        necesidadDTO.setSubcategoria(new SubcategoriaRequestDTO());
-        return necesidadDTO;
-    }
-
     @GetMapping
     public String listarPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, Model model) {
-        List<EntidadBeneficiariaResponseDTO> entidades = entidadService.getAll();
-        model.addAttribute("entidades", entidades);
+        try {
+            List<EntidadBeneficiariaResponseDTO> entidades = entidadService.getAll();
+            model.addAttribute("entidades", entidades != null ? entidades : List.of());
+        } catch (Exception e) {
+            model.addAttribute("entidades", List.of());
+            model.addAttribute("error", "Error al cargar entidades.");
+        }
+
         model.addAttribute("idEntidadSeleccionada", idEntidad);
+
         if (idEntidad != null) {
-            List<NecesidadResponseDTO> necesidades = necesidadService.getByEntidad(idEntidad);
-            model.addAttribute("necesidades", necesidades);
+            try {
+                List<NecesidadResponseDTO> necesidades = necesidadService.getByEntidad(idEntidad);
+                model.addAttribute("necesidades", necesidades != null ? necesidades : List.of());
+            } catch (Exception e) {
+                model.addAttribute("error", "Error al obtener las necesidades de la entidad.");
+                model.addAttribute("necesidades", List.of());
+            }
         }
         return "necesidades/lista";
     }
@@ -55,10 +54,31 @@ public class NecesidadController {
             @RequestParam(value = "idEntidad", required = false) Long idEntidad,
             @RequestParam(value = "tipo", defaultValue = "EXTRAORDINARIA") String tipo,
             Model model) {
+
+        NecesidadRequestDTO necesidadDTO = new NecesidadRequestDTO();
+        necesidadDTO.setTipo(tipo);
+
+        if ("RECURRENTE".equalsIgnoreCase(tipo)) {
+            necesidadDTO.setPeriodoRequestDTO(new PeriodoRequestDTO());
+        }
+        necesidadDTO.setSubcategoria(new SubcategoriaRequestDTO());
+
+        model.addAttribute("necesidad", necesidadDTO);
         model.addAttribute("idEntidadSeleccionada", idEntidad);
         model.addAttribute("tipoActual", tipo);
-        model.addAttribute("entidades", entidadService.getAll());
-        model.addAttribute("categorias", categoriaService.getAll());
+
+        try {
+            model.addAttribute("entidades", entidadService.getAll());
+        } catch (Exception e) {
+            model.addAttribute("entidades", List.of());
+        }
+
+        try {
+            model.addAttribute("categorias", categoriaService.getAll());
+        } catch (Exception e) {
+            model.addAttribute("categorias", List.of());
+        }
+
         return "necesidades/formulario";
     }
 
@@ -67,9 +87,14 @@ public class NecesidadController {
             @RequestParam("idEntidad") Long idEntidad,
             @ModelAttribute("necesidad") NecesidadRequestDTO necesidadDTO,
             RedirectAttributes redirectAttributes) {
-        necesidadService.create(idEntidad, necesidadDTO);
-        redirectAttributes.addFlashAttribute("exito", "Necesidad registrada correctamente.");
-        return "redirect:/necesidades?idEntidad=" + idEntidad;
+        try {
+            necesidadService.create(idEntidad, necesidadDTO);
+            redirectAttributes.addFlashAttribute("exito", "Necesidad registrada correctamente.");
+            return "redirect:/necesidades?idEntidad=" + idEntidad;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al registrar la necesidad: " + e.getMessage());
+            return "redirect:/necesidades/nueva?idEntidad=" + idEntidad + "&tipo=" + (necesidadDTO != null ? necesidadDTO.getTipo() : "EXTRAORDINARIA");
+        }
     }
 
     @PostMapping("/eliminar")
@@ -77,8 +102,12 @@ public class NecesidadController {
             @RequestParam("idEntidad") Long idEntidad,
             @RequestParam("idNecesidad") Long idNecesidad,
             RedirectAttributes redirectAttributes) {
-        necesidadService.delete(idEntidad, idNecesidad);
-        redirectAttributes.addFlashAttribute("exito", "Necesidad eliminada correctamente.");
+        try {
+            necesidadService.delete(idEntidad, idNecesidad);
+            redirectAttributes.addFlashAttribute("exito", "Necesidad eliminada correctamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar la necesidad: " + e.getMessage());
+        }
         return "redirect:/necesidades?idEntidad=" + idEntidad;
     }
 }

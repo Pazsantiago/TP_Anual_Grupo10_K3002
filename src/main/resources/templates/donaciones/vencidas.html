@@ -3,82 +3,54 @@
 <head th:replace="~{fragments/layout :: head('Indicar vencimiento de donacion')}"></head>
 <body class="container py-4">
 <header th:replace="~{fragments/organisms :: encabezado('donaciones')}"></header>
-<h2 class="mb-4">Notificar Estado de Donación Segmentada</h2>
 
-<!-- Alertas de Error si ocurrieron -->
+<h2 class="mb-4">Actualizar Estado de Donación Segmentada</h2>
+
 <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
 <form th:action="@{/donaciones/vencida}" method="post">
 
-    <!-- Sección de Identificación RESTful -->
     <div class="card mb-4 border-info">
         <div class="card-header bg-info text-dark fw-bold">
-            1. Identificación del Recurso (Jerarquía RESTful)
+            1. Identificación del Recurso
         </div>
         <div class="card-body">
             <div class="row g-3">
-
-                <!-- ID Donante -->
                 <div class="col-md-4">
                     <label for="idDonante" class="form-label fw-bold">ID Donante</label>
-                    <input type="number"
-                           id="idDonante"
-                           name="idDonante"
-                           class="form-control"
-                           th:value="${idDonante}"
-                           placeholder="Ej: 1"
-                           required/>
+                    <input type="number" id="idDonante" name="idDonante" class="form-control" th:value="${idDonante}" placeholder="Ej: 1" required/>
                 </div>
-
-                <!-- ID Donación Original -->
                 <div class="col-md-4">
                     <label for="idDonacion" class="form-label fw-bold">ID Donación Original</label>
-                    <input type="number"
-                           id="idDonacion"
-                           name="idDonacion"
-                           class="form-control"
-                           th:value="${idDonacion}"
-                           placeholder="Ej: 101"
-                           required/>
+                    <input type="number" id="idDonacion" name="idDonacion" class="form-control" th:value="${idDonacion}" placeholder="Ej: 10" required/>
                 </div>
-
-                <!-- ID Donación Segmentada -->
                 <div class="col-md-4">
                     <label for="idDonacionSegmentada" class="form-label fw-bold">ID Donación Segmentada</label>
-                    <input type="number"
-                           id="idDonacionSegmentada"
-                           name="idDonacionSegmentada"
-                           class="form-control"
-                           th:value="${idDonacionSegmentada}"
-                           placeholder="Ej: 105"
-                           required/>
+                    <input type="number" id="idDonacionSegmentada" name="idDonacionSegmentada" class="form-control" th:value="${idDonacionSegmentada}" placeholder="Ej: 105" required/>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- Sección de Estado y Justificación -->
     <div class="card mb-4 border-warning">
         <div class="card-header bg-warning text-dark fw-bold">
             2. Nuevo Estado y Justificación
         </div>
         <div class="card-body">
             <div class="row g-3">
-
-                <!-- Tipo de Estado (Enum TipoEstadoDonacion) -->
                 <div class="col-md-6">
                     <label for="tipoEstado" class="form-label fw-bold">Tipo de Estado</label>
                     <select id="tipoEstado" name="estadoDonacion.tipoEstado" class="form-select" required>
                         <option value="VENCIDA" th:selected="${estadoDonacion.tipoEstado == 'VENCIDA'}">VENCIDA</option>
-                        <option value="CANCELADA" th:selected="${estadoDonacion.tipoEstado == 'CANCELADA'}">CANCELADA</option>
-                        <option value="DISPONIBLE" th:selected="${estadoDonacion.tipoEstado == 'DISPONIBLE'}">DISPONIBLE</option>
-                        <option value="RESERVADA" th:selected="${estadoDonacion.tipoEstado == 'RESERVADA'}">RESERVADA</option>
-                        <option value="ASIGNADA" th:selected="${estadoDonacion.tipoEstado == 'ASIGNADA'}">ASIGNADA</option>
+                        <option value="EN_DEPOSITO">EN_DEPOSITO</option>
+                        <option value="ASIGNACION_REALIZADA">ASIGNACION_REALIZADA</option>
+                        <option value="LISTA_PARA_ENTREGAR">LISTA_PARA_ENTREGAR</option>
+                        <option value="EN_TRASLADO">EN_TRASLADO</option>
+                        <option value="ENTREGADA">ENTREGADA</option>
+                        <option value="ENTREGA_FALLIDA">ENTREGA_FALLIDA</option>
                     </select>
                 </div>
 
-                <!-- Justificación -->
                 <div class="col-md-12">
                     <label for="justificacion" class="form-label fw-bold">Justificación</label>
                     <textarea id="justificacion"
@@ -88,7 +60,6 @@
                               placeholder="Ej: El lote de productos perecederos superó la fecha de caducidad..."
                               required></textarea>
                 </div>
-
             </div>
         </div>
     </div>

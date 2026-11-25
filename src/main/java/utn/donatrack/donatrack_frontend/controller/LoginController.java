@@ -2,6 +2,7 @@ package utn.donatrack.donatrack_frontend.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import utn.donatrack.donatrack_frontend.config.RolUsuario;
 import utn.donatrack.donatrack_frontend.services.KeycloakAdminService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +27,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class LoginController {
     private final KeycloakAdminService keycloakAdminService;
-
     @GetMapping("/login")
     public String vistaLogin(
             RedirectAttributes redirectAttributes,
@@ -50,19 +51,15 @@ public class LoginController {
             session.setAttribute("userEmail", usuarioLogueado.getEmail());
             session.setAttribute("idToken", usuarioLogueado.getIdToken().getTokenValue());
 
-            Map<String, Object> realmAccess = usuarioLogueado.getAttribute("realm_access");
-            List<String> roles = (realmAccess != null && realmAccess.get("roles") instanceof List)
-                    ? (List<String>) realmAccess.get("roles")
-                    : List.of();
+            String rolFinal = "ROLE_DONANTE"; // Rol por defecto si no matchea otro
+            String infoUsuario = usuarioLogueado.getAuthorities().toString().toUpperCase()
+                    + usuarioLogueado.getAttributes().toString().toUpperCase();
 
-            // 2. Asignamos el rol correspondiente
-            String rolFinal = "ROLE_DONANTE"; // Rol por defecto
-            if (roles.contains("ADMIN")) {
-                rolFinal = "ROLE_ADMIN";
-            } else if (roles.contains("ENTIDAD")) {
-                rolFinal = "ROLE_ENTIDAD";
-            } else if (roles.contains("CHOFER")) {
-                rolFinal = "ROLE_CHOFER";
+            for (RolUsuario rol : RolUsuario.values()) {
+                if (infoUsuario.contains(rol.name())) {
+                    rolFinal = "ROLE_" + rol.name();
+                    break;
+                }
             }
             session.setAttribute("userRol", rolFinal);
 

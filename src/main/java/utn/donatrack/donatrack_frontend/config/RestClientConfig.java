@@ -11,7 +11,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Configuration
 public class RestClientConfig {
 
-    @Value("${donatrack.services.donaciones.base-url:http://localhost:8090}")
+    @Value("${donatrack.services.donaciones.base-url:http://localhost:8080}")
     private String donacionesUrl;
 
     @Value("${donatrack.services.incentivos.base-url:http://localhost:8091}")

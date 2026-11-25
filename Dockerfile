@@ -26,7 +26,7 @@ COPY --from=build /app/target/*.jar app.jar
 USER appuser
 
 # Render inyecta PORT (por defecto 10000); si no existe, usa 8080 (local)
-ENV PORT=8080
+ENV PORT=8090
 ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75 -XX:+UseSerialGC"
 EXPOSE 8080
 

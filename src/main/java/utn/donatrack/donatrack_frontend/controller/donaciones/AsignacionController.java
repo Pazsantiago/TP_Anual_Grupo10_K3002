@@ -22,10 +22,15 @@ public class AsignacionController {
     private final DonacionService donacionService;
     private final EntidadService entidadService;
 
-
     @GetMapping("/nueva")
     public String vistaNuevaAsignacion(Model model) {
-        model.addAttribute("entidades", entidadService.getAll());
+        try {
+            List<EntidadBeneficiariaResponseDTO> entidades = entidadService.getAll();
+            model.addAttribute("entidades", entidades != null ? entidades : List.of());
+        } catch (Exception e) {
+            model.addAttribute("entidades", List.of());
+            model.addAttribute("error", "Error al cargar las entidades beneficiarias.");
+        }
         return "asignaciones/formulario";
     }
 
@@ -37,7 +42,7 @@ public class AsignacionController {
         try {
             asignacionService.asignarDonacionANecesidad(idEntidad, idNecesidad, idDonacionSegmentada);
             redirectAttributes.addFlashAttribute("exito", "¡Donación asignada con éxito a la necesidad!");
-            return "redirect:/home";
+            return "redirect:/asignaciones?idEntidad=" + idEntidad;
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al realizar la asignación: " + e.getMessage());
             return "redirect:/asignaciones/nueva";
@@ -45,8 +50,7 @@ public class AsignacionController {
     }
 
     @GetMapping("/agregar-segmentada")
-    public String vistaAgregarSegmentada()
-    {
+    public String vistaAgregarSegmentada() {
         return "asignaciones/agregar-segmentada";
     }
 
@@ -56,8 +60,8 @@ public class AsignacionController {
                                     RedirectAttributes redirectAttributes) {
         try {
             asignacionService.agregarSegmentadaAAsignada(idDonacionAsignada, idDonacionSegmentada);
-            redirectAttributes.addFlashAttribute("exito", "¡Donación segmentada agregada correctamente a la asignación existente!");
-            return "redirect:/home";
+            redirectAttributes.addFlashAttribute("exito", "¡Donación segmentada agregada a la asignación existente!");
+            return "redirect:/asignaciones";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al agregar la donación: " + e.getMessage());
             return "redirect:/asignaciones/agregar-segmentada";
@@ -66,20 +70,26 @@ public class AsignacionController {
 
     @GetMapping
     public String listarAsignadasPorEntidad(@RequestParam(value = "idEntidad", required = false) Long idEntidad, Model model) {
+        try {
+            List<EntidadBeneficiariaResponseDTO> entidades = entidadService.getAll();
+            model.addAttribute("entidades", entidades != null ? entidades : List.of());
+        } catch (Exception e) {
+            model.addAttribute("entidades", List.of());
+            model.addAttribute("error", "Error al conectar con el servicio de entidades.");
+        }
 
-        List<EntidadBeneficiariaResponseDTO> entidades = entidadService.getAll();
-        model.addAttribute("entidades", entidades != null ? entidades : List.of());
         model.addAttribute("idEntidadSeleccionada", idEntidad);
-
         List<DonacionAsignadaResponseDTO> asignadas = List.of();
 
         if (idEntidad != null) {
-            asignadas = donacionService.getAsignadasPorEntidad(idEntidad);
+            try {
+                asignadas = donacionService.getAsignadasPorEntidad(idEntidad);
+            } catch (Exception e) {
+                model.addAttribute("error", "Error al obtener asignaciones de la entidad seleccionada.");
+            }
         }
 
         model.addAttribute("asignaciones", asignadas != null ? asignadas : List.of());
-
         return "donaciones/asignadas";
     }
-
 }

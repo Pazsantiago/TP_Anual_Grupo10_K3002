@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head}"></head>
+<head th:replace="~{fragments/layout :: head('Listado de asignaciones')}"></head>
 <body class="container py-4">
-<head th:replace="~{fragments/layout :: head('Listado de asignadas')}"></head>
+<header th:replace="~{fragments/organisms :: encabezado('donaciones')}"></header>
 
-<h2 class="mb-4">Donaciones Asignadas a Entidades</h2>
+<h2 class="mb-4">Donaciones Asignadas por Entidad</h2>
 
-<!-- Selector de Entidad Beneficiaria -->
 <form method="get" th:action="@{/asignaciones}" class="card card-body mb-4 bg-light">
     <div class="row align-items-end">
         <div class="col-md-8">
@@ -23,42 +22,40 @@
     </div>
 </form>
 
-<!-- Tabla de Asignaciones -->
 <div th:if="${idEntidadSeleccionada != null}">
-    <table class="table table-bordered table-hover align-middle">
-        <thead class="table-dark">
-        <tr>
-            <th>ID Asignación</th>
-            <th>Dirección Entidad</th>
-            <th>Lotes Segmentados Asignados</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="asig : ${asignaciones}">
-            <td th:text="${asig.idAsignada}">1001</td>
-            <td th:text="${asig.direccionEntidad}">Av. Medrano 951</td>
-            <td>
-                <ul class="list-group list-group-flush" th:if="${asig.donacionesSegmentadas != null and !#lists.isEmpty(asig.donacionesSegmentadas)}">
-                    <li th:each="seg : ${asig.donacionesSegmentadas}" class="list-group-item bg-transparent">
-                        Lote #<strong th:text="${seg.idSegmentada}">10</strong> -
-                        Cantidad: <span th:text="${seg.cantidadActual}">20</span>
-                        <span th:text="${seg.unidad}">UNIDADES</span>
-                    </li>
-                </ul>
-                <span th:if="${asig.donacionesSegmentadas == null or #lists.isEmpty(asig.donacionesSegmentadas)}" class="text-muted">
-                        Sin ítems detallados
-                    </span>
-            </td>
-        </tr>
-        <tr th:if="${asignaciones == null or #lists.isEmpty(asignaciones)}">
-            <td colspan="3" class="text-center text-muted">La entidad seleccionada no posee donaciones asignadas registradas.</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive bg-white rounded shadow-sm border">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark">
+            <tr>
+                <th>ID Asignación</th>
+                <th>Dirección Entidad</th>
+                <th>Donaciones Segmentadas Vinculadas</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="asig : ${asignaciones}">
+                <td class="fw-bold" th:text="'#' + ${asig.idAsignada}">#1</td>
+                <td th:text="${asig.direccionEntidad}">Av. Medrano 951</td>
+                <td>
+                    <ul class="list-group list-group-flush" th:if="${asig.donacionesSegmentadas != null and !#lists.isEmpty(asig.donacionesSegmentadas)}">
+                        <li th:each="seg : ${asig.donacionesSegmentadas}" class="list-group-item bg-transparent">
+                            <i class="bi bi-box-seam me-2"></i>
+                            <span th:text="'Segmentada #' + ${seg.idSegmentada} + ' (' + ${seg.categoria} + ' - ' + ${seg.subcategoria} + ') - Cantidad: ' + ${seg.cantidadActual} + ' ' + ${seg.unidad}"></span>
+                        </li>
+                    </ul>
+                    <span th:if="${asig.donacionesSegmentadas == null or #lists.isEmpty(asig.donacionesSegmentadas)}" class="text-muted">Sin segmentadas cargadas</span>
+                </td>
+            </tr>
+            <tr th:if="${asignaciones == null or #lists.isEmpty(asignaciones)}">
+                <td colspan="3" class="text-center py-4 text-muted">No hay asignaciones registradas para esta entidad.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div th:if="${idEntidadSeleccionada == null}" class="alert alert-info text-center">
-    Por favor seleccioná una entidad beneficiaria para consultar sus donaciones asignadas.
+    Por favor, selecciona una entidad para listar sus asignaciones completas.
 </div>
 
 </body>

@@ -28,10 +28,14 @@ public class DonacionController {
 
     @GetMapping
     public String listarPorDonante(@RequestParam(value = "idDonante", required = false) Long idDonante, Model model) {
-        List<DonanteResponseDTO> donantes = List.of();
+        try {
+            List<DonanteResponseDTO> donantes = donanteService.getAll();
+            model.addAttribute("donantes", donantes != null ? donantes : List.of());
+        } catch (Exception e) {
+            model.addAttribute("donantes", List.of());
+            model.addAttribute("error", "Error al cargar lista de donantes.");
+        }
 
-        donantes = donanteService.getAll();
-        model.addAttribute("donantes", donantes);
         List<DonacionResponseDTO> donaciones = List.of();
         if (idDonante != null) {
             try {
@@ -41,7 +45,8 @@ public class DonacionController {
             }
             model.addAttribute("idDonanteSeleccionado", idDonante);
         }
-        model.addAttribute("donaciones", donaciones);
+
+        model.addAttribute("donaciones", donaciones != null ? donaciones : List.of());
         return "donaciones/lista";
     }
 
@@ -49,17 +54,26 @@ public class DonacionController {
     public String formularioNuevo(@RequestParam(value = "idDonante", required = false) Long idDonante, Model model) {
         DonacionRequestDTO donacionDTO = new DonacionRequestDTO();
 
-        // Inicializamos el primer bien con su subcategoría
+        // Inicializamos el primer bien vacio para binding dinámico
         BienRequestDTO primerBien = new BienRequestDTO();
         primerBien.setTipo("CON_ESTADO");
         primerBien.setSubcategoria(new SubcategoriaRequestDTO());
-
         donacionDTO.setBienesDeEntrada(new ArrayList<>(List.of(primerBien)));
 
         model.addAttribute("donacion", donacionDTO);
-        model.addAttribute("donantes", donanteService.getAll());
-        model.addAttribute("categorias", categoriaService.getAll());
         model.addAttribute("idDonanteSeleccionado", idDonante);
+
+        try {
+            model.addAttribute("donantes", donanteService.getAll());
+        } catch (Exception e) {
+            model.addAttribute("donantes", List.of());
+        }
+
+        try {
+            model.addAttribute("categorias", categoriaService.getAll());
+        } catch (Exception e) {
+            model.addAttribute("categorias", List.of());
+        }
 
         return "donaciones/formulario";
     }
@@ -70,17 +84,21 @@ public class DonacionController {
             @ModelAttribute("donacion") DonacionRequestDTO donacionDTO,
             RedirectAttributes redirectAttributes) {
 
-        // Filtramos cualquier bien que no tenga descripción cargada
-        if (donacionDTO.getBienesDeEntrada() != null) {
-            List<BienRequestDTO> bienesValidos = donacionDTO.getBienesDeEntrada().stream()
-                    .filter(b -> b.getDescripcion() != null && !b.getDescripcion().isBlank())
-                    .toList();
-            donacionDTO.setBienesDeEntrada(bienesValidos);
-        }
+        try {
+            if (donacionDTO.getBienesDeEntrada() != null) {
+                List<BienRequestDTO> bienesValidos = donacionDTO.getBienesDeEntrada().stream()
+                        .filter(b -> b.getDescripcion() != null && !b.getDescripcion().isBlank())
+                        .toList();
+                donacionDTO.setBienesDeEntrada(bienesValidos);
+            }
 
-        donacionService.create(idDonante, donacionDTO);
-        redirectAttributes.addFlashAttribute("exito", "Donación registrada correctamente.");
-        return "redirect:/donaciones?idDonante=" + idDonante;
+            donacionService.create(idDonante, donacionDTO);
+            redirectAttributes.addFlashAttribute("exito", "Donación registrada correctamente.");
+            return "redirect:/donaciones?idDonante=" + idDonante;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al registrar la donación: " + e.getMessage());
+            return "redirect:/donaciones/nueva?idDonante=" + idDonante;
+        }
     }
 
     @PostMapping("/eliminar")
@@ -88,8 +106,12 @@ public class DonacionController {
             @RequestParam("idDonante") Long idDonante,
             @RequestParam("idDonacion") Long idDonacion,
             RedirectAttributes redirectAttributes) {
-        donacionService.delete(idDonante, idDonacion);
-        redirectAttributes.addFlashAttribute("exito", "Donación eliminada correctamente.");
+        try {
+            donacionService.delete(idDonante, idDonacion);
+            redirectAttributes.addFlashAttribute("exito", "Donación eliminada correctamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar donación: " + e.getMessage());
+        }
         return "redirect:/donaciones?idDonante=" + idDonante;
     }
 }

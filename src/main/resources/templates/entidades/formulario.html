@@ -3,67 +3,61 @@
 <head th:replace="~{fragments/layout :: head('Dar de alta una entidad beneficiaria')}"></head>
 <body class="container py-4">
 <header th:replace="~{fragments/organisms :: encabezado-publico('')}"></header>
-<h2 class="mb-4">Registrar Entidad Beneficiaria</h2>
-<body>
 
-<main>
-  <section class="card">
-    <h2 class="fieldset__legend" style="font-size: 1.4rem; margin-bottom: 1rem;">Registrar Entidad Beneficiaria</h2>
+<main class="container py-4" style="max-width: 800px;">
+  <section class="card p-4 shadow-sm">
+    <h2 class="mb-4">Registrar Entidad Beneficiaria</h2>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
     <form class="form" th:action="@{/entidadesBeneficiarias/nueva}" th:object="${entidad}" method="post">
-      <p class="form__note">
-        Los campos marcados con <span class="field__required" aria-hidden="true">*</span> son obligatorios.
-      </p>
 
-      <!-- DATOS GENERALES -->
-      <fieldset class="fieldset">
-        <legend class="fieldset__legend">Datos Generales</legend>
+      <fieldset class="border p-3 rounded mb-4">
+        <legend class="w-auto px-2 fw-bold text-primary">Datos Generales</legend>
 
-        <div class="field">
-          <label class="field__label" for="razonSocial">Razón Social <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
-          <input class="field__control" id="razonSocial" type="text" th:field="*{razonSocial}" required aria-required="true" autocomplete="organization"/>
+        <div class="mb-3">
+          <label class="form-label" for="razonSocial">Razón Social *</label>
+          <input class="form-control" id="razonSocial" type="text" th:field="*{razonSocial}" required/>
         </div>
 
-        <div class="field-row">
-          <div class="field">
-            <label class="field__label" for="telefono">Teléfono de Contacto <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
-            <input class="field__control" id="telefono" type="tel" th:field="*{telefono}" required aria-required="true" autocomplete="tel"/>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label" for="telefono">Teléfono de Contacto *</label>
+            <input class="form-control" id="telefono" type="tel" th:field="*{telefono}" required/>
           </div>
-          <div class="field">
-            <label class="field__label" for="correoRepresentante">Correo Electrónico del Representante <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
-            <input class="field__control" id="correoRepresentante" type="email" th:field="*{correoRepresentante}" required aria-required="true" autocomplete="email"/>
+          <div class="col-md-6">
+            <label class="form-label" for="correoRepresentante">Correo del Representante *</label>
+            <input class="form-control" id="correoRepresentante" type="email" th:field="*{correoRepresentante}" required/>
           </div>
         </div>
 
-        <div class="field">
-          <label class="field__label" for="direccion">Dirección <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
-          <input class="field__control" id="direccion" type="text" th:field="*{direccion}" placeholder="Ej: Av. Medrano 951" required aria-required="true" autocomplete="street-address"/>
+        <div class="mb-3">
+          <label class="form-label" for="direccion">Dirección Física *</label>
+          <input class="form-control" id="direccion" type="text" th:field="*{direccion}" placeholder="Ej: Av. Medrano 951" required/>
         </div>
       </fieldset>
 
-      <!-- CREDENCIALES DE ACCESO -->
-      <fieldset class="fieldset">
-        <legend class="fieldset__legend">Credenciales de Acceso</legend>
-        <div class="field-row">
-          <div class="field">
-            <label class="field__label" for="emailUsuario">Correo Electrónico (Usuario) <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span></label>
-            <input class="field__control" id="emailUsuario" type="email" name="email" placeholder="ejemplo@correo.com" required aria-required="true" autocomplete="username"/>
+      <fieldset class="border p-3 rounded mb-4">
+        <legend class="w-auto px-2 fw-bold text-primary">Credenciales de Acceso</legend>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label" for="emailUsuario">Correo Electrónico (Usuario) *</label>
+            <input class="form-control" id="emailUsuario" type="email" name="email" required/>
           </div>
-          <div class="field">
-            <label class="field__label" for="passwordUsuario">Contraseña <span class="field__required" aria-hidden="true">*</span><span class="sr-only"> (obligatorio)</span> <span class="field__hint">(mínimo 6 caracteres)</span></label>
-            <input class="field__control" id="passwordUsuario" type="password" name="password" placeholder="Mínimo 6 caracteres" required aria-required="true" minlength="6" autocomplete="new-password"/>
+          <div class="col-md-6">
+            <label class="form-label" for="passwordUsuario">Contraseña *</label>
+            <input class="form-control" id="passwordUsuario" type="password" name="password" minlength="6" required/>
           </div>
         </div>
       </fieldset>
 
-      <!-- BOTONES -->
-      <div class="cluster">
-        <button class="btn" type="submit">Guardar Entidad</button>
-        <a class="btn btn--secondary" th:href="@{/entidadesBeneficiarias}">Cancelar</a>
+      <div class="d-flex gap-2">
+        <a th:href="@{/entidadesBeneficiarias}" class="btn btn-secondary">Cancelar</a>
+        <button class="btn btn-success" type="submit">Registrar Entidad</button>
       </div>
     </form>
   </section>
 </main>
-
 </body>
 </html>

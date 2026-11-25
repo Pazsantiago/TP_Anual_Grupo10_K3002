@@ -3,106 +3,97 @@
 <head th:replace="~{fragments/layout :: head('Ver segmentadas con filtros')}"></head>
 <body class="container py-4">
 <header th:replace="~{fragments/organisms :: encabezado('donaciones')}"></header>
-<h2 class="mb-4">Mis Donaciones Segmentadas</h2>
+<h2 class="mb-4">Donaciones Segmentadas en Depósito</h2>
 
-<!-- Panel de Filtros -->
-<div class="card card-body bg-light mb-4">
-    <h5 class="card-title text-secondary mb-3">Filtrar Donaciones</h5>
+<div class="card card-body mb-4 bg-light shadow-sm">
     <div class="row g-3">
-        <!-- Filtro Estado -->
         <div class="col-md-4">
-            <label class="form-label fw-bold">Estado:</label>
-            <select id="filtroEstado" class="form-select" onchange="aplicarFiltros()">
-                <option value="">-- Todos los estados --</option>
+            <label class="form-label fw-bold">Filtrar por Estado:</label>
+            <select id="filterEstado" class="form-select" onchange="filtrarTabla()">
+                <option value="">-- Todos los Estados --</option>
                 <option th:each="e : ${estados}" th:value="${e}" th:text="${e}"></option>
             </select>
         </div>
 
-        <!-- Filtro Categoría -->
         <div class="col-md-4">
-            <label class="form-label fw-bold">Categoría:</label>
-            <select id="filtroCategoria" class="form-select" onchange="aplicarFiltros()">
-                <option value="">-- Todas las categorías --</option>
+            <label class="form-label fw-bold">Filtrar por Categoría:</label>
+            <select id="filterCategoria" class="form-select" onchange="filtrarTabla()">
+                <option value="">-- Todas las Categorías --</option>
                 <option th:each="c : ${categorias}" th:value="${c}" th:text="${c}"></option>
             </select>
         </div>
 
-        <!-- Filtro Subcategoría -->
         <div class="col-md-4">
-            <label class="form-label fw-bold">Subcategoría:</label>
-            <select id="filtroSubcategoria" class="form-select" onchange="aplicarFiltros()">
-                <option value="">-- Todas las subcategorías --</option>
+            <label class="form-label fw-bold">Filtrar por Subcategoría:</label>
+            <select id="filterSubcategoria" class="form-select" onchange="filtrarTabla()">
+                <option value="">-- Todas las Subcategorías --</option>
                 <option th:each="sub : ${subcategorias}" th:value="${sub}" th:text="${sub}"></option>
             </select>
         </div>
     </div>
 </div>
 
-<!-- Tabla de Resultados -->
-<table class="table table-striped table-hover align-middle">
-    <thead class="table-dark">
-    <tr>
-        <th>ID Segmentada</th>
-        <th>Categoría</th>
-        <th>Subcategoría</th>
-        <th>Cantidad Actual</th>
-        <th>Unidad</th>
-        <th>Estado</th>
-    </tr>
-    </thead>
-    <tbody id="tablaSegmentadas">
-    <tr th:each="s : ${segmentadas}"
-        class="fila-segmentada"
-        th:data-estado="${s.estado}"
-        th:data-categoria="${s.categoriaNombre}"
-        th:data-subcategoria="${s.subcategoriaNombre}">
+<div class="table-responsive bg-white rounded shadow-sm border">
+    <table class="table table-hover align-middle mb-0" id="tablaSegmentadas">
+        <thead class="table-dark">
+        <tr>
+            <th>ID Segmentada</th>
+            <th>Categoría</th>
+            <th>Subcategoría</th>
+            <th>Cant. Actual / Original</th>
+            <th>Estado</th>
+            <th class="text-end">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${segmentadas}"
+            th:data-estado="${s.estadoActual}"
+            th:data-categoria="${s.categoria}"
+            th:data-subcategoria="${s.subcategoria}">
+            <td class="fw-bold" th:text="'#' + ${s.idSegmentada}">#1</td>
+            <td th:text="${s.categoria != null ? s.categoria : 'N/A'}">Alimentos</td>
+            <td th:text="${s.subcategoria != null ? s.subcategoria : 'N/A'}">Lácteos</td>
+            <td th:text="${s.cantidadActual} + ' / ' + ${s.cantidadOriginal} + ' ' + ${s.unidad}">10 / 10 UNIDADES</td>
+            <td>
+                <span class="badge bg-success" th:text="${s.estadoActual}">EN_DEPOSITO</span>
+            </td>
+            <td class="text-end">
+                <a th:href="@{/donaciones/vencida(idDonante=${idDonanteSeleccionado}, idDonacion=1, idSegmentada=${s.idSegmentada})}"
+                   class="btn btn-sm btn-outline-warning">
+                    Marcar Vencida
+                </a>
+            </td>
+        </tr>
+        <tr th:if="${segmentadas == null or #lists.isEmpty(segmentadas)}">
+            <td colspan="6" class="text-center py-4 text-muted">No se encontraron donaciones segmentadas.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
-        <td th:text="${s.idSegmentada}">10</td>
-        <td th:text="${s.categoriaNombre != null ? s.categoriaNombre : '-'}">Alimentos</td>
-        <td th:text="${s.subcategoriaNombre != null ? s.subcategoriaNombre : '-'}">Secos</td>
-        <td th:text="${s.cantidadActual}">50</td>
-        <td th:text="${s.unidad}">KILOGRAMO</td>
-        <td>
-            <span class="badge bg-info text-dark" th:text="${s.estado}">DISPONIBLE</span>
-        </td>
-    </tr>
-    <tr id="sinResultados" style="display: none;">
-        <td colspan="6" class="text-center text-muted">No se encontraron donaciones con los filtros seleccionados.</td>
-    </tr>
-    <tr th:if="${segmentadas == null or #lists.isEmpty(segmentadas)}">
-        <td colspan="6" class="text-center text-muted">No hay donaciones segmentadas registradas.</td>
-    </tr>
-    </tbody>
-</table>
-
-<!-- Script de Filtrado Front-End -->
 <script>
-    function aplicarFiltros() {
-        const estadoSel = document.getElementById('filtroEstado').value.toLowerCase();
-        const catSel = document.getElementById('filtroCategoria').value.toLowerCase();
-        const subSel = document.getElementById('filtroSubcategoria').value.toLowerCase();
+    function filtrarTabla() {
+        const estado = document.getElementById('filterEstado').value.toLowerCase();
+        const cat = document.getElementById('filterCategoria').value.toLowerCase();
+        const sub = document.getElementById('filterSubcategoria').value.toLowerCase();
 
-        const filas = document.querySelectorAll('.fila-segmentada');
-        let contadorVisibles = 0;
+        const filas = document.querySelectorAll('#tablaSegmentadas tbody tr');
 
         filas.forEach(fila => {
-            const estadoFila = (fila.getAttribute('data-estado') || '').toLowerCase();
-            const catFila = (fila.getAttribute('data-categoria') || '').toLowerCase();
-            const subFila = (fila.getAttribute('data-subcategoria') || '').toLowerCase();
+            const rowEstado = (fila.getAttribute('data-estado') || '').toLowerCase();
+            const rowCat = (fila.getAttribute('data-categoria') || '').toLowerCase();
+            const rowSub = (fila.getAttribute('data-subcategoria') || '').toLowerCase();
 
-            const coincideEstado = !estadoSel || estadoFila === estadoSel;
-            const coincideCat = !catSel || catFila === catSel;
-            const coincideSub = !subSel || subFila === subSel;
+            const matchEstado = !estado || rowEstado === estado;
+            const matchCat = !cat || rowCat === cat;
+            const matchSub = !sub || rowSub === sub;
 
-            if (coincideEstado && coincideCat && coincideSub) {
+            if (matchEstado && matchCat && matchSub) {
                 fila.style.display = '';
-                contadorVisibles++;
             } else {
                 fila.style.display = 'none';
             }
         });
-
-        document.getElementById('sinResultados').style.display = (contadorVisibles === 0 && filas.length > 0) ? '' : 'none';
     }
 </script>
 </body>
