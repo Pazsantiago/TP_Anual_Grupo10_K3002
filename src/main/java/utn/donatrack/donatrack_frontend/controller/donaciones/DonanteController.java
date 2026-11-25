@@ -91,7 +91,7 @@ public class DonanteController {
             configurarMedioContactoDefault(donanteDTO, email);
             donanteService.createByAdmin(donanteDTO, email);
             redirectAttributes.addFlashAttribute("exito", "Donante registrado por administrador con éxito.");
-            return "redirect:/donantes";
+            return "redirect:/";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
             return "redirect:/donantes/nuevo/admin";

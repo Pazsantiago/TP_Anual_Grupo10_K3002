@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67621db1-9369-4a54-97ba-ab1256cb9f2b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/formulario-no-key.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/formulario-no-key.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/NavegacionAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/NavegacionAdvice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/DonanteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/DonanteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/asignaciones/asignadas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/asignadas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/organisms.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/organisms.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/inicio.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/inicio.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/panel.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/panel.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,6 +93,7 @@
       <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\java\utn\donatrack\donatrack_frontend\controller\donaciones" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\santi\IdeaProjects\Cliente liviano entrega 6\TP_Anual_Grupo10_K3002\src\main\resources\templates\donaciones" />
       <recent name="C:\Users\Gonzalo Diez\Desktop\EstudiosUTN\VsCode\ejercitacionParciales\TP_Anual_Grupo10_K3002\src\main\java\utn\donatrack\donatrack_frontend\controller" />
     </key>
   </component>

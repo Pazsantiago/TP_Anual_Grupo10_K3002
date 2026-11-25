@@ -7,16 +7,27 @@
 <header class="topbar" th:fragment="encabezado(activo)">
   <a class="skip-link" href="#contenido">Ir al contenido</a>
   <nav class="topbar__inner container" aria-label="Principal">
-    <a class="topbar__brand" th:href="@{/panel}">DonaTrack</a>
+    <a class="topbar__brand" th:href="@{/}">DonaTrack</a>
+
     <ul class="topbar__list">
       <li th:each="item : ${navegacion}">
         <a class="topbar__link" th:href="@{${item.ruta}}" th:text="${item.etiqueta}"
            th:attr="aria-current=${activo == item.clave} ? 'true'">Sección</a>
       </li>
     </ul>
+
     <ul class="topbar__list topbar__list--end">
+      <li th:if="${session.userRol != null}">
+        <span class="topbar__link" style="opacity: 0.9; font-size: 0.85rem;">
+          Rol: <strong th:text="${#strings.replace(session.userRol, 'ROLE_', '')}">ADMIN</strong>
+        </span>
+      </li>
       <li><a class="topbar__link" th:href="@{/}">Sitio público</a></li>
+      <li><a class="topbar__link" th:href="@{/logout}">Cerrar Sesión</a></li>
     </ul>
+  </nav>
+  <div class="progress" data-progress role="progressbar" aria-label="Cargando" hidden></div>
+</header>
   </nav>
   <div class="progress" data-progress role="progressbar" aria-label="Cargando" hidden></div>
 </header>

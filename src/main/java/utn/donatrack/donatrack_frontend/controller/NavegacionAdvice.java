@@ -1,45 +1,70 @@
 package utn.donatrack.donatrack_frontend.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-import utn.donatrack.donatrack_frontend.viewmodel.Miga;
-import java.util.List;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import utn.donatrack.donatrack_frontend.viewmodel.Miga;
 import utn.donatrack.donatrack_frontend.viewmodel.NavItem;
 
-/**
- * Menu principal: se publica en el modelo de TODAS las paginas.
- * Para agregar una seccion: sumar una linea aca (aparece en la barra y en la pagina de inicio).
- */
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 @ControllerAdvice
 public class NavegacionAdvice {
 
-    private static final List<NavItem> ITEMS = List.of(
-        new NavItem("donantes", "Donantes", "/donantes",
-            "Personas y organizaciones que donan, con sus donaciones."),
-        new NavItem("donaciones", "Donaciones", "/donaciones",
-            "Cargar donaciones en el depósito y seguir su trazabilidad."),
-        new NavItem("entidades", "Entidades", "/entidadesBeneficiarias",
-            "Entidades beneficiarias y las necesidades que declararon."),
-        new NavItem("asignaciones", "Asignaciones", "/asignaciones",
-            "Ranking de entidades que proponen los algoritmos de asignación."),
-        new NavItem("incentivos", "Incentivos", "/incentivos",
-            "Misiones, insignias y ranking mensual de donantes."),
-        new NavItem("logistica", "Logística", "/logistica",
-            "Flota de camiones, bultos y entregas pendientes."),
-        new NavItem("notificaciones", "Notificaciones", "/notificaciones",
-            "Mensajes enviados por correo, SMS y WhatsApp."));
-
     @ModelAttribute("navegacion")
-    public List<NavItem> navegacion() {
-        return ITEMS;
+    public List<NavItem> navegacion(HttpSession session) {
+        String rol = (session != null) ? (String) session.getAttribute("userRol") : null;
+        if (rol == null) {
+            return List.of();
+        }
+
+        String rolLimpio = rol.replace("ROLE_", "").toUpperCase();
+
+        switch (rolLimpio) {
+            case "ADMIN":
+                return List.of(
+                        new NavItem("donantes", "Donantes", "/donantes", "Gestión de donantes e importación CSV."),
+                        new NavItem("donaciones", "Cargar Donación", "/donaciones/nueva", "Registrar donaciones de bienes en depósito."),
+                        new NavItem("segmentadas", "Donaciones Segmentadas", "/donaciones/segmentadas", "Filtrar y controlar lotes segmentados."),
+                        new NavItem("entidades", "Entidades Beneficiarias", "/entidadesBeneficiarias", "Gestión de entidades y necesidades."),
+                        new NavItem("asignaciones", "Asignar Donaciones", "/asignaciones/nueva", "Asignar lotes a necesidades de entidades."),
+                        new NavItem("rankings", "Rankings de Asignación", "/rankings", "Algoritmos de compatibilidad y prioridad."),
+                        new NavItem("logistica", "Logística", "/logistica", "Control de flota, camiones y hojas de ruta."),
+                        new NavItem("notificaciones", "Notificaciones", "/notificaciones", "Historial de mensajes e integraciones.")
+                );
+
+            case "DONANTE":
+                return List.of(
+                        new NavItem("segmentadas", "Mis Donaciones Segmentadas", "/donaciones/segmentadas", "Filtrar y seguir el estado de tus lotes donados."),
+                        new NavItem("donaciones", "Mis Donaciones Registradas", "/donaciones", "Ver el historial completo de donaciones."),
+                        new NavItem("incentivos", "Incentivos y Misiones", "/incentivos", "Tus insignias, puntos y el ranking mensual."),
+                        new NavItem("seguimiento", "Seguimiento de Envíos", "/logistica/seguimiento", "Seguir en tiempo real el traslado de donaciones.")
+                );
+
+            case "ENTIDAD":
+                return List.of(
+                        new NavItem("necesidades", "Mis Necesidades", "/necesidades", "Registrar y gestionar necesidades de tu organización."),
+                        new NavItem("asignadas", "Donaciones Asignadas", "/asignaciones", "Consultar donaciones asignadas a tu entidad."),
+                        new NavItem("rankings", "Rankings de Prioridad", "/rankings", "Ver la posición de tu entidad en los algoritmos."),
+                        new NavItem("seguimiento", "Seguimiento de Envíos", "/logistica/seguimiento", "Ver el recorrido de los camiones a tu sede.")
+                );
+
+            case "CHOFER":
+                return List.of(
+                        new NavItem("ruta", "Mi Ruta de Entrega", "/ruta", "Consultar hoja de ruta e iniciar recorrido."),
+                        new NavItem("logistica", "Estado de Envíos", "/logistica", "Confirmar entregas o reportar incidencias.")
+                );
+
+            default:
+                return List.of();
+        }
     }
 
-    /** Estados de una donacion (Figura 2 del enunciado), en orden de ciclo de vida, para los filtros. */
     @ModelAttribute("estadosDonacion")
     public Map<String, String> estadosDonacion() {
         Map<String, String> estados = new LinkedHashMap<>();
@@ -52,8 +77,6 @@ public class NavegacionAdvice {
         estados.put("VENCIDA", "Vencida");
         return estados;
     }
-
-    // ---- Migas de pan: se arman solas desde la URL, asi cada pagina nueva las tiene sin tocar nada ----
 
     private static final Map<String, String> ETIQUETAS = Map.ofEntries(
             Map.entry("panel", "Panel"),
@@ -144,7 +167,7 @@ public class NavegacionAdvice {
             boolean ultima = i == partes.length - 1;
             String actual = ruta.toString();
             migas.add(new Miga(etiqueta(partes[i], i > 0 ? partes[i - 1] : ""),
-                ultima || !RUTA_NAVEGABLE.matcher(actual).matches() ? null : actual));
+                    ultima || !RUTA_NAVEGABLE.matcher(actual).matches() ? null : actual));
         }
         return migas;
     }
@@ -158,6 +181,6 @@ public class NavegacionAdvice {
         if (conocida != null) {
             return conocida;
         }
-        return "N.º " + (tramo.length() > 12 ? tramo.substring(0, 8) + "…" : tramo);   // identificador
+        return "N.º " + (tramo.length() > 12 ? tramo.substring(0, 8) + "…" : tramo);
     }
 }
