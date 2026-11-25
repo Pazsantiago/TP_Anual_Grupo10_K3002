@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class DonanteResponseDTO {
     private Long id;
+    private String tipoPersona;
     private String nombre;
     private MedioContactoResponseDTO contactoPredeterminado;
     private List<DonacionResponseDTO> donaciones = new ArrayList<>();

@@ -21,6 +21,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_donaciones
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: Clave12345%
+      ADMIN_PASSWORD: Donatrack2026!
+      ADMIN_USERNAME: admin
+      AUTH_URL: https://tp-anual-grupo10-k3002-lhze.onrender.com
+      CLIENT_ID: admin-cli
+      KEYCLOAK_ISSUER_URI: https://tp-anual-grupo10-k3002-lhze.onrender.com/realms/donatrack
+      REALM: donatrack
     depends_on:
       - postgres
 

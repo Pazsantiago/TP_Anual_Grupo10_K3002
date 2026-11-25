@@ -26,10 +26,6 @@ import java.util.stream.Collectors;
 @Component
 public class DTOSMapper {
 
-    // ==========================================
-    // DOMINIO -> RESPONSE DTO (Lecturas / GET)
-    // ==========================================
-
     public DonanteResponseDTO deDominioAResponse(Donante donante) {
         if (donante == null) return null;
 
@@ -43,24 +39,24 @@ public class DTOSMapper {
         }
 
         MedioContactoResponseDTO contactoDTO = new MedioContactoResponseDTO();
-        if (donante.obtenerContactoPredeterminado() != null) {
-            MedioContacto contacto = donante.obtenerContactoPredeterminado();
-            if (contacto.getTipo() != null) {
-                contactoDTO.setTipo(contacto.getTipo().toString());
+        MedioContacto contactoPred = donante.obtenerContactoPredeterminado();
+        if (contactoPred != null) {
+            if (contactoPred.getTipo() != null) {
+                contactoDTO.setTipo(contactoPred.getTipo().toString());
             }
-            contactoDTO.setCorreoElectronico(contacto.getCorreoElectronico());
-            contactoDTO.setTelefono(contacto.getTelefono());
+            contactoDTO.setCorreoElectronico(contactoPred.getCorreoElectronico());
+            contactoDTO.setTelefono(contactoPred.getTelefono());
             dto.setContactoPredeterminado(contactoDTO);
-        } else if (!donante.getMediosDeContacto().isEmpty()) {
-            MedioContacto contacto = donante.getMediosDeContacto().get(0);
-            if (contacto.getTipo() != null) {
-                contactoDTO.setTipo(contacto.getTipo().toString());
+        } else if (donante.getMediosDeContacto() != null && !donante.getMediosDeContacto().isEmpty()) {
+            MedioContacto primerContacto = donante.getMediosDeContacto().get(0);
+            if (primerContacto.getTipo() != null) {
+                contactoDTO.setTipo(primerContacto.getTipo().toString());
             }
-            contactoDTO.setCorreoElectronico(contacto.getCorreoElectronico());
-            contactoDTO.setTelefono(contacto.getTelefono());
+            contactoDTO.setCorreoElectronico(primerContacto.getCorreoElectronico());
+            contactoDTO.setTelefono(primerContacto.getTelefono());
             dto.setContactoPredeterminado(contactoDTO);
         }
-        dto.setContactoPredeterminado(contactoDTO);
+
         if (donante.getDonaciones() != null) {
             dto.setDonaciones(
                     donante.getDonaciones().stream()
@@ -109,9 +105,15 @@ public class DTOSMapper {
         if (segmentada.getBien() != null) {
             dto.setCantidadOriginal(segmentada.getBien().getCantidadOriginal());
             dto.setCantidadActual(segmentada.getBien().getCantidadActual());
-            dto.setEstadoActual(segmentada.getEstadoActual().toString());
-            dto.setCategoria(segmentada.getBien().getSubcategoria().toString());
-            dto.setSubcategoria(segmentada.getBien().getSubcategoria().toString());
+            if (segmentada.getEstadoActual() != null && segmentada.getEstadoActual().getTipoEstado() != null) {
+                dto.setEstadoActual(segmentada.getEstadoActual().getTipoEstado().toString());
+            }
+            if (segmentada.getBien().getSubcategoria() != null) {
+                dto.setSubcategoria(segmentada.getBien().getSubcategoria().getNombre());
+                if (segmentada.getBien().getSubcategoria().getCategoria() != null) {
+                    dto.setCategoria(segmentada.getBien().getSubcategoria().getCategoria().getNombre());
+                }
+            }
             if (segmentada.getBien().getUnidad() != null) {
                 dto.setUnidad(segmentada.getBien().getUnidad().toString());
             }
@@ -171,7 +173,9 @@ public class DTOSMapper {
         if (segmentadaRankings == null) return null;
         SegmentadaRankingsResponseDTO dto = new SegmentadaRankingsResponseDTO();
         dto.setSegmentada(deDominioAResponse(segmentadaRankings.getSegmentada()));
-        dto.setRankings(segmentadaRankings.getRankings().stream().map(this::deDominioAResponse).collect(Collectors.toList()));
+        if (segmentadaRankings.getRankings() != null) {
+            dto.setRankings(segmentadaRankings.getRankings().stream().map(this::deDominioAResponse).collect(Collectors.toList()));
+        }
         return dto;
     }
 
@@ -181,7 +185,9 @@ public class DTOSMapper {
         RankingEntidadBeneficiariaResponseDTO dto = new RankingEntidadBeneficiariaResponseDTO();
         dto.setPosicion(ranking.getPosicion());
         dto.setPuntaje(ranking.getPuntaje());
-        dto.setAlgoritmoUsado(ranking.getAlgoritmoUsado().toString());
+        if (ranking.getAlgoritmoUsado() != null) {
+            dto.setAlgoritmoUsado(ranking.getAlgoritmoUsado().toString());
+        }
         dto.setEntidadBeneficiaria(deDominioAResponse(ranking.getEntidadBeneficiaria()));
         return dto;
     }
@@ -192,32 +198,57 @@ public class DTOSMapper {
         CategoriaResponseDTO dto = new CategoriaResponseDTO();
         dto.setId(categoria.getId());
         dto.setNombre(categoria.getNombre());
-        dto.setTipo(categoria.getTipo().toString());
+        if (categoria.getTipo() != null) {
+            dto.setTipo(categoria.getTipo().toString());
+        }
 
         return dto;
     }
 
-    // ==========================================
-    // REQUEST DTO -> DOMINIO (Escrituras / POST / PUT)
-    // ==========================================
+    public Documento deDTORequestADominio(DocumentoRequestDTO dto) {
+        if (dto == null) return null;
+        Documento doc = new Documento();
+        doc.setTipoDocumento(dto.getTipoDocumento());
+        doc.setDocumento(dto.getDocumento());
+        return doc;
+    }
+
+    public Direccion deDTORequestADominio(DireccionRequestDTO dto) {
+        if (dto == null) return null;
+        Direccion dir = new Direccion();
+        dir.setCalle(dto.getCalle());
+        dir.setAltura(dto.getAltura());
+        dir.setLocalidad(dto.getLocalidad());
+        dir.setCodigoPostal(dto.getCodigoPostal());
+        return dir;
+    }
 
     public Persona deDTORequestADominio(PersonaRequestDTO dto) {
         if (dto == null) return null;
 
-
+        Persona p;
         if ("JURIDICA".equalsIgnoreCase(dto.getTipo()) || dto.getRazonSocial() != null || dto.getTipoJuridica() != null) {
             PersonaJuridica pj = new PersonaJuridica();
             pj.setRazonSocial(dto.getRazonSocial());
             pj.setTipoJuridica(dto.getTipoJuridica());
             pj.setRubro(dto.getRubro());
-            return pj;
+            p = pj;
         } else {
             PersonaHumana ph = new PersonaHumana();
             ph.setNombre(dto.getNombre());
             ph.setEdad(dto.getEdad());
             ph.setGenero(dto.getGenero());
-            return ph;
+            p = ph;
         }
+
+        if (dto.getDocumento() != null) {
+            p.setDocumento(deDTORequestADominio(dto.getDocumento()));
+        }
+        if (dto.getDireccion() != null) {
+            p.setDireccion(deDTORequestADominio(dto.getDireccion()));
+        }
+
+        return p;
     }
 
     public MedioContacto deDTORequestADominio(MedioContactoRequestDTO dto) {
@@ -226,6 +257,7 @@ public class DTOSMapper {
         mc.setTipo(dto.getTipo());
         mc.setCorreoElectronico(dto.getCorreoElectronico());
         mc.setTelefono(dto.getTelefono());
+        mc.setEsPredeterminado(dto.isEsPredeterminado());
         return mc;
     }
 
@@ -320,7 +352,6 @@ public class DTOSMapper {
         return estado;
     }
 
-
     public Periodo deDTORequestADominio(PeriodoRequestDTO dto) {
         if (dto == null) return null;
         Periodo periodo = new Periodo();
@@ -383,5 +414,4 @@ public class DTOSMapper {
 
         return entidad;
     }
-
 }

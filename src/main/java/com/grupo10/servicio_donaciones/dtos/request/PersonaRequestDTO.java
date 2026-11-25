@@ -17,6 +17,8 @@ public class PersonaRequestDTO {
     private String nombre;
     private Integer edad;
     private Genero genero;
+    private DocumentoRequestDTO documento;
+    private DireccionRequestDTO direccion;
     //
     private String razonSocial;
     private TipoPersonaJuridica tipoJuridica;
