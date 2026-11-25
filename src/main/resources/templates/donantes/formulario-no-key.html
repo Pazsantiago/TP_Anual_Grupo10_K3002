@@ -15,8 +15,8 @@
             <p class="text-muted small mb-3">
                 Cargá los datos de la persona que llegó al depósito.
             </p>
-
-            <div th:if="\${error}" class="alert alert-danger" th:text="\${error}"></div>
+            
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
             <form th:action="@{/donantes/nuevo/admin}" th:object="\${donante}" method="post">
 
