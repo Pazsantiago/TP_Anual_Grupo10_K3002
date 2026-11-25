@@ -15,16 +15,16 @@
             <p class="text-muted small mb-3">
                 Cargá los datos de la persona que llegó al depósito.
             </p>
-            
+
             <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-            <form th:action="@{/donantes/nuevo/admin}" th:object="\${donante}" method="post">
+            <form th:action="@{/donantes/nuevo/admin}" th:object="${donante}" method="post">
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Tipo de donante *</label>
                     <select th:field="*{persona.tipo}" class="form-select" required>
-                        <option value="HUMANA" th:selected="\${tipoActual == 'HUMANA'}">Persona Humana</option>
-                        <option value="JURIDICA" th:selected="\${tipoActual == 'JURIDICA'}">Persona Jurídica</option>
+                        <option value="HUMANA" th:selected="${tipoActual == 'HUMANA'}">Persona Humana</option>
+                        <option value="JURIDICA" th:selected="${tipoActual == 'JURIDICA'}">Persona Jurídica</option>
                     </select>
                 </div>
 
