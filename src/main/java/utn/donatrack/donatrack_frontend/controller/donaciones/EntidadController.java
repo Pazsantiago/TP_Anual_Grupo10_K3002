@@ -26,13 +26,8 @@ public class EntidadController {
 
     @GetMapping
     public String listar(Model model) {
-        try {
-            List<EntidadBeneficiariaResponseDTO> entidades = entidadService.getAll();
-            model.addAttribute("entidades", entidades != null ? entidades : List.of());
-        } catch (Exception e) {
-            model.addAttribute("entidades", List.of());
-            model.addAttribute("error", "Error al conectar con el servicio de entidades.");
-        }
+        List<EntidadBeneficiariaResponseDTO> entidades = entidadService.getAll();
+        model.addAttribute("entidades", entidades != null ? entidades : List.of());
         return "entidades/lista";
     }
 
@@ -55,32 +50,30 @@ public class EntidadController {
     public String guardarEntidad(
             @ModelAttribute("entidad") EntidadBeneficiariaRequestDTO entidadDTO,
             @RequestParam("email") String email,
-            @RequestParam(value = "password", required = false) String password,
+            @RequestParam("password") String password,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
         try {
             entidadService.create(entidadDTO);
 
-            if (password != null && !password.isBlank()) {
-                keycloakAdminService.crearUsuarioEnKeycloak(email, password, "ENTIDAD");
-            }
+            keycloakAdminService.crearUsuarioEnKeycloak(
+                    email,
+                    password,
+                    "ENTIDAD"
+            );
 
-            redirectAttributes.addFlashAttribute("exito", "¡Entidad registrada con éxito!");
-            return "redirect:/entidadesBeneficiarias";
+            redirectAttributes.addFlashAttribute("exito", "Entidad y usuario registrados correctamente.");
+            return "redirect:/login";
+
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al registrar la entidad: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error al registrar la entidad/usuario: " + e.getMessage());
             return "redirect:/entidadesBeneficiarias/nueva";
         }
     }
 
     @PostMapping("/eliminar")
-    public String eliminar(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
-        try {
-            entidadService.delete(id);
-            redirectAttributes.addFlashAttribute("exito", "Entidad eliminada correctamente.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al eliminar entidad: " + e.getMessage());
-        }
+    public String eliminar(@RequestParam Long id, HttpSession session) {
+        entidadService.delete(id);
         return "redirect:/entidadesBeneficiarias";
     }
 }

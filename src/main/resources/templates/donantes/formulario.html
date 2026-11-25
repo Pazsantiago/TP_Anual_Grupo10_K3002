@@ -4,121 +4,121 @@
 <body>
 <header th:replace="~{fragments/organisms :: encabezado-publico('')}"></header>
 
-<main class="container py-4">
-  <section class="card p-4 shadow-sm">
-    <h2 class="mb-4">Registrar Nuevo Donante</h2>
+<main>
+  <section class="card">
+    <h2 class="fieldset__legend" style="font-size: 1.4rem; margin-bottom: 1rem;">Registrar Donante</h2>
 
-    <fieldset class="fieldset mb-4">
-      <legend class="form-label fw-bold">Tipo de Persona</legend>
-      <div class="btn-group">
+    <fieldset class="fieldset" style="margin-bottom: 1.5rem;">
+      <legend class="fieldset__legend">Tipo de Persona</legend>
+      <div class="cluster">
         <a th:href="@{/donantes/nuevo(tipo='HUMANA')}"
-           class="btn btn-outline-primary"
-           th:classappend="${tipoActual == 'HUMANA' ? 'active' : ''}">
+           class="btn"
+           th:classappend="${tipoActual == 'HUMANA' ? '' : 'btn--secondary'}">
           Persona Humana
         </a>
         <a th:href="@{/donantes/nuevo(tipo='JURIDICA')}"
-           class="btn btn-outline-primary"
-           th:classappend="${tipoActual == 'JURIDICA' ? 'active' : ''}">
+           class="btn"
+           th:classappend="${tipoActual == 'JURIDICA' ? '' : 'btn--secondary'}">
           Persona Jurídica
         </a>
       </div>
     </fieldset>
 
     <form class="form" th:action="@{/donantes/nuevo}" th:object="${donante}" method="post">
+      <p class="form__note">
+        Los campos marcados con <span class="field__required" aria-hidden="true">*</span> son obligatorios.
+      </p>
+
       <input type="hidden" th:field="*{persona.tipo}" />
 
-      <!-- DATOS PERSONA HUMANA -->
-      <fieldset th:if="${tipoActual == 'HUMANA'}" class="border p-3 rounded mb-4">
-        <legend class="w-auto px-2 fw-bold text-primary">Datos de Persona Humana</legend>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label" for="nombre">Nombre Completo *</label>
-            <input class="form-control" id="nombre" type="text" th:field="*{persona.nombre}" required/>
+      <fieldset th:if="${tipoActual == 'HUMANA'}" class="fieldset">
+        <legend class="fieldset__legend">Datos de Persona Humana</legend>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="nombre">Nombre Completo <span class="field__required" aria-hidden="true">*</span></label>
+            <input class="field__control" id="nombre" type="text" th:field="*{persona.nombre}" required aria-required="true" autocomplete="name"/>
           </div>
-          <div class="col-md-3">
-            <label class="form-label" for="edad">Edad *</label>
-            <input class="form-control" id="edad" type="number" th:field="*{persona.edad}" required min="0" max="120"/>
+          <div class="field">
+            <label class="field__label" for="edad">Edad <span class="field__required" aria-hidden="true">*</span></label>
+            <input class="field__control" id="edad" type="number" th:field="*{persona.edad}" required aria-required="true" min="0" max="120" inputmode="numeric"/>
           </div>
-          <div class="col-md-3">
-            <label class="form-label" for="genero">Género *</label>
-            <select class="form-select" id="genero" th:field="*{persona.genero}" required>
+          <div class="field">
+            <label class="field__label" for="genero">Género <span class="field__required" aria-hidden="true">*</span></label>
+            <select class="field__control" id="genero" th:field="*{persona.genero}" required aria-required="true">
               <option value="MASCULINO">Masculino</option>
               <option value="FEMENINO">Femenino</option>
-              <option value="NO_BINARIO">No binario</option>
-              <option value="PREFIERO_NO_DECIR">Prefiero no decir</option>
+              <option value="OTRO">Otro</option>
             </select>
           </div>
         </div>
       </fieldset>
 
-      <!-- DATOS PERSONA JURIDICA -->
-      <fieldset th:if="${tipoActual == 'JURIDICA'}" class="border p-3 rounded mb-4">
-        <legend class="w-auto px-2 fw-bold text-primary">Datos de Persona Jurídica</legend>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label" for="razonSocial">Razón Social *</label>
-            <input class="form-control" id="razonSocial" type="text" th:field="*{persona.razonSocial}" required/>
+      <fieldset th:if="${tipoActual == 'JURIDICA'}" class="fieldset">
+        <legend class="fieldset__legend">Datos de Persona Jurídica</legend>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="razonSocial">Razón Social <span class="field__required" aria-hidden="true">*</span></label>
+            <input class="field__control" id="razonSocial" type="text" th:field="*{persona.razonSocial}" required aria-required="true" autocomplete="organization"/>
           </div>
-          <div class="col-md-3">
-            <label class="form-label" for="tipoJuridica">Tipo de Organización *</label>
-            <select class="form-select" id="tipoJuridica" th:field="*{persona.tipoJuridica}" required>
-              <option value="GUBERNAMENTAL">Gubernamental</option>
-              <option value="ONG">Organización No Gubernamental (ONG)</option>
+          <div class="field">
+            <label class="field__label" for="tipoJuridica">Tipo Jurídico <span class="field__required" aria-hidden="true">*</span></label>
+            <select class="field__control" id="tipoJuridica" th:field="*{persona.tipoJuridica}" required aria-required="true">
+              <option value="ONG">ONG</option>
               <option value="EMPRESA">Empresa</option>
               <option value="INSTITUCION">Institución</option>
             </select>
           </div>
-          <div class="col-md-3">
-            <label class="form-label" for="rubro">Rubro *</label>
-            <input class="form-control" id="rubro" type="text" th:field="*{persona.rubro}" required/>
+          <div class="field">
+            <label class="field__label" for="rubro">Rubro <span class="field__required" aria-hidden="true">*</span></label>
+            <input class="field__control" id="rubro" type="text" th:field="*{persona.rubro}" required aria-required="true"/>
           </div>
         </div>
       </fieldset>
 
-      <!-- CONTACTO PREDETERMINADO -->
-      <fieldset class="border p-3 rounded mb-4">
-        <legend class="w-auto px-2 fw-bold text-primary">Medio de Contacto Principal</legend>
-        <div class="row g-3">
-          <div class="col-md-4">
-            <label class="form-label" for="tipoContacto">Canal de Preferencia *</label>
-            <select class="form-select" id="tipoContacto" th:field="*{mediosDeContacto[0].tipo}" required>
-              <option value="EMAIL">Correo Electrónico</option>
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">Medio de Contacto Predeterminado</legend>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="tipoContacto">Tipo Contacto</label>
+            <select class="field__control" id="tipoContacto" th:field="*{mediosDeContacto[0].tipo}">
+              <option value="EMAIL">Email</option>
               <option value="SMS">SMS</option>
-              <option value="WHATSAPP">WhatsApp</option>
+              <option value="WHATSAPP">WHATSAPP</option>
             </select>
           </div>
-          <div class="col-md-4">
-            <label class="form-label" for="correoContacto">Correo Electrónico *</label>
-            <input class="form-control" id="correoContacto" type="email" th:field="*{mediosDeContacto[0].correoElectronico}" required/>
+          <div class="field">
+            <label class="field__label" for="correoContacto">Correo Electrónico de Contacto <span class="field__required" aria-hidden="true">*</span></label>
+            <input class="field__control" id="correoContacto" type="email" th:field="*{mediosDeContacto[0].correoElectronico}" required autocomplete="email"/>
           </div>
-          <div class="col-md-4">
-            <label class="form-label" for="telefonoContacto">Teléfono de Contacto</label>
-            <input class="form-control" id="telefonoContacto" type="tel" th:field="*{mediosDeContacto[0].telefono}"/>
+          <div class="field">
+            <label class="field__label" for="telefonoContacto">Teléfono</label>
+            <input class="field__control" id="telefonoContacto" type="text" th:field="*{mediosDeContacto[0].telefono}" autocomplete="tel"/>
+          </div>
+          <input type="hidden" name="mediosDeContacto[0].esPredeterminado" value="true"/>
+        </div>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">Credenciales de Acceso (Usuario)</legend>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="emailUsuario">Correo Electrónico (Usuario) <span class="field__required" aria-hidden="true">*</span></label>
+            <input class="field__control" id="emailUsuario" type="email" name="email" placeholder="ejemplo@correo.com" required aria-required="true" autocomplete="username"/>
+          </div>
+          <div class="field">
+            <label class="field__label" for="passwordUsuario">Contraseña <span class="field__required" aria-hidden="true">*</span></label>
+            <input class="field__control" id="passwordUsuario" type="password" name="password" placeholder="Mínimo 6 caracteres" required aria-required="true" minlength="6" autocomplete="new-password"/>
           </div>
         </div>
       </fieldset>
 
-      <!-- USUARIO Y CREDENCIALES -->
-      <fieldset class="border p-3 rounded mb-4">
-        <legend class="w-auto px-2 fw-bold text-primary">Credenciales de Cuenta</legend>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label" for="emailUsuario">Email de Acceso *</label>
-            <input class="form-control" id="emailUsuario" type="email" name="email" required/>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label" for="passwordUsuario">Contraseña *</label>
-            <input class="form-control" id="passwordUsuario" type="password" name="password" minlength="6" required/>
-          </div>
-        </div>
-      </fieldset>
-
-      <div class="d-flex gap-2">
-        <a th:href="@{/donantes}" class="btn btn-secondary">Cancelar</a>
-        <button class="btn btn-primary" type="submit">Registrar Donante</button>
+      <div class="cluster">
+        <button class="btn" type="submit">Guardar Donante</button>
+        <a class="btn btn--secondary" th:href="@{/donantes}">Cancelar</a>
       </div>
     </form>
   </section>
 </main>
+
 </body>
 </html>
