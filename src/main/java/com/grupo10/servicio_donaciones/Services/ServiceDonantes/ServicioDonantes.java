@@ -128,14 +128,14 @@ public class ServicioDonantes {
         String nombre = (donante.getPersona() instanceof PersonaHumana ph)
                 ? ph.getNombre()
                 : ((PersonaJuridica) donante.getPersona()).getRazonSocial();
-//        comunicador.enviarCredenciales(
-//                clave,
-//                nombre,
-//                donante.obtenerContactoPredeterminado().getCorreoElectronico(),
-//                donante.obtenerContactoPredeterminado().getTelefono(),
-//                donante.obtenerContactoPredeterminado().getTipo(),
-//                TipoEvento.USUARIO_CREADO, restClientMensajes
-//        );
+        comunicador.enviarCredenciales(
+                clave,
+                nombre,
+                donante.obtenerContactoPredeterminado().getCorreoElectronico(),
+                donante.obtenerContactoPredeterminado().getTelefono(),
+                donante.obtenerContactoPredeterminado().getTipo(),
+                TipoEvento.USUARIO_CREADO, restClientMensajes
+        );
     }
 
     @Transactional
