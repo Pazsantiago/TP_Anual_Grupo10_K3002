@@ -67,7 +67,7 @@ public class LoginController {
             return "redirect:/login";
         }
             redirectAttributes.addFlashAttribute("exito", "Usuario autenticado!");
-            return "redirect:/panel";
+            return "redirect:/";
     }
 
     @GetMapping("/logout")

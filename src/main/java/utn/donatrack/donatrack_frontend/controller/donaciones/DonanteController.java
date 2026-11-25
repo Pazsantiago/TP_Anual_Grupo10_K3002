@@ -2,10 +2,7 @@ package utn.donatrack.donatrack_frontend.controller.donaciones;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.DonanteRequestDTO;
-import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.MedioContactoRequestDTO;
-import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.MedioNotificacion;
-import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.PersonaRequestDTO;
+import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.*;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.response.DonanteResponseDTO;
 import utn.donatrack.donatrack_frontend.services.DonanteService;
 import utn.donatrack.donatrack_frontend.services.KeycloakAdminService;
@@ -136,7 +133,10 @@ public class DonanteController {
         PersonaRequestDTO personaDTO = new PersonaRequestDTO();
         personaDTO.setTipo(tipo);
         donanteDTO.setPersona(personaDTO);
-
+        DireccionRequestDTO direccionDTO = new DireccionRequestDTO();
+        DocumentoRequestDTO documentoDTO = new DocumentoRequestDTO();
+        personaDTO.setDireccion(direccionDTO);
+        personaDTO.setDocumento(documentoDTO);
         MedioContactoRequestDTO contactoDTO = new MedioContactoRequestDTO();
         contactoDTO.setEsPredeterminado(true);
         contactoDTO.setTipo(MedioNotificacion.EMAIL);
