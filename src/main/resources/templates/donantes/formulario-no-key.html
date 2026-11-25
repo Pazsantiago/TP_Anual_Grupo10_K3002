@@ -13,17 +13,18 @@
         <div class="card-body">
             <h3 class="card-title mb-2">Registrar donante</h3>
             <p class="text-muted small mb-3">
-                Cargá los datos de la persona que llegó al depósito. Al guardar, se registrará y enviará la notificación.
+                Cargá los datos de la persona que llegó al depósito.
             </p>
 
-            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+            <div th:if="\${error}" class="alert alert-danger" th:text="\${error}"></div>
 
-            <form th:action="@{/donantes/nuevo/admin}" th:object="${donante}" method="post">
+            <form th:action="@{/donantes/nuevo/admin}" th:object="\${donante}" method="post">
+
                 <div class="mb-3">
                     <label class="form-label fw-bold">Tipo de donante *</label>
                     <select th:field="*{persona.tipo}" class="form-select" required>
-                        <option value="HUMANA" th:selected="${tipoActual == 'HUMANA'}">Persona Humana</option>
-                        <option value="JURIDICA" th:selected="${tipoActual == 'JURIDICA'}">Persona Jurídica</option>
+                        <option value="HUMANA" th:selected="\${tipoActual == 'HUMANA'}">Persona Humana</option>
+                        <option value="JURIDICA" th:selected="\${tipoActual == 'JURIDICA'}">Persona Jurídica</option>
                     </select>
                 </div>
 
@@ -32,9 +33,39 @@
                     <input type="text" th:field="*{persona.nombre}" class="form-control" placeholder="Ej. Ana Pérez o Empresa S.A." required/>
                 </div>
 
+                <div class="row g-2 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Tipo Doc *</label>
+                        <select th:field="*{persona.documento.tipoDocumento}" class="form-select" required>
+                            <option value="DNI">DNI</option>
+                            <option value="CUIT">CUIT</option>
+                            <option value="PASAPORTE">Pasaporte</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Número de Documento *</label>
+                        <input type="text" th:field="*{persona.documento.documento}" class="form-control" placeholder="Ej. 12345678" required/>
+                    </div>
+                </div>
+
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Documento / CUIT *</label>
-                    <input type="text" th:field="*{persona.documento.documento}" class="form-control" placeholder="Ej. DNI 12345678 o CUIT 30-12345678-9" required/>
+                    <label class="form-label fw-bold">Dirección</label>
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-8">
+                            <input type="text" th:field="*{persona.direccion.calle}" class="form-control" placeholder="Calle"/>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="number" th:field="*{persona.direccion.altura}" class="form-control" placeholder="Altura"/>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-7">
+                            <input type="text" th:field="*{persona.direccion.localidad}" class="form-control" placeholder="Localidad"/>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="text" th:field="*{persona.direccion.codigoPostal}" class="form-control" placeholder="Código Postal"/>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -45,7 +76,6 @@
                 <div class="mb-3">
                     <label class="form-label fw-bold">Correo electrónico *</label>
                     <input type="email" name="email" class="form-control" placeholder="correo@ejemplo.com" required/>
-                    <div class="form-text">A esta dirección se enviará el correo con las credenciales de acceso.</div>
                 </div>
 
                 <div class="d-flex justify-content-between pt-3">
