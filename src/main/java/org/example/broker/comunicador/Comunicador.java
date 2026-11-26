@@ -69,7 +69,7 @@ public class Comunicador {
     public void enviarInicioDeRuta(MensajeInicioDeRuta mensaje) {
         ResponseEntity<Void> result = this.restClientDonaciones
                 .post()
-                .uri("/iniciosDeRutas")
+                .uri("/api/notificaciones/iniciosDeRutas")
                 .body(mensaje)
                 .retrieve()
                 .toBodilessEntity();
@@ -81,7 +81,7 @@ public class Comunicador {
     public void enviarEntregaRealizada(MensajeConfirmacionEntrega mensaje) {
         ResponseEntity<Void> result = this.restClientDonaciones
                 .post()
-                .uri("/entregasConfirmadas")
+                .uri("/api/notificaciones/entregasConfirmadas")
                 .body(mensaje)
                 .retrieve()
                 .toBodilessEntity();
@@ -93,7 +93,7 @@ public class Comunicador {
     public void comunicarEntregaIncentivos(MensajeConfirmacionIncentivosDTO mensaje) {
         ResponseEntity<Void> result = this.restClientIncentivos
                 .post()
-                .uri("/entregasConfirmadas")
+                .uri("/incentivos/entregasConfirmadas")
                 .body(mensaje)
                 .retrieve()
                 .toBodilessEntity();
@@ -105,7 +105,7 @@ public class Comunicador {
     public void enviarEntregaFallida(MensajeEntregaFallida mensaje) {
         ResponseEntity<Void> result = this.restClientDonaciones
                 .post()
-                .uri("/entregasFallidas")
+                .uri("/api/notificaciones/entregasFallidas")
                 .body(mensaje)
                 .retrieve()
                 .toBodilessEntity();
