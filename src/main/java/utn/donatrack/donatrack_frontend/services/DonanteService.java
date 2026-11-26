@@ -24,6 +24,13 @@ public class DonanteService {
                 .body(new ParameterizedTypeReference<List<DonanteResponseDTO>>() {});
     }
 
+    public DonanteResponseDTO getByEmail(String email) {
+        return donacionesRestClient.get()
+                .uri("/api/donantes/email?email={email}", email)
+                .retrieve()
+                .body(DonanteResponseDTO.class);
+    }
+
     public DonanteResponseDTO getById(Long id) {
         return donacionesRestClient.get()
                 .uri("/api/donantes/{id}", id)

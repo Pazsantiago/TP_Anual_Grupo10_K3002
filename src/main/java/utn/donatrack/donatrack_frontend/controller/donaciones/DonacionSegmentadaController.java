@@ -1,14 +1,18 @@
 package utn.donatrack.donatrack_frontend.controller.donaciones;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.EstadoDonacionRequestDTO;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.TipoEstadoDonacion;
+import utn.donatrack.donatrack_frontend.client.dto.donaciones.response.DonacionResponseDTO;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.response.DonacionSegmentadaResponseDTO;
+import utn.donatrack.donatrack_frontend.client.dto.donaciones.response.DonanteResponseDTO;
 import utn.donatrack.donatrack_frontend.services.DonacionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import utn.donatrack.donatrack_frontend.services.DonanteService;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,20 +22,26 @@ import java.util.stream.Collectors;
 @RequestMapping("/donaciones")
 @RequiredArgsConstructor
 public class DonacionSegmentadaController {
-
+    private final DonanteService donanteService;
     private final DonacionService donacionService;
 
     @GetMapping("/segmentadas")
-    public String listarSegmentadas(@RequestParam(value = "idDonante", required = false) Long idDonante, Model model) {
+    public String listarSegmentadas(@RequestParam(value = "idDonante", required = false) Long idDonante, HttpSession session, Model model) {
         List<DonacionSegmentadaResponseDTO> segmentadas = List.of();
-        if (idDonante != null) {
-            try {
-                segmentadas = donacionService.getSegmentadasByDonante(idDonante);
-            } catch (Exception e) {
-                model.addAttribute("error", "Error al obtener las donaciones segmentadas.");
+        try {
+            if (idDonante == null || session.getAttribute("idDonante") == null) {
+                String email = (String) session.getAttribute("userEmail");
+                if (email != null) {
+                    idDonante = donanteService.getByEmail(email).getId();
+                    if (idDonante != null) {
+                        session.setAttribute("idDonante", idDonante);
+                    }
+                }
             }
+            segmentadas = donacionService.getSegmentadasByDonante(idDonante);
+        } catch (Exception e) {
+            model.addAttribute("error", "Error al obtener las donaciones segmentadas.");
         }
-
         segmentadas = segmentadas != null ? segmentadas : List.of();
         model.addAttribute("segmentadas", segmentadas);
         model.addAttribute("idDonanteSeleccionado", idDonante);
@@ -61,25 +71,30 @@ public class DonacionSegmentadaController {
         return "donaciones/segmentadas";
     }
 
-    @GetMapping("/vencida")
+    @GetMapping("/vencidas")
     public String formularioMarcarVencida(
             @RequestParam(value = "idDonante", required = false) Long idDonante,
-            @RequestParam(value = "idDonacion", required = false) Long idDonacion,
-            @RequestParam(value = "idSegmentada", required = false) Long idSegmentada,
             Model model) {
+
+        List<DonanteResponseDTO> donantes = donanteService.getAll();
+        model.addAttribute("donantes", donantes);
+
+        List<DonacionSegmentadaResponseDTO> segmentadas = List.of();
+        if (idDonante != null) {
+            segmentadas = donacionService.getSegmentadasByDonante(idDonante);
+        }
 
         EstadoDonacionRequestDTO estadoDTO = new EstadoDonacionRequestDTO();
         estadoDTO.setTipoEstado(TipoEstadoDonacion.VENCIDA);
 
-        model.addAttribute("idDonante", idDonante);
-        model.addAttribute("idDonacion", idDonacion);
-        model.addAttribute("idDonacionSegmentada", idSegmentada);
+        model.addAttribute("idDonanteSeleccionado", idDonante);
+        model.addAttribute("segmentadas", segmentadas);
         model.addAttribute("estadoDonacion", estadoDTO);
 
         return "donaciones/vencida";
     }
 
-    @PostMapping("/vencida")
+    @PostMapping("/vencidas")
     public String registrarEstadoVencido(
             @RequestParam("idDonante") Long idDonante,
             @RequestParam("idDonacion") Long idDonacion,
@@ -94,6 +109,6 @@ public class DonacionSegmentadaController {
             redirectAttributes.addFlashAttribute("error", "Error al actualizar estado: " + e.getMessage());
         }
 
-        return "redirect:/donaciones?idDonante=" + idDonante;
+        return "redirect:/donaciones/segmentadas?idDonante=" + idDonante;
     }
 }

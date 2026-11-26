@@ -30,34 +30,38 @@ public class NavegacionAdvice {
                 return List.of(
                         new NavItem("donantes", "Donantes", "/donantes", "Gestión de donantes e importación CSV."),
                         new NavItem("donaciones", "Cargar Donación", "/donaciones/nueva", "Registrar donaciones de bienes en depósito."),
-                        new NavItem("segmentadas", "Donaciones Segmentadas", "/donaciones/segmentadas", "Filtrar y controlar lotes segmentados."),
-                        new NavItem("entidades", "Entidades Beneficiarias", "/entidadesBeneficiarias", "Gestión de entidades y necesidades."),
                         new NavItem("asignaciones", "Asignar Donaciones", "/asignaciones/nueva", "Asignar lotes a necesidades de entidades."),
+                        new NavItem("asignacionesNuevo", "Agregar Donaciones a asignada", "/asignaciones/agregar-segmentada", "Asignar lotes a necesidades de entidades."),
+                        new NavItem("donacionesVencidas", "Indicar vencimiento de donacion", "/donaciones/vencidas", "Indicar el vencimiento de una donacion segmentada."),
                         new NavItem("rankings", "Rankings de Asignación", "/rankings", "Algoritmos de compatibilidad y prioridad."),
+                        new NavItem("generar-ranking", "Generar rankings de asignación", "/rankings/generar", "Generar los rankings de entidades y donaciones"),
+                        new NavItem("visualizar-repetidos-ranking", "Visualizar entidades repetidas en ranking", "/rankings/repetidas", "Visualizar entidades repetidas en rankings"),
                         new NavItem("logistica", "Logística", "/logistica", "Control de flota, camiones y hojas de ruta."),
-                        new NavItem("notificaciones", "Notificaciones", "/notificaciones", "Historial de mensajes e integraciones.")
+                        new NavItem("incentivos", "Visualiza ranking mensual de donantes", "/incentivos", "Se pueden ver el ranking de los donantes")
                 );
 
             case "DONANTE":
                 return List.of(
-                        new NavItem("segmentadas", "Mis Donaciones Segmentadas", "/donaciones/segmentadas", "Filtrar y seguir el estado de tus lotes donados."),
                         new NavItem("donaciones", "Mis Donaciones Registradas", "/donaciones", "Ver el historial completo de donaciones."),
-                        new NavItem("incentivos", "Incentivos y Misiones", "/incentivos", "Tus insignias, puntos y el ranking mensual."),
-                        new NavItem("seguimiento", "Seguimiento de Envíos", "/logistica/seguimiento", "Seguir en tiempo real el traslado de donaciones.")
+                        new NavItem("segmentadas", "Mis Donaciones Segmentadas", "/donaciones/segmentadas", "Filtrar y seguir el estado de tus lotes donados."),
+                        new NavItem("entidades", "Entidades beneficiarias registradas", "/entidadesBeneficiarias", "Podrás ver todas las entidades beneficiarias registradas."),
+                        new NavItem("incentivos", "Incentivos y Misiones", "/incentivos/perfil-donante", "Tus insignias, puntos y el ranking mensual."),
+                        new NavItem("seguimiento", "Seguimiento de Envíos", "/logistica/seguimiento", "Seguir en tiempo real el traslado de donaciones."),
+                        new NavItem("notificaciones", "Notificaciones", "/notificaciones", "Historial de mensajes e integraciones.")
                 );
 
             case "ENTIDAD":
                 return List.of(
                         new NavItem("necesidades", "Mis Necesidades", "/necesidades", "Registrar y gestionar necesidades de tu organización."),
                         new NavItem("asignadas", "Donaciones Asignadas", "/asignaciones", "Consultar donaciones asignadas a tu entidad."),
-                        new NavItem("rankings", "Rankings de Prioridad", "/rankings", "Ver la posición de tu entidad en los algoritmos."),
-                        new NavItem("seguimiento", "Seguimiento de Envíos", "/logistica/seguimiento", "Ver el recorrido de los camiones a tu sede.")
+                        new NavItem("seguimiento", "Seguimiento de Envíos", "/logistica/seguimiento", "Ver el recorrido de los camiones a tu sede."),
+                        new NavItem("notificaciones", "Notificaciones", "/notificaciones", "Historial de mensajes e integraciones.")
                 );
 
             case "CHOFER":
                 return List.of(
                         new NavItem("ruta", "Mi Ruta de Entrega", "/ruta", "Consultar hoja de ruta e iniciar recorrido."),
-                        new NavItem("logistica", "Estado de Envíos", "/logistica", "Confirmar entregas o reportar incidencias.")
+                        new NavItem("inicio-ruta", "Inicio de ruta", "/rutas/iniciar", "Confirmar inicio de ruta.")
                 );
 
             default:
@@ -92,8 +96,11 @@ public class NavegacionAdvice {
             Map.entry("rankings", "Rankings"),
             Map.entry("segmentadas", "Donaciones segmentadas"),
             Map.entry("vencida", "Marcar vencida"),
+            Map.entry("vencidas", "Indicar vencimiento"),
+            Map.entry("generar", "Generar ranking"),
             Map.entry("repetidas", "Entidades repetidas"),
             Map.entry("incentivos", "Incentivos"),
+            Map.entry("perfil-donante", "Perfil del donante"),
             Map.entry("ranking-mensual", "Ranking mensual"),
             Map.entry("misiones", "Categorías y misiones"),
             Map.entry("gestion", "Gestión de perfiles"),
@@ -102,6 +109,8 @@ public class NavegacionAdvice {
             Map.entry("seguimiento", "Seguimiento"),
             Map.entry("ubicaciones", "Ubicaciones"),
             Map.entry("ruta", "Mi ruta"),
+            Map.entry("rutas", "Rutas"),
+            Map.entry("iniciar", "Iniciar ruta"),
             Map.entry("entregas-fallidas", "Entregas no recibidas"),
             Map.entry("recepcion", "Confirmar recepción"),
             Map.entry("notificaciones", "Notificaciones"),
@@ -125,14 +134,18 @@ public class NavegacionAdvice {
             Map.entry("donaciones/nueva", "Cargar donación"),
             Map.entry("donaciones/segmentadas", "Donaciones segmentadas"),
             Map.entry("donaciones/vencida", "Marcar vencida"),
+            Map.entry("donaciones/vencidas", "Indicar vencimiento"),
             Map.entry("entidadesBeneficiarias/nueva", "Registrar entidad"),
             Map.entry("entidades/nueva", "Registrar entidad"),
             Map.entry("necesidades/nueva", "Registrar necesidad"),
             Map.entry("asignaciones/nueva", "Nueva asignación"),
             Map.entry("asignaciones/agregar-segmentada", "Agregar segmentada"),
+            Map.entry("rankings/generar", "Generar rankings"),
             Map.entry("rankings/repetidas", "Entidades repetidas"),
+            Map.entry("incentivos/perfil-donante", "Perfil del donante"),
             Map.entry("camiones/nuevo", "Nuevo camión"),
             Map.entry("ruta/iniciar", "Iniciar ruta"),
+            Map.entry("rutas/iniciar", "Inicio de ruta"),
             Map.entry("registro/donante", "Como donante"),
             Map.entry("registro/entidad", "Como entidad beneficiaria")
     );
@@ -140,13 +153,15 @@ public class NavegacionAdvice {
     private static final Pattern RUTA_NAVEGABLE = Pattern.compile(
             "^/(panel|donantes|donaciones|entidadesBeneficiarias|entidades|necesidades|asignaciones|asignadas|rankings|incentivos|logistica|notificaciones|galeria|mapa|legal|login)$"
                     + "|^/donantes/(nuevo|nuevo/admin|importador)$"
-                    + "|^/donaciones/(nueva|segmentadas|vencida|home)$"
+                    + "|^/donaciones/(nueva|segmentadas|vencida|vencidas|home)$"
                     + "|^/(entidadesBeneficiarias|entidades)/nueva$"
                     + "|^/necesidades/nueva$"
                     + "|^/asignaciones/(nueva|agregar-segmentada)$"
-                    + "|^/rankings/repetidas$"
+                    + "|^/rankings/(generar|repetidas)$"
+                    + "|^/incentivos/perfil-donante$"
                     + "|^/logistica/(panel|camiones|seguimiento|seguimiento/ubicaciones|ruta|ruta/iniciar|entregas-fallidas)$"
-                    + "|^/incentivos/(misiones|gestion|ranking-mensual)$"
+                    + "|^/rutas/iniciar$"
+                    + "|^/ruta/iniciar$"
                     + "|^/donantes/\\d+/donaciones$"
                     + "|^/(entidadesBeneficiarias|entidades)/\\d+/(necesidades|donaciones)$"
                     + "|^/asignaciones/\\d+$|^/incentivos/donantes/\\d+$"

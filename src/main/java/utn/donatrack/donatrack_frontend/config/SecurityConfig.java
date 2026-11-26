@@ -29,14 +29,14 @@ public class SecurityConfig {
                         // Rutas públicas accesibles por cualquiera
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/error/**", "/login", "/logout", "/login/callback", "/", "/inicio", "/galeria", "/mapa", "/legal", "/donantes/nuevo", "/entidadesBeneficiarias/nueva").permitAll()
                         // Permisos con Rol
-                        .requestMatchers("/logistica/seguimiento", "/logistica/seguimiento/ubicaciones").hasAnyRole("ENTIDAD", "DONANTE")
                         .requestMatchers("/ruta", "/ruta/iniciar").hasRole("CHOFER")
-                        .requestMatchers("/donaciones/nueva", "/donaciones/nueva/**", "/donaciones/vencida", "/asignaciones/nueva", "/asignaciones/agregar-segmentada",
-                                "/donantes/importador", "/donantes/nuevo/admin", "/logistica/**", "/incentivos/ranking-mensual").hasRole("ADMIN")
-                        .requestMatchers("/entidadesBeneficiarias").hasAnyRole("DONANTE", "ENTIDAD")
-                        .requestMatchers("/donantes").hasRole("DONANTE")
-                        .requestMatchers("/donantes/**", "/donaciones/**").hasRole("DONANTE")
-                        .requestMatchers("/entidadesBeneficiarias/**", "/necesidades/**", "/asignadas/**", "/rankings/**").hasRole("ENTIDAD")
+                        .requestMatchers("/logistica/seguimiento", "/logistica/seguimiento/ubicaciones").hasAnyRole("ENTIDAD", "DONANTE")
+                        .requestMatchers("/donaciones", "/donaciones/segmentadas").hasAnyRole("DONANTE", "ADMIN")
+                        .requestMatchers("/entidadesBeneficiarias").hasAnyRole("DONANTE", "ENTIDAD", "ADMIN")
+                        .requestMatchers("/donantes/**", "/donaciones/**",
+                        "/asignaciones/nueva", "/asignaciones/agregar-segmentada", "/logistica/**", "/incentivos", "/rankings/**").hasRole("ADMIN")
+                        .requestMatchers("/incentivos/perfil-donante", "/incentivos/*").hasRole("DONANTE")
+                        .requestMatchers("/entidadesBeneficiarias/**", "/necesidades/**", "/asignaciones").hasRole("ENTIDAD")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception

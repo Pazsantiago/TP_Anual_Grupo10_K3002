@@ -1,6 +1,8 @@
 package utn.donatrack.donatrack_frontend.controller;
 
 import java.util.List;
+
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utn.donatrack.donatrack_frontend.client.IncentivosClient;
 import utn.donatrack.donatrack_frontend.client.RecursoNoEncontradoException;
 import utn.donatrack.donatrack_frontend.client.ServicioExternoException;
+import utn.donatrack.donatrack_frontend.client.dto.donaciones.response.DonanteResponseDTO;
 import utn.donatrack.donatrack_frontend.client.dto.incentivos.MisionResponse;
+import utn.donatrack.donatrack_frontend.services.DonanteService;
 import utn.donatrack.donatrack_frontend.viewmodel.Seccion;
 
 @Controller
@@ -22,9 +26,11 @@ public class IncentivosController {
     private static final String MENSAJE_ID_INVALIDO = "Ingresá el número de un donante (un entero mayor a cero).";
 
     private final IncentivosClient client;
+    private final DonanteService donanteService;
 
-    public IncentivosController(IncentivosClient client) {
+    public IncentivosController(IncentivosClient client,  DonanteService donanteService) {
         this.client = client;
+        this.donanteService = donanteService;
     }
 
     /** Ranking mensual + buscador de donante por id. */
@@ -55,6 +61,27 @@ public class IncentivosController {
         }
         flash.addFlashAttribute("errorServicio", MENSAJE_ID_INVALIDO);
         return "redirect:/incentivos";
+    }
+
+    @GetMapping("/perfil-donante")
+    public String irAMisIncentivos(HttpSession session, RedirectAttributes redirectAttributes) {
+        Long idDonante = (Long) session.getAttribute("idDonante");
+        if (idDonante == null) {
+            String email = (String) session.getAttribute("userEmail");
+            if (email != null) {
+                idDonante = donanteService.getByEmail(email).getId();
+
+                if (idDonante != null) {
+                    session.setAttribute("idDonante", idDonante);
+                }
+            }
+        }
+
+        if (idDonante == null) {
+            redirectAttributes.addFlashAttribute("error", "No se encontró un perfil de donante asociado a tu usuario.");
+            return "redirect:/panel";
+        }
+        return "redirect:/incentivos/donantes/" + idDonante;
     }
 
     @GetMapping("/donantes/{id}")
