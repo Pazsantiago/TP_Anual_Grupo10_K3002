@@ -40,7 +40,7 @@ public class CDonantes {
     }
 
     // READ - Obtener Donante por email
-    @GetMapping("")
+    @GetMapping("/email")
     public ResponseEntity<?> getPersonaByEmail(@RequestParam("email") String email) {
         try {
             return ResponseEntity.ok(mapper.deDominioAResponse(servicioDonantes.obtenerPorEmail(email)));
