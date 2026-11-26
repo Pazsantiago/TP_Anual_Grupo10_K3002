@@ -82,10 +82,10 @@ public class Comunicador {
     public void enviarDonante(Donante donante, RestClient restclient) {
         ResponseEntity<Void> result = restclient
                 .post()
-                .uri("/incentivos/perfiles") // Se incluye /incentivos si la baseUrl del RestClient no lo tiene
+                .uri("/incentivos/perfiles")
                 .body(aDonanteDTO(donante))
                 .retrieve()
-                .toBodilessEntity(); // Evita deserializar el String a Integer
+                .toBodilessEntity();
         if (!result.getStatusCode().is2xxSuccessful()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -94,7 +94,7 @@ public class Comunicador {
     public void enviarDonanteActualizado(Donante donante, RestClient restclient) {
         ResponseEntity<Void> result = restclient
                 .put()
-                .uri("/incentivos/perfiles/{id}", donante.getId()) // Sintaxis limpia de URI template
+                .uri("/incentivos/perfiles/{id}", donante.getId())
                 .body(aDonanteDTO(donante))
                 .retrieve()
                 .toBodilessEntity();
