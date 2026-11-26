@@ -57,7 +57,7 @@
             <td>
                 <span class="badge bg-success" th:text="${s.estadoActual}">EN_DEPOSITO</span>
             </td>
-            <td class="text-end">
+            <td class="text-end" th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}">
                 <a th:href="@{/donaciones/vencidas(idDonante=${idDonanteSeleccionado}, idDonacion=1, idSegmentada=${s.idSegmentada})}"
                    class="btn btn-sm btn-outline-warning">
                     Marcar Vencida

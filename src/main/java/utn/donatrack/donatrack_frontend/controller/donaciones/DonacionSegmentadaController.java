@@ -27,25 +27,43 @@ public class DonacionSegmentadaController {
 
     @GetMapping("/segmentadas")
     public String listarSegmentadas(@RequestParam(value = "idDonante", required = false) Long idDonante, HttpSession session, Model model) {
-        List<DonacionSegmentadaResponseDTO> segmentadas = List.of();
-        try {
-            if (idDonante == null || session.getAttribute("idDonante") == null) {
-                String email = (String) session.getAttribute("userEmail");
-                if (email != null) {
-                    idDonante = donanteService.getByEmail(email).getId();
-                    if (idDonante != null) {
+
+        if (idDonante != null) {
+            session.setAttribute("idDonante", idDonante);
+        }
+        else if (session != null && session.getAttribute("idDonante") != null) {
+            idDonante = (Long) session.getAttribute("idDonante");
+        }
+        else {
+            String email = (session != null) ? (String) session.getAttribute("userEmail") : null;
+            if (email != null) {
+                try {
+                    DonanteResponseDTO donante = donanteService.getByEmail(email);
+                    if (donante != null) {
+                        idDonante = donante.getId();
                         session.setAttribute("idDonante", idDonante);
                     }
+                } catch (Exception e) {
+                    // Si el usuario logueado es Admin y no un donante, no interrumpe el flujo
                 }
             }
-            segmentadas = donacionService.getSegmentadasByDonante(idDonante);
-        } catch (Exception e) {
-            model.addAttribute("error", "Error al obtener las donaciones segmentadas.");
         }
-        segmentadas = segmentadas != null ? segmentadas : List.of();
+
+        List<DonacionSegmentadaResponseDTO> segmentadas = List.of();
+        if (idDonante != null) {
+            try {
+                segmentadas = donacionService.getSegmentadasByDonante(idDonante);
+            } catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("error", "Error al obtener las donaciones segmentadas.");
+            }
+        }
+
+        segmentadas = (segmentadas != null) ? segmentadas : List.of();
         model.addAttribute("segmentadas", segmentadas);
         model.addAttribute("idDonanteSeleccionado", idDonante);
 
+        // Filtros dinámicos
         List<String> estadosPresentes = segmentadas.stream()
                 .map(DonacionSegmentadaResponseDTO::getEstadoActual)
                 .filter(Objects::nonNull)
