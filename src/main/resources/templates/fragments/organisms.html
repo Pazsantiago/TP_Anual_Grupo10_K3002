@@ -7,7 +7,7 @@
 <header class="topbar" th:fragment="encabezado(activo)" style="padding: 0.25rem 0;">
   <a class="skip-link" href="#contenido">Ir al contenido</a>
   <nav class="topbar__inner container" aria-label="Principal" style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; min-height: 48px;">
-    <a class="topbar__brand" th:href="@{/panel}" style="font-size: 1.1rem; font-weight: bold; white-space: nowrap;">DonaTrack</a>
+    <a class="topbar__brand" th:href="@{/}" style="font-size: 1.1rem; font-weight: bold; white-space: nowrap;">DonaTrack</a>
 
     <ul class="topbar__list topbar__list--end" style="display: flex; gap: 0.4rem; list-style: none; margin: 0; padding: 0; align-items: center; white-space: nowrap;">
       <li th:if="${session.userRol != null}">
