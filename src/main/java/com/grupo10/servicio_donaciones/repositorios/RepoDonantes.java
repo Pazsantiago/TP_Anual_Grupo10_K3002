@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface RepoDonantes extends JpaRepository<Donante, Long> {
-    Optional<Donante> findByMediosDeContactoCorreoElectronico(String correo);
+    Optional<Donante> findByMediosDeContacto_CorreoElectronicoIgnoreCase(String correo);
 
     List<Donante> findByMediosDeContactoCorreoElectronicoIn(List<String> correos);
 

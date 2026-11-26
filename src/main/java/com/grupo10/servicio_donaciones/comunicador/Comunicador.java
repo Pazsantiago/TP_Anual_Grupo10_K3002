@@ -79,38 +79,37 @@ public class Comunicador {
         }
     }
 
-
     public void enviarDonante(Donante donante, RestClient restclient) {
-        Integer result = restclient
+        ResponseEntity<Void> result = restclient
                 .post()
-                .uri("/perfiles")
+                .uri("/incentivos/perfiles") // Se incluye /incentivos si la baseUrl del RestClient no lo tiene
                 .body(aDonanteDTO(donante))
                 .retrieve()
-                .body(Integer.class);
-        if (result != 200) {
+                .toBodilessEntity(); // Evita deserializar el String a Integer
+        if (!result.getStatusCode().is2xxSuccessful()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public void enviarDonanteActualizado(Donante donante, RestClient restclient) {
-        Integer result = restclient
+        ResponseEntity<Void> result = restclient
                 .put()
-                .uri("/perfiles/{idDonante}" + donante.getId())
+                .uri("/incentivos/perfiles/{id}", donante.getId()) // Sintaxis limpia de URI template
                 .body(aDonanteDTO(donante))
                 .retrieve()
-                .body(Integer.class);
-        if (result != 200) {
+                .toBodilessEntity();
+        if (!result.getStatusCode().is2xxSuccessful()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public void avisarDonanteEliminado(Long id, RestClient restclient) {
-        Integer result = restclient
+        ResponseEntity<Void> result = restclient
                 .delete()
-                .uri("/perfiles/{idDonante}" + id)
+                .uri("/incentivos/perfiles/{id}", id)
                 .retrieve()
-                .body(Integer.class);
-        if (result != 200) {
+                .toBodilessEntity();
+        if (!result.getStatusCode().is2xxSuccessful()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

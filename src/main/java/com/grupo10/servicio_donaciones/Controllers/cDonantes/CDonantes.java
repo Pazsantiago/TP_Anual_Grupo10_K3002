@@ -39,6 +39,16 @@ public class CDonantes {
         }
     }
 
+    // READ - Obtener Donante por email
+    @GetMapping("")
+    public ResponseEntity<?> getPersonaByEmail(@RequestParam("email") String email) {
+        try {
+            return ResponseEntity.ok(mapper.deDominioAResponse(servicioDonantes.obtenerPorEmail(email)));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
     // READ - Obtener Donante por ID
     @GetMapping("/{id}")
     public ResponseEntity<?> getPersonaById(@PathVariable Long id) {

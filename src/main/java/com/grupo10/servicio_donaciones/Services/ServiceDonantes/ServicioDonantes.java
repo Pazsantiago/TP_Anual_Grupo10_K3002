@@ -53,6 +53,9 @@ public class ServicioDonantes {
         return repoDonantes.findById(id).orElse(null);
     }
 
+    public Donante obtenerPorEmail(String email) {
+        return repoDonantes.findByMediosDeContacto_CorreoElectronicoIgnoreCase(email).orElse(null);
+    }
 
     @Transactional
     public void setearCategorias(Donante persona) {
@@ -97,7 +100,7 @@ public class ServicioDonantes {
 
         for (Donante donanteCSV : donantes) {
             String correo = donanteCSV.getMediosDeContacto().get(0).getCorreoElectronico();
-            Optional<Donante> existenteEnDB = repoDonantes.findByMediosDeContactoCorreoElectronico(correo);
+            Optional<Donante> existenteEnDB = repoDonantes.findByMediosDeContacto_CorreoElectronicoIgnoreCase(correo);
 
             if (existenteEnDB.isPresent()) {
                 Donante donanteAActualizar = existenteEnDB.get();
