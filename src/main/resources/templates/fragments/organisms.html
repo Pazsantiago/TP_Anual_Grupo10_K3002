@@ -9,23 +9,17 @@
   <nav class="topbar__inner container" aria-label="Principal" style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; min-height: 48px;">
     <a class="topbar__brand" th:href="@{/panel}" style="font-size: 1.1rem; font-weight: bold; white-space: nowrap;">DonaTrack</a>
 
-    <ul class="topbar__list" style="display: flex; gap: 0.2rem; list-style: none; margin: 0; padding: 0; align-items: center; flex-wrap: wrap;">
-      <li th:each="item : ${navegacion}">
-        <a class="topbar__link" th:href="@{${item.ruta}}" th:text="${item.etiqueta}"
-           th:attr="aria-current=${activo == item.clave} ? 'true'"
-           style="padding: 0.25rem 0.4rem; font-size: 0.82rem; white-space: nowrap;">Sección</a>
-      </li>
-    </ul>
-
     <ul class="topbar__list topbar__list--end" style="display: flex; gap: 0.4rem; list-style: none; margin: 0; padding: 0; align-items: center; white-space: nowrap;">
       <li th:if="${session.userRol != null}">
         <span class="badge bg-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.4rem;">
           Rol: <strong th:text="${#strings.replace(session.userRol, 'ROLE_', '')}">ADMIN</strong>
         </span>
       </li>
+      <li><a class="topbar__link" th:href="@{/panel}" style="padding: 0.25rem 0.4rem; font-size: 0.82rem;">Panel</a></li>
       <li><a class="topbar__link" th:href="@{/}" style="padding: 0.25rem 0.4rem; font-size: 0.82rem;">Sitio público</a></li>
       <li><a class="topbar__link" th:href="@{/logout}" style="padding: 0.25rem 0.4rem; font-size: 0.82rem;">Cerrar Sesión</a></li>
     </ul>
+
   </nav>
   <div class="progress" data-progress role="progressbar" aria-label="Cargando" hidden></div>
 </header>
@@ -35,10 +29,12 @@
   <a class="skip-link" href="#contenido">Ir al contenido</a>
   <nav class="topbar__inner container" aria-label="Principal">
     <a class="topbar__brand" th:href="@{/}">DonaTrack</a>
+
     <ul class="topbar__list">
       <li><a class="topbar__link" th:href="@{/galeria}" th:attr="aria-current=${activo == 'galeria'} ? 'true'">Galería</a></li>
       <li><a class="topbar__link" th:href="@{/mapa}" th:attr="aria-current=${activo == 'mapa'} ? 'true'">Mapa</a></li>
     </ul>
+
     <ul class="topbar__list topbar__list--end">
       <li th:if="${session.userRol != null}">
         <span class="topbar__link" style="opacity: 0.9; font-size: 0.85rem;">
@@ -47,11 +43,11 @@
       </li>
       <li th:if="${session.userRol == null}">
         <span class="topbar__link" style="opacity: 0.9; font-size: 0.85rem;">
-          Rol: Invitado</strong>
+          Rol: <strong>Invitado</strong>
         </span>
       </li>
       <li><a class="topbar__link" th:if="${session.jwtToken == null}" th:href="@{/login}" th:attr="aria-current=${activo == 'login'} ? 'true'">Iniciar sesión</a></li>
-      <li><a  th:href=" @{/logout}" th:if="${session.jwtToken != null}" class="topbar__link btn btn-outline-danger" th:attr="aria-current=${activo == 'registro'} ? 'true'">Cerrar Sesion</a></li>
+      <li><a th:if="${session.jwtToken != null}" th:href="@{/logout}" class="topbar__link btn btn-outline-danger">Cerrar Sesión</a></li>
     </ul>
   </nav>
   <div class="progress" data-progress role="progressbar" aria-label="Cargando" hidden></div>
