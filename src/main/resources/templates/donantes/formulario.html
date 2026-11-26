@@ -1,160 +1,201 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Darse de alta como donante')}"></head>
-<body>
-<header th:replace="~{fragments/organisms :: encabezado-publico('')}"></header>
+<body class="bg-light">
 
-<main class="container py-4">
-  <section class="card p-4 shadow-sm">
-    <h2 class="mb-3">Registrar Donante</h2>
+<header th:replace="~{fragments/organisms :: encabezado('donantes')}"></header>
 
-    <div class="mb-4">
-      <div class="btn-group">
-        <a th:href="@{/donantes/nuevo(tipo='HUMANA')}"
-           class="btn"
-           th:classappend="${tipoActual == 'HUMANA' ? 'btn-primary' : 'btn-outline-primary'}">
-          Persona Humana
-        </a>
-        <a th:href="@{/donantes/nuevo(tipo='JURIDICA')}"
-           class="btn"
-           th:classappend="${tipoActual == 'JURIDICA' ? 'btn-primary' : 'btn-outline-primary'}">
-          Persona Jurídica
-        </a>
-      </div>
-    </div>
+<main class="container py-4" style="max-width: 750px;">
+    <section class="card p-4 shadow-sm">
+        <h2 class="mb-3">Registrar Donante</h2>
 
-    <form th:action="@{/donantes/nuevo}" th:object="${donante}" method="post">
-      <input type="hidden" th:field="*{persona.tipo}" />
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-      <div th:if="${tipoActual == 'HUMANA'}" class="mb-4">
-        <h4>Datos de Persona Humana</h4>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label">Nombre Completo *</label>
-            <input class="form-control" type="text" th:field="*{persona.nombre}" required/>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Edad *</label>
-            <input class="form-control" type="number" th:field="*{persona.edad}" required min="0" max="120"/>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Género *</label>
-            <select class="form-select" th:field="*{persona.genero}" required>
-              <option value="MASCULINO">Masculino</option>
-              <option value="FEMENINO">Femenino</option>
-              <option value="NO_BINARIO">No binario</option>
-              <option value="PREFIERO_NO_DECIR">Prefiero no decir</option>
-            </select>
-          </div>
+        <div class="mb-4">
+            <label class="form-label fw-bold">Tipo de Donante</label>
+            <div class="btn-group w-100" role="group">
+                <button type="button" id="btnHumana" class="btn btn-primary" onclick="seleccionarTipoPersona('HUMANA')">
+                    Persona Humana
+                </button>
+                <button type="button" id="btnJuridica" class="btn btn-outline-primary" onclick="seleccionarTipoPersona('JURIDICA')">
+                    Persona Jurídica
+                </button>
+            </div>
         </div>
-      </div>
 
-      <div th:if="${tipoActual == 'JURIDICA'}" class="mb-4">
-        <h4>Datos de Persona Jurídica</h4>
-        <div class="row g-3">
-          <div class="col-md-5">
-            <label class="form-label">Razón Social *</label>
-            <input class="form-control" type="text" th:field="*{persona.razonSocial}" required/>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Tipo Jurídico *</label>
-            <select class="form-select" th:field="*{persona.tipoJuridica}" required>
-              <option value="ONG">ONG</option>
-              <option value="EMPRESA">Empresa</option>
-              <option value="GUBERNAMENTAL">Gubernamental</option>
-              <option value="INSTITUCION">Institución</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">Rubro *</label>
-            <input class="form-control" type="text" th:field="*{persona.rubro}" required/>
-          </div>
-        </div>
-      </div>
+        <form th:action="@{${session.userRol != null and #strings.contains(session.userRol, 'ADMIN') ? '/donantes/nuevo/admin' : '/donantes/nuevo'}}"
+              th:object="${donante}" method="post" id="formDonante">
 
-      <div class="card p-3 mb-4 bg-light">
-        <h5>Documentación</h5>
-        <div class="row g-3">
-          <div class="col-md-4">
-            <label class="form-label">Tipo Documento *</label>
-            <select class="form-select" th:field="*{persona.documento.tipoDocumento}" required>
-              <option value="DNI">DNI</option>
-              <option value="CUIT">CUIT</option>
-              <option value="PASAPORTE">Pasaporte</option>
-            </select>
-          </div>
-          <div class="col-md-8">
-            <label class="form-label">Número de Documento *</label>
-            <input class="form-control" type="text" th:field="*{persona.documento.documento}" required/>
-          </div>
-        </div>
-      </div>
+            <input type="hidden" id="personaTipo" th:field="*{persona.tipo}" value="HUMANA" />
 
-      <div class="card p-3 mb-4 bg-light">
-        <h5>Domicilio</h5>
-        <div class="row g-3">
-          <div class="col-md-8">
-            <label class="form-label">Calle</label>
-            <input class="form-control" type="text" th:field="*{persona.direccion.calle}"/>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Altura</label>
-            <input class="form-control" type="number" th:field="*{persona.direccion.altura}"/>
-          </div>
-          <div class="col-md-8">
-            <label class="form-label">Localidad</label>
-            <input class="form-control" type="text" th:field="*{persona.direccion.localidad}"/>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Código Postal</label>
-            <input class="form-control" type="text" th:field="*{persona.direccion.codigoPostal}"/>
-          </div>
-        </div>
-      </div>
+            <div id="seccionHumana" class="mb-4">
+                <h5 class="text-primary border-bottom pb-2">Datos de Persona Humana</h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Nombre Completo *</label>
+                        <input class="form-control campo-humana" type="text" th:field="*{persona.nombre}" placeholder="Ej. Ana Pérez" required/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Edad</label>
+                        <input class="form-control campo-humana" type="number" th:field="*{persona.edad}" min="0" max="120" placeholder="30"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Género</label>
+                        <select class="form-select campo-humana" th:field="*{persona.genero}">
+                            <option value="MASCULINO">Masculino</option>
+                            <option value="FEMENINO">Femenino</option>
+                            <option value="NO_BINARIO">No binario</option>
+                            <option value="PREFIERO_NO_DECIR">Prefiero no decir</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-      <div class="card p-3 mb-4 bg-light">
-        <h5>Contacto Predeterminado</h5>
-        <div class="row g-3">
-          <div class="col-md-4">
-            <label class="form-label">Tipo</label>
-            <select class="form-select" th:field="*{mediosDeContacto[0].tipo}">
-              <option value="EMAIL">Email</option>
-              <option value="SMS">SMS</option>
-              <option value="WHATSAPP">WhatsApp</option>
-            </select>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Correo de Contacto *</label>
-            <input class="form-control" type="email" th:field="*{mediosDeContacto[0].correoElectronico}" required/>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Teléfono</label>
-            <input class="form-control" type="text" th:field="*{mediosDeContacto[0].telefono}"/>
-          </div>
-          <input type="hidden" name="mediosDeContacto[0].esPredeterminado" value="true"/>
-        </div>
-      </div>
+            <div id="seccionJuridica" class="mb-4" style="display: none;">
+                <h5 class="text-primary border-bottom pb-2">Datos de Persona Jurídica</h5>
+                <div class="row g-3">
+                    <div class="col-md-5">
+                        <label class="form-label fw-bold">Razón Social *</label>
+                        <input class="form-control campo-juridica" type="text" th:field="*{persona.razonSocial}" placeholder="Ej. Empresa S.A." disabled required/>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Tipo Jurídico</label>
+                        <select class="form-select campo-juridica" th:field="*{persona.tipoJuridica}" disabled>
+                            <option value="ONG">ONG</option>
+                            <option value="EMPRESA">Empresa</option>
+                            <option value="GUBERNAMENTAL">Gubernamental</option>
+                            <option value="INSTITUCION">Institución</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Rubro</label>
+                        <input class="form-control campo-juridica" type="text" th:field="*{persona.rubro}" placeholder="Ej. Logística" disabled/>
+                    </div>
+                </div>
+            </div>
 
-      <div class="card p-3 mb-4 bg-light">
-        <h5>Credenciales de Usuario</h5>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label">Correo (Usuario) *</label>
-            <input class="form-control" type="email" name="email" required/>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Contraseña *</label>
-            <input class="form-control" type="password" name="password" required minlength="6"/>
-          </div>
-        </div>
-      </div>
+            <div class="card p-3 mb-4 bg-light">
+                <h5 class="mb-3">Documentación</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Tipo Documento *</label>
+                        <select class="form-select" th:field="*{persona.documento.tipoDocumento}" required>
+                            <option value="DNI">DNI</option>
+                            <option value="CUIT">CUIT</option>
+                            <option value="PASAPORTE">Pasaporte</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Número de Documento *</label>
+                        <input class="form-control" type="text" th:field="*{persona.documento.documento}" placeholder="Ej. 12345678" required/>
+                    </div>
+                </div>
+            </div>
 
-      <div class="d-flex gap-2">
-        <button class="btn btn-primary" type="submit">Guardar Donante</button>
-        <a class="btn btn-secondary" th:href="@{/donantes}">Cancelar</a>
-      </div>
-    </form>
-  </section>
+            <div class="card p-3 mb-4 bg-light">
+                <h5 class="mb-3">Domicilio</h5>
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label class="form-label">Calle</label>
+                        <input class="form-control" type="text" th:field="*{persona.direccion.calle}" placeholder="Av. Corrientes"/>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Altura</label>
+                        <input class="form-control" type="number" th:field="*{persona.direccion.altura}" placeholder="1234"/>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label">Localidad</label>
+                        <input class="form-control" type="text" th:field="*{persona.direccion.localidad}" placeholder="CABA"/>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Código Postal</label>
+                        <input class="form-control" type="text" th:field="*{persona.direccion.codigoPostal}" placeholder="C1043"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-3 mb-4 bg-light">
+                <h5 class="mb-3">Contacto de Notificación</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Canal de Notificación</label>
+                        <select class="form-select" th:field="*{mediosDeContacto[0].tipo}">
+                            <option value="EMAIL">Email</option>
+                            <option value="SMS">SMS</option>
+                            <option value="WHATSAPP">WhatsApp</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Teléfono de Contacto</label>
+                        <input class="form-control" type="text" th:field="*{mediosDeContacto[0].telefono}" placeholder="+54 11 5555-5555"/>
+                    </div>
+                    <input type="hidden" name="mediosDeContacto[0].esPredeterminado" value="true"/>
+                </div>
+            </div>
+
+            <div class="card p-3 mb-4 border-primary bg-white">
+                <h5 class="mb-3 text-primary">Cuenta de Usuario</h5>
+                <div class="row g-3">
+
+                    <div th:class="${session.userRol != null and #strings.contains(session.userRol, 'ADMIN') ? 'col-md-12' : 'col-md-6'}">
+                        <label class="form-label fw-bold">Correo electrónico (Usuario Keycloak) *</label>
+                        <input class="form-control" type="email" name="email" th:field="*{mediosDeContacto[0].correoElectronico}" placeholder="usuario@ejemplo.com" required/>
+                    </div>
+
+                    <div class="col-md-6" th:unless="${session.userRol != null and #strings.contains(session.userRol, 'ADMIN')}">
+                        <label class="form-label fw-bold">Contraseña *</label>
+                        <input class="form-control" type="password" name="password" placeholder="******"
+                               th:required="${session.userRol == null or !#strings.contains(session.userRol, 'ADMIN')}" minlength="6"/>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary" type="submit">Guardar Donante</button>
+                <a class="btn btn-secondary" th:href="@{/donantes}">Cancelar</a>
+            </div>
+        </form>
+    </section>
 </main>
+
+<script>
+    function seleccionarTipoPersona(tipo) {
+        document.getElementById('personaTipo').value = tipo;
+
+        const seccionHumana = document.getElementById('seccionHumana');
+        const seccionJuridica = document.getElementById('seccionJuridica');
+        const btnHumana = document.getElementById('btnHumana');
+        const btnJuridica = document.getElementById('btnJuridica');
+
+        const camposHumana = document.querySelectorAll('.campo-humana');
+        const camposJuridica = document.querySelectorAll('.campo-juridica');
+
+        if (tipo === 'JURIDICA') {
+            seccionHumana.style.display = 'none';
+            seccionJuridica.style.display = 'block';
+
+            btnHumana.className = 'btn btn-outline-primary';
+            btnJuridica.className = 'btn btn-primary';
+
+            camposHumana.forEach(el => el.disabled = true);
+            camposJuridica.forEach(el => el.disabled = false);
+        } else {
+            seccionHumana.style.display = 'block';
+            seccionJuridica.style.display = 'none';
+
+            btnHumana.className = 'btn btn-primary';
+            btnJuridica.className = 'btn btn-outline-primary';
+
+            camposHumana.forEach(el => el.disabled = false);
+            camposJuridica.forEach(el => el.disabled = true);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const tipoInicial = document.getElementById('personaTipo').value || 'HUMANA';
+        seleccionarTipoPersona(tipoInicial);
+    });
+</script>
 </body>
 </html>
