@@ -91,7 +91,7 @@ public class DonacionSegmentadaController {
         model.addAttribute("segmentadas", segmentadas);
         model.addAttribute("estadoDonacion", estadoDTO);
 
-        return "donaciones/vencida";
+        return "donaciones/vencidas";
     }
 
     @PostMapping("/vencidas")

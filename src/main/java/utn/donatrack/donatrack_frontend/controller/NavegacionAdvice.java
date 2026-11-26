@@ -33,8 +33,7 @@ public class NavegacionAdvice {
                         new NavItem("asignaciones", "Asignar Donaciones", "/asignaciones/nueva", "Asignar lotes a necesidades de entidades."),
                         new NavItem("asignacionesNuevo", "Agregar Donaciones a asignada", "/asignaciones/agregar-segmentada", "Asignar lotes a necesidades de entidades."),
                         new NavItem("donacionesVencidas", "Indicar vencimiento de donacion", "/donaciones/vencidas", "Indicar el vencimiento de una donacion segmentada."),
-                        new NavItem("rankings", "Rankings de Asignación", "/rankings", "Algoritmos de compatibilidad y prioridad."),
-                        new NavItem("generar-ranking", "Generar rankings de asignación", "/rankings/generar", "Generar los rankings de entidades y donaciones"),
+                        new NavItem("rankings", "Visualizar rankings de Asignación", "/rankings", "Algoritmos de compatibilidad y prioridad."),
                         new NavItem("visualizar-repetidos-ranking", "Visualizar entidades repetidas en ranking", "/rankings/repetidas", "Visualizar entidades repetidas en rankings"),
                         new NavItem("logistica", "Logística", "/logistica", "Control de flota, camiones y hojas de ruta."),
                         new NavItem("incentivos", "Visualiza ranking mensual de donantes", "/incentivos", "Se pueden ver el ranking de los donantes")
