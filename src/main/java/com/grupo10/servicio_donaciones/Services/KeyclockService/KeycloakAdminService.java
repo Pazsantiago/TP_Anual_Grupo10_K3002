@@ -81,6 +81,9 @@ public class KeycloakAdminService {
 
     private void asignarRolAUsuario(String email, String nombreRol, String adminToken) {
         try {
+            // 1. Removemos el prefijo "ROLE_" para obtener el nombre real en Keycloak (ej: "ROLE_DONANTE" -> "DONANTE")
+            String rolLimpio = nombreRol.replace("ROLE_", "");
+
             String searchUserUrl = keycloakServerUrl + "/admin/realms/" + realm + "/users?username=" + email;
             HttpHeaders headers = new HttpHeaders();
             headers.setBearerAuth(adminToken);
@@ -92,13 +95,16 @@ public class KeycloakAdminService {
             Map<String, Object> usuario = (Map<String, Object>) userResponse.getBody().get(0);
             String userId = (String) usuario.get("id");
 
-            String getRoleUrl = keycloakServerUrl + "/admin/realms/" + realm + "/roles/" + nombreRol;
+            // 2. Buscamos el rol usando rolLimpio ("DONANTE")
+            String getRoleUrl = keycloakServerUrl + "/admin/realms/" + realm + "/roles/" + rolLimpio;
             ResponseEntity<Map> roleResponse = restTemplate.exchange(getRoleUrl, HttpMethod.GET, request, Map.class);
             Map<String, Object> roleMap = roleResponse.getBody();
 
+            // 3. Asignamos el rol al usuario
             String addRoleUrl = keycloakServerUrl + "/admin/realms/" + realm + "/users/" + userId + "/role-mappings/realm";
             HttpEntity<List<Map<String, Object>>> addRoleRequest = new HttpEntity<>(List.of(roleMap), headers);
             restTemplate.postForEntity(addRoleUrl, addRoleRequest, String.class);
+
         } catch (Exception e) {
             System.err.println("No se pudo asignar el rol en Keycloak: " + e.getMessage());
         }
