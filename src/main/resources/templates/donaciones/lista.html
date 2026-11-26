@@ -6,7 +6,9 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Gestión de Donaciones</h2>
-    <a th:href="@{/donaciones/nueva(idDonante=${idDonanteSeleccionado})}" class="btn btn-primary">+ Nueva Donación</a>
+    <div class="nueva-donacion" th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}">
+        <a th:href="@{/donaciones/nueva(idDonante=${idDonanteSeleccionado})}" class="btn btn-primary">+ Nueva Donación</a>
+    </div>
 </div>
 
 <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
@@ -54,7 +56,11 @@
                     <span th:each="cat : ${don.categoriasIncluidas}" class="badge bg-secondary me-1" th:text="${cat}">Alimentos</span>
                     <span th:if="${don.categoriasIncluidas == null or #lists.isEmpty(don.categoriasIncluidas)}" class="text-muted">General</span>
                 </td>
-                <td class="text-end">
+                <td th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'DONANTE' or #strings.toUpperCase(session.userRol) == 'ROLE_DONANTE')"}>
+                    <span>Ninguna</span>
+                </td>
+
+                <td class="text-end" th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}">
                     <form method="post" th:action="@{/donaciones/eliminar}" onsubmit="return confirm('¿Seguro deseas eliminar esta donación?');" style="display:inline;">
                         <input type="hidden" name="idDonante" th:value="${idDonanteSeleccionado}"/>
                         <input type="hidden" name="idDonacion" th:value="${don.id}"/>
