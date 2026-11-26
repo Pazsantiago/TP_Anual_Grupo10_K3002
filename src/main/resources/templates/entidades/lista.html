@@ -6,7 +6,10 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Listado de Entidades Beneficiarias</h2>
-    <a th:href="@{/entidadesBeneficiarias/nueva}" class="btn btn-primary">+ Nueva Entidad</a>
+    <div th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ENTIDAD' or #strings.toUpperCase(session.userRol) == 'ROLE_ENTIDAD')}"
+         class="nueva-entidad">
+        <a th:href="@{/entidadesBeneficiarias/nueva}" class="btn btn-primary">+ Nueva Entidad</a>
+    </div>
 </div>
 
 <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
@@ -31,7 +34,9 @@
             <td th:text="${ent.direccion}">Av. Medrano 951</td>
             <td th:text="${ent.telefono}">11 4444-5555</td>
             <td th:text="${ent.correoRepresentante}">contacto@comedor.org</td>
-            <td class="text-end">
+            <td th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) != 'ADMIN' or #strings.toUpperCase(session.userRol) != 'ROLE_ENTIDAD')}">Ninguna</td>
+            <td th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ENTIDAD' or #strings.toUpperCase(session.userRol) == 'ROLE_ENTIDAD')}"
+                class="text-end">
                 <a th:href="@{/necesidades(idEntidad=${ent.id})}" class="btn btn-sm btn-outline-primary me-1">Ver Necesidades</a>
                 <form method="post" th:action="@{/entidadesBeneficiarias/eliminar}" onsubmit="return confirm('¿Seguro deseas eliminar esta entidad?');" style="display:inline;">
                     <input type="hidden" name="id" th:value="${ent.id}"/>

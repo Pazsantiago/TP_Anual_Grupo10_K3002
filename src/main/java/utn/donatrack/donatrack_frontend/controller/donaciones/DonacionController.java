@@ -1,5 +1,6 @@
 package utn.donatrack.donatrack_frontend.controller.donaciones;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.BienRequestDTO;
 import utn.donatrack.donatrack_frontend.client.dto.donaciones.request.DonacionRequestDTO;
@@ -27,15 +28,37 @@ public class DonacionController {
     private final CategoriaService categoriaService;
 
     @GetMapping
-    public String listarPorDonante(@RequestParam(value = "idDonante", required = false) Long idDonante, Model model) {
-        try {
-            List<DonanteResponseDTO> donantes = donanteService.getAll();
-            model.addAttribute("donantes", donantes != null ? donantes : List.of());
-        } catch (Exception e) {
-            model.addAttribute("donantes", List.of());
-            model.addAttribute("error", "Error al cargar lista de donantes.");
+    public String listarPorDonante(@RequestParam(value = "idDonante", required = false) Long idDonante, HttpSession session, Model model) {
+        Boolean esAdmin = (Boolean) session.getAttribute("userRol").equals("ROLE_ADMIN");
+        if (idDonante != null) {
+            session.setAttribute("idDonante", idDonante);
         }
-
+        else if (session != null && session.getAttribute("idDonante") != null) {
+            idDonante = (Long) session.getAttribute("idDonante");
+        }
+        else {
+            String email = (session != null) ? (String) session.getAttribute("userEmail") : null;
+            if (email != null) {
+                try {
+                    DonanteResponseDTO donante = donanteService.getByEmail(email);
+                    if (donante != null) {
+                        idDonante = donante.getId();
+                        session.setAttribute("idDonante", idDonante);
+                    }
+                } catch (Exception e) {
+                    // Si el usuario logueado es Admin y no un donante, no interrumpe el flujo
+                }
+            }
+        }
+        if(esAdmin) {
+            try {
+                List<DonanteResponseDTO> donantes = donanteService.getAll();
+                model.addAttribute("donantes", donantes != null ? donantes : List.of());
+            } catch (Exception e) {
+                model.addAttribute("donantes", List.of());
+                model.addAttribute("error", "Error al cargar lista de donantes.");
+            }
+        }
         List<DonacionResponseDTO> donaciones = List.of();
         if (idDonante != null) {
             try {
