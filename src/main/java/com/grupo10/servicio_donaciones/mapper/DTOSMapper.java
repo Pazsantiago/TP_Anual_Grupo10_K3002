@@ -324,7 +324,7 @@ public class DTOSMapper {
         bien.setFoto(dto.getFoto());
         bien.setUnidad(dto.getUnidad());
         bien.setCantidadOriginal(dto.getCantidadOriginal());
-        bien.setCantidadActual(dto.getCantidadActual());
+        bien.setCantidadActual(dto.getCantidadOriginal());
 
         return bien;
     }

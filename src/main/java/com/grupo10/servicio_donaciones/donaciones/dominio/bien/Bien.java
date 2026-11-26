@@ -62,7 +62,7 @@ public class Bien {
         this.cantidadOriginal = cantidadOriginal;
         this.cantidadActual = cantidadOriginal;
     }
-
+    
     public void restarCantidad(Integer cantidad) {
         this.cantidadActual -= cantidad;
     }
