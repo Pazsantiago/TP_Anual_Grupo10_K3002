@@ -149,7 +149,7 @@
 
                     <!-- Correo de usuario: SIEMPRE name="email" SIN th:field -->
                     <div th:class="${session.userRol != null and #strings.contains(session.userRol, 'ADMIN') ? 'col-md-12' : 'col-md-6'}">
-                        <label class="form-label fw-bold">Correo electrónico (Usuario Keycloak) *</label>
+                        <label class="form-label fw-bold">Correo electrónico (Usuario) *</label>
                         <input class="form-control" type="email" name="email" placeholder="usuario@ejemplo.com" required/>
                     </div>
 
