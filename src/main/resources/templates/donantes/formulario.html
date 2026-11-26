@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Darse de alta como donante')}"></head>
+<head th:replace="~{fragments/layout :: head('Registrar Donante')}"></head>
 <body class="bg-light">
 
+<!-- Encabezado básico único -->
 <header th:replace="~{fragments/organisms :: encabezado('donantes')}"></header>
 
 <main class="container py-4" style="max-width: 750px;">
@@ -11,6 +13,7 @@
 
         <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
+        <!-- Alternancia Tipo de Persona (Humana / Jurídica) -->
         <div class="mb-4">
             <label class="form-label fw-bold">Tipo de Donante</label>
             <div class="btn-group w-100" role="group">
@@ -23,11 +26,13 @@
             </div>
         </div>
 
+        <!-- Action dinámico según si es Admin o Público -->
         <form th:action="@{${session.userRol != null and #strings.contains(session.userRol, 'ADMIN') ? '/donantes/nuevo/admin' : '/donantes/nuevo'}}"
               th:object="${donante}" method="post" id="formDonante">
 
             <input type="hidden" id="personaTipo" th:field="*{persona.tipo}" value="HUMANA" />
 
+            <!-- Sección Persona Humana -->
             <div id="seccionHumana" class="mb-4">
                 <h5 class="text-primary border-bottom pb-2">Datos de Persona Humana</h5>
                 <div class="row g-3">
@@ -51,6 +56,7 @@
                 </div>
             </div>
 
+            <!-- Sección Persona Jurídica (Oculta por defecto) -->
             <div id="seccionJuridica" class="mb-4" style="display: none;">
                 <h5 class="text-primary border-bottom pb-2">Datos de Persona Jurídica</h5>
                 <div class="row g-3">
@@ -74,6 +80,7 @@
                 </div>
             </div>
 
+            <!-- Documentación -->
             <div class="card p-3 mb-4 bg-light">
                 <h5 class="mb-3">Documentación</h5>
                 <div class="row g-3">
@@ -92,6 +99,7 @@
                 </div>
             </div>
 
+            <!-- Domicilio -->
             <div class="card p-3 mb-4 bg-light">
                 <h5 class="mb-3">Domicilio</h5>
                 <div class="row g-3">
@@ -105,15 +113,16 @@
                     </div>
                     <div class="col-md-8">
                         <label class="form-label">Localidad</label>
-                        <input class="form-control" type="text" th:field="*{persona.direccion.localidad}" placeholder="CABA"/>
+                        <input class="form-control" type="text" th:field="*{persona.direccion.localidad}"/>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">Código Postal</label>
-                        <input class="form-control" type="text" th:field="*{persona.direccion.codigoPostal}" placeholder="C1043"/>
+                        <input class="form-control" type="text" th:field="*{persona.direccion.codigoPostal}"/>
                     </div>
                 </div>
             </div>
 
+            <!-- Contacto de Notificación -->
             <div class="card p-3 mb-4 bg-light">
                 <h5 class="mb-3">Contacto de Notificación</h5>
                 <div class="row g-3">
@@ -133,15 +142,18 @@
                 </div>
             </div>
 
+            <!-- Cuenta de Usuario -->
             <div class="card p-3 mb-4 border-primary bg-white">
                 <h5 class="mb-3 text-primary">Cuenta de Usuario</h5>
                 <div class="row g-3">
 
+                    <!-- Correo de usuario: SIEMPRE name="email" SIN th:field -->
                     <div th:class="${session.userRol != null and #strings.contains(session.userRol, 'ADMIN') ? 'col-md-12' : 'col-md-6'}">
                         <label class="form-label fw-bold">Correo electrónico (Usuario Keycloak) *</label>
-                        <input class="form-control" type="email" name="email" th:field="*{mediosDeContacto[0].correoElectronico}" placeholder="usuario@ejemplo.com" required/>
+                        <input class="form-control" type="email" name="email" placeholder="usuario@ejemplo.com" required/>
                     </div>
 
+                    <!-- Contraseña: Se oculta si es Admin -->
                     <div class="col-md-6" th:unless="${session.userRol != null and #strings.contains(session.userRol, 'ADMIN')}">
                         <label class="form-label fw-bold">Contraseña *</label>
                         <input class="form-control" type="password" name="password" placeholder="******"

@@ -70,17 +70,6 @@ public class DonanteController {
         }
     }
 
-    @GetMapping("/nuevo/admin")
-    public String formularioNuevoByAdmin(
-            @RequestParam(value = "tipo", defaultValue = "HUMANA") String tipo,
-            Model model) {
-
-        DonanteRequestDTO donanteDTO = crearDonanteDTOBase(tipo);
-        model.addAttribute("donante", donanteDTO);
-        model.addAttribute("tipoActual", tipo);
-        return "donantes/formulario-no-key";
-    }
-
     @PostMapping("/nuevo/admin")
     public String guardarDonanteByAdmin(
             @ModelAttribute("donante") DonanteRequestDTO donanteDTO,
