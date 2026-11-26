@@ -9,8 +9,8 @@
 <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
 <div class="mb-3 d-flex gap-2">
-    <a th:href="@{/donantes/nuevo/admin(tipo='HUMANA')}" class="btn btn-primary">+ Nuevo Donante Humano</a>
-    <a th:href="@{/donantes/nuevo/admin(tipo='JURIDICA')}" class="btn btn-secondary">+ Nuevo Donante Jurídico</a>
+    <a th:href="@{/donantes/nuevo(tipo='HUMANA')}" class="btn btn-primary">+ Nuevo Donante Humano</a>
+    <a th:href="@{/donantes/nuevo(tipo='JURIDICA')}" class="btn btn-secondary">+ Nuevo Donante Jurídico</a>
     <a th:href="@{/donantes/importador}" class="btn btn-outline-info">Importar CSV</a>
 </div>
 

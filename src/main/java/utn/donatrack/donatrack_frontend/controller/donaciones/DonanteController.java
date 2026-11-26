@@ -63,7 +63,7 @@ public class DonanteController {
             }
 
             redirectAttributes.addFlashAttribute("exito", "¡Donante y usuario creados con éxito!");
-            return "redirect:/donantes";
+            return "redirect:/login";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al registrar donante: " + e.getMessage());
             return "redirect:/donantes/nuevo";
@@ -83,7 +83,7 @@ public class DonanteController {
             return "redirect:/";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error inesperado: " + e.getMessage());
-            return "redirect:/donantes/nuevo/admin";
+            return "redirect:/donantes/nuevo";
         }
     }
 
