@@ -65,14 +65,21 @@ public class IncentivosController {
 
     @GetMapping("/perfil-donante")
     public String irAMisIncentivos(HttpSession session, RedirectAttributes redirectAttributes) {
-        Long idDonante = (Long) session.getAttribute("idDonante");
-        if (idDonante == null) {
-            String email = (String) session.getAttribute("userEmail");
+        Long idDonante = 0L;
+        if (session != null && session.getAttribute("idDonante") != null) {
+            idDonante = (Long) session.getAttribute("idDonante");
+        }
+        else {
+            String email = (session != null) ? (String) session.getAttribute("userEmail") : null;
             if (email != null) {
-                idDonante = donanteService.getByEmail(email).getId();
-
-                if (idDonante != null) {
-                    session.setAttribute("idDonante", idDonante);
+                try {
+                    DonanteResponseDTO donante = donanteService.getByEmail(email);
+                    if (donante != null) {
+                        idDonante = donante.getId();
+                        session.setAttribute("idDonante", idDonante);
+                    }
+                } catch (Exception e) {
+                    // Si el usuario logueado es Admin y no un donante, no interrumpe el flujo
                 }
             }
         }

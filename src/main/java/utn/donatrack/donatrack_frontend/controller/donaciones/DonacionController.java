@@ -50,7 +50,7 @@ public class DonacionController {
                 }
             }
         }
-        if(esAdmin) {
+        if(esAdmin || idDonante != null) {
             try {
                 List<DonanteResponseDTO> donantes = donanteService.getAll();
                 model.addAttribute("donantes", donantes != null ? donantes : List.of());
