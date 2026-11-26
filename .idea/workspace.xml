@@ -6,14 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="67621db1-9369-4a54-97ba-ab1256cb9f2b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/IncentivosController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/IncentivosController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/NavegacionAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/NavegacionAdvice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/DonacionSegmentadaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/controller/donaciones/DonacionSegmentadaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/DonanteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utn/donatrack/donatrack_frontend/services/DonanteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/segmentadas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/segmentadas.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donaciones/vencidas.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donaciones/vencidas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/donantes/lista.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/donantes/lista.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/organisms.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/organisms.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

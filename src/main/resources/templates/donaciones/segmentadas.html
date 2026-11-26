@@ -58,7 +58,7 @@
                 <span class="badge bg-success" th:text="${s.estadoActual}">EN_DEPOSITO</span>
             </td>
             <td class="text-end">
-                <a th:href="@{/donaciones/vencida(idDonante=${idDonanteSeleccionado}, idDonacion=1, idSegmentada=${s.idSegmentada})}"
+                <a th:href="@{/donaciones/vencidas(idDonante=${idDonanteSeleccionado}, idDonacion=1, idSegmentada=${s.idSegmentada})}"
                    class="btn btn-sm btn-outline-warning">
                     Marcar Vencida
                 </a>

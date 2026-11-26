@@ -11,7 +11,7 @@
 <!-- 1. Selector de Donante -->
 <div class="card p-3 mb-4 border-0 shadow-sm">
     <label for="selectDonante" class="form-label fw-bold">1. Seleccionar Donante:</label>
-    <select id="selectDonante" class="form-select" onchange="location.href='/donaciones/vencida?idDonante=' + this.value">
+    <select id="selectDonante" class="form-select" onchange="location.href='/donaciones/vencidas?idDonante=' + this.value">
         <option value="" disabled th:selected="${idDonanteSeleccionado == null}">-- Seleccionar Donante --</option>
         <option th:each="d : ${donantes}"
                 th:value="${d.id}"
@@ -22,7 +22,7 @@
 </div>
 
 <!-- 2. Formulario de estado cuando hay donante elegido -->
-<form th:if="${idDonanteSeleccionado != null}" th:action="@{/donaciones/vencida}" method="post" class="card p-4 shadow-sm border-0">
+<form th:if="${idDonanteSeleccionado != null}" th:action="@{/donaciones/vencidas}" method="post" class="card p-4 shadow-sm border-0">
     <input type="hidden" name="idDonante" th:value="${idDonanteSeleccionado}"/>
 
     <div class="row g-3 mb-3">

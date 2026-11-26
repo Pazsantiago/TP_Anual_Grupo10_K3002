@@ -95,7 +95,6 @@ public class NavegacionAdvice {
             Map.entry("asignadas", "Donaciones asignadas"),
             Map.entry("rankings", "Rankings"),
             Map.entry("segmentadas", "Donaciones segmentadas"),
-            Map.entry("vencida", "Marcar vencida"),
             Map.entry("vencidas", "Indicar vencimiento"),
             Map.entry("generar", "Generar ranking"),
             Map.entry("repetidas", "Entidades repetidas"),
@@ -133,7 +132,6 @@ public class NavegacionAdvice {
             Map.entry("donantes/importador", "Importar donantes CSV"),
             Map.entry("donaciones/nueva", "Cargar donación"),
             Map.entry("donaciones/segmentadas", "Donaciones segmentadas"),
-            Map.entry("donaciones/vencida", "Marcar vencida"),
             Map.entry("donaciones/vencidas", "Indicar vencimiento"),
             Map.entry("entidadesBeneficiarias/nueva", "Registrar entidad"),
             Map.entry("entidades/nueva", "Registrar entidad"),
@@ -153,7 +151,7 @@ public class NavegacionAdvice {
     private static final Pattern RUTA_NAVEGABLE = Pattern.compile(
             "^/(panel|donantes|donaciones|entidadesBeneficiarias|entidades|necesidades|asignaciones|asignadas|rankings|incentivos|logistica|notificaciones|galeria|mapa|legal|login)$"
                     + "|^/donantes/(nuevo|nuevo/admin|importador)$"
-                    + "|^/donaciones/(nueva|segmentadas|vencida|vencidas|home)$"
+                    + "|^/donaciones/(nueva|segmentadas|vencidas|home)$"
                     + "|^/(entidadesBeneficiarias|entidades)/nueva$"
                     + "|^/necesidades/nueva$"
                     + "|^/asignaciones/(nueva|agregar-segmentada)$"
