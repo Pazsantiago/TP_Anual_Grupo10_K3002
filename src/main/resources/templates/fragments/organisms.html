@@ -12,7 +12,7 @@
     <ul class="topbar__list topbar__list--end" style="display: flex; gap: 0.4rem; list-style: none; margin: 0; padding: 0; align-items: center; white-space: nowrap;">
       <li th:if="${session.userRol != null}">
         <span class="badge bg-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.4rem;">
-          Rol: <strong th:text="${#strings.replace(session.userRol, 'ROLE_', '')}">ADMIN</strong>
+          Rol: <strong th:text="${#strings.replace(session.userRol, 'ROLE_', '')}"> ADMIN</strong>
         </span>
       </li>
       <li><a class="topbar__link" th:href="@{/panel}" style="padding: 0.25rem 0.4rem; font-size: 0.82rem;">Panel</a></li>
