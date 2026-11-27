@@ -25,10 +25,24 @@ public class DonanteService {
     }
 
     public DonanteResponseDTO getByEmail(String email) {
-        return donacionesRestClient.get()
-                .uri("/api/donantes/email?email={email}", email)
-                .retrieve()
-                .body(DonanteResponseDTO.class);
+        System.out.println(" -> [donanteService] Ejecutando GET hacia el Backend para email: " + email);
+        try {
+            DonanteResponseDTO dto = donacionesRestClient.get()
+                    .uri("/api/donantes/email?email={email}", email)
+                    .retrieve()
+                    .body(DonanteResponseDTO.class);
+
+            System.out.println(" -> [donanteService] Respuesta exitosa del Backend! DTO recuperado: " + dto);
+            return dto;
+
+        } catch (org.springframework.web.client.HttpClientErrorException e) {
+            System.err.println(" -> [donanteService] HTTP Error del Backend: Status " + e.getStatusCode() + " - Body: " + e.getResponseBodyAsString());
+            return null;
+        } catch (Exception e) {
+            System.err.println(" -> [donanteService] Excepción al invocar RestClient: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public DonanteResponseDTO getById(Long id) {
