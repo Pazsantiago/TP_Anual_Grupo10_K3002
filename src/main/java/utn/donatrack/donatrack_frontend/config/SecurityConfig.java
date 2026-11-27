@@ -31,11 +31,11 @@ public class SecurityConfig {
                         // Permisos con Rol
                         .requestMatchers("/ruta", "/ruta/iniciar").hasRole("CHOFER")
                         .requestMatchers("/logistica/seguimiento", "/logistica/seguimiento/ubicaciones").hasAnyRole("ENTIDAD", "DONANTE")
+                        .requestMatchers("/incentivos/perfil-donante", "/incentivos/*").hasAnyRole("DONANTE", "ADMIN")
                         .requestMatchers("/donaciones", "/donaciones/segmentadas").hasAnyRole("DONANTE", "ADMIN")
                         .requestMatchers("/entidadesBeneficiarias").hasAnyRole("DONANTE", "ENTIDAD", "ADMIN")
                         .requestMatchers("/donantes/**", "/donaciones/**",
-                        "/asignaciones/nueva", "/asignaciones/agregar-segmentada", "/logistica/**", "/incentivos", "/rankings/**").hasRole("ADMIN")
-                        .requestMatchers("/incentivos/perfil-donante", "/incentivos/*").hasRole("DONANTE")
+                        "/asignaciones/nueva", "/asignaciones/agregar-segmentada", "/logistica/**", "/incentivos/**", "/rankings/**").hasRole("ADMIN")
                         .requestMatchers("/entidadesBeneficiarias/**", "/necesidades/**", "/asignaciones").hasRole("ENTIDAD")
                         .anyRequest().authenticated()
                 )

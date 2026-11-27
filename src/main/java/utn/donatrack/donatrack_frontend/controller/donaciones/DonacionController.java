@@ -28,45 +28,54 @@ public class DonacionController {
     private final CategoriaService categoriaService;
 
     @GetMapping
-    public String listarPorDonante(@RequestParam(value = "idDonante", required = false) Long idDonante, HttpSession session, Model model) {
-        Boolean esAdmin = (Boolean) session.getAttribute("userRol").equals("ROLE_ADMIN");
-        if (idDonante != null) {
-            session.setAttribute("idDonante", idDonante);
-        }
-        else if (session != null && session.getAttribute("idDonante") != null) {
-            idDonante = (Long) session.getAttribute("idDonante");
-        }
-        else {
+    public String listarPorDonante(
+            @RequestParam(value = "idDonante", required = false) Long idDonanteParam,
+            HttpSession session,
+            Model model) {
+        Object rolObj = (session != null) ? session.getAttribute("userRol") : null;
+        boolean esAdmin = rolObj != null && rolObj.toString().contains("ADMIN");
+        Long idDonanteFinal = null;
+        if (esAdmin) {
+            if (idDonanteParam != null) {
+                idDonanteFinal = idDonanteParam;
+                session.setAttribute("idDonante", idDonanteFinal);
+            }
+            else if (session != null && session.getAttribute("idDonante") != null) {
+                idDonanteFinal = (Long) session.getAttribute("idDonante");
+            }
+
+            try {
+                List<DonanteResponseDTO> todosLosDonantes = donanteService.getAll();
+                model.addAttribute("donantes", todosLosDonantes != null ? todosLosDonantes : List.of());
+            } catch (Exception e) {
+                model.addAttribute("donantes", List.of());
+                model.addAttribute("error", "Error al cargar la lista de donantes.");
+            }
+
+        } else {
             String email = (session != null) ? (String) session.getAttribute("userEmail") : null;
             if (email != null) {
                 try {
-                    DonanteResponseDTO donante = donanteService.getByEmail(email);
-                    if (donante != null) {
-                        idDonante = donante.getId();
-                        session.setAttribute("idDonante", idDonante);
+                    DonanteResponseDTO miDonante = donanteService.getByEmail(email);
+                    if (miDonante != null) {
+                        idDonanteFinal = miDonante.getId();
+                        session.setAttribute("idDonante", idDonanteFinal);
+
+                        model.addAttribute("donantes", List.of(miDonante));
                     }
                 } catch (Exception e) {
-                    // Si el usuario logueado es Admin y no un donante, no interrumpe el flujo
+                    model.addAttribute("error", "Error al obtener tus datos de donante.");
                 }
             }
         }
-        if(esAdmin || idDonante != null) {
-            try {
-                List<DonanteResponseDTO> donantes = donanteService.getAll();
-                model.addAttribute("donantes", donantes != null ? donantes : List.of());
-            } catch (Exception e) {
-                model.addAttribute("donantes", List.of());
-                model.addAttribute("error", "Error al cargar lista de donantes.");
-            }
-        }
         List<DonacionResponseDTO> donaciones = List.of();
-        if (idDonante != null) {
+        if (idDonanteFinal != null) {
             try {
-                donaciones = donacionService.getByDonante(idDonante);
+                donaciones = donacionService.getByDonante(idDonanteFinal);
             } catch (Exception e) {
-                model.addAttribute("error", "Error al cargar las donaciones del donante.");
+                model.addAttribute("error", "Error al cargar las donaciones.");
             }
-            model.addAttribute("idDonanteSeleccionado", idDonante);
+            model.addAttribute("idDonanteSeleccionado", idDonanteFinal);
         }
 
         model.addAttribute("donaciones", donaciones != null ? donaciones : List.of());

@@ -12,7 +12,7 @@
     <ul class="topbar__list topbar__list--end" style="display: flex; gap: 0.4rem; list-style: none; margin: 0; padding: 0; align-items: center; white-space: nowrap;">
       <li th:if="${session.userRol != null}">
         <span class="badge bg-secondary" style="font-size: 0.72rem; padding: 0.2rem 0.4rem;">
-          Rol: <strong th:text="${#strings.replace(session.userRol, 'ROLE_', '')}"> ADMIN</strong>
+          Rol:&nbsp;<strong th:text="${#strings.replace(session.userRol, 'ROLE_', '')}">ADMIN</strong>
         </span>
       </li>
       <li><a class="topbar__link" th:href="@{/panel}" style="padding: 0.25rem 0.4rem; font-size: 0.82rem;">Panel</a></li>
@@ -23,6 +23,7 @@
   </nav>
   <div class="progress" data-progress role="progressbar" aria-label="Cargando" hidden></div>
 </header>
+
 
 <!-- ORGANISMO · ENCABEZADO PÚBLICO. Para visitantes: landing, galería, mapa, legal, login y registro. -->
 <header class="topbar" th:fragment="encabezado-publico(activo)">
@@ -38,12 +39,12 @@
     <ul class="topbar__list topbar__list--end">
       <li th:if="${session.userRol != null}">
         <span class="topbar__link" style="opacity: 0.9; font-size: 0.85rem;">
-          Rol: <strong th:text="${#strings.replace(session.userRol, 'ROLE_', '')}"> ADMIN</strong>
+          Rol:&nbsp;<strong th:text="${#strings.replace(session.userRol, 'ROLE_', '')}">ADMIN</strong>
         </span>
       </li>
       <li th:if="${session.userRol == null}">
         <span class="topbar__link" style="opacity: 0.9; font-size: 0.85rem;">
-          Rol: <strong> Invitado</strong>
+          Rol:&nbsp;<strong>Invitado</strong>
         </span>
       </li>
       <li><a class="topbar__link" th:if="${session.jwtToken == null}" th:href="@{/login}" th:attr="aria-current=${activo == 'login'} ? 'true'">Iniciar sesión</a></li>
