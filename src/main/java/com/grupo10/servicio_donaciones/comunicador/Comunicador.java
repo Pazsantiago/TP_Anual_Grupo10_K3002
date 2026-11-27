@@ -29,8 +29,9 @@ public class Comunicador {
         restClient
                 .post()
                 .uri("/mensajes")
-                .body(new NotificacionRequestDTO(tipoNotificacion, "Prueba",
+                .body(new NotificacionRequestDTO(tipoNotificacion,
                         "Su usuario ha sido creado! Debe ingresar sesión con esta contraseña: " + clave + " y luego cambiarla por una propia",
+                        "Autenticación de donatrack!",
                         new DestinatarioRequestDTO(nombre, telefono, correo, telefono), tipoEvento.toString()))
                 .retrieve()
                 .toBodilessEntity();
