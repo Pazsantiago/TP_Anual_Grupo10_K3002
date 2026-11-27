@@ -47,7 +47,7 @@
     </div>
 
     <div th:if="${rankings == null or #lists.isEmpty(rankings)}">
-        <div th:replace="~{fragments/molecules :: estado-vacio('No hay rankings calculados actualmente. Haz clic en &quot;Recalcular Rankings&quot; para generar uno.')}"></div>
+        <div th:replace="~{fragments/molecules :: estado-vacio('No hay rankings calculados actualmente. Haz clic en Recalcular Rankings para generar uno.')}"></div>
     </div>
 </main>
 

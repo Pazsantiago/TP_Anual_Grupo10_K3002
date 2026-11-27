@@ -11,7 +11,8 @@
     <h1 class="page-head__title" th:text="'Incentivos del donante N.º ' + ${idDonante}">Incentivos del donante N.º 1</h1>
     <div class="cluster">
       <a class="btn btn--secondary" th:href="@{/incentivos/misiones}">Cómo se sube de categoría</a>
-      <a class="btn btn--secondary" th:href="@{/incentivos}">Volver a incentivos</a>
+      <a th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}"
+         class="btn btn--secondary" th:href="@{/incentivos}">Volver a incentivos</a>
     </div>
   </header>
 
