@@ -31,7 +31,7 @@ public class SecurityConfig {
                         // Permisos con Rol
                         .requestMatchers("/ruta", "/ruta/iniciar").hasRole("CHOFER")
                         .requestMatchers("/logistica/seguimiento", "/logistica/seguimiento/ubicaciones").hasAnyRole("ENTIDAD", "DONANTE")
-                        .requestMatchers("/incentivos/perfil-donante", "/incentivos/*").hasAnyRole("DONANTE", "ADMIN")
+                        .requestMatchers("/incentivos/perfil-donante", "/incentivos/donantes/{id:[0-9]+}").hasAnyRole("DONANTE", "ADMIN")
                         .requestMatchers("/donaciones", "/donaciones/segmentadas").hasAnyRole("DONANTE", "ADMIN")
                         .requestMatchers("/entidadesBeneficiarias").hasAnyRole("DONANTE", "ENTIDAD", "ADMIN")
                         .requestMatchers("/donantes/**", "/donaciones/**",
