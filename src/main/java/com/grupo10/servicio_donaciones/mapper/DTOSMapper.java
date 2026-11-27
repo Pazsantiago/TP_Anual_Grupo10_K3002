@@ -272,14 +272,17 @@ public class DTOSMapper {
         if (dto.getMediosDeContacto() != null) {
             for (MedioContactoRequestDTO mcDto : dto.getMediosDeContacto()) {
                 MedioContacto mc = deDTORequestADominio(mcDto);
+
+                // 1. Agregar SIEMPRE a la colección de medios de contacto
+                donante.agregarMedioContacto(mc);
+
+                // 2. Si es predeterminado, actualizar la marca/referencia
                 if (mcDto.isEsPredeterminado()) {
                     donante.cambiarContactoPredeterminado(mc);
-                } else {
-                    donante.agregarMedioContacto(mc);
                 }
             }
         }
-
+        
         if (dto.getDonaciones() != null) {
             donante.setDonaciones(
                     dto.getDonaciones().stream()
