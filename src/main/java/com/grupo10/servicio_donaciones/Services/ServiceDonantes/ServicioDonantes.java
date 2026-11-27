@@ -100,7 +100,7 @@ public class ServicioDonantes {
 
         for (Donante donanteCSV : donantes) {
             String correo = donanteCSV.getMediosDeContacto().get(0).getCorreoElectronico();
-            Optional<Donante> existenteEnDB = repoDonantes.findByMediosDeContacto_CorreoElectronicoIgnoreCase(correo);
+            Optional<Donante> existenteEnDB = repoDonantes.buscarPorCorreoIgnoreCase(correo);
 
             if (existenteEnDB.isPresent()) {
                 Donante donanteAActualizar = existenteEnDB.get();
