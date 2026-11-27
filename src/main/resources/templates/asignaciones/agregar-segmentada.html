@@ -1,47 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Agregar segmentada')}"></head>
-<body class="container py-4 bg-light">
+<body>
 
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-secondary text-white">
-                <h4 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Agregar Donación Segmentada a Asignación</h4>
-            </div>
-            <div class="card-body p-4">
+<header th:replace="~{fragments/organisms :: encabezado('donaciones')}"></header>
 
-                <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <span th:text="${error}"></span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<main id="contenido" class="container page" style="max-width: var(--form-max);">
+    <header class="page-head">
+        <h1 class="page-head__title">Agregar Donación Segmentada a Asignación</h1>
+    </header>
+
+    <div th:replace="~{fragments/molecules :: mensajes}"></div>
+    <p class="banner banner--error" role="alert" th:if="${error != null}" th:text="${error}"></p>
+
+    <section class="card">
+        <form class="form" th:action="@{/asignaciones/agregar-segmentada}" method="post">
+            <fieldset class="fieldset">
+                <legend class="fieldset__legend">Vincular Lote Adicional</legend>
+
+                <div class="field">
+                    <label class="field__label" for="idDonacionAsignada">ID Donación Asignada Existente <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+                    <input class="field__control" type="number" id="idDonacionAsignada" name="idDonacionAsignada" placeholder="Ej: 1" required>
                 </div>
-                <div th:if="${exito != null}" class="alert alert-success alert-dismissible fade show" role="alert">
-                    <span th:text="${exito}"></span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+                <div class="field">
+                    <label class="field__label" for="idDonacionSegmentada">ID Donación Segmentada Adicional <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+                    <input class="field__control" type="number" id="idDonacionSegmentada" name="idDonacionSegmentada" placeholder="Ej: 8" required>
                 </div>
+            </fieldset>
 
-                <form th:action="@{/asignaciones/agregar-segmentada}" method="post">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">ID Donación Asignada Existente</label>
-                        <input type="number" name="idDonacionAsignada" class="form-control" placeholder="Ej: 1" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">ID Donación Segmentada Adicional</label>
-                        <input type="number" name="idDonacionSegmentada" class="form-control" placeholder="Ej: 8" required>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <a href="/home" class="btn btn-outline-secondary">Cancelar</a>
-                        <button type="submit" class="btn btn-secondary">
-                            <i class="bi bi-plus-lg me-1"></i> Agregar a Asignación
-                        </button>
-                    </div>
-                </form>
+            <div class="cluster">
+                <button type="submit" class="btn">Agregar a Asignación</button>
+                <a th:href="@{/home}" class="btn btn--secondary">Cancelar</a>
             </div>
-        </div>
-    </div>
-</div>
+        </form>
+    </section>
+</main>
 
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

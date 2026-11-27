@@ -1,47 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Listado de Donantes')}"></head>
-<body class="container py-4">
+<body>
+
 <header th:replace="~{fragments/organisms :: encabezado('donantes')}"></header>
-<h2 class="mb-4">Gestión de Donantes</h2>
 
-<div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
-<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+<main id="contenido" class="container page">
+    <nav th:replace="~{fragments/molecules :: migas}"></nav>
 
-<div class="mb-3 d-flex gap-2">
-    <a th:href="@{/donantes/nuevo(tipo='HUMANA')}" class="btn btn-primary">+ Nuevo Donante Humano</a>
-    <a th:href="@{/donantes/nuevo(tipo='JURIDICA')}" class="btn btn-secondary">+ Nuevo Donante Jurídico</a>
-    <a th:href="@{/donantes/importador}" class="btn btn-outline-info">Importar CSV</a>
-</div>
+    <header class="page-head">
+        <h1 class="page-head__title">Gestión de Donantes</h1>
+        <div class="cluster">
+            <a th:href="@{/donantes/nuevo(tipo='HUMANA')}" class="btn">+ Nuevo Donante Humano</a>
+            <a th:href="@{/donantes/nuevo(tipo='JURIDICA')}" class="btn btn--secondary">+ Nuevo Donante Jurídico</a>
+            <a th:href="@{/donantes/importador}" class="btn btn--secondary">Importar CSV</a>
+        </div>
+    </header>
 
-<table class="table table-striped table-hover align-middle">
-    <thead class="table-dark">
-    <tr>
-        <th>ID</th>
-        <th>Nombre / Razón Social</th>
-        <th>Cant. Donaciones</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="d : ${donantes}">
-        <td th:text="${d.id}">1</td>
-        <td th:text="${d.nombre}">Juan Pérez</td>
-        <td th:text="${d.donaciones != null ? d.donaciones.size() : 0}">0</td>
-        <td>
-            <div class="d-flex gap-2">
-                <a th:href="@{/donaciones(idDonante=${d.id})}" class="btn btn-sm btn-info">Ver Donaciones</a>
-                <form method="post" th:action="@{/donantes/eliminar}" onsubmit="return confirm('¿Seguro deseas eliminar este donante?');">
-                    <input type="hidden" name="id" th:value="${d.id}"/>
-                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                </form>
-            </div>
-        </td>
-    </tr>
-    <tr th:if="${donantes == null or #lists.isEmpty(donantes)}">
-        <td colspan="4" class="text-center text-muted">No hay donantes registrados.</td>
-    </tr>
-    </tbody>
-</table>
+    <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+    <div class="table-wrap" role="region" aria-label="Tabla de Donantes" tabindex="0">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre / Razón Social</th>
+                <th scope="col">Cant. Donaciones</th>
+                <th scope="col">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="d : ${donantes}">
+                <td th:text="${d.id}">1</td>
+                <td th:text="${d.nombre}">Juan Pérez</td>
+                <td th:text="${d.donaciones != null ? d.donaciones.size() : 0}">0</td>
+                <td>
+                    <div class="cluster">
+                        <a th:href="@{/donaciones(idDonante=${d.id})}" class="btn btn--secondary">Ver Donaciones</a>
+                        <form method="post" th:action="@{/donantes/eliminar}" onsubmit="return confirm('¿Seguro deseas eliminar este donante?');" style="display:inline;">
+                            <input type="hidden" name="id" th:value="${d.id}"/>
+                            <button type="submit" class="btn btn--danger">Eliminar</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr th:if="${donantes == null or #lists.isEmpty(donantes)}">
+                <td colspan="4">
+                    <div th:replace="~{fragments/molecules :: estado-vacio('No hay donantes registrados.')}"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

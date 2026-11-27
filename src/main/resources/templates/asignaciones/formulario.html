@@ -1,54 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Asignación de donación a necesidad')}"></head>
-<body class="container py-4 bg-light">
+<body>
 
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-dark text-white">
-                <h4 class="mb-0"><i class="bi bi-link-45deg me-2"></i>Asignar Donación a Necesidad</h4>
-            </div>
-            <div class="card-body p-4">
+<header th:replace="~{fragments/organisms :: encabezado('donaciones')}"></header>
 
-                <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i><span th:text="${error}"></span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<main id="contenido" class="container page" style="max-width: var(--form-max);">
+    <header class="page-head">
+        <h1 class="page-head__title">Asignar Donación a Necesidad</h1>
+    </header>
+
+    <div th:replace="~{fragments/molecules :: mensajes}"></div>
+    <p class="banner banner--error" role="alert" th:if="${error != null}" th:text="${error}"></p>
+
+    <section class="card">
+        <form class="form" th:action="@{/asignaciones/nueva}" method="post">
+            <fieldset class="fieldset">
+                <legend class="fieldset__legend">Parámetros de Asignación</legend>
+
+                <div class="field">
+                    <label class="field__label" for="selectEntidad">1. Entidad Beneficiaria <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+                    <select id="selectEntidad" name="idEntidad" class="field__control" required>
+                        <option value="">-- Seleccionar Entidad Beneficiaria --</option>
+                        <option th:each="e : ${entidades}"
+                                th:value="${e.id}"
+                                th:text="${e.razonSocial}">
+                        </option>
+                    </select>
                 </div>
 
-                <form th:action="@{/asignaciones/nueva}" method="post">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">1. Entidad Beneficiaria</label>
-                        <select name="idEntidad" class="form-select" required>
-                            <option value="">-- Seleccionar Entidad Beneficiaria --</option>
-                            <option th:each="e : ${entidades}"
-                                    th:value="${e.id}"
-                                    th:text="${e.razonSocial}">
-                            </option>
-                        </select>
-                    </div>
+                <div class="field">
+                    <label class="field__label" for="idNecesidad">2. ID Necesidad de la Entidad <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+                    <input class="field__control" type="number" id="idNecesidad" name="idNecesidad" placeholder="Ej: 2" required>
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">2. ID Necesidad de la Entidad</label>
-                        <input type="number" name="idNecesidad" class="form-control" placeholder="Ej: 2" required>
-                    </div>
+                <div class="field">
+                    <label class="field__label" for="idDonacionSegmentada">3. ID Donación Segmentada en Depósito <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+                    <input class="field__control" type="number" id="idDonacionSegmentada" name="idDonacionSegmentada" placeholder="Ej: 5" required>
+                </div>
+            </fieldset>
 
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">3. ID Donación Segmentada en Depósito</label>
-                        <input type="number" name="idDonacionSegmentada" class="form-control" placeholder="Ej: 5" required>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <a href="/home" class="btn btn-outline-secondary">Cancelar</a>
-                        <button type="submit" class="btn btn-dark">
-                            <i class="bi bi-check-circle me-1"></i> Confirmar Asignación
-                        </button>
-                    </div>
-                </form>
+            <div class="cluster">
+                <button type="submit" class="btn">Confirmar Asignación</button>
+                <a th:href="@{/home}" class="btn btn--secondary">Cancelar</a>
             </div>
-        </div>
-    </div>
-</div>
+        </form>
+    </section>
+</main>
 
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

@@ -1,84 +1,87 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Listado de donaciones')}"></head>
-<body class="container py-4">
+<body>
+
 <header th:replace="~{fragments/organisms :: encabezado('donaciones')}"></header>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Gestión de Donaciones</h2>
-    <div class="nueva-donacion" th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}">
-        <a th:href="@{/donaciones/nueva(idDonante=${idDonanteSeleccionado})}" class="btn btn-primary">+ Nueva Donación</a>
-    </div>
-</div>
-
-<div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
-<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-
-<form method="get" th:action="@{/donaciones}" class="card card-body mb-4 bg-light">
-    <div class="row align-items-end">
-        <div class="col-md-8">
-            <label for="selectDonante" class="form-label fw-bold">Seleccionar Donante:</label>
-            <select id="selectDonante" name="idDonante" class="form-select" onchange="this.form.submit()">
-                <option value="" disabled th:selected="${idDonanteSeleccionado == null}">-- Seleccionar Donante --</option>
-                <option th:each="d : ${donantes}"
-                        th:value="${d.id}"
-                        th:text="${d.nombre}"
-                        th:selected="${d.id == idDonanteSeleccionado}">
-                </option>
-            </select>
+<main id="contenido" class="container page">
+    <header class="page-head">
+        <h1 class="page-head__title">Gestión de Donaciones</h1>
+        <div class="cluster" th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}">
+            <a th:href="@{/donaciones/nueva(idDonante=${idDonanteSeleccionado})}" class="btn">+ Nueva Donación</a>
         </div>
-        <div class="col-md-4" th:if="${idDonanteSeleccionado != null}">
-            <a th:href="@{/donaciones/segmentadas(idDonante=${idDonanteSeleccionado})}" class="btn btn-outline-info w-100">
-                Ver Donaciones Segmentadas
-            </a>
+    </header>
+
+    <div th:replace="~{fragments/molecules :: mensajes}"></div>
+
+    <form method="get" th:action="@{/donaciones}" class="card form form--wide" style="margin-bottom: var(--space-4);">
+        <div class="field-row">
+            <div class="field">
+                <label class="field__label" for="selectDonante">Seleccionar Donante:</label>
+                <select id="selectDonante" name="idDonante" class="field__control" onchange="this.form.submit()">
+                    <option value="" disabled th:selected="${idDonanteSeleccionado == null}">-- Seleccionar Donante --</option>
+                    <option th:each="d : ${donantes}"
+                            th:value="${d.id}"
+                            th:text="${d.nombre}"
+                            th:selected="${d.id == idDonanteSeleccionado}">
+                    </option>
+                </select>
+            </div>
+            <div class="field" th:if="${idDonanteSeleccionado != null}" style="align-self: flex-end;">
+                <a th:href="@{/donaciones/segmentadas(idDonante=${idDonanteSeleccionado})}" class="btn btn--secondary">
+                    Ver Donaciones Segmentadas
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <div th:if="${idDonanteSeleccionado != null}">
+        <div class="table-wrap" role="region" aria-label="Donaciones del donante" tabindex="0">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Fecha Entrada</th>
+                    <th scope="col">Cant. Bienes</th>
+                    <th scope="col">Categorías Incluidas</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="don : ${donaciones}">
+                    <td th:text="${don.id}">1</td>
+                    <td th:text="${#dates.format(don.fechaEntrada, 'dd/MM/yyyy HH:mm')}">01/10/2026</td>
+                    <td th:text="${don.cantBienes}">5</td>
+                    <td>
+                        <span th:each="cat : ${don.categoriasIncluidas}" class="badge" style="margin-right: var(--space-1);" th:text="${cat}">Alimentos</span>
+                        <span th:if="${don.categoriasIncluidas == null or #lists.isEmpty(don.categoriasIncluidas)}" class="field__hint">General</span>
+                    </td>
+                    <td>
+                        <span th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'DONANTE' or #strings.toUpperCase(session.userRol) == 'ROLE_DONANTE')}">Ninguna</span>
+                        <form th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}"
+                              method="post" th:action="@{/donaciones/eliminar}" onsubmit="return confirm('¿Seguro deseas eliminar esta donación?');">
+                            <input type="hidden" name="idDonante" th:value="${idDonanteSeleccionado}"/>
+                            <input type="hidden" name="idDonacion" th:value="${don.id}"/>
+                            <button type="submit" class="btn btn--danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${donaciones == null or #lists.isEmpty(donaciones)}">
+                    <td colspan="5">
+                        <div th:replace="~{fragments/molecules :: estado-vacio('No hay donaciones registradas para el donante seleccionado.')}"></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-</form>
 
-<div th:if="${idDonanteSeleccionado != null}">
-    <div class="table-responsive bg-white rounded shadow-sm border">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-            <tr>
-                <th>ID</th>
-                <th>Fecha Entrada</th>
-                <th>Cant. Bienes</th>
-                <th>Categorías Incluidas</th>
-                <th class="text-end">Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="don : ${donaciones}">
-                <td th:text="${don.id}">1</td>
-                <td th:text="${#dates.format(don.fechaEntrada, 'dd/MM/yyyy HH:mm')}">01/10/2026</td>
-                <td th:text="${don.cantBienes}">5</td>
-                <td>
-                    <span th:each="cat : ${don.categoriasIncluidas}" class="badge bg-secondary me-1" th:text="${cat}">Alimentos</span>
-                    <span th:if="${don.categoriasIncluidas == null or #lists.isEmpty(don.categoriasIncluidas)}" class="text-muted">General</span>
-                </td>
-                <td th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'DONANTE' or #strings.toUpperCase(session.userRol) == 'ROLE_DONANTE')"}>
-                    <span>Ninguna</span>
-                </td>
-
-                <td class="text-end" th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}">
-                    <form method="post" th:action="@{/donaciones/eliminar}" onsubmit="return confirm('¿Seguro deseas eliminar esta donación?');" style="display:inline;">
-                        <input type="hidden" name="idDonante" th:value="${idDonanteSeleccionado}"/>
-                        <input type="hidden" name="idDonacion" th:value="${don.id}"/>
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
-                    </form>
-                </td>
-            </tr>
-            <tr th:if="${donaciones == null or #lists.isEmpty(donaciones)}">
-                <td colspan="5" class="text-center py-4 text-muted">No hay donaciones registradas para el donante seleccionado.</td>
-            </tr>
-            </tbody>
-        </table>
+    <div th:if="${idDonanteSeleccionado == null}">
+        <div th:replace="~{fragments/molecules :: estado-vacio('Por favor, selecciona un donante para ver sus donaciones.')}"></div>
     </div>
-</div>
+</main>
 
-<div th:if="${idDonanteSeleccionado == null}" class="alert alert-info text-center">
-    Por favor, selecciona un donante para ver e interactuar con sus donaciones.
-</div>
-
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

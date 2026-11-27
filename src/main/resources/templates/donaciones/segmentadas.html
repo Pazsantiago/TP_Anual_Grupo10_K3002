@@ -1,75 +1,87 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Ver segmentadas con filtros')}"></head>
-<body class="container py-4">
+<body>
+
 <header th:replace="~{fragments/organisms :: encabezado('donaciones')}"></header>
-<h2 class="mb-4">Donaciones Segmentadas en Depósito</h2>
 
-<div class="card card-body mb-4 bg-light shadow-sm">
-    <div class="row g-3">
-        <div class="col-md-4">
-            <label class="form-label fw-bold">Filtrar por Estado:</label>
-            <select id="filterEstado" class="form-select" onchange="filtrarTabla()">
-                <option value="">-- Todos los Estados --</option>
-                <option th:each="e : ${estados}" th:value="${e}" th:text="${e}"></option>
-            </select>
-        </div>
+<main id="contenido" class="container page">
+    <header class="page-head">
+        <h1 class="page-head__title">Donaciones Segmentadas en Depósito</h1>
+    </header>
 
-        <div class="col-md-4">
-            <label class="form-label fw-bold">Filtrar por Categoría:</label>
-            <select id="filterCategoria" class="form-select" onchange="filtrarTabla()">
-                <option value="">-- Todas las Categorías --</option>
-                <option th:each="c : ${categorias}" th:value="${c}" th:text="${c}"></option>
-            </select>
-        </div>
+    <div th:replace="~{fragments/molecules :: mensajes}"></div>
 
-        <div class="col-md-4">
-            <label class="form-label fw-bold">Filtrar por Subcategoría:</label>
-            <select id="filterSubcategoria" class="form-select" onchange="filtrarTabla()">
-                <option value="">-- Todas las Subcategorías --</option>
-                <option th:each="sub : ${subcategorias}" th:value="${sub}" th:text="${sub}"></option>
-            </select>
+    <section class="card form form--wide mb-4">
+        <div class="field-row">
+            <div class="field">
+                <label class="field__label" for="filterEstado">Filtrar por Estado:</label>
+                <select id="filterEstado" class="field__control" onchange="filtrarTabla()">
+                    <option value="">-- Todos los Estados --</option>
+                    <option th:each="e : ${estados}" th:value="${e}" th:text="${e}"></option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label class="field__label" for="filterCategoria">Filtrar por Categoría:</label>
+                <select id="filterCategoria" class="field__control" onchange="filtrarTabla()">
+                    <option value="">-- Todas las Categorías --</option>
+                    <option th:each="c : ${categorias}" th:value="${c}" th:text="${c}"></option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label class="field__label" for="filterSubcategoria">Filtrar por Subcategoría:</label>
+                <select id="filterSubcategoria" class="field__control" onchange="filtrarTabla()">
+                    <option value="">-- Todas las Subcategorías --</option>
+                    <option th:each="sub : ${subcategorias}" th:value="${sub}" th:text="${sub}"></option>
+                </select>
+            </div>
         </div>
+    </section>
+
+    <div class="table-wrap" role="region" aria-label="Tabla de Donaciones Segmentadas" tabindex="0">
+        <table class="table" id="tablaSegmentadas">
+            <thead>
+            <tr>
+                <th scope="col">ID Segmentada</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Subcategoría</th>
+                <th scope="col">Cant. Actual / Original</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="s : ${segmentadas}"
+                th:data-estado="${s.estadoActual}"
+                th:data-categoria="${s.categoria}"
+                th:data-subcategoria="${s.subcategoria}">
+                <td th:text="'#' + ${s.idSegmentada}">#1</td>
+                <td th:text="${s.categoria != null ? s.categoria : 'N/A'}">Alimentos</td>
+                <td th:text="${s.subcategoria != null ? s.subcategoria : 'N/A'}">Lácteos</td>
+                <td th:text="${s.cantidadActual} + ' / ' + ${s.cantidadOriginal} + ' ' + ${s.unidad}">10 / 10 UNIDADES</td>
+                <td>
+                    <span th:replace="~{fragments/atoms :: badge-estado(${s.estadoActual})}"></span>
+                </td>
+                <td>
+                    <div class="cluster" th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}">
+                        <a th:href="@{/donaciones/vencidas(idDonante=${idDonanteSeleccionado}, idDonacion=1, idSegmentada=${s.idSegmentada})}"
+                           class="btn btn--secondary">
+                            Marcar Vencida
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr th:if="${segmentadas == null or #lists.isEmpty(segmentadas)}">
+                <td colspan="6">
+                    <div th:replace="~{fragments/molecules :: estado-vacio('No se encontraron donaciones segmentadas.')}"></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-</div>
-
-<div class="table-responsive bg-white rounded shadow-sm border">
-    <table class="table table-hover align-middle mb-0" id="tablaSegmentadas">
-        <thead class="table-dark">
-        <tr>
-            <th>ID Segmentada</th>
-            <th>Categoría</th>
-            <th>Subcategoría</th>
-            <th>Cant. Actual / Original</th>
-            <th>Estado</th>
-            <th class="text-end">Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="s : ${segmentadas}"
-            th:data-estado="${s.estadoActual}"
-            th:data-categoria="${s.categoria}"
-            th:data-subcategoria="${s.subcategoria}">
-            <td class="fw-bold" th:text="'#' + ${s.idSegmentada}">#1</td>
-            <td th:text="${s.categoria != null ? s.categoria : 'N/A'}">Alimentos</td>
-            <td th:text="${s.subcategoria != null ? s.subcategoria : 'N/A'}">Lácteos</td>
-            <td th:text="${s.cantidadActual} + ' / ' + ${s.cantidadOriginal} + ' ' + ${s.unidad}">10 / 10 UNIDADES</td>
-            <td>
-                <span class="badge bg-success" th:text="${s.estadoActual}">EN_DEPOSITO</span>
-            </td>
-            <td class="text-end" th:if="${session.userRol != null and (#strings.toUpperCase(session.userRol) == 'ADMIN' or #strings.toUpperCase(session.userRol) == 'ROLE_ADMIN')}">
-                <a th:href="@{/donaciones/vencidas(idDonante=${idDonanteSeleccionado}, idDonacion=1, idSegmentada=${s.idSegmentada})}"
-                   class="btn btn-sm btn-outline-warning">
-                    Marcar Vencida
-                </a>
-            </td>
-        </tr>
-        <tr th:if="${segmentadas == null or #lists.isEmpty(segmentadas)}">
-            <td colspan="6" class="text-center py-4 text-muted">No se encontraron donaciones segmentadas.</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+</main>
 
 <script>
     function filtrarTabla() {
@@ -96,5 +108,7 @@
         });
     }
 </script>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

@@ -1,46 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Rankings repetidos de entidad')}"></head>
-<body class="container py-4 bg-light">
+<body>
+
 <header th:replace="~{fragments/organisms :: encabezado('rankings')}"></header>
 
-<h2 class="mb-4">Entidades Repetidas en Posición #1</h2>
+<main id="contenido" class="container page">
+    <header class="page-head">
+        <h1 class="page-head__title">Entidades Repetidas en Posición #1</h1>
+    </header>
 
-<form method="get" th:action="@{/rankings/repetidas}" class="row align-items-center g-3 mb-4">
-    <div class="col-auto">
-        <label for="idDonacion" class="col-form-label fw-bold">ID Donación Original:</label>
-    </div>
-    <div class="col-auto">
-        <input type="number" id="idDonacion" name="idDonacion" th:value="${idDonacionSeleccionada}" class="form-control" placeholder="Ingrese ID de Donación" required />
-    </div>
-    <div class="col-auto">
-        <button type="submit" class="btn btn-primary">Buscar Entidades</button>
-    </div>
-</form>
+    <div th:replace="~{fragments/molecules :: mensajes}"></div>
 
-<div th:if="${idDonacionSeleccionada != null}" class="table-responsive bg-white rounded shadow-sm border">
-    <table class="table table-hover align-middle mb-0">
-        <thead class="table-dark">
-        <tr>
-            <th>ID Entidad</th>
-            <th>Razón Social</th>
-            <th>Dirección</th>
-            <th>Teléfono</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${repetidas}">
-            <td th:text="${item.id}">1</td>
-            <td class="fw-bold" th:text="${item.razonSocial}">Hogar de Niños</td>
-            <td th:text="${item.direccion}">Av. Corrientes 1234</td>
-            <td th:text="${item.telefono}">11 5555-6666</td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(repetidas)}">
-            <td colspan="4" class="text-center py-4 text-muted">No se encontraron entidades repetidas en la primera posición para esta donación.</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <form method="get" th:action="@{/rankings/repetidas}" class="card form form--wide mb-4">
+        <div class="field-row">
+            <div class="field">
+                <label class="field__label" for="idDonacion">ID Donación Original:</label>
+                <input class="field__control" type="number" id="idDonacion" name="idDonacion" th:value="${idDonacionSeleccionada}" placeholder="Ingrese ID de Donación" required />
+            </div>
+            <div class="field" style="align-self: flex-end;">
+                <button type="submit" class="btn">Buscar Entidades</button>
+            </div>
+        </div>
+    </form>
 
+    <div th:if="${idDonacionSeleccionada != null}">
+        <div class="table-wrap" role="region" aria-label="Tabla de entidades repetidas" tabindex="0">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">ID Entidad</th>
+                    <th scope="col">Razón Social</th>
+                    <th scope="col">Dirección</th>
+                    <th scope="col">Teléfono</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${repetidas}">
+                    <td th:text="${item.id}">1</td>
+                    <td th:text="${item.razonSocial}">Hogar de Niños</td>
+                    <td th:text="${item.direccion}">Av. Corrientes 1234</td>
+                    <td th:text="${item.telefono}">11 5555-6666</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(repetidas)}">
+                    <td colspan="4">
+                        <div th:replace="~{fragments/molecules :: estado-vacio('No se encontraron entidades repetidas en la primera posición para esta donación.')}"></div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

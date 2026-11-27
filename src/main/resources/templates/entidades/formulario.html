@@ -1,63 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head th:replace="~{fragments/layout :: head('Dar de alta una entidad beneficiaria')}"></head>
-<body class="container py-4">
+<body>
+
 <header th:replace="~{fragments/organisms :: encabezado-publico('')}"></header>
 
-<main class="container py-4" style="max-width: 800px;">
-  <section class="card p-4 shadow-sm">
-    <h2 class="mb-4">Registrar Entidad Beneficiaria</h2>
+<main id="contenido" class="container page" style="max-width: var(--form-max);">
+  <header class="page-head">
+    <h1 class="page-head__title">Registrar Entidad Beneficiaria</h1>
+  </header>
 
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+  <div th:replace="~{fragments/molecules :: mensajes}"></div>
+  <p class="banner banner--error" role="alert" th:if="${error}" th:text="${error}"></p>
 
+  <section class="card">
     <form class="form" th:action="@{/entidadesBeneficiarias/nueva}" th:object="${entidad}" method="post">
 
-      <fieldset class="border p-3 rounded mb-4">
-        <legend class="w-auto px-2 fw-bold text-primary">Datos Generales</legend>
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">Datos Generales</legend>
 
-        <div class="mb-3">
-          <label class="form-label" for="razonSocial">Razón Social *</label>
-          <input class="form-control" id="razonSocial" type="text" th:field="*{razonSocial}" required/>
+        <div class="field">
+          <label class="field__label" for="razonSocial">Razón Social <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+          <input class="field__control" id="razonSocial" type="text" th:field="*{razonSocial}" required/>
         </div>
 
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
-            <label class="form-label" for="telefono">Teléfono de Contacto *</label>
-            <input class="form-control" id="telefono" type="tel" th:field="*{telefono}" required/>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="telefono">Teléfono de Contacto <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+            <input class="field__control" id="telefono" type="tel" th:field="*{telefono}" required/>
           </div>
-          <div class="col-md-6">
-            <label class="form-label" for="correoRepresentante">Correo del Representante *</label>
-            <input class="form-control" id="correoRepresentante" type="email" th:field="*{correoRepresentante}" required/>
+          <div class="field">
+            <label class="field__label" for="correoRepresentante">Correo del Representante <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+            <input class="field__control" id="correoRepresentante" type="email" th:field="*{correoRepresentante}" required/>
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="direccion">Dirección Física *</label>
-          <input class="form-control" id="direccion" type="text" th:field="*{direccion}" placeholder="Ej: Av. Medrano 951" required/>
-        </div>
-      </fieldset>
-
-      <fieldset class="border p-3 rounded mb-4">
-        <legend class="w-auto px-2 fw-bold text-primary">Credenciales de Acceso</legend>
-
-        <div class="row g-3">
-          <div class="col-md-6">
-            <label class="form-label" for="emailUsuario">Correo Electrónico (Usuario) *</label>
-            <input class="form-control" id="emailUsuario" type="email" name="email" required/>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label" for="passwordUsuario">Contraseña *</label>
-            <input class="form-control" id="passwordUsuario" type="password" name="password" minlength="6" required/>
-          </div>
+        <div class="field">
+          <label class="field__label" for="direccion">Dirección Física <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+          <input class="field__control" id="direccion" type="text" th:field="*{direccion}" placeholder="Ej: Av. Medrano 951" required/>
         </div>
       </fieldset>
 
-      <div class="d-flex gap-2">
-        <a th:href="@{/entidadesBeneficiarias}" class="btn btn-secondary">Cancelar</a>
-        <button class="btn btn-success" type="submit">Registrar Entidad</button>
+      <fieldset class="fieldset">
+        <legend class="fieldset__legend">Credenciales de Acceso</legend>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="emailUsuario">Correo Electrónico (Usuario) <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+            <input class="field__control" id="emailUsuario" type="email" name="email" required/>
+          </div>
+          <div class="field">
+            <label class="field__label" for="passwordUsuario">Contraseña <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+            <input class="field__control" id="passwordUsuario" type="password" name="password" minlength="6" required/>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="cluster">
+        <button class="btn" type="submit">Registrar Entidad</button>
+        <a th:href="@{/entidadesBeneficiarias}" class="btn btn--secondary">Cancelar</a>
       </div>
     </form>
   </section>
 </main>
+
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>

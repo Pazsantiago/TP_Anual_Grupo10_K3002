@@ -1,85 +1,62 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/layout :: head('Indicar vencimiento de donacion')}"></head>
-<body class="container py-4 bg-light">
+<body>
+
 <header th:replace="~{fragments/organisms :: encabezado('donaciones')}"></header>
 
-<h2 class="mb-4 text-dark fw-bold">Actualizar Estado de Donación Segmentada</h2>
+<main id="contenido" class="container page" style="max-width: var(--form-max);">
+    <header class="page-head">
+        <h1 class="page-head__title">Actualizar Estado de Donación Segmentada</h1>
+    </header>
 
-<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:replace="~{fragments/molecules :: mensajes}"></div>
+    <p class="banner banner--error" role="alert" th:if="${error}" th:text="${error}"></p>
 
-<!-- 1. Selector de Donante -->
-<div class="card p-3 mb-4 border-0 shadow-sm">
-    <label for="selectDonante" class="form-label fw-bold">1. Seleccionar Donante:</label>
-    <select id="selectDonante" class="form-select" onchange="location.href='/donaciones/vencidas?idDonante=' + this.value">
-        <option value="" disabled th:selected="${idDonanteSeleccionado == null}">-- Seleccionar Donante --</option>
-        <option th:each="d : ${donantes}"
-                th:value="${d.id}"
-                th:text="${d.nombre}"
-                th:selected="${d.id == idDonanteSeleccionado}">
-        </option>
-    </select>
-</div>
-
-<!-- 2. Formulario de estado cuando hay donante elegido -->
-<form th:if="${idDonanteSeleccionado != null}" th:action="@{/donaciones/vencidas}" method="post" class="card p-4 shadow-sm border-0">
-    <input type="hidden" name="idDonante" th:value="${idDonanteSeleccionado}"/>
-
-    <div class="row g-3 mb-3">
-        <div class="col-md-6">
-            <label class="form-label fw-bold">2. ID Donación Original Padre *</label>
-            <input type="number" name="idDonacion" class="form-control" placeholder="Ej: 10" required />
-            <div class="form-text">Ingresá el ID de la donación general a la que pertenece este lote.</div>
-        </div>
-
-        <div class="col-md-6">
-            <label class="form-label fw-bold">3. Lote Segmentado de este Donante *</label>
-            <select name="idDonacionSegmentada" class="form-select" required th:disabled="${#lists.isEmpty(segmentadas)}">
-                <option value="" disabled selected>-- Seleccionar Lote Segmentado --</option>
-                <option th:each="seg : ${segmentadas}"
-                        th:value="${seg.idSegmentada}"
-                        th:text="'Lote #' + ${seg.idSegmentada} + ' - ' + ${seg.subcategoria} + ' (' + ${seg.cantidadActual} + ' ' + ${seg.unidad} + ') - Estado: ' + ${seg.estadoActual}">
+    <section class="card">
+        <div class="field" style="margin-bottom: var(--space-4);">
+            <label class="field__label" for="selectDonante">1. Seleccionar Donante:</label>
+            <select id="selectDonante" class="field__control" onchange="location.href='/donaciones/vencidas?idDonante=' + this.value">
+                <option value="" disabled th:selected="${idDonanteSeleccionado == null}">-- Seleccionar Donante --</option>
+                <option th:each="d : ${donantes}"
+                        th:value="${d.id}"
+                        th:text="${d.nombre}"
+                        th:selected="${d.id == idDonanteSeleccionado}">
                 </option>
             </select>
-            <div th:if="${#lists.isEmpty(segmentadas)}" class="form-text text-danger mt-1">
-                Este donante no posee lotes segmentados registrados en el depósito.
-            </div>
         </div>
-    </div>
 
-    <div class="card p-3 mb-4 bg-light border-0">
-        <h5 class="fw-bold text-secondary mb-3">4. Nuevo Estado y Justificación</h5>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label for="tipoEstado" class="form-label fw-bold">Estado</label>
-                <select id="tipoEstado" name="estadoDonacion.tipoEstado" class="form-select" required>
-                    <option value="VENCIDA" th:selected="${estadoDonacion.tipoEstado == 'VENCIDA'}">VENCIDA</option>
-                    <option value="EN_DEPOSITO">EN_DEPOSITO</option>
-                    <option value="ASIGNACION_REALIZADA">ASIGNACION_REALIZADA</option>
-                    <option value="LISTA_PARA_ENTREGAR">LISTA_PARA_ENTREGAR</option>
-                    <option value="EN_TRASLADO">EN_TRASLADO</option>
-                    <option value="ENTREGADA">ENTREGADA</option>
-                    <option value="ENTREGA_FALLIDA">ENTREGA_FALLIDA</option>
-                </select>
+        <form class="form" th:if="${idDonanteSeleccionado != null}" th:action="@{/donaciones/vencidas}" method="post">
+            <input type="hidden" name="idDonante" th:value="${idDonanteSeleccionado}"/>
+
+            <fieldset class="fieldset">
+                <legend class="fieldset__legend">Detalles del Lote</legend>
+                <div class="field">
+                    <label class="field__label" for="idDonacion">2. ID Donación Original Padre <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+                    <input class="field__control" type="number" id="idDonacion" name="idDonacion" placeholder="Ej: 10" required />
+                    <p class="field__hint">Ingresá el ID de la donación general a la que pertenece este lote.</p>
+                </div>
+
+                <div class="field">
+                    <label class="field__label" for="idDonacionSegmentada">3. Lote Segmentado de este Donante <span th:replace="~{fragments/atoms :: requerido}"></span></label>
+                    <select id="idDonacionSegmentada" name="idDonacionSegmentada" class="field__control" required th:disabled="${#lists.isEmpty(segmentadas)}">
+                        <option value="" disabled selected>-- Seleccionar Lote Segmentado --</option>
+                        <option th:each="seg : ${segmentadas}"
+                                th:value="${seg.idSegmentada}"
+                                th:text="'Lote #' + ${seg.idSegmentada} + ' - ' + ${seg.subcategoria} + ' (' + ${seg.cantidadActual} + ' ' + ${seg.unidad} + ') - Estado: ' + ${seg.estadoActual}">
+                        </option>
+                    </select>
+                </div>
+            </fieldset>
+
+            <div class="cluster">
+                <button type="submit" class="btn btn--danger">Marcar como Vencida</button>
+                <a th:href="@{/donaciones}" class="btn btn--secondary">Cancelar</a>
             </div>
+        </form>
+    </section>
+</main>
 
-            <div class="col-md-12">
-                <label for="justificacion" class="form-label fw-bold">Justificación *</label>
-                <textarea id="justificacion"
-                          name="estadoDonacion.justificacion"
-                          class="form-control"
-                          rows="3"
-                          placeholder="Ej: El lote de productos perecederos superó la fecha de caducidad en el depósito..."
-                          required></textarea>
-            </div>
-        </div>
-    </div>
-
-    <div class="d-flex gap-2">
-        <a th:href="@{/donaciones/segmentadas(idDonante=${idDonanteSeleccionado})}" class="btn btn-secondary">Cancelar</a>
-        <button type="submit" class="btn btn-warning fw-bold" th:disabled="${#lists.isEmpty(segmentadas)}">Confirmar Cambio de Estado</button>
-    </div>
-</form>
-
+<footer th:replace="~{fragments/organisms :: pie}"></footer>
 </body>
 </html>
