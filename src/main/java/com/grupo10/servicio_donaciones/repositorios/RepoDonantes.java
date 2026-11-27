@@ -11,9 +11,12 @@ import java.util.Optional;
 
 @Repository
 public interface RepoDonantes extends JpaRepository<Donante, Long> {
-    @Query("SELECT DISTINCT d FROM Donante d JOIN d.mediosDeContacto m WHERE LOWER(TRIM(m.correoElectronico)) = LOWER(TRIM(:correo))")
+    @Query("SELECT DISTINCT d FROM Donante d " +
+            "LEFT JOIN FETCH d.persona " +
+            "LEFT JOIN FETCH d.mediosDeContacto m " +
+            "WHERE LOWER(TRIM(m.correoElectronico)) = LOWER(TRIM(:correo))")
     Optional<Donante> buscarPorCorreoIgnoreCase(@Param("correo") String correo);
-
+    
     List<Donante> findByMediosDeContactoCorreoElectronicoIn(List<String> correos);
 
     @Query("SELECT d FROM Donante d JOIN d.persona p JOIN p.documento doc WHERE doc.tipoDocumento = :tipoD AND doc.documento = :doc")
