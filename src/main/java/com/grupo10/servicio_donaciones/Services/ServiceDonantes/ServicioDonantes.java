@@ -54,7 +54,7 @@ public class ServicioDonantes {
     }
 
     public Donante obtenerPorEmail(String email) {
-        return repoDonantes.findByMediosDeContacto_CorreoElectronicoIgnoreCase(email).orElse(null);
+        return repoDonantes.buscarPorCorreoIgnoreCase(email).orElse(null);
     }
 
     @Transactional
