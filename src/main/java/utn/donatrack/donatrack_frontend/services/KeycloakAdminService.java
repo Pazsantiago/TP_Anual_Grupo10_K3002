@@ -125,8 +125,8 @@ public class KeycloakAdminService {
         userJson.put("username", email);
         userJson.put("email", email);
         userJson.put("enabled", true);
-
-
+        userJson.put("emailVerified", true);
+        
         // Credenciales (Contraseña)
         Map<String, Object> credential = new HashMap<>();
         credential.put("type", "password");
