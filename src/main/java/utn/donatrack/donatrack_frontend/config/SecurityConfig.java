@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas accesibles por cualquiera
-                        .requestMatchers("/css/**", "/js/**", "error/**", "/images/**", "/error/**", "/login", "/logout", "/login/callback", "/", "/inicio", "/galeria", "/mapa", "/legal", "/donantes/nuevo", "/entidadesBeneficiarias/nueva").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/error/**", "/images/**", "/error/**", "/login", "/logout", "/login/callback", "/", "/inicio", "/galeria", "/mapa", "/legal", "/donantes/nuevo", "/entidadesBeneficiarias/nueva").permitAll()
                         // Permisos con Rol
                         .requestMatchers("/ruta", "/ruta/iniciar").hasRole("CHOFER")
                         .requestMatchers("/logistica/seguimiento", "/logistica/seguimiento/ubicaciones").hasAnyRole("ENTIDAD", "DONANTE")
